@@ -164,7 +164,10 @@ main(int argc, char *argv[])
 		case 'd':
 			dflag = 1;
 			which = CPU_WHICH_DOMAIN;
-			id = atoi(optarg);
+			errno = 0;
+			id = strtonum(optarg, 0, INT_MAX, &errstr);
+			if (errstr)
+				errx(EXIT_FAILURE, "domain id is %s: %s", errstr, optarg);
 			break;
 		case 'g':
 			gflag = 1;
@@ -190,7 +193,11 @@ main(int argc, char *argv[])
 		case 'p':
 			pflag = 1;
 			which = CPU_WHICH_PID;
-			id = pid = atoi(optarg);
+			errno = 0;
+			pid = strtonum(optarg, 0, INT_MAX, &errstr);
+			if (errstr)
+				errx(EXIT_FAILURE, "pid is %s: %s", errstr, optarg);
+			id = pid;
 			break;
 		case 'r':
 			level = CPU_LEVEL_ROOT;
