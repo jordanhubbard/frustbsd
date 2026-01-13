@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-01-13 20:35 - bin/getfacl ✓
+
+**Directory:** `bin/getfacl`
+
+**Summary:** getfacl: Update review status to in-progress
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-01-13 15:41 - bin/freebsd-version ✓
 
 **Directory:** `bin/freebsd-version`
