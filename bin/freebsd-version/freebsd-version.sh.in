@@ -53,8 +53,18 @@ error() {
 # read it, return the path to the default kernel.
 #
 kernel_file() {
-	eval $(sed -n "s/$LOADER_RE1/\\1;/p; s/$LOADER_RE2/\\1;/p" \
-	    $LOADER_CONF_FILES 2>/dev/null)
+	# Extract variables from loader.conf files without using eval
+while IFS='=' read -r key value; do
+    case "$key" in
+        kernel)
+            kernfile="$value"
+            ;;
+        bootfile)
+            bootfile="$value"
+            ;;
+    esac
+done < <(sed -n "s/$LOADER_RE1/\\1/p; s/$LOADER_RE2/\\1/p" \
+    $LOADER_CONF_FILES 2>/dev/null)
 	echo "$LOADER_DIR/${kernel:-kernel}/${bootfile:-kernel}"
 }
 

@@ -6,6 +6,19 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-01-13 15:41 - bin/freebsd-version ✓
+
+**Directory:** `bin/freebsd-version`
+
+**Summary:** freebsd-version: Improve variable extraction in kernel_file()
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - bin/freebsd-version/Makefile
+  - bin/freebsd-version/freebsd-version.sh.in
+
+---
+
 ## 2026-01-13 14:54 - bin/expr/tests ✓
 
 **Directory:** `bin/expr/tests`
