@@ -44,13 +44,13 @@ init()
 {
     echo "${test_jail_conf}" | \
 	    sed -e "s/%%test_jail_name%%/${test_jail_name}/" > "./jail.conf"
-    jail -f "./jail.conf" -c ${test_jail_name}
+    jail -f "./jail.conf" -c ${test_jail_name} || atf_fail "Failed to create jail"
 }
 
 recycle()
 {
-    jail -f "./jail.conf" -r ${test_jail_name}
-    rm "./jail.conf"
+    jail -f "./jail.conf" -r ${test_jail_name} || atf_fail "Failed to remove jail"
+    rm "./jail.conf" || atf_fail "Failed to remove jail configuration file"
 }
 
 atf_test_case basic cleanup
