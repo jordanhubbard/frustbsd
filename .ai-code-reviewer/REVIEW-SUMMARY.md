@@ -6,6 +6,19 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-01-14 22:59 - bin/ls/tests ✓
+
+**Directory:** `bin/ls/tests`
+
+**Summary:** tests: Update ls tests metadata and fix cpuset.c error handling
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - bin/cpuset/cpuset.c
+  - bin/ls/tests/Makefile
+
+---
+
 ## 2026-01-14 19:00 - bin/ls ✓
 
 **Directory:** `bin/ls`

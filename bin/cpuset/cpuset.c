@@ -226,9 +226,10 @@ main(int argc, char *argv[])
 		case 'x':
 			xflag = 1;
 			which = CPU_WHICH_IRQ;
+			errno = 0;
 			id = strtonum(optarg, 0, INT_MAX, &errstr);
 			if (errstr)
-				errx(1, "irq is %s: %s", errstr, optarg);
+				errx(EXIT_FAILURE, "irq is %s: %s", errstr, optarg);
 			break;
 		default:
 			usage();
