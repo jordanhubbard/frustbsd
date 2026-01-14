@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-01-14 02:25
+Generated: 2026-01-14 13:48
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -26,7 +26,7 @@ CURRENT POSITION: `bin/ln/tests`
 - [x] `bin/cat/tests` (0 .c, 0 .h, 0 lines) - 2026-01-10 - Fixed by session 20260110_042553
 - [x] `bin/chflags` (1 .c, 0 .h, 213 lines) - 2026-01-10 - Fixed by session 20260110_042553
 - [x] `bin/chflags/tests` (0 .c, 0 .h, 0 lines) - 2026-01-10 - Fixed by session 20260110_042553
-- [x] `bin/chio` (1 .c, 2 .h, 1329 lines) - 2026-01-11 - Fixed by session 20260110_042553
+- [x] `bin/chio` (1 .c, 2 .h, 1329 lines) - 2026-01-14 - Fixed by session 20260114_033209
 - [x] `bin/chmod` (1 .c, 0 .h, 248 lines) - 2026-01-11 - Fixed by session 20260110_042553
 - [x] `bin/chmod/tests` (0 .c, 0 .h, 0 lines) - 2026-01-11 - Fixed by session 20260110_042553
 - [x] `bin/cp` (2 .c, 1 .h, 1257 lines) - 2026-01-11 - Fixed by session 20260110_042553
@@ -47,10 +47,10 @@ CURRENT POSITION: `bin/ln/tests`
 - [x] `bin/expr/tests` (0 .c, 0 .h, 0 lines) - 2026-01-13 - Fixed by session 20260113_093520
 - [x] `bin/freebsd-version` (0 .c, 0 .h, 0 lines) - 2026-01-13 - Fixed by session 20260113_093520
 - [x] `bin/getfacl` (1 .c, 0 .h, 287 lines) - 2026-01-13 - Fixed by session 20260113_093520
-- [x] `bin/hostname` (1 .c, 0 .h, 102 lines) - 2026-01-13 - Fixed by session 20260113_093520
+- [x] `bin/hostname` (1 .c, 0 .h, 104 lines) - 2026-01-13 - Fixed by session 20260113_093520
 - [x] `bin/hostname/tests` (0 .c, 0 .h, 0 lines) - 2026-01-13 - Fixed by session 20260113_093520
 - [x] `bin/kenv` (1 .c, 0 .h, 223 lines) - 2026-01-13 - Fixed by session 20260113_093520
-- [x] `bin/kill` (1 .c, 0 .h, 179 lines) - 2026-01-13 - Fixed by session 20260113_093520
+- [x] `bin/kill` (1 .c, 0 .h, 180 lines) - 2026-01-13 - Fixed by session 20260113_093520
 - [x] `bin/ln` (1 .c, 0 .h, 378 lines) - 2026-01-14 - Fixed by session 20260113_093520
 - [ ] `bin/ln/tests` (0 .c, 0 .h, 0 lines)
 - [ ] `bin/ls` (4 .c, 2 .h, 2488 lines)

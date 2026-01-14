@@ -739,9 +739,12 @@ static int
 do_ielem(const char *cname, int argc, char **argv)
 {
 	int timeout = 0;
+	const char *errstr;
 
 	if (argc == 2) {
-		timeout = atol(argv[1]);
+		timeout = strtonum(argv[1], 0, INT_MAX, &errstr);
+		if (errstr != NULL)
+			errx(1, "timeout %s: %s", errstr, argv[1]);
 	} else if (argc > 1) {
 		warnx("%s: too many arguments", cname);
 		goto usage;

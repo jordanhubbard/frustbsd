@@ -6,6 +6,18 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-01-14 13:48 - bin/chio ✓
+
+**Directory:** `bin/chio`
+
+**Summary:** chio: Replace atol() with strtonum() for safe timeout parsing
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - bin/chio/chio.c
+
+---
+
 ## 2026-01-14 02:25 - bin/ln ✓
 
 **Directory:** `bin/ln`
