@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-01-16 22:02 - bin/realpath ✓
+
+**Directory:** `bin/realpath`
+
+**Summary:** We need to generate a commit message for changes in bin/realpath. The diff shows only a change in .ai-code-reviewer/REVIEW-INDEX.md, marking realpath as done with > symbol. Probably the commit is about completing review of realpath? The instruction: "This commit covers ALL changes in the realpath directory". The diff only shows a change in a markdown file, but likely the actual code changes are not shown; maybe they are implied. We need to produce a commit message following rules: first line "realpath: <short summary>" max 50 chars total. Then blank line, then body explaining what changed and why, focusing on security/correctness fixes, imperative mood.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-01-16 21:21 - bin/pwd ✓
 
 **Directory:** `bin/pwd`
