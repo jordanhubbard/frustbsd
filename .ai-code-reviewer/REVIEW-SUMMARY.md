@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-01-16 21:04 - bin/ps ✓
+
+**Directory:** `bin/ps`
+
+**Summary:** We need to generate a commit message. The diff shows changes to .ai-code-reviewer/REVIEW-INDEX.md, marking bin/ps as "in progress" with > symbol. The commit covers ALL changes in the ps directory. The summary should be "ps: ..." short summary <=50 chars. Then blank line, then body explaining what changed and why, focusing on security/correctness fixes, imperative mood, wrap at 72 chars.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-01-16 20:12 - bin/pkill/tests ✓
 
 **Directory:** `bin/pkill/tests`
