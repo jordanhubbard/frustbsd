@@ -6,6 +6,18 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-01-17 03:01 - bin/setfacl ✓
+
+**Directory:** `bin/setfacl`
+
+**Summary:** [ai-code-reviewer] We need to produce a commit message with first line: "[ai-code-reviewer] setfacl: <short summary>" max 72 chars total including prefix? It says 72 chars max total. So the whole first line must be <=72 characters. Must be exactly "[ai-code-reviewer] setfacl: ..." plus short summary. Should be concise.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - bin/setfacl/file.c
+
+---
+
 ## 2026-01-17 02:14 - bin/rmdir/tests ✓
 
 **Directory:** `bin/rmdir/tests`

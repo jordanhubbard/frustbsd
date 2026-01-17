@@ -57,17 +57,27 @@ get_acl_from_file(const char *filename)
 			err(1, "fopen() %s failed", filename);
 	}
 
-	len = fread(buf, (size_t)1, sizeof(buf) - 1, file);
+	/* Read up to sizeof(buf)-1 bytes; fread returns the number of bytes read */
+	len = fread(buf, 1, sizeof(buf) - 1, file);
 	buf[len] = '\0';
-	if (ferror(file) != 0) {
-		fclose(file);
+	if (ferror(file)) {
+		/* Close only non‑stdin streams */
+		if (file != stdin) {
+			fclose(file);
+		}
 		err(1, "error reading from %s", filename);
-	} else if (feof(file) == 0) {
-		fclose(file);
+	} else if (!feof(file)) {
+		/* If we read the maximum allowed bytes and there is still more data,
+		 * the line is too long. */
+		if (file != stdin) {
+			fclose(file);
+		}
 		errx(1, "line too long in %s", filename);
 	}
-
-	fclose(file);
+	/* Close the file only if it is not stdin */
+	if (file != stdin) {
+		fclose(file);
+	}
 
 	return (acl_from_text(buf));
 }
