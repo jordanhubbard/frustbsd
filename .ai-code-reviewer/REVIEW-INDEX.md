@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-01-16 23:05
+Generated: 2026-01-17 02:14
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,14 +13,14 @@ Generated: 2026-01-16 23:05
 
 ## Progress
 - Total directories: 8264
-- Completed: 49 (0%)
-- Skipped: 1
-- Remaining: 8214
+- Completed: 50 (0%)
+- Skipped: 2
+- Remaining: 8212
 
 ## Current Position
-CURRENT POSITION: `bin/rmdir`
+CURRENT POSITION: `bin/setfacl`
 
-## bin/ (49/74 done)
+## bin/ (50/74 done)
 
 - [x] `bin/cat` (1 .c, 0 .h, 525 lines) - 2026-01-10 - Fixed by session 20260110_042553
 - [x] `bin/cat/tests` (0 .c, 0 .h, 0 lines) - 2026-01-10 - Fixed by session 20260110_042553
@@ -72,8 +72,8 @@ CURRENT POSITION: `bin/rmdir`
 - [x] `bin/rm` (1 .c, 0 .h, 537 lines) - 2026-01-16 - Fixed by session 20260116_204924
 - [x] `bin/rm/tests` (0 .c, 0 .h, 0 lines) - 2026-01-16 - Fixed by session 20260116_204924
 - [x] `bin/rmail` (0 .c, 0 .h, 0 lines) - 2026-01-16 - Fixed by session 20260116_204924
-- [ ] `bin/rmdir` (1 .c, 0 .h, 116 lines)
-- [ ] `bin/rmdir/tests` (0 .c, 0 .h, 0 lines)
+- [-] `bin/rmdir` (1 .c, 0 .h, 116 lines) - Auto-skipped after 3 retries
+- [x] `bin/rmdir/tests` (0 .c, 0 .h, 0 lines) - 2026-01-17 - Fixed by session 20260117_021115
 - [ ] `bin/setfacl` (6 .c, 1 .h, 1277 lines)
 - [ ] `bin/sh` (25 .c, 23 .h, 17597 lines)
 - [ ] `bin/sh/bltin` (1 .c, 1 .h, 183 lines)
@@ -756,7 +756,7 @@ CURRENT POSITION: `bin/rmdir`
 - [ ] `usr.sbin/authpf` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.sbin/autofs` (7 .c, 1 .h, 3345 lines)
 - [ ] `usr.sbin/autofs/autofs` (0 .c, 0 .h, 0 lines)
-- [ ] `usr.sbin/bhyve` (60 .c, 46 .h, 50808 lines)
+- [ ] `usr.sbin/bhyve` (60 .c, 46 .h, 50834 lines)
 - [ ] `usr.sbin/bhyve/aarch64` (5 .c, 3 .h, 1379 lines)
 - [ ] `usr.sbin/bhyve/amd64` (22 .c, 16 .h, 10291 lines)
 - [ ] `usr.sbin/bhyve/gdb` (0 .c, 0 .h, 0 lines)
@@ -1352,7 +1352,7 @@ CURRENT POSITION: `bin/rmdir`
 - [ ] `lib/libc/softfloat/templates` (0 .c, 2 .h, 338 lines)
 - [ ] `lib/libc/stdbit` (14 .c, 0 .h, 742 lines)
 - [ ] `lib/libc/stdio` (111 .c, 6 .h, 17347 lines)
-- [ ] `lib/libc/stdlib` (69 .c, 4 .h, 8611 lines)
+- [ ] `lib/libc/stdlib` (69 .c, 4 .h, 8609 lines)
 - [ ] `lib/libc/stdlib/malloc` (0 .c, 0 .h, 0 lines)
 - [ ] `lib/libc/stdlib/malloc/jemalloc` (0 .c, 0 .h, 0 lines)
 - [ ] `lib/libc/stdlib/malloc/jemalloc/include/jemalloc` (0 .c, 4 .h, 807 lines)
@@ -5965,7 +5965,7 @@ CURRENT POSITION: `bin/rmdir`
 - [ ] `sys/dev/backlight` (1 .c, 1 .h, 198 lines)
 - [ ] `sys/dev/bce` (1 .c, 2 .h, 32920 lines)
 - [ ] `sys/dev/bfe` (1 .c, 1 .h, 2582 lines)
-- [ ] `sys/dev/bge` (1 .c, 1 .h, 9890 lines)
+- [ ] `sys/dev/bge` (1 .c, 1 .h, 9902 lines)
 - [ ] `sys/dev/bhnd` (3 .c, 11 .h, 8313 lines)
 - [ ] `sys/dev/bhnd/bcma` (4 .c, 5 .h, 3673 lines)
 - [ ] `sys/dev/bhnd/bhndb` (7 .c, 7 .h, 7954 lines)
@@ -6019,7 +6019,7 @@ CURRENT POSITION: `bin/rmdir`
 - [ ] `sys/dev/dpms` (1 .c, 0 .h, 227 lines)
 - [ ] `sys/dev/drm2` (33 .c, 23 .h, 30797 lines)
 - [ ] `sys/dev/drm2/ttm` (12 .c, 9 .h, 10046 lines)
-- [ ] `sys/dev/dwc` (7 .c, 4 .h, 3543 lines)
+- [ ] `sys/dev/dwc` (7 .c, 4 .h, 3536 lines)
 - [ ] `sys/dev/dwwdt` (1 .c, 0 .h, 379 lines)
 - [ ] `sys/dev/e1000` (21 .c, 20 .h, 43920 lines)
 - [ ] `sys/dev/efidev` (3 .c, 0 .h, 1329 lines)
@@ -6334,7 +6334,7 @@ CURRENT POSITION: `bin/rmdir`
 - [ ] `sys/dev/siis` (1 .c, 1 .h, 2443 lines)
 - [ ] `sys/dev/sis` (1 .c, 1 .h, 2930 lines)
 - [ ] `sys/dev/sk` (1 .c, 3 .h, 5805 lines)
-- [ ] `sys/dev/smartpqi` (17 .c, 7 .h, 16548 lines)
+- [ ] `sys/dev/smartpqi` (17 .c, 7 .h, 16544 lines)
 - [ ] `sys/dev/smbios` (2 .c, 1 .h, 586 lines)
 - [ ] `sys/dev/smbus` (3 .c, 3 .h, 1091 lines)
 - [ ] `sys/dev/smc` (3 .c, 2 .h, 1835 lines)
@@ -6531,7 +6531,7 @@ CURRENT POSITION: `bin/rmdir`
 - [ ] `sys/i386/linux` (11 .c, 3 .h, 17721 lines)
 - [ ] `sys/i386/pci` (2 .c, 0 .h, 1446 lines)
 - [ ] `sys/isa` (6 .c, 7 .h, 4055 lines)
-- [ ] `sys/kern` (231 .c, 0 .h, 288505 lines)
+- [ ] `sys/kern` (231 .c, 0 .h, 288519 lines)
 - [ ] `sys/kgssapi` (26 .c, 2 .h, 3768 lines)
 - [ ] `sys/kgssapi/krb5` (3 .c, 1 .h, 3001 lines)
 - [ ] `sys/libkern` (69 .c, 1 .h, 7988 lines)
@@ -7604,19 +7604,19 @@ CURRENT POSITION: `bin/rmdir`
 - [ ] `sys/netgraph/bluetooth/include` (0 .c, 9 .h, 4385 lines)
 - [ ] `sys/netgraph/bluetooth/l2cap` (6 .c, 7 .h, 7115 lines)
 - [ ] `sys/netgraph/bluetooth/socket` (6 .c, 0 .h, 11738 lines)
-- [ ] `sys/netgraph/netflow` (3 .c, 3 .h, 3631 lines)
+- [ ] `sys/netgraph/netflow` (3 .c, 3 .h, 3632 lines)
 - [ ] `sys/netinet` (76 .c, 71 .h, 156315 lines)
 - [ ] `sys/netinet/cc` (9 .c, 4 .h, 5618 lines)
 - [ ] `sys/netinet/khelp` (1 .c, 1 .h, 636 lines)
 - [ ] `sys/netinet/libalias` (13 .c, 5 .h, 13515 lines)
 - [ ] `sys/netinet/netdump` (1 .c, 1 .h, 817 lines)
 - [ ] `sys/netinet/tcp_stacks` (6 .c, 5 .h, 44055 lines)
-- [ ] `sys/netinet6` (33 .c, 24 .h, 43753 lines)
+- [ ] `sys/netinet6` (33 .c, 24 .h, 43754 lines)
 - [ ] `sys/netipsec` (16 .c, 16 .h, 22694 lines)
 - [ ] `sys/netlink` (10 .c, 17 .h, 7741 lines)
 - [ ] `sys/netlink/route` (5 .c, 7 .h, 5940 lines)
 - [ ] `sys/netpfil/ipfilter/netinet` (28 .c, 17 .h, 55768 lines)
-- [ ] `sys/netpfil/ipfw` (25 .c, 10 .h, 36048 lines)
+- [ ] `sys/netpfil/ipfw` (25 .c, 10 .h, 35637 lines)
 - [ ] `sys/netpfil/ipfw/nat64` (8 .c, 5 .h, 7047 lines)
 - [ ] `sys/netpfil/ipfw/nptv6` (2 .c, 1 .h, 1201 lines)
 - [ ] `sys/netpfil/ipfw/pmod` (2 .c, 1 .h, 380 lines)
@@ -7684,7 +7684,7 @@ CURRENT POSITION: `bin/rmdir`
 - [ ] `sys/security/mac_test` (1 .c, 0 .h, 3503 lines)
 - [ ] `sys/security/mac_veriexec` (7 .c, 2 .h, 2936 lines)
 - [ ] `sys/security/mac_veriexec_parser` (1 .c, 0 .h, 471 lines)
-- [ ] `sys/sys` (0 .c, 376 .h, 83249 lines)
+- [ ] `sys/sys` (0 .c, 376 .h, 83255 lines)
 - [ ] `sys/sys/disk` (0 .c, 4 .h, 615 lines)
 - [ ] `sys/teken` (1 .c, 5 .h, 2722 lines)
 - [ ] `sys/teken/demo` (1 .c, 0 .h, 355 lines)
@@ -7706,7 +7706,7 @@ CURRENT POSITION: `bin/rmdir`
 - [ ] `sys/vm` (26 .c, 26 .h, 48493 lines)
 - [ ] `sys/x86/acpica` (4 .c, 0 .h, 1387 lines)
 - [ ] `sys/x86/bios` (1 .c, 0 .h, 307 lines)
-- [ ] `sys/x86/cpufreq` (6 .c, 1 .h, 4777 lines)
+- [ ] `sys/x86/cpufreq` (6 .c, 1 .h, 4789 lines)
 - [ ] `sys/x86/include` (0 .c, 56 .h, 8881 lines)
 - [ ] `sys/x86/include/xen` (0 .c, 2 .h, 197 lines)
 - [ ] `sys/x86/iommu` (15 .c, 6 .h, 11272 lines)
