@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-01-21 09:46
+Generated: 2026-01-21 09:51
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,14 +13,14 @@ Generated: 2026-01-21 09:46
 
 ## Progress
 - Total directories: 8264
-- Completed: 33 (0%)
+- Completed: 34 (0%)
 - Skipped: 1
-- Remaining: 8230
+- Remaining: 8229
 
 ## Current Position
-CURRENT POSITION: `bin/mkdir/tests`
+CURRENT POSITION: `bin/mv`
 
-## bin/ (33/74 done)
+## bin/ (34/74 done)
 
 - [x] `bin/cat` (1 .c, 0 .h, 525 lines) - 2026-01-10 - Fixed by session 20260110_042553
 - [x] `bin/cat/tests` (0 .c, 0 .h, 0 lines) - 2026-01-10 - Fixed by session 20260110_042553
@@ -56,7 +56,7 @@ CURRENT POSITION: `bin/mkdir/tests`
 - [x] `bin/ls` (4 .c, 2 .h, 2488 lines) - 2026-01-21 - Fixed by session 20260121_081245
 - [x] `bin/ls/tests` (0 .c, 0 .h, 0 lines) - 2026-01-21 - Fixed by session 20260121_081245
 - [x] `bin/mkdir` (1 .c, 0 .h, 206 lines) - 2026-01-21 - Fixed by session 20260121_081245
-- [ ] `bin/mkdir/tests` (0 .c, 0 .h, 0 lines)
+- [x] `bin/mkdir/tests` (0 .c, 0 .h, 0 lines) - 2026-01-21 - Fixed by session 20260121_081245
 - [ ] `bin/mv` (1 .c, 0 .h, 495 lines)
 - [ ] `bin/mv/tests` (0 .c, 0 .h, 0 lines)
 - [ ] `bin/nproc` (1 .c, 0 .h, 132 lines)
