@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-01-21 10:03 - bin/mv ✓
+
+**Directory:** `bin/mv`
+
+**Summary:** [ai-code-reviewer] We need to produce a commit message following rules.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-01-21 09:51 - bin/mkdir/tests ✓
 
 **Directory:** `bin/mkdir/tests`
