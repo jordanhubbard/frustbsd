@@ -48,7 +48,7 @@ getoldopt(int argc, char **argv, const char *optstring)
 	}
 	place = strchr(optstring, c);
 
-	if (place == NULL || c == ':') {
+	if (place == NULL) {
 		fprintf(stderr, "%s: unknown option %c\n", argv[0], c);
 		return ('?');
 	}
