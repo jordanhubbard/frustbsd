@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-01-20 20:53 - bin/expr ✓
+
+**Directory:** `bin/expr`
+
+**Summary:** [ai-code-reviewer] We need to generate a commit message for these changes. The diff shows only a change in .ai-code-reviewer/REVIEW-INDEX.md: Updated timestamp from 20:47 to 20:48 and changed status marker from [ ] to [>]. That's a review progress file, not actual source code changes. But the instruction says "Generate a git commit message for these FreeBSD source code changes." The component/directory is bin/expr, but the changed file is .ai-code-reviewer/REVIEW-INDEX.md. So maybe they want a commit message describing that the review index was updated, indicating that expr is in progress? The rules: first line "[ai-code-reviewer] expr: <short summary>" max 72 chars total. So something like "[ai-code-reviewer] expr: Mark expr as in-progress review". Must be <=72 chars including prefix? The prefix is "[ai-code-reviewer] expr: " which is 18 characters? Let's count: [ai-code-reviewer] is 15? Actually characters: [ a i - c o d e - r e v i e w e r ] = 15? Let's count precisely: [ =1, a=2, i=3, -=4,5? Wait let's just count: "[ai-code-reviewer]" length: 14? Let's count: a i - c o d e - r e v i e w e r = 13? Let's just count: a(1) i(2) -(3) c(4) o(5) d(6) e(7) -(8) r(9) e(10) v(11) i(12) e(13) w(14) e(15) r(16). Actually includes brackets: "[" and "]" add 2, so total 18? Let's count full string: "["=1, "a"=2, "i"=3, "-"=4, "c"=5, "o"=6, "d"=7, "e"=8, "-"=9, "r"=10, "e"=11, "v"=12, "i"=13, "e"=14, "w"=15, "e"=16, "r"=17, "]"=18. So "[ai-code-reviewer]" is 18 characters. Then space then "expr:" = 5 characters inc space? Actually we have "[ai-code-reviewer] expr: " that's 18 + 1 space + 5 = 24? Let's count: after bracket we have space then "expr:" (5 inc colon). So total prefix length = 18 + 1 + 5 = 24. Then we need short summary after that, total line must be <=72 characters. So we have up to 72-24 = 48 characters for summary. So we can write something like "Mark expr as in-progress review" which is 27 characters, fine.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-01-20 20:47 - bin/ed/test ✓
 
 **Directory:** `bin/ed/test`
