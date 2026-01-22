@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-01-22 13:52 - bin/sh/tests/builtins ✓
+
+**Directory:** `bin/sh/tests/builtins`
+
+**Summary:** [ai-code-reviewer] We need to generate a commit message. The diff shows a change in .ai-code-reviewer/REVIEW-INDEX.md: line changed from "- [ ] `bin/sh/tests/builtins` (0 .c, 0 .h, 0 lines)" to "+- [>] `bin/sh/tests/builtins` (0 .c, 0 .h, 0 lines)". So it's marking that builtins directory is being worked on? The commit covers ALL changes in the builtins directory. The summary should be short, max 72 chars total including prefix? The format: "[ai-code-reviewer] builtins: <short summary>" (72 chars max total). So the whole first line must be <=72 characters. Must start with "[ai-code-reviewer] builtins: " then short summary. Must be <=72 characters total including brackets and spaces. Let's count: "[ai-code-reviewer] builtins: " length? Let's count characters: [ =1, a=2, i=3, -=4, c=5, o=6, d=7, e=8, -=9, r=10, e=11, v=12, i=13, e=14, w=15, ]=16, space=17, b=18, u=19, i=20, l=21, t=22, i=23, n=24, s=25, :=? Actually colon and space: colon is character 26? Let's recount precisely: "[ai-code-reviewer] builtins: " includes opening bracket, letters, hyphens, closing bracket, space, "builtins:", space. Let's count: characters:
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-01-22 13:45 - bin/sh/tests ✓
 
 **Directory:** `bin/sh/tests`
