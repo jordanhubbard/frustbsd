@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-01-22 14:22 - bin/sh/tests/set-e ✓
+
+**Directory:** `bin/sh/tests/set-e`
+
+**Summary:** [ai-code-reviewer] We need to produce a commit message. The diff shows changes to .ai-code-reviewer/REVIEW-INDEX.md, marking set-e as > (maybe in progress). The instruction: "Component/Directory: bin/sh/tests/set-e Changed files: .ai-code-reviewer/REVIEW-INDEX.md". So the changes are only to that file, marking set-e as in progress? The diff shows a change from "[ ]" to "[>]" indicating maybe it's being worked on. The commit message should reflect that. The rules: first line: "[ai-code-reviewer] set-e: <short summary>" max 72 chars total. So something like "[ai-code-reviewer] set-e: Mark test as in progress". That's within 72 chars? Let's count: "[ai-code-reviewer] set-e: Mark test as in progress". Count characters including spaces: Let's count: [ =1, a=2, i=3, -=4, c=5, o=6, d=7, e=8, -=9, r=10, e=11, v=12, i=13, e=14, w=15, ]=16, space=17, s=18, e=19, t=20, -=21, e=22, ::=23, space=24, M=25, a=26, r=27, k=28, space=29, t=30, e=31, s=32, t=33, space=34, a=35, s=36, space=37, i=38, n=39, space=40, p=41, r=42, o=43, g=44, r=45, e=46, s=47, s=48. That's 48 characters, well under 72. Good.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-01-22 14:18 - bin/sh/tests/parser ✓
 
 **Directory:** `bin/sh/tests/parser`
