@@ -1029,3 +1029,34 @@ Each lesson is recorded with timestamp, category, and remediation advice.
 ### COMPILER: Stale .depend Files and Syntax Errors
 - Stale `.depend` files caused build failures; undeclared identifier 'errstr' in `cpuset.c`.
 - Clean build directory with `make clean` before building to remove stale dependencies; check for correct variable names in source code.
+
+
+## 2026-01-22 17:19
+We need to output a short lesson entry, 2-4 lines, format:
+
+### [Category]: Brief title
+- What went wrong
+- How to avoid it next time
+
+Categories allowed: COMPILER, HEADERS, SYNTAX, LOGIC, STYLE
+
+We need to infer category from the error. The errors are about stale .depend files, ignoring stale .depend. That's a make/depend issue, maybe COMPILER? Or HEADERS? The errors are about ignoring stale .depend for .a libraries. That's a build system issue, maybe COMPILER? Actually it's about make ignoring stale .depend, which is a makefile dependency issue, maybe HEADERS? But likely COMPILER category? The errors are about .depend files being stale, causing errors. That's more about make's dependency tracking, maybe HEADERS? But category list includes COMPILER, HEADERS, SYNTAX, LOGIC, STYLE. The error is about stale .depend, which is about make's dependency generation, not compiler errors per se. Could be HEADERS? But the errors are about ignoring stale .depend for .a files, which is a make issue, maybe COMPILER? I'd choose COMPILER as category because it's about build errors. Title: "Stale .depend ignored". Then bullet points: What went wrong: make ignored stale .depend files leading to missing dependency rebuild. How to avoid: clean the obj directory or run make clean before rebuilding, or touch the .depend files.
+
+We need 2-4 lines total? The format says 2-4 lines in this format: first line is ### [Category]: Brief title, then bullet points? Actually they want bullet points after? They said "Write a SHORT lesson (2-4 lines) in this format:
+### [Category]: Brief title
+- What went wrong
+- How to avoid it next time"
+
+So that's three lines: first line is the header, then two bullet lines. That's 3 lines total. That's okay.
+
+Thus output:
+
+### COMPILER: Stale .depend ignored
+- Make ignored stale .depend files, causing spurious errors.
+- Clean the build directory or regenerate dependencies before rebuilding.
+
+That's 3 lines. Ensure no extra text.
+</think>
+### COMPILER: Stale .depend ignored
+- Make ignored stale .depend files, causing spurious errors.  
+- Clean the build directory or regenerate dependencies before rebuilding.
