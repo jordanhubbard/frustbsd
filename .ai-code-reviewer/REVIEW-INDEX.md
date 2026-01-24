@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-01-24 13:16
+Generated: 2026-01-24 13:30
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-01-24 13:16
 
 ## Progress
 - Total directories: 8264
-- Completed: 79 (0%)
+- Completed: 80 (0%)
 - Skipped: 1
-- Remaining: 8184
+- Remaining: 8183
 
 ## Current Position
-CURRENT POSITION: `sbin/clri`
+CURRENT POSITION: `sbin/comcontrol`
 
 ## bin/ (73/74 done)
 
@@ -97,7 +97,7 @@ CURRENT POSITION: `sbin/clri`
 - [x] `bin/timeout/tests` (0 .c, 0 .h, 0 lines) - 2026-01-22 - Fixed by session 20260122_170746
 - [x] `bin/uuidgen` (1 .c, 0 .h, 202 lines) - 2026-01-24 - Fixed by session 20260124_120716
 
-## sbin/ (6/127 done)
+## sbin/ (7/127 done)
 
 - [x] `sbin/adjkerntz` (1 .c, 1 .h, 401 lines) - 2026-01-24 - Fixed by session 20260124_120716
 - [x] `sbin/bectl` (3 .c, 1 .h, 1575 lines) - 2026-01-24 - Fixed by session 20260124_120716
@@ -105,7 +105,7 @@ CURRENT POSITION: `sbin/clri`
 - [x] `sbin/bsdlabel` (1 .c, 1 .h, 1558 lines) - 2026-01-24 - Fixed by session 20260124_120716
 - [x] `sbin/camcontrol` (11 .c, 2 .h, 17453 lines) - 2026-01-24 - Fixed by session 20260124_120716
 - [x] `sbin/ccdconfig` (1 .c, 1 .h, 488 lines) - 2026-01-24 - Fixed by session 20260124_120716
-- [ ] `sbin/clri` (1 .c, 0 .h, 107 lines)
+- [x] `sbin/clri` (1 .c, 0 .h, 107 lines) - 2026-01-24 - Fixed by session 20260124_120716
 - [ ] `sbin/comcontrol` (1 .c, 0 .h, 106 lines)
 - [ ] `sbin/conscontrol` (1 .c, 0 .h, 195 lines)
 - [ ] `sbin/ddb` (3 .c, 1 .h, 578 lines)
