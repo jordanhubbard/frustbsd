@@ -1126,3 +1126,29 @@ Thus:
 ### HEADERS: Stale .depend files break the build
 - Ignoring stale .depend errors halted the compilation
 - Clean or regenerate .depend (e.g., `make clean`) before rebuilding
+
+
+## 2026-01-27 10:19
+We need to output a short lesson 2-4 lines in format:
+
+### [Category]: Brief title
+- What went wrong
+- How to avoid it next time
+
+Categories allowed: COMPILER, HEADERS, SYNTAX, LOGIC, STYLE
+
+We need to infer what category fits the errors. The errors are about ignoring stale .depend files, which is a make/dependency issue, likely related to build system, maybe HEADERS? Or COMPILER? The errors are about .depend stale, which is about make dependencies, not compiler errors per se. Could be HEADERS? But likely it's about build system ignoring stale .depend, which is a make issue, maybe "COMPILER"? Actually it's about make ignoring stale .depend, which is a build system issue, maybe "COMPILER" category? Or "HEADERS"? The errors mention ignoring stale .depend for various .a libraries. That's a make dependency issue, not directly compiler, headers, syntax, logic, style. Could be "COMPILER" because it's about build errors? But maybe "HEADERS" because .depend files are generated from header dependencies. However the error is about ignoring stale .depend, which is a make issue, not directly headers. The categories list includes COMPILER, HEADERS, SYNTAX, LOGIC, STYLE. The most appropriate is COMPILER? Or maybe "HEADERS" because .depend is about header dependencies. I'd choose HEADERS.
+
+But the lesson should be concise 2-4 lines. Provide what went wrong: ignoring stale .depend causing build failures. How to avoid: clean or regenerate .depend, run make clean or touch the files, ensure dependencies are up-to-date.
+
+Let's produce:
+
+### HEADERS: Stale dependency files
+- The build ignored outdated .depend files, leading to missing dependency tracking.
+- Next time, clean the obj tree or run a full rebuild to regenerate .depend before compiling.
+
+That's 2 bullet points, fits 2-4 lines. Output only the lesson entry, nothing else.
+</think>
+### HEADERS: Stale dependency files
+- The build ignored outdated `.depend` files, causing missing dependency tracking and errors.  
+- Next time, clean the object directory or regenerate `.depend` before rebuilding to ensure fresh dependencies.
