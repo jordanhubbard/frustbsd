@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-01-27 11:13
+Generated: 2026-02-02 12:11
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-01-27 11:13
 
 ## Progress
 - Total directories: 8264
-- Completed: 103 (1%)
+- Completed: 104 (1%)
 - Skipped: 1
-- Remaining: 8160
+- Remaining: 8159
 
 ## Current Position
-CURRENT POSITION: `sbin/geom/core`
+CURRENT POSITION: `sbin/geom/misc`
 
 ## bin/ (73/74 done)
 
@@ -97,7 +97,7 @@ CURRENT POSITION: `sbin/geom/core`
 - [x] `bin/timeout/tests` (0 .c, 0 .h, 0 lines) - 2026-01-22 - Fixed by session 20260122_170746
 - [x] `bin/uuidgen` (1 .c, 0 .h, 202 lines) - 2026-01-24 - Fixed by session 20260124_120716
 
-## sbin/ (30/127 done)
+## sbin/ (31/127 done)
 
 - [x] `sbin/adjkerntz` (1 .c, 1 .h, 401 lines) - 2026-01-24 - Fixed by session 20260124_120716
 - [x] `sbin/bectl` (3 .c, 1 .h, 1575 lines) - 2026-01-24 - Fixed by session 20260124_120716
@@ -129,7 +129,7 @@ CURRENT POSITION: `sbin/geom/core`
 - [x] `sbin/fsdb` (2 .c, 1 .h, 1592 lines) - 2026-01-27 - Fixed by session 20260127_100122
 - [x] `sbin/fsirand` (1 .c, 0 .h, 235 lines) - 2026-01-27 - Fixed by session 20260127_100122
 - [x] `sbin/geom` (0 .c, 0 .h, 0 lines) - 2026-01-27 - Fixed by session 20260127_100122
-- [ ] `sbin/geom/core` (1 .c, 1 .h, 1602 lines)
+- [x] `sbin/geom/core` (1 .c, 1 .h, 1602 lines) - 2026-02-02 - Fixed by session 20260202_120004
 - [ ] `sbin/geom/misc` (1 .c, 1 .h, 599 lines)
 - [ ] `sbin/ggate` (0 .c, 0 .h, 0 lines)
 - [ ] `sbin/ggate/ggatec` (1 .c, 0 .h, 705 lines)
