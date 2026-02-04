@@ -1152,3 +1152,31 @@ That's 2 bullet points, fits 2-4 lines. Output only the lesson entry, nothing el
 ### HEADERS: Stale dependency files
 - The build ignored outdated `.depend` files, causing missing dependency tracking and errors.  
 - Next time, clean the object directory or regenerate `.depend` before rebuilding to ensure fresh dependencies.
+
+
+## 2026-02-04 02:14
+We need to output a short lesson (2-4 lines) in format:
+
+### [Category]: Brief title
+- What went wrong
+- How to avoid it next time
+
+Categories allowed: COMPILER, HEADERS, SYNTAX, LOGIC, STYLE
+
+We need to infer category from errors. The errors are about stale .depend files, ignoring stale .depend. That's related to make dependencies, maybe HEADERS? Or COMPILER? It's about .depend files used by make for header dependencies. The error is "ignoring stale .depend for ...". That suggests that the .depend file is stale and ignored, leading to missing dependencies, causing build failures. This is a HEADERS issue? Or maybe SYNTAX? Probably HEADERS because .depend is generated from headers. Could also be COMPILER because it's about ignoring stale .depend causing compile errors. I'd choose HEADERS.
+
+Brief title: "Stale .depend ignored". Then bullet points: What went wrong: ignoring stale .depend leads to missing header dependencies causing build failures. How to avoid: clean the .depend files or run make clean before rebuilding.
+
+Make sure 2-4 lines. Provide exactly the format.
+
+Thus output:
+
+### HEADERS: Stale .depend ignored
+- The build ignored stale .depend files, so header dependencies weren't updated, causing missing symbols.
+- Clean the obj tree or run `make clean` to regenerate .depend before rebuilding.
+
+That's 2 bullet points, fits 2-4 lines. Ensure no extra text.
+</think>
+### HEADERS: Stale .depend ignored
+- The build ignored stale .depend files, so header dependencies weren’t refreshed, leading to missing symbols.
+- Clean the object directory or run `make clean` to regenerate .depend before rebuilding.
