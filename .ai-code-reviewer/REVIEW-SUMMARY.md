@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-04 00:55 - sbin/ipf/iplang ✓
+
+**Directory:** `sbin/ipf/iplang`
+
+**Summary:** [ai-code-reviewer] We need to generate a commit message for these changes. The diff shows only a change in .ai-code-reviewer/REVIEW-INDEX.md, marking iplang as done with ">" symbol. So the change is that iplang is now considered fixed? The commit covers ALL changes in the iplang directory. The summary should be short, <=72 chars total including prefix? The format: "[ai-code-reviewer] iplang: <short summary>" (72 chars max total). So the whole first line including prefix must be <=72 characters. Must be exactly "[ai-code-reviewer] iplang: " plus short summary. Must be <=72 characters total. Let's count: "[ai-code-reviewer] iplang: " length? Count characters: '['=1, 'a'=2, 'i'=3, '-'=4, 'c'=5, 'o'=6, 'd'=7, 'e'=8, '-'=9, 'r'=10, 'e'=11, 'v'=12, 'i'=13, 'e'=14, 'w'=15, ']'=16, space=17, 'i'=18, 'p'=19, 'l'=20, 'a'=21, 'n'=22, 'g'=23, ':'=24, space=25. So prefix length is 25 characters. So we have up to 72-25 = 47 characters for the summary after that. So we need a short summary <=47 characters.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-04 00:47 - sbin/ipf/ipftest ✓
 
 **Directory:** `sbin/ipf/ipftest`
