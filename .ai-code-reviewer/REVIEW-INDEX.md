@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-04 00:20
+Generated: 2026-02-04 00:27
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-04 00:20
 
 ## Progress
 - Total directories: 8264
-- Completed: 120 (1%)
+- Completed: 121 (1%)
 - Skipped: 1
-- Remaining: 8143
+- Remaining: 8142
 
 ## Current Position
-CURRENT POSITION: `sbin/ipf/ipfs`
+CURRENT POSITION: `sbin/ipf/ipfstat`
 
 ## bin/ (73/74 done)
 
@@ -97,7 +97,7 @@ CURRENT POSITION: `sbin/ipf/ipfs`
 - [x] `bin/timeout/tests` (0 .c, 0 .h, 0 lines) - 2026-01-22 - Fixed by session 20260122_170746
 - [x] `bin/uuidgen` (1 .c, 0 .h, 202 lines) - 2026-01-24 - Fixed by session 20260124_120716
 
-## sbin/ (47/127 done)
+## sbin/ (48/127 done)
 
 - [x] `sbin/adjkerntz` (1 .c, 1 .h, 401 lines) - 2026-01-24 - Fixed by session 20260124_120716
 - [x] `sbin/bectl` (3 .c, 1 .h, 1575 lines) - 2026-01-24 - Fixed by session 20260124_120716
@@ -146,7 +146,7 @@ CURRENT POSITION: `sbin/ipf/ipfs`
 - [x] `sbin/ipf` (0 .c, 0 .h, 0 lines) - 2026-02-03 - Fixed by session 20260203_195314
 - [x] `sbin/ipf/common` (2 .c, 7 .h, 1518 lines) - 2026-02-03 - Fixed by session 20260203_195314
 - [x] `sbin/ipf/ipf` (3 .c, 1 .h, 2935 lines) - 2026-02-04 - Fixed by session 20260204_001334
-- [ ] `sbin/ipf/ipfs` (1 .c, 0 .h, 851 lines)
+- [x] `sbin/ipf/ipfs` (1 .c, 0 .h, 851 lines) - 2026-02-04 - Fixed by session 20260204_001334
 - [ ] `sbin/ipf/ipfstat` (1 .c, 0 .h, 2310 lines)
 - [ ] `sbin/ipf/ipfsync` (3 .c, 0 .h, 1187 lines)
 - [ ] `sbin/ipf/ipftest` (3 .c, 1 .h, 1881 lines)
