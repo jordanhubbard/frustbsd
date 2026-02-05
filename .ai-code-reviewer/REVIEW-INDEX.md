@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-04 18:31
+Generated: 2026-02-04 18:36
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-04 18:31
 
 ## Progress
 - Total directories: 8264
-- Completed: 147 (1%)
+- Completed: 148 (1%)
 - Skipped: 1
-- Remaining: 8116
+- Remaining: 8115
 
 ## Current Position
-CURRENT POSITION: `sbin/mount_cd9660`
+CURRENT POSITION: `sbin/mount_fusefs`
 
 ## bin/ (73/74 done)
 
@@ -97,7 +97,7 @@ CURRENT POSITION: `sbin/mount_cd9660`
 - [x] `bin/timeout/tests` (0 .c, 0 .h, 0 lines) - 2026-01-22 - Fixed by session 20260122_170746
 - [x] `bin/uuidgen` (1 .c, 0 .h, 202 lines) - 2026-01-24 - Fixed by session 20260124_120716
 
-## sbin/ (74/127 done)
+## sbin/ (75/127 done)
 
 - [x] `sbin/adjkerntz` (1 .c, 1 .h, 401 lines) - 2026-01-24 - Fixed by session 20260124_120716
 - [x] `sbin/bectl` (3 .c, 1 .h, 1575 lines) - 2026-01-24 - Fixed by session 20260124_120716
@@ -173,7 +173,7 @@ CURRENT POSITION: `sbin/mount_cd9660`
 - [x] `sbin/mknod` (1 .c, 0 .h, 155 lines) - 2026-02-04 - Fixed by session 20260204_154755
 - [x] `sbin/mksnap_ffs` (1 .c, 0 .h, 189 lines) - 2026-02-04 - Fixed by session 20260204_154755
 - [x] `sbin/mount` (3 .c, 2 .h, 1251 lines) - 2026-02-04 - Fixed by session 20260204_154755
-- [ ] `sbin/mount_cd9660` (1 .c, 0 .h, 328 lines)
+- [x] `sbin/mount_cd9660` (1 .c, 0 .h, 328 lines) - 2026-02-04 - Fixed by session 20260204_154755
 - [ ] `sbin/mount_fusefs` (1 .c, 0 .h, 494 lines)
 - [ ] `sbin/mount_msdosfs` (1 .c, 0 .h, 321 lines)
 - [ ] `sbin/mount_nfs` (1 .c, 0 .h, 1166 lines)
