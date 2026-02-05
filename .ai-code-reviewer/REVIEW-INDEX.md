@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-05 14:08
+Generated: 2026-02-05 14:12
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-05 14:08
 
 ## Progress
 - Total directories: 8264
-- Completed: 268 (3%)
+- Completed: 269 (3%)
 - Skipped: 1
-- Remaining: 7995
+- Remaining: 7994
 
 ## Current Position
-CURRENT POSITION: `usr.bin/bmake/tests/variables`
+CURRENT POSITION: `usr.bin/bmake/tests/variables/modifier_M`
 
 ## bin/ (73/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/bmake/tests/variables`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (68/505 done)
+## usr.bin/ (69/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
@@ -297,7 +297,7 @@ CURRENT POSITION: `usr.bin/bmake/tests/variables`
 - [x] `usr.bin/bmake/tests/sysmk/t2/2` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [x] `usr.bin/bmake/tests/sysmk/t2/2/1` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [x] `usr.bin/bmake/tests/sysmk/t2/mk` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
-- [ ] `usr.bin/bmake/tests/variables` (0 .c, 0 .h, 0 lines)
+- [x] `usr.bin/bmake/tests/variables` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [ ] `usr.bin/bmake/tests/variables/modifier_M` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/bmake/tests/variables/modifier_t` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/bmake/tests/variables/opt_V` (0 .c, 0 .h, 0 lines)
