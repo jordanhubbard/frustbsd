@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-05 12:15
+Generated: 2026-02-05 12:46
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-05 12:15
 
 ## Progress
 - Total directories: 8264
-- Completed: 250 (3%)
+- Completed: 251 (3%)
 - Skipped: 1
-- Remaining: 8013
+- Remaining: 8012
 
 ## Current Position
-CURRENT POSITION: `usr.bin/bmake/tests/syntax`
+CURRENT POSITION: `usr.bin/bmake/tests/syntax/directive-t0`
 
 ## bin/ (73/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/bmake/tests/syntax`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (50/505 done)
+## usr.bin/ (51/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
@@ -279,7 +279,7 @@ CURRENT POSITION: `usr.bin/bmake/tests/syntax`
 - [x] `usr.bin/bmake/tests/suffixes/basic` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_073833
 - [x] `usr.bin/bmake/tests/suffixes/src_wild1` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_073833
 - [x] `usr.bin/bmake/tests/suffixes/src_wild2` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_073833
-- [ ] `usr.bin/bmake/tests/syntax` (0 .c, 0 .h, 0 lines)
+- [x] `usr.bin/bmake/tests/syntax` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [ ] `usr.bin/bmake/tests/syntax/directive-t0` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/bmake/tests/syntax/enl` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/bmake/tests/syntax/funny-targets` (0 .c, 0 .h, 0 lines)

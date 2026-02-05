@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-05 12:46 - usr.bin/bmake/tests/syntax ✓
+
+**Directory:** `usr.bin/bmake/tests/syntax`
+
+**Summary:** [ai-code-reviewer] We need to generate a commit message. The diff shows changes to .ai-code-reviewer/REVIEW-INDEX.md, marking syntax directory as "in progress" with a ">" marker. The commit covers ALL changes in the syntax directory. The summary should be short, max 72 chars total including prefix "[ai-code-reviewer] syntax: ". So we need something like "[ai-code-reviewer] syntax: Mark syntax tests as in progress". Count characters.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-05 12:15 - usr.bin/bmake/tests/suffixes/src_wild2 ✓
 
 **Directory:** `usr.bin/bmake/tests/suffixes/src_wild2`
