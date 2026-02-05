@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-05 07:50
+Generated: 2026-02-05 07:58
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-05 07:50
 
 ## Progress
 - Total directories: 8264
-- Completed: 208 (2%)
+- Completed: 209 (2%)
 - Skipped: 1
-- Remaining: 8055
+- Remaining: 8054
 
 ## Current Position
-CURRENT POSITION: `usr.bin/awk/tests`
+CURRENT POSITION: `usr.bin/awk/tests/bugs-fixed`
 
 ## bin/ (73/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/awk/tests`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (8/505 done)
+## usr.bin/ (9/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
@@ -237,7 +237,7 @@ CURRENT POSITION: `usr.bin/awk/tests`
 - [x] `usr.bin/asa/tests` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/at` (4 .c, 5 .h, 2036 lines) - 2026-02-05 - Fixed by session 20260205_073833
 - [x] `usr.bin/awk` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_073833
-- [ ] `usr.bin/awk/tests` (0 .c, 0 .h, 0 lines)
+- [x] `usr.bin/awk/tests` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_073833
 - [ ] `usr.bin/awk/tests/bugs-fixed` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/awk/tests/netbsd` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/backlight` (1 .c, 0 .h, 224 lines)
