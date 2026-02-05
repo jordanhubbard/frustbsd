@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-05 12:15 - usr.bin/bmake/tests/suffixes/src_wild2 ✓
+
+**Directory:** `usr.bin/bmake/tests/suffixes/src_wild2`
+
+**Summary:** [ai-code-reviewer] We need to produce a commit message following rules. The diff shows a change in .ai-code-reviewer/REVIEW-INDEX.md: line changed from "-- [ ]" to "+> [>]"? Actually they changed status marker from "[ ]" to "[>]"? The diff shows "- [ ]" changed to "+> [>]"? Let's parse: original line: "- [ ] `usr.bin/bmake/tests/suffixes/src_wild2` (0 .c, 0 .h, 0 lines)". After change: "+> [>] `usr.bin/bmake/tests/suffixes/src_wild2` (0 .c, 0 .h, 0 lines)". So they changed the status marker from "[ ]" to "[>]"? Actually they added a ">" before the bracket? The diff shows "- [ ]" then space then backticks; "+> [>]" then space then backticks. So they changed the status marker from "[ ]" to "[>]"? The ">" is before the bracket? Actually they wrote "+> [>]" meaning they added a ">" before the opening bracket? The diff shows "- [ ]" replaced with "+> [>]". So they changed the status marker to "[>]"? The ">" is before the bracket, maybe indicating some progress? The important part: they changed the status from not started to "in progress"? The commit message should reflect that they started working on src_wild2? The instruction: "Focus on the security/correctness fixes, not style changes". But there is no actual code change; it's just a markdown file updating a status. However they want commit message covering ALL changes in the src_wild2 directory. The diff only shows a change to the review index file, which tracks progress of directories. So the commit is about marking src_wild2 as "in progress"? The summary should be short, max 72 chars total including prefix? The first line: "[ai-code-reviewer] src_wild2: <short summary>" total <=72 chars. So we need to craft a short summary after prefix. Something like "Mark src_wild2 as in-progress for review". Let's count characters.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-05 12:11 - usr.bin/bmake/tests/suffixes/src_wild1 ✓
 
 **Directory:** `usr.bin/bmake/tests/suffixes/src_wild1`
