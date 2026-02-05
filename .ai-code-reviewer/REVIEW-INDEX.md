@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-05 12:51
+Generated: 2026-02-05 12:54
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-05 12:51
 
 ## Progress
 - Total directories: 8264
-- Completed: 252 (3%)
+- Completed: 253 (3%)
 - Skipped: 1
-- Remaining: 8011
+- Remaining: 8010
 
 ## Current Position
-CURRENT POSITION: `usr.bin/bmake/tests/syntax/enl`
+CURRENT POSITION: `usr.bin/bmake/tests/syntax/funny-targets`
 
 ## bin/ (73/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/bmake/tests/syntax/enl`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (52/505 done)
+## usr.bin/ (53/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
@@ -281,7 +281,7 @@ CURRENT POSITION: `usr.bin/bmake/tests/syntax/enl`
 - [x] `usr.bin/bmake/tests/suffixes/src_wild2` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_073833
 - [x] `usr.bin/bmake/tests/syntax` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [x] `usr.bin/bmake/tests/syntax/directive-t0` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
-- [ ] `usr.bin/bmake/tests/syntax/enl` (0 .c, 0 .h, 0 lines)
+- [x] `usr.bin/bmake/tests/syntax/enl` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [ ] `usr.bin/bmake/tests/syntax/funny-targets` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/bmake/tests/syntax/semi` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/bmake/tests/sysmk` (0 .c, 0 .h, 0 lines)
