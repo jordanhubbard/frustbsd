@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-04 20:22
+Generated: 2026-02-04 20:27
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-04 20:22
 
 ## Progress
 - Total directories: 8264
-- Completed: 158 (1%)
+- Completed: 159 (1%)
 - Skipped: 1
-- Remaining: 8105
+- Remaining: 8104
 
 ## Current Position
-CURRENT POSITION: `sbin/nfsiod`
+CURRENT POSITION: `sbin/nos-tun`
 
 ## bin/ (73/74 done)
 
@@ -97,7 +97,7 @@ CURRENT POSITION: `sbin/nfsiod`
 - [x] `bin/timeout/tests` (0 .c, 0 .h, 0 lines) - 2026-01-22 - Fixed by session 20260122_170746
 - [x] `bin/uuidgen` (1 .c, 0 .h, 202 lines) - 2026-01-24 - Fixed by session 20260124_120716
 
-## sbin/ (85/127 done)
+## sbin/ (86/127 done)
 
 - [x] `sbin/adjkerntz` (1 .c, 1 .h, 401 lines) - 2026-01-24 - Fixed by session 20260124_120716
 - [x] `sbin/bectl` (3 .c, 1 .h, 1575 lines) - 2026-01-24 - Fixed by session 20260124_120716
@@ -184,7 +184,7 @@ CURRENT POSITION: `sbin/nfsiod`
 - [x] `sbin/newfs` (2 .c, 1 .h, 1858 lines) - 2026-02-04 - Fixed by session 20260204_154755
 - [x] `sbin/newfs_msdos` (2 .c, 1 .h, 1452 lines) - 2026-02-04 - Fixed by session 20260204_154755
 - [x] `sbin/newfs_msdos/tests` (0 .c, 0 .h, 0 lines) - 2026-02-04 - Fixed by session 20260204_154755
-- [ ] `sbin/nfsiod` (1 .c, 0 .h, 127 lines)
+- [x] `sbin/nfsiod` (1 .c, 0 .h, 127 lines) - 2026-02-04 - Fixed by session 20260204_154755
 - [ ] `sbin/nos-tun` (1 .c, 0 .h, 393 lines)
 - [ ] `sbin/nvmecontrol` (24 .c, 4 .h, 7548 lines)
 - [ ] `sbin/nvmecontrol/modules` (0 .c, 0 .h, 0 lines)

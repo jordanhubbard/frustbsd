@@ -6,6 +6,18 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-04 20:27 - sbin/nfsiod ✓
+
+**Directory:** `sbin/nfsiod`
+
+**Summary:** [ai-code-reviewer] We need to produce a commit message following rules.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - sbin/nfsiod/nfsiod.c
+
+---
+
 ## 2026-02-04 20:22 - sbin/newfs_msdos/tests ✓
 
 **Directory:** `sbin/newfs_msdos/tests`
