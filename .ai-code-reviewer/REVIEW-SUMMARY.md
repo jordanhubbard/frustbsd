@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-04 19:33 - sbin/natd ✓
+
+**Directory:** `sbin/natd`
+
+**Summary:** [ai-code-reviewer] We need to generate a commit message for changes in sbin/natd. The diff shows that REVIEW-INDEX.md entry for natd changed from "[ ]" to "[>]" indicating progress? Actually it shows "- [ ] `sbin/natd` (2 .c, 1 .h, 2197 lines)" changed to "- [>] `sbin/natd` (2 .c, 1 .h, 2197 lines)". That likely indicates that the review status changed to "in progress"? The commit likely updates the review index to mark natd as being worked on? But the instruction: "This commit covers ALL changes in the natd directory". So we need to produce a commit message that reflects changes to natd directory. The diff only shows a change to REVIEW-INDEX.md, which is a tracking file, not actual code changes. However the instruction says "Generate a git commit message for these FreeBSD source code changes." The changes are to REVIEW-INDEX.md, which is not source code but a review index. But they say "Component/Directory: sbin/natd Changed files: .ai-code-reviewer/REVIEW-INDEX.md". So the commit modifies that file. The commit message should reflect that change. The rules: first line: "[ai-code-reviewer] natd: <short summary>" max 72 chars total. So something like "[ai-code-reviewer] natd: Mark as in-progress in review index". That's under 72 chars? Let's count: "[ai-code-reviewer] natd: Mark as in-progress in review index". Count characters: include brackets and spaces. Let's count: "["=1, "a"=2, "i"=3, "-"=4, "c"=5, "o"=6, "d"=7, "e"=8, "-"=9, "r"=10, "e"=11, "v"=12, "i"=13, "e"=14, "w"=15, ")"=16, space=17, "n"=18, "a"=19, "t"=20, "d"=21, ":"=22, space=23, "M"=24, "a"=25, "r"=26, "k"=27, space=28, "a"=29, "s"=30, space=31, "i"=32, "n"=33, "‑" maybe hyphen? Actually "in-progress" includes hyphen. Let's just approximate. Might be okay. But we need to ensure <=72 characters total. Let's craft a concise summary: "natd: Mark as in-progress in review index". That is shorter. Count: "[ai-code-reviewer] natd: Mark as in-progress in review index". Let's count precisely:
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-04 19:19 - sbin/mount_unionfs ✓
 
 **Directory:** `sbin/mount_unionfs`
