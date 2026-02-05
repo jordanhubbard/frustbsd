@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-05 11:09 - usr.bin/bmake/tests/execution ✓
+
+**Directory:** `usr.bin/bmake/tests/execution`
+
+**Summary:** [ai-code-reviewer] We need to generate a commit message. The diff shows changes to .ai-code-reviewer/REVIEW-INDEX.md: changed "- [ ] execution" to "+> execution". That seems like marking it as in progress? The commit covers all changes in the execution directory. The summary should be short, max 72 chars total including prefix? The format: "[ai-code-reviewer] execution: <short summary>" (72 chars max total). So the whole first line including prefix and colon and summary must be <=72 characters. Must be exactly that format.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-05 11:05 - usr.bin/bmake/tests/basic/t3 ✓
 
 **Directory:** `usr.bin/bmake/tests/basic/t3`
