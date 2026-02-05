@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-05 13:09
+Generated: 2026-02-05 13:13
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-05 13:09
 
 ## Progress
 - Total directories: 8264
-- Completed: 257 (3%)
+- Completed: 258 (3%)
 - Skipped: 1
-- Remaining: 8006
+- Remaining: 8005
 
 ## Current Position
-CURRENT POSITION: `usr.bin/bmake/tests/sysmk/t0/2`
+CURRENT POSITION: `usr.bin/bmake/tests/sysmk/t0/2/1`
 
 ## bin/ (73/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/bmake/tests/sysmk/t0/2`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (57/505 done)
+## usr.bin/ (58/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
@@ -286,7 +286,7 @@ CURRENT POSITION: `usr.bin/bmake/tests/sysmk/t0/2`
 - [x] `usr.bin/bmake/tests/syntax/semi` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [x] `usr.bin/bmake/tests/sysmk` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [x] `usr.bin/bmake/tests/sysmk/t0` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
-- [ ] `usr.bin/bmake/tests/sysmk/t0/2` (0 .c, 0 .h, 0 lines)
+- [x] `usr.bin/bmake/tests/sysmk/t0/2` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [ ] `usr.bin/bmake/tests/sysmk/t0/2/1` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/bmake/tests/sysmk/t0/mk` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/bmake/tests/sysmk/t1` (0 .c, 0 .h, 0 lines)
