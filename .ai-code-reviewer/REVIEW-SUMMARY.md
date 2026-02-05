@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-05 03:59 - usr.bin/addr2line ✓
+
+**Directory:** `usr.bin/addr2line`
+
+**Summary:** [ai-code-reviewer] We need to generate a commit message for these changes. The diff shows only a change to .ai-code-reviewer/REVIEW-INDEX.md: Updated timestamp and status marker from pending to in-progress for addr2line. The instruction: "Write a commit message following these rules: 1. First line: "[ai-code-reviewer] addr2line: <short summary>" (72 chars max total) 2. Blank line 3. Body: explain WHAT changed and WHY (wrap at 72 chars) 4. Focus on the security/correctness fixes, not style changes 5. Use imperative mood ("Fix" not "Fixed") 6. This commit covers ALL changes in the addr2line directory"
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-05 03:54 - sbin/zfsbootcfg ✓
 
 **Directory:** `sbin/zfsbootcfg`
