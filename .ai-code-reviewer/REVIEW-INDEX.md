@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-05 03:59
+Generated: 2026-02-05 04:03
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-05 03:59
 
 ## Progress
 - Total directories: 8264
-- Completed: 201 (2%)
+- Completed: 202 (2%)
 - Skipped: 1
-- Remaining: 8062
+- Remaining: 8061
 
 ## Current Position
-CURRENT POSITION: `usr.bin/apply`
+CURRENT POSITION: `usr.bin/apply/tests`
 
 ## bin/ (73/74 done)
 
@@ -227,10 +227,10 @@ CURRENT POSITION: `usr.bin/apply`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (1/505 done)
+## usr.bin/ (2/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
-- [ ] `usr.bin/apply` (1 .c, 0 .h, 247 lines)
+- [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [ ] `usr.bin/apply/tests` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/ar` (4 .c, 1 .h, 1730 lines)
 - [ ] `usr.bin/asa` (1 .c, 0 .h, 142 lines)
