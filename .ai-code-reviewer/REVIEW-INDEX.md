@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-06 08:58
+Generated: 2026-02-06 09:16
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-06 08:58
 
 ## Progress
 - Total directories: 8264
-- Completed: 343 (4%)
+- Completed: 344 (4%)
 - Skipped: 1
-- Remaining: 7920
+- Remaining: 7919
 
 ## Current Position
-CURRENT POSITION: `usr.bin/comm`
+CURRENT POSITION: `usr.bin/comm/tests`
 
 ## bin/ (73/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/comm`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (143/505 done)
+## usr.bin/ (144/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
@@ -372,7 +372,7 @@ CURRENT POSITION: `usr.bin/comm`
 - [x] `usr.bin/colrm` (1 .c, 0 .h, 134 lines) - 2026-02-06 - Fixed by session 20260206_081112
 - [x] `usr.bin/column` (1 .c, 0 .h, 351 lines) - 2026-02-06 - Fixed by session 20260206_081112
 - [x] `usr.bin/column/tests` (0 .c, 0 .h, 0 lines) - 2026-02-06 - Fixed by session 20260206_081112
-- [ ] `usr.bin/comm` (1 .c, 0 .h, 239 lines)
+- [x] `usr.bin/comm` (1 .c, 0 .h, 239 lines) - 2026-02-06 - Fixed by session 20260206_081112
 - [ ] `usr.bin/comm/tests` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/command` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/compile_et` (0 .c, 0 .h, 0 lines)
