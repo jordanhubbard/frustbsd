@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-05 16:22
+Generated: 2026-02-05 16:30
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-05 16:22
 
 ## Progress
 - Total directories: 8264
-- Completed: 288 (3%)
+- Completed: 289 (3%)
 - Skipped: 1
-- Remaining: 7975
+- Remaining: 7974
 
 ## Current Position
-CURRENT POSITION: `usr.bin/cap_mkdb`
+CURRENT POSITION: `usr.bin/chat`
 
 ## bin/ (73/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/cap_mkdb`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (88/505 done)
+## usr.bin/ (89/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
@@ -317,7 +317,7 @@ CURRENT POSITION: `usr.bin/cap_mkdb`
 - [x] `usr.bin/caesar` (1 .c, 0 .h, 145 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [x] `usr.bin/calendar` (11 .c, 2 .h, 4141 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [x] `usr.bin/calendar/tests` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
-- [ ] `usr.bin/cap_mkdb` (1 .c, 0 .h, 255 lines)
+- [x] `usr.bin/cap_mkdb` (1 .c, 0 .h, 255 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [ ] `usr.bin/chat` (1 .c, 0 .h, 1526 lines)
 - [ ] `usr.bin/chpass` (5 .c, 1 .h, 1158 lines)
 - [ ] `usr.bin/cksum` (6 .c, 1 .h, 618 lines)
