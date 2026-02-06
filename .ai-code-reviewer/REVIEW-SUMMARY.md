@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-05 19:54 - usr.bin/clang/clang-scan-deps ✓
+
+**Directory:** `usr.bin/clang/clang-scan-deps`
+
+**Summary:** [ai-code-reviewer] We need to produce a commit message. The diff shows a change in .ai-code-reviewer/REVIEW-INDEX.md: line changed from "- [ ] clang-scan-deps" to "+> clang-scan-deps". That seems like marking it as in progress? The commit covers all changes in clang-scan-deps directory. The summary should be short, max 72 chars total including prefix? The format: "[ai-code-reviewer] clang-scan-deps: <short summary>" total <=72 characters. Then blank line, then body explaining what changed and why, focusing on security/correctness fixes, imperative mood, wrap at 72 chars.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-05 19:47 - usr.bin/clang/clang-format ✓
 
 **Directory:** `usr.bin/clang/clang-format`
