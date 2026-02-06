@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-06 09:24 - usr.bin/comm/tests ✓
+
+**Directory:** `usr.bin/comm/tests`
+
+**Summary:** [ai-code-reviewer] We need to generate a commit message. The diff shows changes in .ai-code-reviewer/REVIEW-INDEX.md, marking `usr.bin/comm/tests` as done with a ">" marker. It seems they are updating the review index to mark tests as done? The commit covers ALL changes in the tests directory. The summary should be short, <=72 chars total including prefix "[ai-code-reviewer] tests: ". Must be exactly that format.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-06 09:16 - usr.bin/comm ✓
 
 **Directory:** `usr.bin/comm`
