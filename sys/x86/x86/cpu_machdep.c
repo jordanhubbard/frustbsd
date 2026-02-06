@@ -145,6 +145,8 @@ x86_msr_op_one(void *argp)
 		v = rdmsr(a->msr);
 		*a->res = v;
 		break;
+	default:
+		__assert_unreachable();
 	}
 }
 
@@ -158,22 +160,21 @@ x86_msr_op(u_int msr, u_int op, uint64_t arg1, uint64_t *res)
 	struct thread *td;
 	struct msr_op_arg a;
 	cpuset_t set;
+	register_t flags;
 	u_int exmode;
 	int bound_cpu, cpu, i, is_bound;
 
-	a.op = op & MSR_OP_OP_MASK;
-	MPASS(a.op == MSR_OP_ANDNOT || a.op == MSR_OP_OR ||
-	    a.op == MSR_OP_WRITE || a.op == MSR_OP_READ);
 	exmode = op & MSR_OP_EXMODE_MASK;
-	MPASS(exmode == MSR_OP_LOCAL || exmode == MSR_OP_SCHED_ALL ||
-	    exmode == MSR_OP_SCHED_ONE || exmode == MSR_OP_RENDEZVOUS_ALL ||
-	    exmode == MSR_OP_RENDEZVOUS_ONE);
+	a.op = op & MSR_OP_OP_MASK;
 	a.msr = msr;
 	a.arg1 = arg1;
 	a.res = res;
+
 	switch (exmode) {
 	case MSR_OP_LOCAL:
+		flags = intr_disable();
 		x86_msr_op_one(&a);
+		intr_restore(flags);
 		break;
 	case MSR_OP_SCHED_ALL:
 		td = curthread;
@@ -217,6 +218,8 @@ x86_msr_op(u_int msr, u_int op, uint64_t arg1, uint64_t *res)
 		smp_rendezvous_cpus(set, smp_no_rendezvous_barrier,
 		    x86_msr_op_one, smp_no_rendezvous_barrier, &a);
 		break;
+	default:
+		__assert_unreachable();
 	}
 }
 

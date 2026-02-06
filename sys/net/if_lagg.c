@@ -169,6 +169,11 @@ static void	lagg_media_status(struct ifnet *, struct ifmediareq *);
 static struct lagg_port *lagg_link_active(struct lagg_softc *,
 		    struct lagg_port *);
 
+/* No proto */
+static int	lagg_none_start(struct lagg_softc *, struct mbuf *);
+static struct mbuf *lagg_none_input(struct lagg_softc *, struct lagg_port *,
+		    struct mbuf *);
+
 /* Simple round robin */
 static void	lagg_rr_attach(struct lagg_softc *);
 static int	lagg_rr_start(struct lagg_softc *, struct mbuf *);
@@ -203,7 +208,6 @@ static struct mbuf *lagg_default_input(struct lagg_softc *, struct lagg_port *,
 
 /* lagg protocol table */
 static const struct lagg_proto {
-	lagg_proto	pr_num;
 	void		(*pr_attach)(struct lagg_softc *);
 	void		(*pr_detach)(struct lagg_softc *);
 	int		(*pr_start)(struct lagg_softc *, struct mbuf *);
@@ -218,22 +222,20 @@ static const struct lagg_proto {
 	void		(*pr_request)(struct lagg_softc *, void *);
 	void		(*pr_portreq)(struct lagg_port *, void *);
 } lagg_protos[] = {
-    {
-	.pr_num = LAGG_PROTO_NONE
+    [LAGG_PROTO_NONE] = {
+	.pr_start = lagg_none_start,
+	.pr_input = lagg_none_input,
     },
-    {
-	.pr_num = LAGG_PROTO_ROUNDROBIN,
+    [LAGG_PROTO_ROUNDROBIN] = {
 	.pr_attach = lagg_rr_attach,
 	.pr_start = lagg_rr_start,
 	.pr_input = lagg_default_input,
     },
-    {
-	.pr_num = LAGG_PROTO_FAILOVER,
+    [LAGG_PROTO_FAILOVER] = {
 	.pr_start = lagg_fail_start,
 	.pr_input = lagg_fail_input,
     },
-    {
-	.pr_num = LAGG_PROTO_LOADBALANCE,
+    [LAGG_PROTO_LOADBALANCE] = {
 	.pr_attach = lagg_lb_attach,
 	.pr_detach = lagg_lb_detach,
 	.pr_start = lagg_lb_start,
@@ -241,8 +243,7 @@ static const struct lagg_proto {
 	.pr_addport = lagg_lb_port_create,
 	.pr_delport = lagg_lb_port_destroy,
     },
-    {
-	.pr_num = LAGG_PROTO_LACP,
+    [LAGG_PROTO_LACP] = {
 	.pr_attach = lagg_lacp_attach,
 	.pr_detach = lagg_lacp_detach,
 	.pr_start = lagg_lacp_start,
@@ -256,8 +257,7 @@ static const struct lagg_proto {
 	.pr_request = lacp_req,
 	.pr_portreq = lacp_portreq,
     },
-    {
-	.pr_num = LAGG_PROTO_BROADCAST,
+    [LAGG_PROTO_BROADCAST] = {
 	.pr_start = lagg_bcast_start,
 	.pr_input = lagg_default_input,
     },
@@ -2129,8 +2129,8 @@ lagg_transmit_ethernet(struct ifnet *ifp, struct mbuf *m)
 	if (m->m_pkthdr.csum_flags & CSUM_SND_TAG)
 		MPASS(m->m_pkthdr.snd_tag->ifp == ifp);
 #endif
-	/* We need a Tx algorithm and at least one port */
-	if (sc->sc_proto == LAGG_PROTO_NONE || sc->sc_count == 0) {
+	/* We need at least one port */
+	if (sc->sc_count == 0) {
 		m_freem(m);
 		if_inc_counter(ifp, IFCOUNTER_OERRORS, 1);
 		return (ENXIO);
@@ -2151,8 +2151,8 @@ lagg_transmit_infiniband(struct ifnet *ifp, struct mbuf *m)
 	if (m->m_pkthdr.csum_flags & CSUM_SND_TAG)
 		MPASS(m->m_pkthdr.snd_tag->ifp == ifp);
 #endif
-	/* We need a Tx algorithm and at least one port */
-	if (sc->sc_proto == LAGG_PROTO_NONE || sc->sc_count == 0) {
+	/* We need at least one port */
+	if (sc->sc_count == 0) {
 		m_freem(m);
 		if_inc_counter(ifp, IFCOUNTER_OERRORS, 1);
 		return (ENXIO);
@@ -2180,8 +2180,7 @@ lagg_input_ethernet(struct ifnet *ifp, struct mbuf *m)
 
 	NET_EPOCH_ASSERT();
 	if ((scifp->if_drv_flags & IFF_DRV_RUNNING) == 0 ||
-	    lp->lp_detaching != 0 ||
-	    sc->sc_proto == LAGG_PROTO_NONE) {
+	    lp->lp_detaching != 0) {
 		m_freem(m);
 		return (NULL);
 	}
@@ -2215,8 +2214,7 @@ lagg_input_infiniband(struct ifnet *ifp, struct mbuf *m)
 
 	NET_EPOCH_ASSERT();
 	if ((scifp->if_drv_flags & IFF_DRV_RUNNING) == 0 ||
-	    lp->lp_detaching != 0 ||
-	    sc->sc_proto == LAGG_PROTO_NONE) {
+	    lp->lp_detaching != 0) {
 		m_freem(m);
 		return (NULL);
 	}
@@ -2388,6 +2386,25 @@ lagg_enqueue(struct ifnet *ifp, struct mbuf *m)
 	}
 #endif
 	return (ifp->if_transmit)(ifp, m);
+}
+
+/*
+ * No proto
+ */
+static int
+lagg_none_start(struct lagg_softc *sc, struct mbuf *m)
+{
+	m_freem(m);
+	if_inc_counter(sc->sc_ifp, IFCOUNTER_OERRORS, 1);
+	/* No active ports available */
+	return (ENETDOWN);
+}
+
+static struct mbuf *
+lagg_none_input(struct lagg_softc *sc, struct lagg_port *lp, struct mbuf *m)
+{
+	m_freem(m);
+	return (NULL);
 }
 
 /*

@@ -33,6 +33,7 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "pr.h"
 #include "diff.h"
 #include <arraylist.h>
 #include <diff_main.h>
@@ -146,6 +147,7 @@ diffreg_new(char *file1, char *file2, int flags, int capsicum)
 {
 	char *str1, *str2;
 	FILE *f1, *f2;
+	struct pr *pr = NULL;
 	struct stat st1, st2;
 	struct diff_input_info info;
 	struct diff_data left = {}, right = {};
@@ -156,6 +158,7 @@ diffreg_new(char *file1, char *file2, int flags, int capsicum)
 	const struct diff_config *cfg;
 	enum diffreg_algo algo;
 	cap_rights_t rights_ro;
+	int ret;
 
 	algo = DIFFREG_ALGO_MYERS_THEN_MYERS_DIVIDE;
 
@@ -177,6 +180,9 @@ diffreg_new(char *file1, char *file2, int flags, int capsicum)
 
 	f1 = openfile(file1, &str1, &st1);
 	f2 = openfile(file2, &str2, &st2);
+
+	if (flags & D_PAGINATION)
+		pr = start_pr(file1, file2);
 
 	if (capsicum) {
 		cap_rights_init(&rights_ro, CAP_READ, CAP_FSTAT, CAP_SEEK);
@@ -214,18 +220,22 @@ diffreg_new(char *file1, char *file2, int flags, int capsicum)
 	if (flags & D_PROTOTYPE)
 		diff_flags |= DIFF_FLAG_SHOW_PROTOTYPES;
 
-	if (diff_atomize_file(&left, cfg, f1, (uint8_t *)str1, st1.st_size, diff_flags)) {
+	ret = diff_atomize_file(&left, cfg, f1, (uint8_t *)str1, st1.st_size,
+	    diff_flags);
+	if (ret != DIFF_RC_OK) {
+		warnc(ret, "%s", file1);
 		rc = D_ERROR;
+		status |= 2;
 		goto done;
 	}
-	if (left.atomizer_flags & DIFF_ATOMIZER_FILE_TRUNCATED)
-		warnx("%s truncated", file1);
-	if (diff_atomize_file(&right, cfg, f2, (uint8_t *)str2, st2.st_size, diff_flags)) {
+	ret = diff_atomize_file(&right, cfg, f2, (uint8_t *)str2, st2.st_size,
+	    diff_flags);
+	if (ret != DIFF_RC_OK) {
+		warnc(ret, "%s", file2);
 		rc = D_ERROR;
+		status |= 2;
 		goto done;
 	}
-	if (right.atomizer_flags & DIFF_ATOMIZER_FILE_TRUNCATED)
-		warnx("%s truncated", file2);
 
 	result = diff_main(cfg, &left, &right);
 	if (result->rc != DIFF_RC_OK) {
@@ -271,6 +281,8 @@ diffreg_new(char *file1, char *file2, int flags, int capsicum)
 		status |= 1;
 	}
 done:
+	if (pr != NULL)
+		stop_pr(pr);
 	diff_result_free(result);
 	diff_data_free(&left);
 	diff_data_free(&right);

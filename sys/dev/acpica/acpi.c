@@ -193,6 +193,7 @@ static void	acpi_system_eventhandler_sleep(void *arg,
 		    enum power_stype stype);
 static void	acpi_system_eventhandler_wakeup(void *arg,
 		    enum power_stype stype);
+static int	acpi_s4bios_sysctl(SYSCTL_HANDLER_ARGS);
 static enum power_stype	acpi_sstate_to_stype(int sstate);
 static int	acpi_sname_to_sstate(const char *sname);
 static const char	*acpi_sstate_to_sname(int sstate);
@@ -292,6 +293,17 @@ TUNABLE_STR("hw.acpi.install_interface", acpi_install_interface,
 static char acpi_remove_interface[256];
 TUNABLE_STR("hw.acpi.remove_interface", acpi_remove_interface,
     sizeof(acpi_remove_interface));
+
+/*
+ * Automatically apply the Darwin OSI on Apple Mac hardware to obtain
+ * access to full ACPI hardware support on supported platforms.
+ *
+ * This flag automatically overrides any values set by
+ * `hw.acpi.acpi_install_interface` and unset by
+ * `hw.acpi.acpi_remove_interface`.
+ */
+static int acpi_apple_darwin_osi = 1;
+TUNABLE_INT("hw.acpi.apple_darwin_osi", &acpi_apple_darwin_osi);
 
 /* Allow users to dump Debug objects without ACPI debugger. */
 static int acpi_debug_objects;
@@ -587,61 +599,6 @@ acpi_attach(device_t dev)
 	goto out;
     }
 
-    /*
-     * Setup our sysctl tree.
-     *
-     * XXX: This doesn't check to make sure that none of these fail.
-     */
-    sysctl_ctx_init(&sc->acpi_sysctl_ctx);
-    sc->acpi_sysctl_tree = SYSCTL_ADD_NODE(&sc->acpi_sysctl_ctx,
-        SYSCTL_STATIC_CHILDREN(_hw), OID_AUTO, device_get_name(dev),
-	CTLFLAG_RD | CTLFLAG_MPSAFE, 0, "");
-    SYSCTL_ADD_PROC(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
-	OID_AUTO, "supported_sleep_state",
-	CTLTYPE_STRING | CTLFLAG_RD | CTLFLAG_MPSAFE,
-	0, 0, acpi_supported_sleep_state_sysctl, "A",
-	"List supported ACPI sleep states.");
-    SYSCTL_ADD_PROC(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
-	OID_AUTO, "power_button_state",
-	CTLTYPE_STRING | CTLFLAG_RW | CTLFLAG_MPSAFE,
-	&sc->acpi_power_button_stype, 0, acpi_stype_sysctl, "A",
-	"Power button ACPI sleep state.");
-    SYSCTL_ADD_PROC(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
-	OID_AUTO, "sleep_button_state",
-	CTLTYPE_STRING | CTLFLAG_RW | CTLFLAG_MPSAFE,
-	&sc->acpi_sleep_button_stype, 0, acpi_stype_sysctl, "A",
-	"Sleep button ACPI sleep state.");
-    SYSCTL_ADD_PROC(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
-	OID_AUTO, "lid_switch_state",
-	CTLTYPE_STRING | CTLFLAG_RW | CTLFLAG_MPSAFE,
-	&sc->acpi_lid_switch_stype, 0, acpi_stype_sysctl, "A",
-	"Lid ACPI sleep state. Set to s2idle or s2mem if you want to suspend "
-	"your laptop when you close the lid.");
-    SYSCTL_ADD_PROC(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
-	OID_AUTO, "suspend_state", CTLTYPE_STRING | CTLFLAG_RW | CTLFLAG_MPSAFE,
-	NULL, 0, acpi_suspend_state_sysctl, "A",
-	"Current ACPI suspend state. This sysctl is deprecated; you probably "
-	"want to use kern.power.suspend instead.");
-    SYSCTL_ADD_PROC(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
-	OID_AUTO, "standby_state",
-	CTLTYPE_STRING | CTLFLAG_RW | CTLFLAG_MPSAFE,
-	&sc->acpi_standby_sx, 0, acpi_sleep_state_sysctl, "A",
-	"ACPI Sx state to use when going standby (usually S1 or S2).");
-    SYSCTL_ADD_INT(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
-	OID_AUTO, "sleep_delay", CTLFLAG_RW, &sc->acpi_sleep_delay, 0,
-	"sleep delay in seconds");
-    SYSCTL_ADD_INT(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
-	OID_AUTO, "s4bios", CTLFLAG_RW, &sc->acpi_s4bios, 0,
-	"Use S4BIOS when hibernating.");
-    SYSCTL_ADD_INT(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
-	OID_AUTO, "verbose", CTLFLAG_RW, &sc->acpi_verbose, 0, "verbose mode");
-    SYSCTL_ADD_INT(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
-	OID_AUTO, "disable_on_reboot", CTLFLAG_RW,
-	&sc->acpi_do_disable, 0, "Disable ACPI when rebooting/halting system");
-    SYSCTL_ADD_INT(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
-	OID_AUTO, "handle_reboot", CTLFLAG_RW,
-	&sc->acpi_handle_reboot, 0, "Use ACPI Reset Register to reboot");
-
 #if defined(__amd64__) || defined(__i386__)
     /*
      * Enable workaround for incorrect ISA IRQ polarity by default on
@@ -649,10 +606,6 @@ acpi_attach(device_t dev)
      */
     if (cpu_vendor_id == CPU_VENDOR_INTEL)
 	acpi_override_isa_irq_polarity = 1;
-    SYSCTL_ADD_INT(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
-	OID_AUTO, "override_isa_irq_polarity", CTLFLAG_RDTUN,
-	&acpi_override_isa_irq_polarity, 0,
-	"Force active-hi polarity for edge-triggered ISA IRQs");
 #endif
 
     /*
@@ -672,9 +625,12 @@ acpi_attach(device_t dev)
     if (AcpiGbl_FADT.Flags & ACPI_FADT_RESET_REGISTER)
 	sc->acpi_handle_reboot = 1;
 
-    /* Only enable S4BIOS by default if the FACS says it is available. */
+    /*
+     * Mark whether S4BIOS is available according to the FACS, and if it is,
+     * enable it by default.
+     */
     if (AcpiGbl_FACS != NULL && AcpiGbl_FACS->Flags & ACPI_FACS_S4_BIOS_PRESENT)
-	sc->acpi_s4bios = 1;
+	sc->acpi_s4bios = sc->acpi_s4bios_supported = true;
 
     /*
      * Probe all supported ACPI sleep states.  Awake (S0) is always supported,
@@ -758,6 +714,71 @@ acpi_attach(device_t dev)
 
     if ((error = acpi_machdep_init(dev)))
 	goto out;
+
+    /*
+     * Setup our sysctl tree.
+     *
+     * XXX: This doesn't check to make sure that none of these fail.
+     */
+    sysctl_ctx_init(&sc->acpi_sysctl_ctx);
+    sc->acpi_sysctl_tree = SYSCTL_ADD_NODE(&sc->acpi_sysctl_ctx,
+        SYSCTL_STATIC_CHILDREN(_hw), OID_AUTO, device_get_name(dev),
+	CTLFLAG_RD | CTLFLAG_MPSAFE, 0, "");
+    SYSCTL_ADD_PROC(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
+	OID_AUTO, "supported_sleep_state",
+	CTLTYPE_STRING | CTLFLAG_RD | CTLFLAG_MPSAFE,
+	0, 0, acpi_supported_sleep_state_sysctl, "A",
+	"List supported ACPI sleep states.");
+    SYSCTL_ADD_PROC(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
+	OID_AUTO, "power_button_state",
+	CTLTYPE_STRING | CTLFLAG_RW | CTLFLAG_MPSAFE,
+	&sc->acpi_power_button_stype, 0, acpi_stype_sysctl, "A",
+	"Power button ACPI sleep state.");
+    SYSCTL_ADD_PROC(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
+	OID_AUTO, "sleep_button_state",
+	CTLTYPE_STRING | CTLFLAG_RW | CTLFLAG_MPSAFE,
+	&sc->acpi_sleep_button_stype, 0, acpi_stype_sysctl, "A",
+	"Sleep button ACPI sleep state.");
+    SYSCTL_ADD_PROC(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
+	OID_AUTO, "lid_switch_state",
+	CTLTYPE_STRING | CTLFLAG_RW | CTLFLAG_MPSAFE,
+	&sc->acpi_lid_switch_stype, 0, acpi_stype_sysctl, "A",
+	"Lid ACPI sleep state. Set to s2idle or s2mem if you want to suspend "
+	"your laptop when you close the lid.");
+    SYSCTL_ADD_PROC(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
+	OID_AUTO, "suspend_state", CTLTYPE_STRING | CTLFLAG_RW | CTLFLAG_MPSAFE,
+	NULL, 0, acpi_suspend_state_sysctl, "A",
+	"Current ACPI suspend state. This sysctl is deprecated; you probably "
+	"want to use kern.power.suspend instead.");
+    SYSCTL_ADD_PROC(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
+	OID_AUTO, "standby_state",
+	CTLTYPE_STRING | CTLFLAG_RW | CTLFLAG_MPSAFE,
+	&sc->acpi_standby_sx, 0, acpi_sleep_state_sysctl, "A",
+	"ACPI Sx state to use when going standby (usually S1 or S2).");
+    SYSCTL_ADD_INT(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
+	OID_AUTO, "sleep_delay", CTLFLAG_RW, &sc->acpi_sleep_delay, 0,
+	"sleep delay in seconds");
+    SYSCTL_ADD_PROC(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
+	OID_AUTO, "s4bios", CTLTYPE_U8 | CTLFLAG_RW | CTLFLAG_MPSAFE,
+	sc, 0, acpi_s4bios_sysctl, "CU",
+	"On hibernate, have the firmware save/restore the machine state (S4BIOS).");
+    SYSCTL_ADD_BOOL(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
+	OID_AUTO, "s4bios_supported", CTLFLAG_RD, &sc->acpi_s4bios_supported, 0,
+	"Whether firmware supports saving/restoring the machine state (S4BIOS).");
+    SYSCTL_ADD_INT(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
+	OID_AUTO, "verbose", CTLFLAG_RW, &sc->acpi_verbose, 0, "verbose mode");
+    SYSCTL_ADD_INT(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
+	OID_AUTO, "disable_on_reboot", CTLFLAG_RW,
+	&sc->acpi_do_disable, 0, "Disable ACPI when rebooting/halting system");
+    SYSCTL_ADD_INT(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
+	OID_AUTO, "handle_reboot", CTLFLAG_RW,
+	&sc->acpi_handle_reboot, 0, "Use ACPI Reset Register to reboot");
+#if defined(__amd64__) || defined(__i386__)
+    SYSCTL_ADD_INT(&sc->acpi_sysctl_ctx, SYSCTL_CHILDREN(sc->acpi_sysctl_tree),
+	OID_AUTO, "override_isa_irq_polarity", CTLFLAG_RDTUN,
+	&acpi_override_isa_irq_polarity, 0,
+	"Force active-hi polarity for edge-triggered ISA IRQs");
+#endif
 
     /* Register ACPI again to pass the correct argument of pm_func. */
     power_pm_register(POWER_PM_TYPE_ACPI, acpi_pm_func, sc,
@@ -3634,6 +3655,7 @@ acpi_EnterSleepState(struct acpi_softc *sc, enum power_stype stype)
         device_printf(sc->acpi_dev, "device_suspend failed\n");
         goto backout;
     }
+    EVENTHANDLER_INVOKE(acpi_post_dev_suspend, stype);
     slp_state |= ACPI_SS_DEV_SUSPEND;
 
     if (stype != POWER_STYPE_SUSPEND_TO_IDLE) {
@@ -3683,6 +3705,7 @@ backout:
 	slp_state &= ~ACPI_SS_GPE_SET;
     }
     if ((slp_state & ACPI_SS_DEV_SUSPEND) != 0) {
+	EVENTHANDLER_INVOKE(acpi_pre_dev_resume, stype);
 	DEVICE_RESUME(root_bus);
 	slp_state &= ~ACPI_SS_DEV_SUSPEND;
     }
@@ -4047,7 +4070,7 @@ acpi_system_eventhandler_sleep(void *arg, enum power_stype stype)
     ACPI_FUNCTION_TRACE_U32((char *)(uintptr_t)__func__, stype);
 
     /* Check if button action is disabled or unknown. */
-    if (stype == ACPI_STATE_UNKNOWN)
+    if (stype == POWER_STYPE_UNKNOWN)
 	return;
 
     /*
@@ -4416,6 +4439,25 @@ acpiioctl(struct cdev *dev, u_long cmd, caddr_t addr, int flag, struct thread *t
     }
 
     return (error);
+}
+
+static int
+acpi_s4bios_sysctl(SYSCTL_HANDLER_ARGS)
+{
+    struct acpi_softc *const sc = arg1;
+    bool val;
+    int error;
+
+    val = sc->acpi_s4bios;
+    error = sysctl_handle_bool(oidp, &val, 0, req);
+    if (error != 0 || req->newptr == NULL)
+	return (error);
+
+    if (val && !sc->acpi_s4bios_supported)
+	return (EOPNOTSUPP);
+    sc->acpi_s4bios = val;
+
+    return (0);
 }
 
 static int
@@ -4900,6 +4942,65 @@ acpi_reset_interfaces(device_t dev)
 				    list.data[i]);
 		}
 		acpi_free_interfaces(&list);
+	}
+
+	/*
+	 * Apple Mac hardware quirk: install Darwin OSI.
+	 *
+	 * On Apple hardware, install the Darwin OSI and remove the Windows OSI
+	 * to match Linux behavior.
+	 *
+	 * This is required for dual-GPU MacBook Pro systems
+	 * (Intel iGPU + AMD/NVIDIA dGPU) where the iGPU is hidden when the
+	 * firmware doesn't see Darwin OSI, but it also unlocks additional ACPI
+	 * support on non-MacBook Pro Apple platforms.
+	 *
+	 * Apple's ACPI firmware checks _OSI("Darwin") and sets OSYS=10000
+	 * for macOS. Many device methods use OSDW() which checks OSYS==10000
+	 * for macOS-specific behavior including GPU visibility and power
+	 * management.
+	 *
+	 * Linux enables Darwin OSI by default on Apple hardware and disables
+	 * all Windows OSI strings (drivers/acpi/osi.c). Users can override
+	 * this behavior with acpi_osi=!Darwin to get Windows-like behavior,
+	 * in general, but this logic makes that process unnecessary.
+	 *
+	 * Detect Apple via SMBIOS and enable Darwin while disabling Windows
+	 * vendor strings. This makes both GPUs visible on dual-GPU MacBook Pro
+	 * systems (Intel iGPU + AMD dGPU) and unlocks full platform
+	 * ACPI support.
+	 */
+	if (acpi_apple_darwin_osi) {
+		char *vendor = kern_getenv("smbios.system.maker");
+		if (vendor != NULL) {
+			if (strcmp(vendor, "Apple Inc.") == 0 ||
+			    strcmp(vendor, "Apple Computer, Inc.") == 0) {
+				/* Disable all other OSI vendor strings. */
+				status = AcpiUpdateInterfaces(
+				    ACPI_DISABLE_ALL_VENDOR_STRINGS);
+				if (ACPI_SUCCESS(status)) {
+					/* Install Darwin OSI */
+					status = AcpiInstallInterface("Darwin");
+				}
+				if (bootverbose) {
+					if (ACPI_SUCCESS(status)) {
+						device_printf(dev,
+						    "disabled non-Darwin OSI & "
+						    "installed Darwin OSI\n");
+					} else {
+						device_printf(dev,
+						    "could not install "
+						    "Darwin OSI: %s\n",
+						    AcpiFormatException(status));
+					}
+				}
+			} else if (bootverbose) {
+				device_printf(dev,
+				    "Not installing Darwin OSI on unsupported platform: %s\n",
+				    vendor);
+			}
+			freeenv(vendor);
+		}
 	}
 }
 

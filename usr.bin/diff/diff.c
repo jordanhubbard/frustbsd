@@ -35,7 +35,7 @@
 #include "diff.h"
 #include "xmalloc.h"
 
-static const char diff_version[] = "FreeBSD diff 20240307";
+static const char diff_version[] = "FreeBSD diff 20260206";
 bool	 lflag, Nflag, Pflag, rflag, sflag, Tflag, cflag;
 bool	 ignore_file_case, suppress_common, color, noderef;
 static bool help = false;
@@ -249,6 +249,7 @@ main(int argc, char **argv)
 				usage();
 			break;
 		case 'l':
+			dflags |= D_PAGINATION;
 			lflag = true;
 			break;
 		case 'N':

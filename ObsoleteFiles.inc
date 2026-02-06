@@ -51,6 +51,15 @@
 #   xargs -n1 | sort | uniq -d;
 # done
 
+
+# 20260120: remove obsolete MIT KRB5 plugin files
+OLD_LIBS+=usr/lib/krb5/plugins/kdb/db2.so.121
+OLD_LIBS+=usr/lib/krb5/plugins/preauth/otp.so.121
+OLD_LIBS+=usr/lib/krb5/plugins/preauth/pkinit.so.121
+OLD_LIBS+=usr/lib/krb5/plugins/preauth/spake.so.121
+OLD_LIBS+=usr/lib/krb5/plugins/preauth/test.so.121
+OLD_LIBS+=usr/lib/krb5/plugins/tls/k5tls.so.121
+
 # 20260120: Made libkrb5profile INTERNALLIB
 OLD_LIBS+=usr/lib/libkrb5profile.so.122
 OLD_FILES+=usr/lib/libkrb5profile.so
@@ -80,8 +89,15 @@ OLD_FILES+=usr/bin/wait
 OLD_FILES+=boot/firmware/iwm8000C
 
 # 20251207: removed libuutil and libtpool
-OLD_LIBS+=	lib/libuutil.so.2
-OLD_LIBS+=	lib/libtpool.so.2
+OLD_LIBS+=lib/libuutil.so.2
+OLD_FILES+=usr/lib/libuutil.a
+OLD_FILES+=usr/lib/libuutil.so
+OLD_FILES+=usr/lib/libuutil_p.a
+OLD_LIBS+=lib/libtpool.so.2
+OLD_LIBS+=usr/lib/libtpool.a
+OLD_LIBS+=usr/lib/libtpool.so
+OLD_LIBS+=usr/lib/libtpool_p.a
+OLD_FILES+=usr/tests/cddl/lib/libtpool/libtpool_test
 
 # 20251204: zpfind.9 alias to pfind.9 removed
 OLD_FILES+=usr/share/man/man9/zpfind.9
