@@ -53,8 +53,6 @@ start_pr(char *file1, char *file2)
 
 	xasprintf(&header, "%s %s %s", diffargs, file1, file2);
 	signal(SIGPIPE, SIG_IGN);
-	fflush(stdout);
-	rewind(stdout);
 	if (pipe(pfd) == -1)
 		err(2, "pipe");
 	switch ((pid = pdfork(&pr_pd, PD_CLOEXEC))) {
