@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-06 07:53 - usr.bin/col ✓
+
+**Directory:** `usr.bin/col`
+
+**Summary:** [ai-code-reviewer] We need to generate a commit message for these changes. The diff shows only a change in .ai-code-reviewer/REVIEW-INDEX.md: Updated timestamp and status marker from `[ ]` to `[>]` for `usr.bin/col`. That's it. So the changes are just updating the review index file, marking col as "in progress" maybe. The commit message must follow rules.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-06 07:41 - usr.bin/cmp/tests ✓
 
 **Directory:** `usr.bin/cmp/tests`
