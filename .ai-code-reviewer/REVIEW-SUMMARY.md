@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-06 13:34 - usr.bin/diff ✓
+
+**Directory:** `usr.bin/diff`
+
+**Summary:** [ai-code-reviewer] We need to produce a commit message following rules.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-06 11:55 - usr.bin/diff/tests ✓
 
 **Directory:** `usr.bin/diff/tests`
