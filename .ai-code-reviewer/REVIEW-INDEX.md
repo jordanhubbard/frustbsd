@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-06 11:01
+Generated: 2026-02-06 11:13
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-06 11:01
 
 ## Progress
 - Total directories: 8264
-- Completed: 356 (4%)
+- Completed: 357 (4%)
 - Skipped: 1
-- Remaining: 7907
+- Remaining: 7906
 
 ## Current Position
-CURRENT POSITION: `usr.bin/cut`
+CURRENT POSITION: `usr.bin/cut/tests`
 
 ## bin/ (73/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/cut`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (156/505 done)
+## usr.bin/ (157/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
@@ -385,7 +385,7 @@ CURRENT POSITION: `usr.bin/cut`
 - [x] `usr.bin/csplit/tests` (0 .c, 0 .h, 0 lines) - 2026-02-06 - Fixed by session 20260206_081112
 - [x] `usr.bin/ctags` (7 .c, 1 .h, 1621 lines) - 2026-02-06 - Fixed by session 20260206_081112
 - [x] `usr.bin/ctlstat` (1 .c, 0 .h, 1011 lines) - 2026-02-06 - Fixed by session 20260206_081112
-- [ ] `usr.bin/cut` (1 .c, 0 .h, 481 lines)
+- [x] `usr.bin/cut` (1 .c, 0 .h, 481 lines) - 2026-02-06 - Fixed by session 20260206_081112
 - [ ] `usr.bin/cut/tests` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/cxxfilt` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/diff` (6 .c, 3 .h, 3540 lines)
