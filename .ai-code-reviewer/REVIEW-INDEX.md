@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-05 16:08
+Generated: 2026-02-05 16:12
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-05 16:08
 
 ## Progress
 - Total directories: 8264
-- Completed: 285 (3%)
+- Completed: 286 (3%)
 - Skipped: 1
-- Remaining: 7978
+- Remaining: 7977
 
 ## Current Position
-CURRENT POSITION: `usr.bin/bzip2recover`
+CURRENT POSITION: `usr.bin/calendar`
 
 ## bin/ (73/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/bzip2recover`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (85/505 done)
+## usr.bin/ (86/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
@@ -311,7 +311,7 @@ CURRENT POSITION: `usr.bin/bzip2recover`
 - [x] `usr.bin/bsdiff/bsdiff` (1 .c, 2 .h, 597 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [x] `usr.bin/bsdiff/bspatch` (1 .c, 0 .h, 302 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [x] `usr.bin/bzip2` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
-- [ ] `usr.bin/bzip2recover` (0 .c, 0 .h, 0 lines)
+- [x] `usr.bin/bzip2recover` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [x] `usr.bin/c89` (1 .c, 0 .h, 111 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [x] `usr.bin/c99` (1 .c, 0 .h, 132 lines) - 2026-02-05 - Fixed by session 20260205_124242
 - [x] `usr.bin/caesar` (1 .c, 0 .h, 145 lines) - 2026-02-05 - Fixed by session 20260205_124242
