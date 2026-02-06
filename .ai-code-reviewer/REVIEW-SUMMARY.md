@@ -6,6 +6,18 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-06 10:54 - usr.bin/ctags ✓
+
+**Directory:** `usr.bin/ctags`
+
+**Summary:** [ai-code-reviewer] We need to produce a commit message with first line: "[ai-code-reviewer] ctags: <short summary>" max 72 chars total including prefix? Probably total line length <=72 characters. Must be exactly that format. Then blank line, then body explaining what changed and why, focusing on security/correctness fixes, imperative mood, wrap at 72 chars per line. Use imperative mood. Cover all changes in ctags directory: modifications to REVIEW-INDEX.md (marking ctags as > maybe indicating progress?) and changes to usr.bin/ctags/lisp.c: adding ! negations to condition checks for "method", "wrapper", "whopper". Those changes likely fix logic: previously they used if (cicmp("method")) which would treat non-zero as true? Actually cicmp probably compares case-insensitively? The change adds ! to invert condition: if (!cicmp("method")) meaning only special if cicmp returns false? Hmm. The diff shows they added ! before cicmp calls. That likely fixes a bug where they incorrectly marked special when they shouldn't, maybe causing false positives? The security aspect? Possibly these conditions affect parsing of tags and could be exploited? But we just need to mention security/correctness fixes.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - usr.bin/ctags/lisp.c
+
+---
+
 ## 2026-02-06 10:50 - usr.bin/csplit/tests ✓
 
 **Directory:** `usr.bin/csplit/tests`

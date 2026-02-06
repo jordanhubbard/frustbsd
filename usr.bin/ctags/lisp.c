@@ -60,11 +60,11 @@ l_entries(void)
 		special = false;
 		switch(*lbp | ' ') {
 		case 'm':
-			if (cicmp("method"))
+			if (!cicmp("method"))
 				special = true;
 			break;
 		case 'w':
-			if (cicmp("wrapper") || cicmp("whopper"))
+			if (!cicmp("wrapper") || !cicmp("whopper"))
 				special = true;
 		}
 		for (; !isspace(*lbp); ++lbp)
