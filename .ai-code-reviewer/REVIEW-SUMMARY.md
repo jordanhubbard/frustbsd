@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-05 19:43 - usr.bin/clang/clang ✓
+
+**Directory:** `usr.bin/clang/clang`
+
+**Summary:** [ai-code-reviewer] We need to generate a commit message. The diff shows changes to .ai-code-reviewer/REVIEW-INDEX.md, marking clang as fixed? Actually the diff shows a line changed from "-- [ ] clang" to "+> clang". That indicates some status update. The commit message should be about clang directory changes. The rules: first line: "[ai-code-reviewer] clang: <short summary>" max 72 chars total. Then blank line, then body explaining what changed and why, focusing on security/correctness fixes, not style. Use imperative mood. This commit covers ALL changes in the clang directory.
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-05 19:36 - usr.bin/clang/bugpoint ✓
 
 **Directory:** `usr.bin/clang/bugpoint`

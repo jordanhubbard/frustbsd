@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-05 19:36
+Generated: 2026-02-05 19:43
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-05 19:36
 
 ## Progress
 - Total directories: 8264
-- Completed: 294 (3%)
+- Completed: 295 (3%)
 - Skipped: 1
-- Remaining: 7969
+- Remaining: 7968
 
 ## Current Position
-CURRENT POSITION: `usr.bin/clang/clang`
+CURRENT POSITION: `usr.bin/clang/clang-format`
 
 ## bin/ (73/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/clang/clang`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (94/505 done)
+## usr.bin/ (95/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
@@ -323,7 +323,7 @@ CURRENT POSITION: `usr.bin/clang/clang`
 - [x] `usr.bin/cksum` (6 .c, 1 .h, 618 lines) - 2026-02-05 - Fixed by session 20260205_192146
 - [x] `usr.bin/clang` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_192146
 - [x] `usr.bin/clang/bugpoint` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_192146
-- [ ] `usr.bin/clang/clang` (0 .c, 0 .h, 0 lines)
+- [x] `usr.bin/clang/clang` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260205_192146
 - [ ] `usr.bin/clang/clang-format` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/clang/clang-scan-deps` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/clang/clang-tblgen` (0 .c, 0 .h, 0 lines)
