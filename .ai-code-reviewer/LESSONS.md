@@ -1318,3 +1318,31 @@ That's 3 lines. Output only that.
 ### [HEADERS]: Stale .depend files cause build failures  
 - Make ignored outdated dependency files, leading to ignored stale .depend warnings.  
 - Clean the build directory or run `make clean` before rebuilding to regenerate .depend files.
+
+
+## 2026-02-06 16:07
+We need to output a short lesson (2-4 lines) in format:
+
+### [Category]: Brief title
+- What went wrong
+- How to avoid it next time
+
+Categories allowed: COMPILER, HEADERS, SYNTAX, LOGIC, STYLE
+
+The error is about misleading indentation; statement is not part of previous 'if' [-Werror,-Wmisleading-indentation]. That's a syntax/indentation warning turned into error. Category likely SYNTAX or STYLE? It's about indentation causing misleading indentation warning, which is about code style. Could be STYLE. But also it's a syntax issue? The warning is about indentation being misleading, which is style. I'd choose STYLE.
+
+We need 2-4 lines total? It says 2-4 lines in this format. Probably each bullet is a line. So we need something like:
+
+### STYLE: Misleading indentation in cpuset.c
+- The compiler flagged an indentation error where a statement wasn't part of the preceding `if`, causing a build failure.
+- Ensure proper block indentation and avoid mixing statements with the `if` condition to prevent this warning.
+
+That's 3 lines (title line, bullet1, bullet2). That's okay.
+
+Make sure output only the lesson entry, nothing else. No extra text.
+
+Let's produce that.
+</think>
+### STYLE: Misleading indentation in cpuset.c
+- The compiler flagged an indentation error where a statement wasn't part of the preceding `if`, causing a build failure.  
+- Ensure proper block indentation and avoid mixing statements with the `if` condition to prevent this warning.
