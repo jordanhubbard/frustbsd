@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-06 18:48
+Generated: 2026-02-06 18:58
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-06 18:48
 
 ## Progress
 - Total directories: 8264
-- Completed: 379 (4%)
+- Completed: 380 (4%)
 - Skipped: 1
-- Remaining: 7884
+- Remaining: 7883
 
 ## Current Position
-CURRENT POSITION: `usr.bin/factor`
+CURRENT POSITION: `usr.bin/factor/tests`
 
 ## bin/ (73/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/factor`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (179/505 done)
+## usr.bin/ (180/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
@@ -408,7 +408,7 @@ CURRENT POSITION: `usr.bin/factor`
 - [x] `usr.bin/env/tests` (0 .c, 0 .h, 0 lines) - 2026-02-06 - Fixed by session 20260206_114140
 - [x] `usr.bin/etdump` (3 .c, 1 .h, 481 lines) - 2026-02-06 - Fixed by session 20260206_114140
 - [x] `usr.bin/expand` (1 .c, 0 .h, 184 lines) - 2026-02-06 - Fixed by session 20260206_114140
-- [ ] `usr.bin/factor` (1 .c, 0 .h, 399 lines)
+- [x] `usr.bin/factor` (1 .c, 0 .h, 399 lines) - 2026-02-06 - Fixed by session 20260206_114140
 - [ ] `usr.bin/factor/tests` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/false` (1 .c, 0 .h, 36 lines)
 - [ ] `usr.bin/fetch` (1 .c, 0 .h, 1227 lines)
