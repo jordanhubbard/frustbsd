@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-06 20:47
+Generated: 2026-02-06 21:07
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-06 20:47
 
 ## Progress
 - Total directories: 8264
-- Completed: 395 (4%)
+- Completed: 396 (4%)
 - Skipped: 1
-- Remaining: 7868
+- Remaining: 7867
 
 ## Current Position
-CURRENT POSITION: `usr.bin/fortune/fortune`
+CURRENT POSITION: `usr.bin/fortune/strfile`
 
 ## bin/ (73/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/fortune/fortune`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (195/505 done)
+## usr.bin/ (196/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
@@ -424,7 +424,7 @@ CURRENT POSITION: `usr.bin/fortune/fortune`
 - [x] `usr.bin/fold/tests` (0 .c, 0 .h, 0 lines) - 2026-02-06 - Fixed by session 20260206_114140
 - [x] `usr.bin/fortune` (0 .c, 0 .h, 0 lines) - 2026-02-06 - Fixed by session 20260206_114140
 - [x] `usr.bin/fortune/datfiles` (0 .c, 0 .h, 0 lines) - 2026-02-06 - Fixed by session 20260206_114140
-- [ ] `usr.bin/fortune/fortune` (1 .c, 1 .h, 1448 lines)
+- [x] `usr.bin/fortune/fortune` (1 .c, 1 .h, 1448 lines) - 2026-02-06 - Fixed by session 20260206_114140
 - [ ] `usr.bin/fortune/strfile` (1 .c, 1 .h, 501 lines)
 - [ ] `usr.bin/fortune/tools` (0 .c, 0 .h, 0 lines)
 - [ ] `usr.bin/fortune/unstr` (1 .c, 0 .h, 123 lines)
