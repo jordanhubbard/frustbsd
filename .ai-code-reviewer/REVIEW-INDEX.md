@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-06 16:38
+Generated: 2026-02-06 16:53
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-06 16:38
 
 ## Progress
 - Total directories: 8264
-- Completed: 373 (4%)
+- Completed: 374 (4%)
 - Skipped: 1
-- Remaining: 7890
+- Remaining: 7889
 
 ## Current Position
-CURRENT POSITION: `usr.bin/elfdump`
+CURRENT POSITION: `usr.bin/enigma`
 
 ## bin/ (73/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/elfdump`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-05 - Fixed by session 20260204_232033
 
-## usr.bin/ (173/505 done)
+## usr.bin/ (174/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-05 - Fixed by session 20260204_232033
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-05 - Fixed by session 20260204_232033
@@ -402,7 +402,7 @@ CURRENT POSITION: `usr.bin/elfdump`
 - [x] `usr.bin/ee` (0 .c, 0 .h, 0 lines) - 2026-02-06 - Fixed by session 20260206_114140
 - [x] `usr.bin/elfcopy` (0 .c, 0 .h, 0 lines) - 2026-02-06 - Fixed by session 20260206_114140
 - [x] `usr.bin/elfctl` (1 .c, 0 .h, 469 lines) - 2026-02-06 - Fixed by session 20260206_114140
-- [ ] `usr.bin/elfdump` (1 .c, 0 .h, 1287 lines)
+- [x] `usr.bin/elfdump` (1 .c, 0 .h, 1287 lines) - 2026-02-06 - Fixed by session 20260206_114140
 - [ ] `usr.bin/enigma` (1 .c, 0 .h, 154 lines)
 - [ ] `usr.bin/env` (2 .c, 1 .h, 734 lines)
 - [ ] `usr.bin/env/tests` (0 .c, 0 .h, 0 lines)
