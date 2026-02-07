@@ -1400,3 +1400,31 @@ That's 3 lines. Ensure no extra text.
 ### HEADERS: Stale .depend.h_* files
 - Build ignored stale .depend.h_* headers, causing errors.  
 - Clean or regenerate dependencies (e.g., `make clean` or `make depend`) before rebuilding.
+
+
+## 2026-02-06 22:20
+We need to output a short lesson entry, 2-4 lines, in format:
+
+### [Category]: Brief title
+- What went wrong
+- How to avoid it next time
+
+Categories allowed: COMPILER, HEADERS, SYNTAX, LOGIC, STYLE
+
+We have an error: Invalid line "dummy" in Makefile. That's a syntax issue? Actually it's a Makefile syntax error: stray line "dummy". That's a SYNTAX category maybe. Could also be STYLE? But likely SYNTAX.
+
+We need to output only the lesson entry, nothing else.
+
+So something like:
+
+### [SYNTAX]: Invalid Makefile line
+- The Makefile contained a stray line "dummy" causing a parse error.
+- Ensure Makefiles only include valid directives and comments; remove or comment out unsupported lines.
+
+That's 3 lines? Actually format: first line is ### [Category]: Brief title. Then bullet points each start with "-". They want 2-4 lines total. So we can have first line plus two bullet points = 3 lines total. That's okay.
+
+Make sure no extra text. Output only that.
+</think>
+### [SYNTAX]: Invalid Makefile line
+- The Makefile contained a stray line `"dummy"` that caused a parse error.
+- Remove or comment out non‑directive lines to keep the Makefile syntactically valid.
