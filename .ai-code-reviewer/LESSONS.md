@@ -1346,3 +1346,27 @@ Let's produce that.
 ### STYLE: Misleading indentation in cpuset.c
 - The compiler flagged an indentation error where a statement wasn't part of the preceding `if`, causing a build failure.  
 - Ensure proper block indentation and avoid mixing statements with the `if` condition to prevent this warning.
+
+
+## 2026-02-06 16:12
+We need to output a short lesson entry in format:
+
+### [Category]: Brief title
+- What went wrong
+- How to avoid it next time
+
+Categories allowed: COMPILER, HEADERS, SYNTAX, LOGIC, STYLE
+
+The error is about misleading indentation; statement not part of previous 'if' [-Werror,-Wmisleading-indentation]. That's a syntax/indentation warning turned into error. Category likely SYNTAX or STYLE. Probably SYNTAX (misleading indentation). Could also be STYLE. The error mentions -Wmisleading-indentation, which is a style warning but treated as error. I'd choose SYNTAX? The categories list includes STYLE. The error is about indentation, which is style. But the category list includes STYLE, so maybe STYLE. The instruction: "Categories: COMPILER, HEADERS, SYNTAX, LOGIC, STYLE". The error is about indentation, which is style. So category = STYLE.
+
+Thus output:
+
+### [STYLE]: Misleading indentation in cpuset.c
+- The compiler treated an indentation error as a fatal error, stopping the build.
+- Ensure consistent indentation and avoid mixing spaces/tabs; run `clang-format` or enable warnings to catch such issues early.
+
+Make sure 2-4 lines. Provide bullet points. Should be concise. Output only the lesson entry, nothing else.
+</think>
+### [STYLE]: Misleading indentation in cpuset.c
+- The build failed because an indentation error was treated as a fatal compiler warning.  
+- Keep indentation consistent (use a style tool or enable warnings) to prevent such errors from halting the build.
