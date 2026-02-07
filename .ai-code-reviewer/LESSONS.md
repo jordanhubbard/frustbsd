@@ -1370,3 +1370,33 @@ Make sure 2-4 lines. Provide bullet points. Should be concise. Output only the l
 ### [STYLE]: Misleading indentation in cpuset.c
 - The build failed because an indentation error was treated as a fatal compiler warning.  
 - Keep indentation consistent (use a style tool or enable warnings) to prevent such errors from halting the build.
+
+
+## 2026-02-06 19:30
+We need to output a short lesson 2-4 lines in format:
+
+### [Category]: Brief title
+- What went wrong
+- How to avoid it next time
+
+Categories allowed: COMPILER, HEADERS, SYNTAX, LOGIC, STYLE
+
+We need to infer category from the error. The errors are about ignoring stale .depend.h_* files. That's a header dependency issue. So category likely HEADERS.
+
+Brief title: maybe "Stale header dependencies". Then bullet points: what went wrong: ignoring stale .depend.h_* files causing build errors. How to avoid: clean the .depend files or run make clean / rebuild dependencies.
+
+We need 2-4 lines total? The format shows title line then bullet points each preceded by hyphen. Probably 2 bullet points. That's 3 lines total (title line + two bullet lines). That's okay.
+
+Output ONLY the lesson entry, nothing else.
+
+Thus:
+
+### HEADERS: Stale .depend.h_* files
+- Build ignored stale .depend.h_* headers, causing errors.
+- Clean or regenerate dependencies (e.g., `make clean` or `make depend`) before rebuilding.
+
+That's 3 lines. Ensure no extra text.
+</think>
+### HEADERS: Stale .depend.h_* files
+- Build ignored stale .depend.h_* headers, causing errors.  
+- Clean or regenerate dependencies (e.g., `make clean` or `make depend`) before rebuilding.
