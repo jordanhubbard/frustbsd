@@ -1083,3 +1083,9 @@ Each lesson is recorded with timestamp, category, and remediation advice.
 ### COMPILER: Stale .depend Files Causing Build Failures
 - Stale `.depend` files were ignored, leading to build errors.
 - Clean the build directory using `make clean` before rebuilding.
+
+
+## 2026-02-16 14:45
+### COMPILER: Stale .depend Files Causing Build Failures
+- Stale `.depend` files were ignored, leading to build errors.
+- Clean the build directory using `make clean` before rebuilding to ensure all dependencies are up-to-date.
