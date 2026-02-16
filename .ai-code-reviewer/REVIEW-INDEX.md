@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-16 14:29
+Generated: 2026-02-16 14:33
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-16 14:29
 
 ## Progress
 - Total directories: 8264
-- Completed: 84 (1%)
+- Completed: 85 (1%)
 - Skipped: 2
-- Remaining: 8178
+- Remaining: 8177
 
 ## Current Position
-CURRENT POSITION: `sbin/devd/tests`
+CURRENT POSITION: `sbin/devfs`
 
 ## bin/ (72/74 done)
 
@@ -97,7 +97,7 @@ CURRENT POSITION: `sbin/devd/tests`
 - [x] `bin/timeout/tests` (0 .c, 0 .h, 0 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `bin/uuidgen` (1 .c, 0 .h, 202 lines) - 2026-02-16 - Fixed by session 20260216_121349
 
-## sbin/ (12/127 done)
+## sbin/ (13/127 done)
 
 - [x] `sbin/adjkerntz` (1 .c, 1 .h, 401 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `sbin/bectl` (3 .c, 1 .h, 1575 lines) - 2026-02-16 - Fixed by session 20260216_121349
@@ -111,7 +111,7 @@ CURRENT POSITION: `sbin/devd/tests`
 - [x] `sbin/ddb` (3 .c, 1 .h, 578 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `sbin/decryptcore` (1 .c, 0 .h, 429 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `sbin/devd` (0 .c, 1 .h, 58 lines) - 2026-02-16 - Fixed by session 20260216_121349
-- [ ] `sbin/devd/tests` (1 .c, 0 .h, 195 lines)
+- [x] `sbin/devd/tests` (1 .c, 0 .h, 195 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [ ] `sbin/devfs` (2 .c, 1 .h, 749 lines)
 - [ ] `sbin/devmatch` (1 .c, 0 .h, 628 lines)
 - [ ] `sbin/dhclient` (16 .c, 5 .h, 9542 lines)
