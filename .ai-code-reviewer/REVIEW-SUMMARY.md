@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-17 01:05 - sbin/etherswitchcfg ✓
+
+**Directory:** `sbin/etherswitchcfg`
+
+**Summary:** [ai-code-reviewer] etherswitchcfg: Validate switch configuration inputs
+
+**Files fixed:**
+
+
+---
+
 ## 2026-02-16 19:01 - sbin/dumpon ✓
 
 **Directory:** `sbin/dumpon`
