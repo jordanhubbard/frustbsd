@@ -29,6 +29,7 @@
  * SUCH DAMAGE.
  */
 
+#include <sys/cdefs.h>
 #include <sys/param.h>
 #include <sys/capsicum.h>
 #include <sys/disk.h>
@@ -93,7 +94,8 @@ find_gateway(const char *ifname)
 	struct sockaddr *sa;
 	struct sockaddr_dl *sdl;
 	struct sockaddr_in *dst, *mask, *gw;
-	char *buf, *next, *ret;
+	char *buf, *next, *ret = NULL;
+	char gateway_str[INET_ADDRSTRLEN];
 	size_t sz;
 	int error, i, ifindex, mib[7];
 
@@ -134,7 +136,6 @@ find_gateway(const char *ifname)
 		free(buf);
 	}
 
-	ret = NULL;
 	for (next = buf; next < buf + sz; next += rtm->rtm_msglen) {
 		rtm = (struct rt_msghdr *)(void *)next;
 		if (rtm->rtm_version != RTM_VERSION)
@@ -164,8 +165,12 @@ find_gateway(const char *ifname)
 
 		if (dst->sin_addr.s_addr == INADDR_ANY &&
 		    mask->sin_addr.s_addr == 0) {
-			ret = inet_ntoa(gw->sin_addr);
-			break;
+			if (inet_ntop(AF_INET, &gw->sin_addr, gateway_str, sizeof(gateway_str)) != NULL) {
+				ret = strdup(gateway_str);
+				if (ret == NULL)
+					err(EX_OSERR, "strdup");
+				break;
+			}
 		}
 	}
 	free(buf);

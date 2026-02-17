@@ -6,6 +6,18 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-16 19:01 - sbin/dumpon ✓
+
+**Directory:** `sbin/dumpon`
+
+**Summary:** [ai-code-reviewer] dumpon: Fix memory handling and gateway retrieval
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - sbin/dumpon/dumpon.c
+
+---
+
 ## 2026-02-16 15:06 - sbin/dumpfs ✓
 
 **Directory:** `sbin/dumpfs`
