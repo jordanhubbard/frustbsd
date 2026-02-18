@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-18 10:16 - sbin/ipf/ipmon ✓
+
+**Directory:** `sbin/ipf/ipmon`
+
+**Summary:** [ai-code-reviewer] ipmon: Update review status to in-progress
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-18 10:10 - sbin/ipf/iplang ✓
 
 **Directory:** `sbin/ipf/iplang`
