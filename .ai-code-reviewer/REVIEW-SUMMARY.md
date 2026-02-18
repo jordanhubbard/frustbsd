@@ -6,6 +6,18 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-18 10:04 - sbin/ipf/ipftest ✓
+
+**Directory:** `sbin/ipf/ipftest`
+
+**Summary:** [ai-code-reviewer] ipftest: Replace atoi() with strtonum() and fix memory leaks
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - sbin/ipf/ipftest/ip_fil.c
+
+---
+
 ## 2026-02-18 09:48 - sbin/ipf/ipfsync ✓
 
 **Directory:** `sbin/ipf/ipfsync`

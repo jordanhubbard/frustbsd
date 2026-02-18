@@ -294,12 +294,22 @@ get_unit(name, family)
 	}
 		
 	if ((s > name) && (*s != 0) && ISDIGIT(*s)) {
-		ifp->if_unit = atoi(s);
+		ifp->if_unit = strtonum(s, 0, INT_MAX, &errstr);
+if (errstr) {
+    fprintf(stderr, "Invalid number: %s\n", errstr);
+    free(ifp->if_name);
+    free(ifp);
+    return (NULL);
+}
 		ifp->if_name = (char *)malloc(s - name + 1);
 		(void) strncpy(ifp->if_name, name, s - name);
 		ifp->if_name[s - name] = '\0';
 	} else {
 		ifp->if_name = strdup(name);
+if (ifp->if_name == NULL) {
+    free(ifp);
+    return (NULL);
+}
 		ifp->if_unit = -1;
 	}
 #endif
@@ -320,10 +330,10 @@ get_ifname(ifp)
 	static char ifname[LIFNAMSIZ];
 
 #if defined(__NetBSD__) || defined(__FreeBSD__)
-	sprintf(ifname, "%s", ifp->if_xname);
+	snprintf(ifname, sizeof(ifname), "%s", ifp->if_xname);
 #else
 	if (ifp->if_unit != -1)
-		sprintf(ifname, "%s%d", ifp->if_name, ifp->if_unit);
+		snprintf(ifname, sizeof(ifname), "%s%d", ifp->if_name, ifp->if_unit);
 	else
 		strcpy(ifname, ifp->if_name);
 #endif
