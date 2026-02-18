@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-17 16:20
+Generated: 2026-02-17 16:26
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-17 16:20
 
 ## Progress
 - Total directories: 8264
-- Completed: 97 (1%)
+- Completed: 98 (1%)
 - Skipped: 3
-- Remaining: 8164
+- Remaining: 8163
 
 ## Current Position
-CURRENT POSITION: `sbin/fsck_msdosfs`
+CURRENT POSITION: `sbin/fsdb`
 
 ## bin/ (72/74 done)
 
@@ -97,7 +97,7 @@ CURRENT POSITION: `sbin/fsck_msdosfs`
 - [x] `bin/timeout/tests` (0 .c, 0 .h, 0 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `bin/uuidgen` (1 .c, 0 .h, 202 lines) - 2026-02-16 - Fixed by session 20260216_121349
 
-## sbin/ (25/127 done)
+## sbin/ (26/127 done)
 
 - [x] `sbin/adjkerntz` (1 .c, 1 .h, 401 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `sbin/bectl` (3 .c, 1 .h, 1575 lines) - 2026-02-16 - Fixed by session 20260216_121349
@@ -125,7 +125,7 @@ CURRENT POSITION: `sbin/fsck_msdosfs`
 - [x] `sbin/ffsinfo` (1 .c, 0 .h, 631 lines) - 2026-02-17 - Fixed by session 20260217_134452
 - [x] `sbin/fsck` (3 .c, 1 .h, 1184 lines) - 2026-02-17 - Fixed by session 20260217_134452
 - [x] `sbin/fsck_ffs` (16 .c, 1 .h, 11282 lines) - 2026-02-17 - Fixed by session 20260217_134452
-- [ ] `sbin/fsck_msdosfs` (5 .c, 2 .h, 3517 lines)
+- [x] `sbin/fsck_msdosfs` (5 .c, 2 .h, 3517 lines) - 2026-02-17 - Fixed by session 20260217_134452
 - [ ] `sbin/fsdb` (2 .c, 1 .h, 1592 lines)
 - [ ] `sbin/fsirand` (1 .c, 0 .h, 235 lines)
 - [ ] `sbin/geom` (0 .c, 0 .h, 0 lines)
