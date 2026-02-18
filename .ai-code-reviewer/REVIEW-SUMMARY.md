@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-17 16:20 - sbin/fsck_ffs ✓
+
+**Directory:** `sbin/fsck_ffs`
+
+**Summary:** [ai-code-reviewer] fsck_ffs: Update review status to in-progress
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-17 16:15 - sbin/fsck ✓
 
 **Directory:** `sbin/fsck`
