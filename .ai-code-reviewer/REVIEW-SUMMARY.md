@@ -6,6 +6,18 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-18 09:00 - sbin/ipf/ipfs ✓
+
+**Directory:** `sbin/ipf/ipfs`
+
+**Summary:** [ai-code-reviewer] ipfs: Update includes and remove unused externs
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - sbin/ipf/ipfs/ipfs.c
+
+---
+
 ## 2026-02-18 08:50 - sbin/ipf/ipf ✓
 
 **Directory:** `sbin/ipf/ipf`

@@ -4,6 +4,8 @@
  *
  * See the IPFILTER.LICENCE file for details on licencing.
  */
+#include <sys/cdefs.h>
+#include <sys/types.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -12,7 +14,6 @@
 #if !defined(__SVR4) && !defined(__GNUC__)
 #include <strings.h>
 #endif
-#include <sys/types.h>
 #include <sys/param.h>
 #include <sys/file.h>
 #include <stdlib.h>
@@ -30,7 +31,6 @@
 #include "ipf.h"
 #include "netinet/ipl.h"
 
-
 #ifndef	IPF_SAVEDIR
 # define	IPF_SAVEDIR	"/var/db/ipf"
 #endif
@@ -41,12 +41,7 @@
 # define	IPF_STATEFILE	"ipstate.ipf"
 #endif
 
-#if !defined(__SVR4) && defined(__GNUC__)
-extern	char	*index(const char *, int);
-#endif
-
-extern	char	*optarg;
-extern	int	optind;
+extern frentry_t *frtop;
 
 int	main(int, char *[]);
 void	usage(void);
