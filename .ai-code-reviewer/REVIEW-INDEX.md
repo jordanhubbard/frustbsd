@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-18 06:30
+Generated: 2026-02-18 06:36
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-18 06:30
 
 ## Progress
 - Total directories: 8264
-- Completed: 111 (1%)
+- Completed: 112 (1%)
 - Skipped: 6
-- Remaining: 8147
+- Remaining: 8146
 
 ## Current Position
-CURRENT POSITION: `sbin/init`
+CURRENT POSITION: `sbin/ipf`
 
 ## bin/ (72/74 done)
 
@@ -97,7 +97,7 @@ CURRENT POSITION: `sbin/init`
 - [x] `bin/timeout/tests` (0 .c, 0 .h, 0 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `bin/uuidgen` (1 .c, 0 .h, 202 lines) - 2026-02-16 - Fixed by session 20260216_121349
 
-## sbin/ (39/127 done)
+## sbin/ (40/127 done)
 
 - [x] `sbin/adjkerntz` (1 .c, 1 .h, 401 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `sbin/bectl` (3 .c, 1 .h, 1575 lines) - 2026-02-16 - Fixed by session 20260216_121349
@@ -142,7 +142,7 @@ CURRENT POSITION: `sbin/init`
 - [x] `sbin/hastd` (22 .c, 20 .h, 13663 lines) - 2026-02-18 - Fixed by session 20260218_055937
 - [x] `sbin/ifconfig` (23 .c, 2 .h, 16051 lines) - 2026-02-18 - Fixed by session 20260218_055937
 - [x] `sbin/ifconfig/tests` (0 .c, 0 .h, 0 lines) - 2026-02-18 - Fixed by session 20260218_055937
-- [ ] `sbin/init` (1 .c, 1 .h, 2206 lines)
+- [x] `sbin/init` (1 .c, 1 .h, 2206 lines) - 2026-02-18 - Fixed by session 20260218_055937
 - [ ] `sbin/ipf` (0 .c, 0 .h, 0 lines)
 - [ ] `sbin/ipf/common` (2 .c, 7 .h, 1518 lines)
 - [ ] `sbin/ipf/ipf` (3 .c, 1 .h, 2935 lines)
