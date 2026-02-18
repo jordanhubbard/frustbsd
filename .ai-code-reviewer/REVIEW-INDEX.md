@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-17 16:31
+Generated: 2026-02-17 16:35
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-17 16:31
 
 ## Progress
 - Total directories: 8264
-- Completed: 99 (1%)
+- Completed: 100 (1%)
 - Skipped: 3
-- Remaining: 8162
+- Remaining: 8161
 
 ## Current Position
-CURRENT POSITION: `sbin/fsirand`
+CURRENT POSITION: `sbin/geom`
 
 ## bin/ (72/74 done)
 
@@ -97,7 +97,7 @@ CURRENT POSITION: `sbin/fsirand`
 - [x] `bin/timeout/tests` (0 .c, 0 .h, 0 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `bin/uuidgen` (1 .c, 0 .h, 202 lines) - 2026-02-16 - Fixed by session 20260216_121349
 
-## sbin/ (27/127 done)
+## sbin/ (28/127 done)
 
 - [x] `sbin/adjkerntz` (1 .c, 1 .h, 401 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `sbin/bectl` (3 .c, 1 .h, 1575 lines) - 2026-02-16 - Fixed by session 20260216_121349
@@ -127,7 +127,7 @@ CURRENT POSITION: `sbin/fsirand`
 - [x] `sbin/fsck_ffs` (16 .c, 1 .h, 11282 lines) - 2026-02-17 - Fixed by session 20260217_134452
 - [x] `sbin/fsck_msdosfs` (5 .c, 2 .h, 3517 lines) - 2026-02-17 - Fixed by session 20260217_134452
 - [x] `sbin/fsdb` (2 .c, 1 .h, 1592 lines) - 2026-02-17 - Fixed by session 20260217_134452
-- [ ] `sbin/fsirand` (1 .c, 0 .h, 235 lines)
+- [x] `sbin/fsirand` (1 .c, 0 .h, 235 lines) - 2026-02-17 - Fixed by session 20260217_134452
 - [ ] `sbin/geom` (0 .c, 0 .h, 0 lines)
 - [ ] `sbin/geom/core` (1 .c, 1 .h, 1602 lines)
 - [ ] `sbin/geom/misc` (1 .c, 1 .h, 599 lines)
