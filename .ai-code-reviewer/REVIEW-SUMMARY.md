@@ -6,6 +6,18 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-18 08:50 - sbin/ipf/ipf ✓
+
+**Directory:** `sbin/ipf/ipf`
+
+**Summary:** [ai-code-reviewer] ipf: Update review status and remove duplicate man page
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - sbin/ipf/ipf/Makefile
+
+---
+
 ## 2026-02-18 06:46 - sbin/ipf/common ✓
 
 **Directory:** `sbin/ipf/common`
