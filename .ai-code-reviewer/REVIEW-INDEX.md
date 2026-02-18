@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-18 06:08
+Generated: 2026-02-18 06:13
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-18 06:08
 
 ## Progress
 - Total directories: 8264
-- Completed: 107 (1%)
+- Completed: 108 (1%)
 - Skipped: 6
-- Remaining: 8151
+- Remaining: 8150
 
 ## Current Position
-CURRENT POSITION: `sbin/hastctl`
+CURRENT POSITION: `sbin/hastd`
 
 ## bin/ (72/74 done)
 
@@ -97,7 +97,7 @@ CURRENT POSITION: `sbin/hastctl`
 - [x] `bin/timeout/tests` (0 .c, 0 .h, 0 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `bin/uuidgen` (1 .c, 0 .h, 202 lines) - 2026-02-16 - Fixed by session 20260216_121349
 
-## sbin/ (35/127 done)
+## sbin/ (36/127 done)
 
 - [x] `sbin/adjkerntz` (1 .c, 1 .h, 401 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `sbin/bectl` (3 .c, 1 .h, 1575 lines) - 2026-02-16 - Fixed by session 20260216_121349
@@ -138,7 +138,7 @@ CURRENT POSITION: `sbin/hastctl`
 - [x] `sbin/ggate/shared` (1 .c, 1 .h, 609 lines) - 2026-02-18 - Fixed by session 20260218_031613
 - [-] `sbin/growfs` (2 .c, 1 .h, 2652 lines) - Auto-skipped after 3 retries
 - [x] `sbin/growfs/tests` (0 .c, 0 .h, 0 lines) - 2026-02-18 - Fixed by session 20260218_055937
-- [ ] `sbin/hastctl` (1 .c, 0 .h, 582 lines)
+- [x] `sbin/hastctl` (1 .c, 0 .h, 582 lines) - 2026-02-18 - Fixed by session 20260218_055937
 - [ ] `sbin/hastd` (22 .c, 20 .h, 13663 lines)
 - [ ] `sbin/ifconfig` (23 .c, 2 .h, 16051 lines)
 - [ ] `sbin/ifconfig/tests` (0 .c, 0 .h, 0 lines)

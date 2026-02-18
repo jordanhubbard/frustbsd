@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-18 06:13 - sbin/hastctl ✓
+
+**Directory:** `sbin/hastctl`
+
+**Summary:** [ai-code-reviewer] hastctl: Update review status to in-progress
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-18 06:08 - sbin/growfs/tests ✓
 
 **Directory:** `sbin/growfs/tests`
