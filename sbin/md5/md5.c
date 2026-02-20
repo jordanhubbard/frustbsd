@@ -17,6 +17,7 @@
  *  documentation and/or software.
  */
 
+#include <sys/cdefs.h>
 #include <sys/param.h>
 #include <sys/resource.h>
 #include <sys/stat.h>
@@ -27,7 +28,6 @@
 #include <fcntl.h>
 #include <getopt.h>
 #include <md5.h>
-#include <osreldate.h>
 #include <ripemd.h>
 #include <sha.h>
 #include <sha224.h>
