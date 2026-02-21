@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-21 10:49 - sbin/rcorder ✓
+
+**Directory:** `sbin/rcorder`
+
+**Summary:** [ai-code-reviewer] rcorder: Update review status to in-progress
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-21 10:45 - sbin/quotacheck ✓
 
 **Directory:** `sbin/quotacheck`
