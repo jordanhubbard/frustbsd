@@ -6,6 +6,18 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-20 17:54 - sbin/mksnap_ffs ✓
+
+**Directory:** `sbin/mksnap_ffs`
+
+**Summary:** [ai-code-reviewer] mksnap_ffs: Add missing error checks and braces
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - sbin/mksnap_ffs/mksnap_ffs.c
+
+---
+
 ## 2026-02-20 16:28 - sbin/mknod ✓
 
 **Directory:** `sbin/mknod`

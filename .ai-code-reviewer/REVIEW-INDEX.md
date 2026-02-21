@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-20 16:28
+Generated: 2026-02-20 17:54
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-20 16:28
 
 ## Progress
 - Total directories: 8264
-- Completed: 136 (1%)
+- Completed: 137 (1%)
 - Skipped: 10
-- Remaining: 8118
+- Remaining: 8117
 
 ## Current Position
-CURRENT POSITION: `sbin/mksnap_ffs`
+CURRENT POSITION: `sbin/mount`
 
 ## bin/ (72/74 done)
 
@@ -97,7 +97,7 @@ CURRENT POSITION: `sbin/mksnap_ffs`
 - [x] `bin/timeout/tests` (0 .c, 0 .h, 0 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `bin/uuidgen` (1 .c, 0 .h, 202 lines) - 2026-02-16 - Fixed by session 20260216_121349
 
-## sbin/ (64/127 done)
+## sbin/ (65/127 done)
 
 - [x] `sbin/adjkerntz` (1 .c, 1 .h, 401 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `sbin/bectl` (3 .c, 1 .h, 1575 lines) - 2026-02-16 - Fixed by session 20260216_121349
@@ -171,7 +171,7 @@ CURRENT POSITION: `sbin/mksnap_ffs`
 - [x] `sbin/mdconfig/tests` (0 .c, 0 .h, 0 lines) - 2026-02-20 - Fixed by session 20260220_122442
 - [-] `sbin/mdmfs` (1 .c, 0 .h, 858 lines) - Auto-skipped after 3 retries
 - [x] `sbin/mknod` (1 .c, 0 .h, 155 lines) - 2026-02-20 - Fixed by session 20260220_161025
-- [ ] `sbin/mksnap_ffs` (1 .c, 0 .h, 189 lines)
+- [x] `sbin/mksnap_ffs` (1 .c, 0 .h, 189 lines) - 2026-02-20 - Fixed by session 20260220_161025
 - [ ] `sbin/mount` (3 .c, 2 .h, 1251 lines)
 - [ ] `sbin/mount_cd9660` (1 .c, 0 .h, 328 lines)
 - [ ] `sbin/mount_fusefs` (1 .c, 0 .h, 494 lines)

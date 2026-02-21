@@ -101,10 +101,11 @@ main(int argc, char **argv)
 
 	if (argc == 2)
 		snapname = argv[1];
-	else if (argc == 3)
+	else if (argc == 3) {
 		snapname = argv[2];	/* Old usage. */
-	else
+	} else {
 		usage();
+	}
 
 	/*
 	 * Check that the user running this program has permission
@@ -114,8 +115,9 @@ main(int argc, char **argv)
 	 * will not be able to remove the snapshot when they are
 	 * done with it.
 	 */
-	if (strlen(snapname) >= PATH_MAX)
+	if (strlen(snapname) >= PATH_MAX) {
 		errx(1, "pathname too long %s", snapname);
+	}
 	cp = strrchr(snapname, '/');
 	if (cp == NULL) {
 		strlcpy(path, ".", PATH_MAX);
@@ -124,8 +126,9 @@ main(int argc, char **argv)
 	} else {
 		strlcpy(path, snapname, cp - snapname + 1);
 	}
-	if (statfs(path, &stfsbuf) < 0)
+	if (statfs(path, &stfsbuf) < 0) {
 		err(1, "%s", path);
+	}
 	switch (isdir(path, &stbuf)) {
 	case -1:
 		err(1, "%s", path);
@@ -134,10 +137,12 @@ main(int argc, char **argv)
 	default:
 		break;
 	}
-	if (access(path, W_OK) < 0)
+	if (access(path, W_OK) < 0) {
 		err(1, "Lack write permission in %s", path);
-	if ((stbuf.st_mode & S_ISTXT) && stbuf.st_uid != getuid())
+	}
+	if ((stbuf.st_mode & S_ISTXT) && stbuf.st_uid != getuid()) {
 		errx(1, "Lack write permission in %s: Sticky bit set", path);
+	}
 
 	/*
 	 * Work around an issue when mksnap_ffs is started in chroot'ed
@@ -146,18 +151,22 @@ main(int argc, char **argv)
 	 */
 	for (cp = stfsbuf.f_mntonname; issamefs(cp, &stfsbuf) != 1;
 	    cp = strchrnul(cp + 1, '/')) {
-		if (cp[0] == '\0')
+		if (cp[0] == '\0') {
 			errx(1, "%s: Not a mount point", stfsbuf.f_mntonname);
+		}
 	}
-	if (cp != stfsbuf.f_mntonname)
+	if (cp != stfsbuf.f_mntonname) {
 		memmove(stfsbuf.f_mntonname, cp, strlen(cp) + 1);
+	}
 
 	/*
 	 * Having verified access to the directory in which the
 	 * snapshot is to be built, proceed with creating it.
 	 */
-	if ((grp = getgrnam("operator")) == NULL)
+	grp = getgrnam("operator");
+	if (grp == NULL) {
 		errx(1, "Cannot retrieve operator gid");
+	}
 
 	iov = NULL;
 	iovlen = 0;
@@ -174,16 +183,21 @@ main(int argc, char **argv)
 		err(1, "Cannot create snapshot %s%s%s", snapname,
 		    *errmsg != '\0' ? ": " : "", errmsg);
 	}
-	if ((fd = open(snapname, O_RDONLY)) < 0)
+	if ((fd = open(snapname, O_RDONLY)) < 0) {
 		err(1, "Cannot open %s", snapname);
-	if (fstat(fd, &stbuf) != 0)
+	}
+	if (fstat(fd, &stbuf) != 0) {
 		err(1, "Cannot stat %s", snapname);
-	if ((stbuf.st_flags & SF_SNAPSHOT) == 0)
+	}
+	if ((stbuf.st_flags & SF_SNAPSHOT) == 0) {
 		errx(1, "File %s is not a snapshot", snapname);
-	if (fchown(fd, -1, grp->gr_gid) != 0)
+	}
+	if (fchown(fd, -1, grp->gr_gid) != 0) {
 		err(1, "Cannot chown %s", snapname);
-	if (fchmod(fd, S_IRUSR | S_IRGRP) != 0)
+	}
+	if (fchmod(fd, S_IRUSR | S_IRGRP) != 0) {
 		err(1, "Cannot chmod %s", snapname);
+	}
 
 	exit(EXIT_SUCCESS);
 }
