@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-21 10:57 - sbin/recoverdisk ✓
+
+**Directory:** `sbin/recoverdisk`
+
+**Summary:** [ai-code-reviewer] recoverdisk: Update review status to in-progress
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-21 10:53 - sbin/reboot ✓
 
 **Directory:** `sbin/reboot`
