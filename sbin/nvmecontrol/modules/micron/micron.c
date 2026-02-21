@@ -82,7 +82,7 @@ print_micron_unique_smart(const struct nvme_controller_data *cdata __unused, voi
 		case 0:
 			break;
 		case 0xf9:
-			/* FALLTHOUGH */
+			/* FALLTHROUGH */
 		case 0xfa:
 			printf("%2X %-24s: %ju GiB\n", *walker, name, (uintmax_t)raw);
 			break;
