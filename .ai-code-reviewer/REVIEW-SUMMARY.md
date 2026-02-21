@@ -6,6 +6,18 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-20 16:28 - sbin/mknod ✓
+
+**Directory:** `sbin/mknod`
+
+**Summary:** [ai-code-reviewer] mknod: Improve error handling in mknod
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - sbin/mknod/mknod.c
+
+---
+
 ## 2026-02-20 12:32 - sbin/mdconfig/tests ✓
 
 **Directory:** `sbin/mdconfig/tests`

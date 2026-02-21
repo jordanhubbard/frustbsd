@@ -146,10 +146,13 @@ main(int argc, char **argv)
 		uid = a_uid(argv[5]);
 	}
 
-	if (mknod(argv[1], mode, dev) != 0)
+	if (mknod(argv[1], mode, dev) != 0) {
 		err(1, "%s", argv[1]);
-	if (6 == argc)
-		if (chown(argv[1], uid, gid))
+	}
+	if (argc == 6) {
+		if (chown(argv[1], uid, gid) != 0) {
 			err(1, "setting ownership on %s", argv[1]);
+		}
+	}
 	exit(0);
 }
