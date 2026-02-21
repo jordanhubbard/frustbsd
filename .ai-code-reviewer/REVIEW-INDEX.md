@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-21 02:24
+Generated: 2026-02-21 02:27
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-21 02:24
 
 ## Progress
 - Total directories: 8264
-- Completed: 149 (1%)
+- Completed: 150 (1%)
 - Skipped: 11
-- Remaining: 8104
+- Remaining: 8103
 
 ## Current Position
-CURRENT POSITION: `sbin/nos-tun`
+CURRENT POSITION: `sbin/nvmecontrol`
 
 ## bin/ (72/74 done)
 
@@ -97,7 +97,7 @@ CURRENT POSITION: `sbin/nos-tun`
 - [x] `bin/timeout/tests` (0 .c, 0 .h, 0 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `bin/uuidgen` (1 .c, 0 .h, 202 lines) - 2026-02-16 - Fixed by session 20260216_121349
 
-## sbin/ (77/127 done)
+## sbin/ (78/127 done)
 
 - [x] `sbin/adjkerntz` (1 .c, 1 .h, 401 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `sbin/bectl` (3 .c, 1 .h, 1575 lines) - 2026-02-16 - Fixed by session 20260216_121349
@@ -185,7 +185,7 @@ CURRENT POSITION: `sbin/nos-tun`
 - [-] `sbin/newfs_msdos` (2 .c, 1 .h, 1452 lines) - Auto-skipped after 3 retries
 - [x] `sbin/newfs_msdos/tests` (0 .c, 0 .h, 0 lines) - 2026-02-21 - Fixed by session 20260221_021151
 - [x] `sbin/nfsiod` (1 .c, 0 .h, 127 lines) - 2026-02-21 - Fixed by session 20260221_021151
-- [ ] `sbin/nos-tun` (1 .c, 0 .h, 393 lines)
+- [x] `sbin/nos-tun` (1 .c, 0 .h, 393 lines) - 2026-02-21 - Fixed by session 20260221_021151
 - [ ] `sbin/nvmecontrol` (24 .c, 4 .h, 7548 lines)
 - [ ] `sbin/nvmecontrol/modules` (0 .c, 0 .h, 0 lines)
 - [ ] `sbin/nvmecontrol/modules/intel` (1 .c, 0 .h, 224 lines)
