@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-20 22:01 - sbin/mount ✓
+
+**Directory:** `sbin/mount`
+
+**Summary:** [ai-code-reviewer] mount: Update review status and timestamp
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-20 17:54 - sbin/mksnap_ffs ✓
 
 **Directory:** `sbin/mksnap_ffs`
