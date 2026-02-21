@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-21 10:45 - sbin/quotacheck ✓
+
+**Directory:** `sbin/quotacheck`
+
+**Summary:** [ai-code-reviewer] quotacheck: Update review status and skip ping/tests
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-21 09:22 - sbin/ping ✓
 
 **Directory:** `sbin/ping`
