@@ -6,6 +6,18 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-22 04:08 - usr.bin/bmake/tests/execution/joberr ✓
+
+**Directory:** `usr.bin/bmake/tests/execution/joberr`
+
+**Summary:** [ai-code-reviewer] joberr: Update test script shebang and mark as reviewed
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - usr.bin/bmake/tests/execution/joberr/legacy_test.sh
+
+---
+
 ## 2026-02-22 04:04 - usr.bin/bmake/tests/execution/empty ✓
 
 **Directory:** `usr.bin/bmake/tests/execution/empty`
