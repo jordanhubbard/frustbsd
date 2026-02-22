@@ -68,10 +68,9 @@ makevfslist(char *fslist)
 	for (i = 0, nextcp = fslist; *nextcp; nextcp++)
 		if (*nextcp == ',')
 			i++;
-	if ((av = malloc((size_t)(i + 2) * sizeof(char *))) == NULL) {
-		warnx("malloc failed");
-		return (NULL);
-	}
+	av = malloc((size_t)(i + 2) * sizeof(char *));
+	if (av == NULL)
+		errx(1, "malloc failed");
 	nextcp = fslist;
 	i = 0;
 	av[i++] = nextcp;

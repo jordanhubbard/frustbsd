@@ -71,7 +71,8 @@ mount_fs(const char *vfstype, int argc, char *argv[])
 	char errmsg[255];
 	char *p, *val;
 
-	strlcpy(fstype, vfstype, sizeof(fstype));
+	if (strlcpy(fstype, vfstype, sizeof(fstype)) >= sizeof(fstype))
+		errx(1, "Filesystem type name too long");
 	memset(errmsg, 0, sizeof(errmsg));
 
 	getmnt_silent = 1;
