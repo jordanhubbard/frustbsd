@@ -139,6 +139,6 @@ static void
 usage(void)
 {
 	fprintf(stdout, "Usage: bthost [-b -h -p] host_or_protocol\n");
-	exit(255);
+	exit(EXIT_FAILURE);
 }
 
