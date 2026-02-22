@@ -6,6 +6,18 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-22 03:51 - usr.bin/bmake/tests/basic/t2 ✓
+
+**Directory:** `usr.bin/bmake/tests/basic/t2`
+
+**Summary:** [ai-code-reviewer] t2: Update test script shebang and mark as reviewed
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+  - usr.bin/bmake/tests/basic/t2/legacy_test.sh
+
+---
+
 ## 2026-02-22 03:47 - usr.bin/bmake/tests/basic/t1 ✓
 
 **Directory:** `usr.bin/bmake/tests/basic/t1`
