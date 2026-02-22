@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-22 02:27
+Generated: 2026-02-22 02:30
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-22 02:27
 
 ## Progress
 - Total directories: 8264
-- Completed: 191 (2%)
+- Completed: 192 (2%)
 - Skipped: 29
-- Remaining: 8044
+- Remaining: 8043
 
 ## Current Position
-CURRENT POSITION: `usr.bin/bluetooth`
+CURRENT POSITION: `usr.bin/bluetooth/bthost`
 
 ## bin/ (72/74 done)
 
@@ -227,7 +227,7 @@ CURRENT POSITION: `usr.bin/bluetooth`
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-21 - Fixed by session 20260221_233206
 - [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-21 - Fixed by session 20260221_233206
 
-## usr.bin/ (13/505 done)
+## usr.bin/ (14/505 done)
 
 - [x] `usr.bin/addr2line` (0 .c, 0 .h, 0 lines) - 2026-02-21 - Fixed by session 20260221_233206
 - [x] `usr.bin/apply` (1 .c, 0 .h, 247 lines) - 2026-02-21 - Fixed by session 20260221_233206
@@ -248,7 +248,7 @@ CURRENT POSITION: `usr.bin/bluetooth`
 - [x] `usr.bin/biff` (1 .c, 0 .h, 100 lines) - 2026-02-22 - Fixed by session 20260222_014919
 - [x] `usr.bin/bintrans` (4 .c, 0 .h, 1144 lines) - 2026-02-22 - Fixed by session 20260222_014919
 - [x] `usr.bin/bintrans/tests` (0 .c, 0 .h, 0 lines) - 2026-02-22 - Fixed by session 20260222_014919
-- [ ] `usr.bin/bluetooth` (0 .c, 0 .h, 0 lines)
+- [x] `usr.bin/bluetooth` (0 .c, 0 .h, 0 lines) - 2026-02-22 - Fixed by session 20260222_014919
 - [ ] `usr.bin/bluetooth/bthost` (1 .c, 0 .h, 144 lines)
 - [ ] `usr.bin/bluetooth/btsockstat` (1 .c, 0 .h, 641 lines)
 - [ ] `usr.bin/bluetooth/rfcomm_sppd` (2 .c, 0 .h, 728 lines)

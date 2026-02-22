@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-22 02:30 - usr.bin/bluetooth ✓
+
+**Directory:** `usr.bin/bluetooth`
+
+**Summary:** [ai-code-reviewer] bluetooth: Update review status in index
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-22 02:27 - usr.bin/bintrans/tests ✓
 
 **Directory:** `usr.bin/bintrans/tests`
