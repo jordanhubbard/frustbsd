@@ -11,6 +11,6 @@ ${PACKAGE}FILES+=	expected.stderr.1
 ${PACKAGE}FILES+=	expected.stderr.2
 ${PACKAGE}FILES+=	expected.stdout.1
 ${PACKAGE}FILES+=	expected.stdout.2
-${PACKAGE}FILES+=	sh
+TAP_TESTS_SH+=	sh
 
 .include <bsd.test.mk>
