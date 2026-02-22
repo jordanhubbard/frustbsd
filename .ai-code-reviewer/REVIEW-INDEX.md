@@ -3,7 +3,7 @@
 This file tracks review progress across the source tree.
 **DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
 
-Generated: 2026-02-21 23:38
+Generated: 2026-02-21 23:41
 
 ## Status Legend
 - `[ ]` Pending - needs review
@@ -13,12 +13,12 @@ Generated: 2026-02-21 23:38
 
 ## Progress
 - Total directories: 8264
-- Completed: 177 (2%)
+- Completed: 178 (2%)
 - Skipped: 23
-- Remaining: 8064
+- Remaining: 8063
 
 ## Current Position
-CURRENT POSITION: `sbin/zfsbootcfg`
+CURRENT POSITION: `usr.bin/addr2line`
 
 ## bin/ (72/74 done)
 
@@ -97,7 +97,7 @@ CURRENT POSITION: `sbin/zfsbootcfg`
 - [x] `bin/timeout/tests` (0 .c, 0 .h, 0 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `bin/uuidgen` (1 .c, 0 .h, 202 lines) - 2026-02-16 - Fixed by session 20260216_121349
 
-## sbin/ (105/127 done)
+## sbin/ (106/127 done)
 
 - [x] `sbin/adjkerntz` (1 .c, 1 .h, 401 lines) - 2026-02-16 - Fixed by session 20260216_121349
 - [x] `sbin/bectl` (3 .c, 1 .h, 1575 lines) - 2026-02-16 - Fixed by session 20260216_121349
@@ -225,7 +225,7 @@ CURRENT POSITION: `sbin/zfsbootcfg`
 - [-] `sbin/umbctl` (1 .c, 0 .h, 557 lines) - Auto-skipped after 3 retries
 - [x] `sbin/umount` (1 .c, 0 .h, 705 lines) - 2026-02-21 - Fixed by session 20260221_233206
 - [x] `sbin/veriexec` (1 .c, 1 .h, 358 lines) - 2026-02-21 - Fixed by session 20260221_233206
-- [ ] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines)
+- [x] `sbin/zfsbootcfg` (1 .c, 0 .h, 285 lines) - 2026-02-21 - Fixed by session 20260221_233206
 
 ## usr.bin/ (0/505 done)
 
