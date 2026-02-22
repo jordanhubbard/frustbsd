@@ -6,6 +6,17 @@
 **Mission:** Find and fix code that would fail peer review, break builds, or embarrass the project
 
 ---
+## 2026-02-22 02:15 - usr.bin/beep ✓
+
+**Directory:** `usr.bin/beep`
+
+**Summary:** [ai-code-reviewer] beep: Update review status to in-progress
+
+**Files fixed:**
+  - .ai-code-reviewer/REVIEW-INDEX.md
+
+---
+
 ## 2026-02-22 02:09 - usr.bin/basename/tests ✓
 
 **Directory:** `usr.bin/basename/tests`
