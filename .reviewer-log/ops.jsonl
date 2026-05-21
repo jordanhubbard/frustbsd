@@ -53,3 +53,5 @@
 {"event_type":"directory_start","timestamp":"2026-05-21T10:53:06.901022","session_id":"20260521_104504","directory":"bin/sync","message":"Started reviewing bin/sync"}
 {"event_type":"build_start","timestamp":"2026-05-21T10:53:37.444758","session_id":"20260521_104504","directory":"bin/sync","message":"Build started: make -C bin/sync"}
 {"event_type":"build_success","timestamp":"2026-05-21T10:53:39.385327","session_id":"20260521_104504","directory":"bin/sync","duration_seconds":1.0578250885009766,"warning_count":0}
+{"event_type":"commit_success","timestamp":"2026-05-21T10:55:38.828574","session_id":"20260521_104504","directory":"bin/sync","files_changed":["bin/sync/Makefile","bin/sync/Cargo.toml","bin/sync/src/main.rs"],"commit_hash":"4c250cabcbfd"}
+{"event_type":"directory_complete","timestamp":"2026-05-21T10:55:40.698505","session_id":"20260521_104504","directory":"bin/sync","message":"Completed bin/sync","duration_seconds":153.797428,"files_changed":["bin/sync/Makefile","bin/sync/Cargo.toml","bin/sync/src/main.rs"],"commit_hash":"4c250cabcbfd"}
