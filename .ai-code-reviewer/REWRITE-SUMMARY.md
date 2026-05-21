@@ -3,6 +3,27 @@
 Progress tracking for code rewrite sessions.
 
 ---
+## 2026-05-21 13:35 - bin/mkdir ✓
+
+**Directory:** `bin/mkdir`
+
+**Summary:** [ai-code-reviewer] mkdir: Migrate build system to Cargo
+
+**Files changed:**
+  - bin/mkdir/Makefile
+  - bin/mkdir/Cargo.lock
+  - bin/mkdir/Cargo.toml
+  - bin/mkdir/cargo-target/.rustc_info.json
+  - bin/mkdir/cargo-target/CACHEDIR.TAG
+  - bin/mkdir/cargo-target/debug/.cargo-lock
+  - bin/mkdir/cargo-target/debug/.fingerprint/mkdir-6449db4174192103/invoked.timestamp
+  - bin/mkdir/cargo-target/debug/.fingerprint/mkdir-6449db4174192103/output-bin-mkdir
+  - bin/mkdir/cargo-target/debug/deps/mkdir-6449db4174192103.d
+  - bin/mkdir/cargo-target/debug/incremental/mkdir-2f7t4yj2y1vs6/s-hiqqzc4gcg-0voiv1m-working/dep-graph.part.bin
+  - ... and 2 more
+
+---
+
 ## 2026-05-21 13:24 - bin/uuidgen ✓
 
 **Directory:** `bin/uuidgen`

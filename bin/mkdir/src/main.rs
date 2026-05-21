@@ -1,0 +1,257 @@
+// SPDX-License-Identifier: BSD-3-Clause
+//
+// Copyright (c) 1983, 1992, 1993
+//	The Regents of the University of California.  All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+// 3. Neither the name of the University nor the names of its contributors
+//    may be used to endorse or promote products derived from this software
+//    without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+// OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+// OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+
+use std::io::{self, Write};
+use std::os::unix::fs::PermissionsExt;
+use std::path::{Path, PathBuf};
+use std::process;
+use std::fs;
+
+const S_IRWXU: u32 = 0o700;
+const S_IRWXG: u32 = 0o070;
+const S_IRWXO: u32 = 0o007;
+const S_IWUSR: u32 = 0o200;
+const S_IXUSR: u32 = 0o100;
+
+fn usage() -> ! {
+    let msg = "usage: mkdir [-pv] [-m mode] directory_name ...\n";
+    let _ = io::stderr().write_all(msg.as_bytes());
+    process::exit(64);
+}
+
+fn parse_mode(mode_str: &str) -> Option<u32> {
+    let mode_str = mode_str.trim_start_matches('0');
+    if mode_str.is_empty() {
+        return Some(0);
+    }
+    let mut result: u32 = 0;
+    for ch in mode_str.chars() {
+        if !('0'..='7').contains(&ch) {
+            return None;
+        }
+        result = (result << 3) | (ch as u32 - '0' as u32);
+    }
+    Some(result)
+}
+
+fn warn(msg: &str) {
+    let _ = writeln!(io::stderr(), "mkdir: {}", msg);
+}
+
+fn build(path: &str, omode: u32, verbose: bool) -> i32 {
+    let path = PathBuf::from(path);
+    let mut retval: i32 = 1;
+    let mut first = true;
+    let mut oumask: u32 = 0;
+
+    // Collect components as owned strings
+    let mut components: Vec<String> = Vec::new();
+    let mut current = String::new();
+    let mut started = false;
+
+    for ch in path.to_string_lossy().chars() {
+        if ch == '/' {
+            if started {
+                components.push(current.clone());
+                current.clear();
+            }
+            started = true;
+        } else {
+            current.push(ch);
+            started = true;
+        }
+    }
+    if !current.is_empty() {
+        components.push(current);
+    }
+
+    let mut seg_path = String::new();
+    if path.to_string_lossy().starts_with('/') {
+        seg_path.push('/');
+    }
+
+    for (idx, comp) in components.iter().enumerate() {
+        let is_last = idx == components.len() - 1;
+
+        if !seg_path.is_empty() && !seg_path.ends_with('/') {
+            seg_path.push('/');
+        }
+        seg_path.push_str(comp);
+
+        if first {
+            oumask = unsafe { libc_umask(0) };
+            let numask = oumask & !(S_IWUSR | S_IXUSR);
+            unsafe { libc_umask(numask) };
+            first = false;
+        }
+
+        if is_last {
+            unsafe { libc_umask(oumask) };
+        }
+
+        match fs::create_dir(&seg_path) {
+            Ok(()) => {
+                if verbose {
+                    let _ = writeln!(io::stdout(), "{}", seg_path);
+                }
+            }
+            Err(e) => {
+                if e.kind() == std::io::ErrorKind::AlreadyExists {
+                    match fs::metadata(&seg_path) {
+                        Ok(meta) => {
+                            if !meta.is_dir() {
+                                if is_last {
+                                    warn(&format!("{}: File exists", seg_path));
+                                } else {
+                                    warn(&format!("{}: Not a directory", seg_path));
+                                }
+                                retval = 0;
+                                break;
+                            }
+                            if is_last {
+                                retval = 2;
+                            }
+                        }
+                        Err(_) => {
+                            warn(&seg_path);
+                            retval = 0;
+                            break;
+                        }
+                    }
+                } else {
+                    warn(&seg_path);
+                    retval = 0;
+                    break;
+                }
+            }
+        }
+    }
+
+    if !first && retval != 0 {
+        unsafe { libc_umask(oumask) };
+    }
+
+    retval
+}
+
+extern "C" {
+    fn umask(mask: u32) -> u32;
+}
+
+fn libc_umask(mask: u32) -> u32 {
+    unsafe { umask(mask) }
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().skip(1).collect();
+
+    let mut mode_str: Option<&str> = None;
+    let mut pflag = false;
+    let mut verbose = false;
+
+    let mut i = 0;
+    let mut dirs: Vec<String> = Vec::new();
+
+    while i < args.len() {
+        match args[i].as_str() {
+            "-m" => {
+                i += 1;
+                if i >= args.len() {
+                    usage();
+                }
+                mode_str = Some(&args[i]);
+            }
+            "-p" => pflag = true,
+            "-v" => verbose = true,
+            s if s.starts_with('-') => usage(),
+            s => dirs.push(s.to_string()),
+        }
+        i += 1;
+    }
+
+    if dirs.is_empty() {
+        usage();
+    }
+
+    let omode = match mode_str {
+        Some(m) => match parse_mode(m) {
+            Some(mode) => mode,
+            None => {
+                eprintln!("mkdir: invalid file mode: {}", m);
+                process::exit(1);
+            }
+        },
+        None => S_IRWXU | S_IRWXG | S_IRWXO,
+    };
+
+    let mut exitval = 0;
+
+    for dir in &dirs {
+        let success = if pflag {
+            let ret = build(dir, omode, verbose);
+            ret != 0
+        } else {
+            match fs::create_dir(dir) {
+                Ok(()) => {
+                    if verbose {
+                        let _ = writeln!(io::stdout(), "{}", dir);
+                    }
+                    true
+                }
+                Err(e) => {
+                    if e.kind() == std::io::ErrorKind::NotFound {
+                        if let Some(parent) = Path::new(dir).parent() {
+                            warn(parent.to_string_lossy().as_ref());
+                        } else {
+                            warn(dir);
+                        }
+                    } else {
+                        warn(dir);
+                    }
+                    false
+                }
+            }
+        };
+
+        if !success {
+            exitval = 1;
+        } else if mode_str.is_some() {
+            // Apply chmod for special bits
+            if let Err(e) = fs::set_permissions(
+                dir,
+                std::os::unix::fs::PermissionsExt::from_mode(omode),
+            ) {
+                let _ = writeln!(io::stderr(), "mkdir: {}: {}", dir, e);
+                exitval = 1;
+            }
+        }
+    }
+
+    process::exit(exitval);
+}

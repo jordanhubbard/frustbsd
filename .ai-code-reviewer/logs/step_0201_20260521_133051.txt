@@ -1,0 +1,20 @@
+=== STEP 201 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/mkdir:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+cargo-target
+mkdir.1
+mkdir.c
+src
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR bin/mkdir/cargo-target/debug

@@ -1,4 +1,8 @@
 {
+  "bin/mkdir": {
+    "attempts": 1,
+    "last_attempt": "2026-05-21T13:25:03.537358"
+  },
   "bin/rmdir": {
     "attempts": 1,
     "last_attempt": "2026-05-21T12:22:31.654359"
