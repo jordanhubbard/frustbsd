@@ -2,9 +2,5 @@
   "bin/rmdir": {
     "attempts": 1,
     "last_attempt": "2026-05-21T12:22:31.654359"
-  },
-  "bin/sleep": {
-    "attempts": 1,
-    "last_attempt": "2026-05-21T13:06:32.943946"
   }
 }
