@@ -48,3 +48,5 @@
 {"event_type":"directory_start","timestamp":"2026-05-21T10:46:05.012418","session_id":"20260521_104504","directory":"bin/domainname","message":"Started reviewing bin/domainname"}
 {"event_type":"build_start","timestamp":"2026-05-21T10:49:16.863478","session_id":"20260521_104504","directory":"bin/domainname","message":"Build started: make -C bin/domainname"}
 {"event_type":"build_success","timestamp":"2026-05-21T10:49:19.699833","session_id":"20260521_104504","directory":"bin/domainname","duration_seconds":1.6413240432739258,"warning_count":0}
+{"event_type":"commit_success","timestamp":"2026-05-21T10:52:50.806675","session_id":"20260521_104504","directory":"bin/domainname","files_changed":["bin/domainname/Makefile","bin/domainname/Cargo.toml","bin/domainname/src/main.rs"],"commit_hash":"fd42be227545"}
+{"event_type":"directory_complete","timestamp":"2026-05-21T10:52:52.441511","session_id":"20260521_104504","directory":"bin/domainname","message":"Completed bin/domainname","duration_seconds":407.429142,"files_changed":["bin/domainname/Makefile","bin/domainname/Cargo.toml","bin/domainname/src/main.rs"],"commit_hash":"fd42be227545"}
