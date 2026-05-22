@@ -1,0 +1,58 @@
+=== STEP 30 ===
+
+--- REQUEST ---
+BUILD_SUCCESS: Build completed successfully.
+Directory usr.bin/fsync is now complete.
+Changes committed and pushed.
+Post-success metadata commit: 45284dc0b4a4.
+
+Completed directories so far: 1
+NEXT: Use SET_SCOPE usr.bin/runat
+
+FINAL DIFFS:
+--- usr.bin/fsync/Makefile ---
+```diff
+diff --git a/usr.bin/fsync/Makefile b/usr.bin/fsync/Makefile
+index 79c1b457900..b9f4082336f 100644
+--- a/usr.bin/fsync/Makefile
++++ b/usr.bin/fsync/Makefile
+@@ -1,4 +1,20 @@
+ PACKAGE=	runtime
+ PROG=	fsync
+ 
+-.include <bsd.prog.mk>
++CARGO?=		cargo
++CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
++
++${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
++	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
++	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
++
++all: ${PROG}
++
++install: ${PROG}
++	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
++
++clean:
++	${RM} ${PROG}
++	${RM} -rf ${CARGO_TARGET_DIR}
++
++CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+```
+
+--- usr.bin/fsync/Cargo.toml ---
+```diff
+(no changes)
+```
+
+--- usr.bin/fsync/src/main.rs ---
+```diff
+(no changes)
+```
+
+--- RESPONSE ---
+
+
+Build succeeded for `usr.bin/fsync`. Moving to the next unit.
+
+ACTION: SET_SCOPE usr.bin/runat

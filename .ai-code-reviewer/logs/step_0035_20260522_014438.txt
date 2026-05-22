@@ -1,0 +1,141 @@
+=== STEP 35 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/runat/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/runat/src/main.rs
+CONTENT:
+<<<
+use std::env;
+use std::ffi::CString;
+use std::os::raw::c_char;
+use std::process;
+
+extern "C" {
+    fn pathconf(path: *const c_char, name: i32) -> libc::c_long;
+    fn open(path: *const c_char, oflag: i32, ...) -> i32;
+    fn openat(dirfd: i32, path: *const c_char, oflag: i32, ...) -> i32;
+    fn fchdir(fd: i32) -> i32;
+    fn execl(path: *const c_char, argv0: *const c_char, argv1: *const c_char, argv2: *const c_char, ...) -> i32;
+}
+
+const O_RDONLY: i32 = 0;
+const O_CLOEXEC: i32 = 0x400000;
+const O_PATH: i32 = 0x40000;
+const O_NOFOLLOW: i32 = 0x100;
+const O_NAMEDATTR: i32 = 0x10000;
+const _PC_NAMEDATTR_ENABLED: i32 = 100;
+const PATH_BSHELL: &str = "/bin/sh";
+
+fn usage() {
+    eprintln!("usage: runat [-h/--nofollow] [--] <file> <shell command>");
+    process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let mut nofollow = false;
+    let mut done_args = false;
+    let mut i = 1;
+
+    while !done_args && i < args.len() {
+        match args[i].as_str() {
+            "-h" | "--nofollow" => {
+                nofollow = true;
+                i += 1;
+            }
+            "--" => {
+                done_args = true;
+                i += 1;
+            }
+            _ => {
+                break;
+            }
+        }
+    }
+
+    let remaining: Vec<&str> = args[i..].iter().map(|s| s.as_str()).collect();
+    if remaining.len() < 2 {
+        usage();
+    }
+
+    let file_path = remaining[0];
+    let cmd_parts: Vec<&str> = remaining[1..].to_vec();
+
+    let file_cstr = match CString::new(file_path) {
+        Ok(c) => c,
+        Err(_) => {
+            eprintln!("runat: invalid file path");
+            process::exit(1);
+        }
+    };
+
+    let named_enabled = unsafe { pathconf(file_cstr.as_ptr(), _PC_NAMEDATTR_ENABLED) };
+    if named_enabled <= 0 {
+        eprintln!("runat: Named attributes not enabled for {}", file_path);
+        process::exit(1);
+    }
+
+    let mut cmd = String::new();
+    for (idx, part) in cmd_parts.iter().enumerate() {
+        if idx > 0 {
+            cmd.push(' ');
+        }
+        cmd.push_str(part);
+    }
+
+    let cmd_cstr = match CString::new(&cmd) {
+        Ok(c) => c,
+        Err(_) => {
+            eprintln!("runat: invalid command string");
+            process::exit(1);
+        }
+    };
+
+    let mut flags = O_RDONLY | O_CLOEXEC | O_PATH;
+    if nofollow {
+        flags |= O_NOFOLLOW;
+    }
+
+    let file_fd = unsafe { open(file_cstr.as_ptr(), flags) };
+    if file_fd < 0 {
+        eprintln!("runat: Cannot open {}", file_path);
+        process::exit(1);
+    }
+
+    let dot_cstr = CString::new(".").unwrap();
+    let nameddir_fd = unsafe {
+        openat(file_fd, dot_cstr.as_ptr(), O_RDONLY | O_CLOEXEC | O_NAMEDATTR)
+    };
+    if nameddir_fd < 0 {
+        eprintln!("runat: Cannot open named attribute directory for {}", file_path);
+        process::exit(1);
+    }
+
+    if unsafe { fchdir(nameddir_fd) } < 0 {
+        eprintln!("runat: Cannot fchdir to named attribute dir");
+        process::exit(1);
+    }
+
+    let shell_cstr = CString::new(PATH_BSHELL).unwrap();
+    let sh_cstr = CString::new("sh").unwrap();
+    let dash_c_cstr = CString::new("-c").unwrap();
+
+    unsafe {
+        execl(
+            shell_cstr.as_ptr(),
+            sh_cstr.as_ptr(),
+            dash_c_cstr.as_ptr(),
+            cmd_cstr.as_ptr(),
+            std::ptr::null::<c_char>(),
+        );
+    }
+
+    eprintln!("runat: Could not exec {}", PATH_BSHELL);
+    process::exit(1);
+}
+>>>

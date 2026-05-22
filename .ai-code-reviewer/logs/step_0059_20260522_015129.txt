@@ -1,0 +1,21 @@
+=== STEP 59 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/runat/Makefile
+Scope: usr.bin/runat
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/runat/Makefile
+OLD:
+<<<
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+>>>
+NEW:
+<<<
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+
+.include <bsd.prog.mk>
+>>>

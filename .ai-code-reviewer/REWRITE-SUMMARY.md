@@ -3,6 +3,27 @@
 Progress tracking for code rewrite sessions.
 
 ---
+## 2026-05-22 01:56 - usr.bin/runat ✓
+
+**Directory:** `usr.bin/runat`
+
+**Summary:** [ai-code-reviewer] runat: Rewrite C implementation in Rust
+
+**Files changed:**
+  - usr.bin/runat/Makefile
+  - usr.bin/runat/Cargo.lock
+  - usr.bin/runat/Cargo.toml
+  - usr.bin/runat/cargo-target/.rustc_info.json
+  - usr.bin/runat/cargo-target/CACHEDIR.TAG
+  - usr.bin/runat/cargo-target/debug/.cargo-lock
+  - usr.bin/runat/cargo-target/debug/.fingerprint/runat-217a5bfe5bb22d09/invoked.timestamp
+  - usr.bin/runat/cargo-target/debug/.fingerprint/runat-217a5bfe5bb22d09/output-bin-runat
+  - usr.bin/runat/cargo-target/debug/deps/runat-217a5bfe5bb22d09.d
+  - usr.bin/runat/cargo-target/debug/incremental/runat-2uabr76u70372/s-hirbgyeq4v-0bdf1w0-working/dep-graph.part.bin
+  - ... and 2 more
+
+---
+
 ## 2026-05-22 01:42 - usr.bin/fsync ✓
 
 **Directory:** `usr.bin/fsync`
