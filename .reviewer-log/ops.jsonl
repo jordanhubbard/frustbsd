@@ -651,3 +651,5 @@
 {"event_type":"directory_start","timestamp":"2026-05-22T01:11:33.964043","session_id":"20260521_232326","directory":"usr.bin/rev","message":"Started reviewing usr.bin/rev"}
 {"event_type":"build_start","timestamp":"2026-05-22T01:13:27.186430","session_id":"20260521_232326","directory":"usr.bin/rev","message":"Build started: make -C usr.bin/rev"}
 {"event_type":"build_success","timestamp":"2026-05-22T01:13:30.280610","session_id":"20260521_232326","directory":"usr.bin/rev","duration_seconds":1.6601624488830566,"warning_count":0}
+{"event_type":"commit_success","timestamp":"2026-05-22T01:15:10.279065","session_id":"20260521_232326","directory":"usr.bin/rev","files_changed":["usr.bin/rev/Makefile","usr.bin/rev/Cargo.toml","usr.bin/rev/src/main.rs"],"commit_hash":"441b8c8b6e5e"}
+{"event_type":"directory_complete","timestamp":"2026-05-22T01:15:10.495992","session_id":"20260521_232326","directory":"usr.bin/rev","message":"Completed usr.bin/rev","duration_seconds":216.531919,"files_changed":["usr.bin/rev/Makefile","usr.bin/rev/Cargo.toml","usr.bin/rev/src/main.rs"],"commit_hash":"441b8c8b6e5e"}
