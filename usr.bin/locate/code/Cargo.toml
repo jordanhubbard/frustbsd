@@ -1,0 +1,16 @@
+[package]
+name = "locate-code"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "locate_code"
+path = "src/main.rs"
+
+[dependencies]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"

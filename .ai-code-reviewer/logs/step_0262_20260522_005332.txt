@@ -1,0 +1,43 @@
+=== STEP 262 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/locate/code/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/locate/code
+   Files: 0/2
+📄 File: usr.bin/locate/code/Makefile
+
+```
+PROG=	locate.code
+CFLAGS+=-I${.CURDIR}/../locate 
+MAN=
+BINDIR=	${LIBEXECDIR}
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/locate/code/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "locate-code"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "locate_code"
+path = "src/main.rs"
+
+[dependencies]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
+>>>

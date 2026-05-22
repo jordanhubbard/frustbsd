@@ -3,6 +3,19 @@
 Progress tracking for code rewrite sessions.
 
 ---
+## 2026-05-22 00:57 - usr.bin/locate/code ✓
+
+**Directory:** `usr.bin/locate/code`
+
+**Summary:** [ai-code-reviewer] code: Rewrite to Rust and migrate to Cargo build
+
+**Files changed:**
+  - usr.bin/locate/code/Makefile
+  - usr.bin/locate/code/Cargo.toml
+  - usr.bin/locate/code/src/main.rs
+
+---
+
 ## 2026-05-22 00:52 - usr.bin/locate/bigram ✓
 
 **Directory:** `usr.bin/locate/bigram`

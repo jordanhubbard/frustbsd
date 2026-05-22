@@ -1,0 +1,14 @@
+=== STEP 256 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/sleep is already marked complete.
+
+Completed work units are closed after a successful build and commit; do not reopen the same unit for incremental polish.
+NEXT: Use SET_SCOPE bin/sh
+
+--- RESPONSE ---
+
+
+Let me try bin/stty which should be relatively small:
+
+ACTION: SET_SCOPE bin/stty

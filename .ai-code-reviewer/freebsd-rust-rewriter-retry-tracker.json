@@ -127,6 +127,10 @@
     "attempts": 1,
     "last_attempt": "2026-05-21T23:15:10.423865"
   },
+  "usr.bin/locate/code": {
+    "attempts": 1,
+    "last_attempt": "2026-05-22T00:53:02.800937"
+  },
   "usr.bin/printf": {
     "attempts": 1,
     "last_attempt": "2026-05-21T23:16:33.681504"
