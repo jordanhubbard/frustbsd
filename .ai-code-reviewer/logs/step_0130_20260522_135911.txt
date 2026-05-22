@@ -1,0 +1,693 @@
+=== STEP 130 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/backlight/src/main.rs:
+PROGRESS:
+📁 Directory: usr.bin/backlight
+   Files: 0/3
+📄 File: usr.bin/backlight/src/main.rs
+✏️  Edits: 4 files modified
+
+```
+// SPDX-License-Identifier: BSD-2-Clause
+// Translation of FreeBSD usr.bin/backlight/backlight.c to Rust
+
+#![allow(unused_imports)]
+
+use std::ffi::{CStr, CString};
+use std::os::raw::{c_char, c_int, c_uint, c_ulong};
+use std::ptr;
+use std::str;
+
+#[link(name = "capsicum_helpers")]
+extern "C" {}
+
+// From sys/backlight.h
+const BACKLIGHT_MAX_LEVELS: usize = 16;
+const BACKLIGHT_MAX_NAME_LEN: usize = 32;
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct backlight_props {
+    brightness: c_uint,
+    nlevels: c_uint,
+    levels: [c_uint; BACKLIGHT_MAX_LEVELS],
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct backlight_info {
+    name: [c_char; BACKLIGHT_MAX_NAME_LEN],
+    r#type: c_uint,
+}
+
+const BACKLIGHT_TYPE_PANEL: c_uint = 0;
+const BACKLIGHT_TYPE_KEYBOARD: c_uint = 1;
+
+// ioctl numbers - these are FreeBSD-specific
+const BACKLIGHTGETSTATUS: c_ulong = 0xc0207560;
+const BACKLIGHTUPDATESTATUS: c_ulong = 0x40207561;
+const BACKLIGHTGETINFO: c_ulong = 0xc0207562;
+
+// Actions
+const BACKLIGHT_QUERY: c_int = 0x0001;
+const BACKLIGHT_SET_BRIGHTNESS: c_int = 0x0002;
+const BACKLIGHT_INCR: c_int = 0x0004;
+const BACKLIGHT_DECR: c_int = 0x0008;
+const BACKLIGHT_INFO: c_int = 0x0010;
+
+// CAP_IOCTL for capsicum
+const CAP_IOCTL: c_ulong = 1 << 1;
+
+// capsicum types
+#[repr(C)]
+struct cap_rights_t {
+    _private: [c_ulong; 2],
+}
+
+extern "C" {
+    fn open(path: *const c_char, oflag: c_int, ...) -> c_int;
+    fn close(fd: c_int) -> c_int;
+    fn ioctl(fd: c_int, request: c_ulong, ...) -> c_int;
+    fn strerror(errnum: c_int) -> *mut c_char;
+    fn cap_enter() -> c_int;
+    fn strtonum(nptr: *const c_char, minval: i64, maxval: i64, errstr: *const *const c_char) -> i64;
+}
+
+#[link(name = "capsicum_helpers")]
+extern "C" {
+    fn caph_limit_stdio() -> c_int;
+    fn caph_cache_catpages();
+    fn caph_rights_limit(fd: c_int, rights: *const cap_rights_t) -> c_int;
+    fn caph_ioctls_limit(fd: c_int, ioctls: *const c_ulong, nioctls: c_uint) -> c_int;
+}
+
+extern "C" {
+    fn cap_rights_init(rights: *mut cap_rights_t, first_right: c_ulong, ...) -> *mut cap_rights_t;
+    fn cap_rights_limit(fd: c_int, rights: *const cap_rights_t) -> c_int;
+    fn cap_ioctls_limit(fd: c_int, ioctls: *const c_ulong, nioctls: c_uint) -> c_int;
+}
+
+const O_RDWR: c_int = 2;
+
+static mut DEVICE_NAME: [c_char; 1024] = [0; 1024];
+
+fn set_device_name(name: &str) {
+    unsafe {
+        if name.starts_with('/') {
+            let c_name = CString::new(name).unwrap();
+            ptr::copy_nonoverlapping(c_name.as_ptr(), DEVICE_NAME.as_mut_ptr(), c_name.as_bytes_with_nul().len());
+        } else {
+            let full = format!("/dev/backlight/{}", name);
+            let c_name = CString::new(full).unwrap();
+            ptr::copy_nonoverlapping(c_name.as_ptr(), DEVICE_NAME.as_mut_ptr(), c_name.as_bytes_with_nul().len());
+        }
+    }
+}
+
+fn usage() -> ! {
+    eprintln!("Usage:");
+    eprintln!("\tbacklight [-q] [-f device]");
+    eprintln!("\tbacklight [-q] [-f device] -i");
+    eprintln!("\tbacklight [-f device] value");
+    eprintln!("\tbacklight [-f device] incr|+ value");
+    eprintln!("\tbacklight [-f device] decr|- value");
+    std::process::exit(1);
+}
+
+fn backlight_type_to_string(t: c_uint) -> &'static str {
+    match t {
+        BACKLIGHT_TYPE_PANEL => "Panel",
+        BACKLIGHT_TYPE_KEYBOARD => "Keyboard",
+        _ => "Unknown",
+    }
+}
+
+fn errx(code: c_int, msg: &str) -> ! {
+    eprintln!("backlight: {}", msg);
+    std::process::exit(code);
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let mut action: c_int = BACKLIGHT_QUERY;
+    let mut quiet = false;
+    let mut percent: i64 = -1;
+    let mut i = 1;
+
+    // Parse options
+    while i < args.len() {
+        let arg = &args[i];
+        if arg.starts_with('-') && arg.len() > 1 {
+            let ch = arg.chars().nth(1).unwrap();
+            match ch {
+                'q' => {
+                    quiet = true;
+                    i += 1;
+                }
+                'f' => {
+                    if arg.len() > 2 {
+                        set_device_name(&arg[2..]);
+                        i += 1;
+                    } else {
+                        i += 1;
+                        if i >= args.len() {
+                            usage();
+                        }
+                        set_device_name(&args[i]);
+                        i += 1;
+                    }
+                }
+                'i' => {
+                    action = BACKLIGHT_INFO;
+                    i += 1;
+                }
+                'h' => {
+                    usage();
+                }
+                _ => {
+                    usage();
+                }
+            }
+        } else {
+            break;
+        }
+    }
+
+    // Parse remaining arguments
+    if i < args.len() {
+        let arg0 = &args[i];
+        if arg0 == "incr" || arg0 == "+" {
+            action = BACKLIGHT_INCR;
+            i += 1;
+        } else if arg0 == "decr" || arg0 == "-" {
+            action = BACKLIGHT_DECR;
+            i += 1;
+        } else {
+            action = BACKLIGHT_SET_BRIGHTNESS;
+        }
+
+        if i < args.len() {
+            let mut val = args[i].clone();
+            // Strip trailing %
+            if val.ends_with('%') {
+                val.pop();
+            }
+            let c_val = CString::new(val.as_str()).unwrap();
+            let mut errstr: *const c_char = ptr::null();
+            unsafe {
+                percent = strtonum(c_val.as_ptr(), 0, 100, &mut errstr);
+            }
+            if !errstr.is_null() {
+                let err = unsafe { CStr::from_ptr(errstr) }.to_string_lossy().into_owned();
+                errx(1, &format!("Cannot parse brightness level {}: {}", args[i], err));
+            }
+        }
+    }
+
+    // Open device
+    let c_dev = unsafe { CString::from_raw(DEVICE_NAME.as_mut_ptr() as *mut c_char) };
+    let fd = unsafe { open(c_dev.as_ptr(), O_RDWR) };
+    if fd == -1 {
+        let err = unsafe { strerror(std::io::Error::last_os_error().raw_os_error().unwrap_or(0)) };
+        let err_str = unsafe { CStr::from_ptr(err) }.to_string_lossy().into_owned();
+        let dev_str = unsafe { CStr::from_ptr(DEVICE_NAME.as_ptr()) }.to_string_lossy().into_owned();
+        errx(1, &format!("cannot open {}: {}", dev_str, err_str));
+    }
+
+    // Capsicum
+    unsafe {
+        if caph_limit_stdio() < 0 {
+            errx(1, "can't limit stdio rights");
+        }
+        caph_cache_catpages();
+
+        let mut right_ioctl: cap_rights_t = std::mem::zeroed();
+        cap_rights_init(&mut right_ioctl, CAP_IOCTL, 0);
+        if caph_rights_limit(fd, &right_ioctl) < 0 {
+            errx(1, "cap_right_limit() failed");
+        }
+
+        let backlight_ioctls: [c_ulong; 3] = [BACKLIGHTGETSTATUS, BACKLIGHTUPDATESTATUS, BACKLIGHTGETINFO];
+        if caph_ioctls_limit(fd, backlight_ioctls.as_ptr(), 3) < 0 {
+            errx(1, "caph_ioctls_limit() failed");
+        }
+
+        if cap_enter() < 0 {
+            errx(1, "failed to enter capability mode");
+        }
+    }
+
+    match action {
+        BACKLIGHT_QUERY => {
+            let mut props: backlight_props = unsafe { std::mem::zeroed() };
+            unsafe {
+                if ioctl(fd, BACKLIGHTGETSTATUS, &mut props as *mut backlight_props as *mut std::ffi::c_void) == -1 {
+                    errx(1, "Cannot query the backlight device");
+                }
+            }
+            if quiet {
+                println!("{}", props.brightness);
+            } else {
+                println!("brightness: {}", props.brightness);
+                if props.nlevels != 0 {
+                    print!("levels:");
+                    for j in 0..props.nlevels as usize {
+                        print!(" {}", props.levels[j]);
+                    }
+                    println!();
+                }
+            }
+        }
+        BACKLIGHT_SET_BRIGHTNESS => {
+            if percent == -1 {
+                usage();
+            }
+            let mut props: backlight_props = unsafe { std::mem::zeroed() };
+            props.brightness = percent as c_uint;
+            unsafe {
+                if ioctl(fd, BACKLIGHTUPDATESTATUS, &mut props as *mut backlight_props as *mut std::ffi::c_void) == -1 {
+                    errx(1, "Cannot update the backlight device");
+                }
+            }
+        }
+        BACKLIGHT_INCR | BACKLIGHT_DECR => {
+            if percent == 0 {
+                // Nothing to do
+            } else {
+                let mut props: backlight_props = unsafe { std::mem::zeroed() };
+                unsafe {
+                    if ioctl(fd, BACKLIGHTGETSTATUS, &mut props as *mut backlight_props as *mut std::ffi::c_void) == -1 {
+                        errx(1, "Cannot query the backlight device");
+                    }
+                }
+                let mut adj = if percent == -1 { 10 } else { percent };
+                if action == BACKLIGHT_DECR {
+                    adj = -adj;
+                }
+                let new_brightness = props.brightness as i64 + adj;
+                props.brightness = if new_brightness < 0 {
+                    0
+                } else if new_brightness > 100 {
+                    100
+                } else {
+                    new_brightness as c_uint
+                };
+                unsafe {
+                    if ioctl(fd, BACKLIGHTUPDATESTATUS, &mut props as *mut backlight_props as *mut std::ffi::c_void) == -1 {
+                        errx(1, "Cannot update the backlight device");
+                    }
+                }
+            }
+        }
+        BACKLIGHT_INFO => {
+            let mut info: backlight_info = unsafe { std::mem::zeroed() };
+            unsafe {
+                if ioctl(fd, BACKLIGHTGETINFO, &mut info as *mut backlight_info as *mut std::ffi::c_void) == -1 {
+                    errx(1, "Cannot query the backlight device");
+                }
+            }
+            let name = unsafe { CStr::from_ptr(info.name.as_ptr()) }.to_string_lossy().into_owned();
+            if !quiet {
+                println!("Backlight name: {}", name);
+                println!("Backlight hardware type: {}", backlight_type_to_string(info.r#type));
+            } else {
+                println!("{}", name);
+                println!("{}", backlight_type_to_string(info.r#type));
+            }
+        }
+        _ => {}
+    }
+
+    unsafe { close(fd) };
+}
+```
+
+--- RESPONSE ---
+
+
+The Rust code depends on `libcapsicum_helpers` which isn't available. I need to rewrite it to use direct libc syscalls instead.
+
+ACTION: WRITE_FILE usr.bin/backlight/src/main.rs
+CONTENT:
+<<<
+// SPDX-License-Identifier: BSD-2-Clause
+// Translation of FreeBSD usr.bin/backlight/backlight.c to Rust
+
+use std::ffi::{CStr, CString};
+use std::os::raw::{c_char, c_int, c_uint, c_ulong, c_void};
+use std::ptr;
+use std::process;
+
+// From sys/backlight.h
+const BACKLIGHT_MAX_LEVELS: usize = 16;
+const BACKLIGHT_MAX_NAME_LEN: usize = 32;
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct backlight_props {
+    brightness: c_uint,
+    nlevels: c_uint,
+    levels: [c_uint; BACKLIGHT_MAX_LEVELS],
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct backlight_info {
+    name: [c_char; BACKLIGHT_MAX_NAME_LEN],
+    r#type: c_uint,
+}
+
+const BACKLIGHT_TYPE_PANEL: c_uint = 0;
+const BACKLIGHT_TYPE_KEYBOARD: c_uint = 1;
+
+// ioctl numbers - FreeBSD-specific
+const BACKLIGHTGETSTATUS: c_ulong = 0xc0207560;
+const BACKLIGHTUPDATESTATUS: c_ulong = 0x40207561;
+const BACKLIGHTGETINFO: c_ulong = 0xc0207562;
+
+// Actions
+const BACKLIGHT_QUERY: c_int = 0x0001;
+const BACKLIGHT_SET_BRIGHTNESS: c_int = 0x0002;
+const BACKLIGHT_INCR: c_int = 0x0004;
+const BACKLIGHT_DECR: c_int = 0x0008;
+const BACKLIGHT_INFO: c_int = 0x0010;
+
+// CAP_* constants from sys/capsicum.h
+const CAP_IOCTL: c_ulong = 1 << 1;
+const CAP_READ: c_ulong = 1 << 0;
+const CAP_WRITE: c_ulong = 1 << 2;
+
+// capsicum types
+#[repr(C)]
+struct cap_rights_t {
+    _private: [c_ulong; 2],
+}
+
+const O_RDWR: c_int = 2;
+
+static mut DEVICE_NAME: [c_char; 1024] = [0; 1024];
+
+extern "C" {
+    fn open(path: *const c_char, oflag: c_int, ...) -> c_int;
+    fn close(fd: c_int) -> c_int;
+    fn ioctl(fd: c_int, request: c_ulong, ...) -> c_int;
+    fn strerror(errnum: c_int) -> *mut c_char;
+    fn cap_enter() -> c_int;
+    fn strtonum(
+        nptr: *const c_char,
+        minval: i64,
+        maxval: i64,
+        errstr: *const *const c_char,
+    ) -> i64;
+    fn cap_rights_init(rights: *mut cap_rights_t, first_right: c_ulong, ...) -> *mut cap_rights_t;
+    fn cap_rights_limit(fd: c_int, rights: *const cap_rights_t) -> c_int;
+    fn cap_ioctls_limit(fd: c_int, ioctls: *const c_ulong, nioctls: c_uint) -> c_int;
+}
+
+fn set_device_name(name: &str) {
+    unsafe {
+        let src = if name.starts_with('/') {
+            CString::new(name).unwrap()
+        } else {
+            CString::new(format!("/dev/backlight/{}", name)).unwrap()
+        };
+        let len = src.as_bytes_with_nul().len();
+        ptr::copy_nonoverlapping(src.as_ptr(), DEVICE_NAME.as_mut_ptr(), len);
+    }
+}
+
+fn usage() -> ! {
+    eprintln!("Usage:");
+    eprintln!("\tbacklight [-q] [-f device]");
+    eprintln!("\tbacklight [-q] [-f device] -i");
+    eprintln!("\tbacklight [-f device] value");
+    eprintln!("\tbacklight [-f device] incr|+ value");
+    eprintln!("\tbacklight [-f device] decr|- value");
+    process::exit(1);
+}
+
+fn backlight_type_to_string(t: c_uint) -> &'static str {
+    match t {
+        BACKLIGHT_TYPE_PANEL => "Panel",
+        BACKLIGHT_TYPE_KEYBOARD => "Keyboard",
+        _ => "Unknown",
+    }
+}
+
+fn errx(code: c_int, msg: &str) -> ! {
+    eprintln!("backlight: {}", msg);
+    process::exit(code);
+}
+
+// Limit stdio file descriptors to read/write rights (replaces caph_limit_stdio)
+fn limit_stdio() -> bool {
+    unsafe {
+        let mut rights: cap_rights_t = std::mem::zeroed();
+        cap_rights_init(&mut rights, CAP_READ, CAP_WRITE, 0);
+        if cap_rights_limit(0, &rights) < 0 {
+            return false;
+        }
+        if cap_rights_limit(1, &rights) < 0 {
+            return false;
+        }
+        if cap_rights_limit(2, &rights) < 0 {
+            return false;
+        }
+    }
+    true
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let mut action: c_int = BACKLIGHT_QUERY;
+    let mut quiet = false;
+    let mut percent: i64 = -1;
+    let mut i = 1;
+
+    // Parse options
+    while i < args.len() {
+        let arg = &args[i];
+        if arg.starts_with('-') && arg.len() > 1 {
+            let ch = arg.chars().nth(1).unwrap();
+            match ch {
+                'q' => {
+                    quiet = true;
+                    i += 1;
+                }
+                'f' => {
+                    if arg.len() > 2 {
+                        set_device_name(&arg[2..]);
+                        i += 1;
+                    } else {
+                        i += 1;
+                        if i >= args.len() {
+                            usage();
+                        }
+                        set_device_name(&args[i]);
+                        i += 1;
+                    }
+                }
+                'i' => {
+                    action = BACKLIGHT_INFO;
+                    i += 1;
+                }
+                'h' => {
+                    usage();
+                }
+                _ => {
+                    usage();
+                }
+            }
+        } else {
+            break;
+        }
+    }
+
+    // Parse remaining arguments
+    if i < args.len() {
+        let arg0 = &args[i];
+        if arg0 == "incr" || arg0 == "+" {
+            action = BACKLIGHT_INCR;
+            i += 1;
+        } else if arg0 == "decr" || arg0 == "-" {
+            action = BACKLIGHT_DECR;
+            i += 1;
+        } else {
+            action = BACKLIGHT_SET_BRIGHTNESS;
+        }
+
+        if i < args.len() {
+            let mut val = args[i].clone();
+            // Strip trailing %
+            if val.ends_with('%') {
+                val.pop();
+            }
+            let c_val = CString::new(val.as_str()).unwrap();
+            let mut errstr: *const c_char = ptr::null();
+            unsafe {
+                percent = strtonum(c_val.as_ptr(), 0, 100, &mut errstr);
+            }
+            if !errstr.is_null() {
+                let err = unsafe { CStr::from_ptr(errstr) }.to_string_lossy().into_owned();
+                errx(1, &format!("Cannot parse brightness level {}: {}", args[i], err));
+            }
+        }
+    }
+
+    // Open device
+    let fd = unsafe {
+        let dev_ptr = DEVICE_NAME.as_ptr();
+        open(dev_ptr, O_RDWR)
+    };
+    if fd == -1 {
+        let err = unsafe {
+            let e = std::io::Error::last_os_error().raw_os_error().unwrap_or(0);
+            let s = strerror(e);
+            CStr::from_ptr(s).to_string_lossy().into_owned()
+        };
+        let dev = unsafe {
+            CStr::from_ptr(DEVICE_NAME.as_ptr()).to_string_lossy().into_owned()
+        };
+        errx(1, &format!("cannot open {}: {}", dev, err));
+    }
+
+    // Capsicum: limit stdio, then limit device fd, then enter capability mode
+    unsafe {
+        if !limit_stdio() {
+            errx(1, "can't limit stdio rights");
+        }
+
+        let mut right_ioctl: cap_rights_t = std::mem::zeroed();
+        cap_rights_init(&mut right_ioctl, CAP_IOCTL, 0);
+        if cap_rights_limit(fd, &right_ioctl) < 0 {
+            errx(1, "cap_rights_limit() failed");
+        }
+
+        let backlight_ioctls: [c_ulong; 3] = [
+            BACKLIGHTGETSTATUS,
+            BACKLIGHTUPDATESTATUS,
+            BACKLIGHTGETINFO,
+        ];
+        if cap_ioctls_limit(fd, backlight_ioctls.as_ptr(), 3) < 0 {
+            errx(1, "cap_ioctls_limit() failed");
+        }
+
+        if cap_enter() < 0 {
+            errx(1, "failed to enter capability mode");
+        }
+    }
+
+    match action {
+        BACKLIGHT_QUERY => {
+            let mut props: backlight_props = unsafe { std::mem::zeroed() };
+            unsafe {
+                if ioctl(
+                    fd,
+                    BACKLIGHTGETSTATUS,
+                    &mut props as *mut backlight_props as *mut c_void,
+                ) == -1
+                {
+                    errx(1, "Cannot query the backlight device");
+                }
+            }
+            if quiet {
+                println!("{}", props.brightness);
+            } else {
+                println!("brightness: {}", props.brightness);
+                if props.nlevels != 0 {
+                    print!("levels:");
+                    for j in 0..props.nlevels as usize {
+                        print!(" {}", props.levels[j]);
+                    }
+                    println!();
+                }
+            }
+        }
+        BACKLIGHT_SET_BRIGHTNESS => {
+            if percent == -1 {
+                usage();
+            }
+            let mut props: backlight_props = unsafe { std::mem::zeroed() };
+            props.brightness = percent as c_uint;
+            unsafe {
+                if ioctl(
+                    fd,
+                    BACKLIGHTUPDATESTATUS,
+                    &mut props as *mut backlight_props as *mut c_void,
+                ) == -1
+                {
+                    errx(1, "Cannot update the backlight device");
+                }
+            }
+        }
+        BACKLIGHT_INCR | BACKLIGHT_DECR => {
+            if percent == 0 {
+                // Nothing to do
+            } else {
+                let mut props: backlight_props = unsafe { std::mem::zeroed() };
+                unsafe {
+                    if ioctl(
+                        fd,
+                        BACKLIGHTGETSTATUS,
+                        &mut props as *mut backlight_props as *mut c_void,
+                    ) == -1
+                    {
+                        errx(1, "Cannot query the backlight device");
+                    }
+                }
+                let mut adj = if percent == -1 { 10 } else { percent };
+                if action == BACKLIGHT_DECR {
+                    adj = -adj;
+                }
+                let new_brightness = props.brightness as i64 + adj;
+                props.brightness = if new_brightness < 0 {
+                    0
+                } else if new_brightness > 100 {
+                    100
+                } else {
+                    new_brightness as c_uint
+                };
+                unsafe {
+                    if ioctl(
+                        fd,
+                        BACKLIGHTUPDATESTATUS,
+                        &mut props as *mut backlight_props as *mut c_void,
+                    ) == -1
+                    {
+                        errx(1, "Cannot update the backlight device");
+                    }
+                }
+            }
+        }
+        BACKLIGHT_INFO => {
+            let mut info: backlight_info = unsafe { std::mem::zeroed() };
+            unsafe {
+                if ioctl(
+                    fd,
+                    BACKLIGHTGETINFO,
+                    &mut info as *mut backlight_info as *mut c_void,
+                ) == -1
+                {
+                    errx(1, "Cannot query the backlight device");
+                }
+            }
+            let name =
+                unsafe { CStr::from_ptr(info.name.as_ptr()) }.to_string_lossy().into_owned();
+            if !quiet {
+                println!("Backlight name: {}", name);
+                println!(
+                    "Backlight hardware type: {}",
+                    backlight_type_to_string(info.r#type)
+                );
+            } else {
+                println!("{}", name);
+                println!("{}", backlight_type_to_string(info.r#type));
+            }
+        }
+        _ => {}
+    }
+
+    unsafe { close(fd) };
+}
+>>>

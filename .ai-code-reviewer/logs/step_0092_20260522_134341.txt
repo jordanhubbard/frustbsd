@@ -1,0 +1,12 @@
+=== STEP 92 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/backlight/cargo-target/debug/.fingerprint:
+```
+backlight-7cc95a4aef9c929f
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/backlight/cargo-target/debug/.fingerprint/backlight-7cc95a4aef9c929f/output-bin-backlight

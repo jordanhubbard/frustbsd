@@ -1,0 +1,61 @@
+=== STEP 98 ===
+
+--- REQUEST ---
+BUILD_FAILED: Build errors detected
+
+No changes were committed. Rewrite units are atomic: source, Rust artifacts, build glue, and configured contract checks must pass together before the unit can be marked complete.
+
+BUILD ERROR REPORT:
+BUILD FAILED: 4 errors, 0 warnings
+Duration: 1.4 seconds
+
+============================================================
+ERRORS (fix these first):
+============================================================
+
+[1] (linker):0: error: undefined symbol: caph_cache_catpages
+
+[2] (linker):0: error: undefined symbol: cap_rights_init
+
+[3] (linker):0: error: undefined symbol: caph_rights_limit
+
+[4] (linker):0: error: undefined symbol: caph_ioctls_limit
+
+
+NEXT STEPS:
+1. Keep the active scope.
+2. Fix the source/build integration that caused this failure.
+3. BUILD again when the complete rewrite unit is ready.
+
+
+--- RESPONSE ---
+
+
+I need to link against `libcapsicum_helpers`. Let me add the link directive.
+
+ACTION: EDIT_FILE usr.bin/backlight/src/main.rs
+OLD:
+<<<
+// SPDX-License-Identifier: BSD-2-Clause
+// Translation of FreeBSD usr.bin/backlight/backlight.c to Rust
+
+use std::ffi::{CStr, CString};
+use std::os::raw::{c_char, c_int, c_uint, c_ulong};
+use std::ptr;
+use std::str;
+>>>
+NEW:
+<<<
+// SPDX-License-Identifier: BSD-2-Clause
+// Translation of FreeBSD usr.bin/backlight/backlight.c to Rust
+
+#![allow(unused_imports)]
+
+use std::ffi::{CStr, CString};
+use std::os::raw::{c_char, c_int, c_uint, c_ulong};
+use std::ptr;
+use std::str;
+
+#[link(name = "capsicum_helpers")]
+extern "C" {}
+>>>

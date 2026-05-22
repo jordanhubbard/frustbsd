@@ -1,0 +1,56 @@
+[target.x86_64-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.aarch64-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.armv7-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.armv6-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.riscv64gc-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.powerpc64-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.i686-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.powerpc64le-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.powerpc-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.mips64-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.mips64el-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.mips-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.mipsel-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.sparc64-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.riscv32gc-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.loongarch64-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.loongarch32-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.loongarch32r6-unknown-freebsd]
+rustflags = ["-L/usr/lib"]
+
+[target.loongarch64r6-unknown-freebsd]
+rustflags = ["-L/usr/lib"]

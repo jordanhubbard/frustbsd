@@ -111,6 +111,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-21T19:44:21.180208"
   },
+  "usr.bin/backlight": {
+    "attempts": 1,
+    "last_attempt": "2026-05-22T13:39:01.681868"
+  },
   "usr.bin/bluetooth/bthost": {
     "attempts": 3,
     "last_attempt": "2026-05-22T09:42:44.986549"

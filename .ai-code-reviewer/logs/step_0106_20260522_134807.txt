@@ -1,0 +1,9 @@
+=== STEP 106 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*usr.bin/backlight/cargo-target/debug/backlight*'
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/backlight/cargo-target/debug/.fingerprint/backlight-7cc95a4aef9c929f/output-bin-backlight

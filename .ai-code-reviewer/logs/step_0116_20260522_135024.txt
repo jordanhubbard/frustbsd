@@ -1,0 +1,9 @@
+=== STEP 116 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'libcapsicum_helpers'
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/backlight/backlight.c

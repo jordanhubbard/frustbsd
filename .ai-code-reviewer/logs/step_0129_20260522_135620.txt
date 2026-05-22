@@ -1,0 +1,11 @@
+=== STEP 129 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*/usr/lib/libcapsicum*'
+
+--- RESPONSE ---
+
+
+The library isn't installed on this system. Let me check the current Rust source and rewrite it to use direct syscalls instead of depending on `libcapsicum_helpers`.
+
+ACTION: READ_FILE usr.bin/backlight/src/main.rs

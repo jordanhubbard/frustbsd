@@ -1,0 +1,28 @@
+=== STEP 89 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/backlight/src/main.rs
+Scope: usr.bin/backlight
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/backlight/src/main.rs
+OLD:
+<<<
+    if fd == -1 {
+        let err = unsafe { CStr::from_ptr(strerror(std::io::Error::last_os_error().raw_os_error().unwrap_or(0))) };
+        let err_str = unsafe { CStr::from_ptr(err) }.to_string_lossy().into_owned();
+        errx(1, &format!("cannot open {}: {}", unsafe { CStr::from_ptr(DEVICE_NAME.as_ptr()) }.to_string_lossy(), err_str));
+    }
+>>>
+NEW:
+<<<
+    if fd == -1 {
+        let err = unsafe { strerror(std::io::Error::last_os_error().raw_os_error().unwrap_or(0)) };
+        let err_str = unsafe { CStr::from_ptr(err) }.to_string_lossy().into_owned();
+        let dev_str = unsafe { CStr::from_ptr(DEVICE_NAME.as_ptr()) }.to_string_lossy().into_owned();
+        errx(1, &format!("cannot open {}: {}", dev_str, err_str));
+    }
+>>>

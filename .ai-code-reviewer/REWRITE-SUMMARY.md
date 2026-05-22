@@ -3,6 +3,27 @@
 Progress tracking for code rewrite sessions.
 
 ---
+## 2026-05-22 14:04 - usr.bin/backlight ✓
+
+**Directory:** `usr.bin/backlight`
+
+**Summary:** [ai-code-reviewer] backlight: Rewrite C implementation in Rust
+
+**Files changed:**
+  - usr.bin/backlight/Makefile
+  - usr.bin/backlight/.cargo/config.toml
+  - usr.bin/backlight/Cargo.lock
+  - usr.bin/backlight/Cargo.toml
+  - usr.bin/backlight/cargo-target/.rustc_info.json
+  - usr.bin/backlight/cargo-target/CACHEDIR.TAG
+  - usr.bin/backlight/cargo-target/debug/.cargo-lock
+  - usr.bin/backlight/cargo-target/debug/.fingerprint/backlight-7cc95a4aef9c929f/invoked.timestamp
+  - usr.bin/backlight/cargo-target/debug/.fingerprint/backlight-7cc95a4aef9c929f/output-bin-backlight
+  - usr.bin/backlight/cargo-target/debug/.fingerprint/backlight-f4f23c4326ac8c4b/invoked.timestamp
+  - ... and 8 more
+
+---
+
 ## 2026-05-22 13:38 - usr.bin/c99 ✓
 
 **Directory:** `usr.bin/c99`
