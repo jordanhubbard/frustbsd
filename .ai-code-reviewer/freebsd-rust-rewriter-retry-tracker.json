@@ -123,10 +123,6 @@
     "attempts": 3,
     "last_attempt": "2026-05-21T20:49:38.897585"
   },
-  "usr.bin/fsync": {
-    "attempts": 1,
-    "last_attempt": "2026-05-22T01:38:23.489267"
-  },
   "usr.bin/head": {
     "attempts": 1,
     "last_attempt": "2026-05-22T01:11:10.571575"
