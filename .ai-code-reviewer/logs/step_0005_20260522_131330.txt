@@ -1,0 +1,24 @@
+=== STEP 5 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/pom/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/pom
+   Files: 0/3
+📄 File: usr.bin/pom/Makefile
+
+```
+PACKAGE=	games
+
+PROG=	pom
+MAN=	pom.6
+LIBADD=	m
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/pom/pom.6

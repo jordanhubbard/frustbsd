@@ -1,0 +1,61 @@
+=== STEP 35 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/biff/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/pom
+   Files: 1/3
+📄 File: usr.bin/biff/Makefile
+✏️  Edits: 3 files modified
+
+```
+PROG=	biff
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+
+```
+
+--- RESPONSE ---
+
+
+The biff Makefile doesn't include `<src.opts.mk>`. Let me match that pattern exactly.
+
+ACTION: EDIT_FILE usr.bin/pom/Makefile
+OLD:
+<<<
+.include <src.opts.mk>
+
+PROG=	pom
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+>>>
+NEW:
+<<<
+PROG=	pom
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+>>>

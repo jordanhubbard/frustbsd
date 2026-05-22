@@ -2,13 +2,9 @@
 
 DIRDEPS = \
 	include \
-	include/xlocale \
 	lib/${CSU_DIR} \
 	lib/libc \
-	lib/libcapsicum \
-	lib/libcasper/libcasper \
 	lib/libcompiler_rt \
-	lib/msun \
 
 
 .include <dirdeps.mk>

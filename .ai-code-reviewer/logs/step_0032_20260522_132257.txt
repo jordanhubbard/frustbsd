@@ -1,0 +1,40 @@
+=== STEP 32 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/pom/cargo-target/debug:
+```
+.cargo-lock
+.fingerprint
+build
+deps
+examples
+incremental
+```
+
+--- RESPONSE ---
+
+
+The build keeps failing silently. Let me check if the `MAN` variable is causing issues since we're not using `bsd.prog.mk`.
+
+ACTION: EDIT_FILE usr.bin/pom/Makefile
+OLD:
+<<<
+.include <src.opts.mk>
+
+PROG=	pom
+MAN=	pom.6
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+>>>
+NEW:
+<<<
+.include <src.opts.mk>
+
+PROG=	pom
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+>>>
