@@ -1,0 +1,28 @@
+=== STEP 143 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/protect/Makefile
+Scope: usr.bin/protect
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/protect/Makefile
+OLD:
+<<<
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+
+# Prevent auto-inclusion of Makefile.depend
+NO_DEPEND=
+>>>
+NEW:
+<<<
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+
+# Prevent auto-inclusion of Makefile.depend
+NO_DEPEND=
+
+# Force rebuild on every invocation
+.ORDER: clean ${PROG}
+>>>

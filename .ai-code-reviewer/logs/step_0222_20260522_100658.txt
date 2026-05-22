@@ -1,0 +1,41 @@
+=== STEP 222 ===
+
+--- REQUEST ---
+
+⚠️  INCOMPLETE RESPONSE DETECTED
+
+Problem: Mismatched <<< >>> delimiters (incomplete EDIT_FILE)
+Response length: 666 chars
+Last 100 chars: ...eturn Some(BufReader::new(Box::new(f))); }
+    }
+    eprintln!("soelim: can't open '{}'", n); None
+}
+
+Your response appears to have been cut off before completion.
+Please provide a COMPLETE response including:
+1. Your analysis
+2. A SINGLE, COMPLETE ACTION directive
+3. For EDIT_FILE: both complete OLD and NEW blocks
+
+If you're working with a large file causing timeouts:
+- Focus on ONE specific issue at a time
+- Use smaller OLD/NEW blocks
+- Consider SKIP_FILE if the file is too complex
+
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/soelim/src/lib.rs
+CONTENT:
+use std::fs::File;
+use std::io::{self, BufRead, BufReader, Read};
+pub fn so_open(n: &str, inc: &[String]) -> Option<BufReader<Box<dyn Read>>> {
+    if n == "-" { return Some(BufReader::new(Box::new(io::stdin()))); }
+    if let Ok(f) = File::open(n) { return Some(BufReader::new(Box::new(f))); }
+    if n.starts_with('/') { eprintln!("soelim: can't open '{}'", n); return None; }
+    for d in inc {
+        if let Ok(f) = File::open(format!("{}/{}", d, n)) { return Some(BufReader::new(Box::new(f))); }
+    }
+    eprintln!("soelim: can't open '{}'", n); None
+}

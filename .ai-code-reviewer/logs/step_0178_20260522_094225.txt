@@ -1,0 +1,26 @@
+=== STEP 178 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/bluetooth/bthost/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/bluetooth/bthost
+   Files: 0/3
+📄 File: usr.bin/bluetooth/bthost/Makefile
+
+```
+# $Id: Makefile,v 1.4 2003/08/14 20:07:13 max Exp $
+
+PACKAGE=	bluetooth
+
+PROG=		bthost
+
+LIBADD=		bluetooth
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE libbluetooth

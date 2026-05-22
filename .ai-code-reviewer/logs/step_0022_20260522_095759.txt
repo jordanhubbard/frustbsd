@@ -1,0 +1,26 @@
+=== STEP 22 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/soelim/src/main.rs
+Scope: usr.bin/soelim
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/soelim/src/main.rs
+OLD:
+<<<
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, BufReader, Write, Stdin};
+use std::path::Path;
+use std::process;
+>>>
+NEW:
+<<<
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, BufReader, Write};
+use std::process;
+>>>

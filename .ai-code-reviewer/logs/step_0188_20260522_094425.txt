@@ -1,0 +1,204 @@
+=== STEP 188 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/soelim/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/soelim/src/main.rs
+CONTENT:
+// SPDX-License-Identifier: BSD-2-Clause
+//
+// Copyright (c) 2014 Baptiste Daroussin <bapt@FreeBSD.org>
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer
+//    in this position and unchanged.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR(S) ``AS IS'' AND ANY EXPRESS OR
+// IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+// OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+// IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT, INDIRECT,
+// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+// NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+// THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, BufReader, Read, Write};
+use std::path::Path;
+use std::process;
+
+const C_OPTION: u32 = 0x1;
+
+struct Soelim {
+    includes: Vec<String>,
+    flags: u32,
+}
+
+impl Soelim {
+    fn new() -> Self {
+        Soelim {
+            includes: Vec::new(),
+            flags: 0,
+        }
+    }
+
+    fn open_file(&self, name: &str) -> Option<BufReader<Box<dyn Read>>> {
+        if name == "-" {
+            return Some(BufReader::new(Box::new(io::stdin())));
+        }
+
+        if let Ok(f) = File::open(name) {
+            return Some(BufReader::new(Box::new(f)));
+        }
+
+        if Path::new(name).is_absolute() {
+            eprintln!("soelim: can't open '{}'", name);
+            return None;
+        }
+
+        for dir in &self.includes {
+            let path = format!("{}/{}", dir, name);
+            if let Ok(f) = File::open(&path) {
+                return Some(BufReader::new(Box::new(f)));
+            }
+        }
+
+        eprintln!("soelim: can't open '{}'", name);
+        None
+    }
+
+    fn process_file(&self, mut reader: BufReader<Box<dyn Read>>) -> bool {
+        let mut line = String::new();
+        loop {
+            line.clear();
+            match reader.read_line(&mut line) {
+                Ok(0) => break,
+                Ok(_) => {}
+                Err(_) => {
+                    eprintln!("soelim: error reading input");
+                    return false;
+                }
+            }
+
+            if !line.starts_with(".so") {
+                print!("{}", line);
+                continue;
+            }
+
+            let mut walk = &line[3..];
+            if !walk.chars().next().map_or(false, |c| c.is_whitespace())
+                && (self.flags & C_OPTION) == 0
+            {
+                print!("{}", line);
+                continue;
+            }
+
+            walk = walk.trim_start();
+            let end = walk.find(|c: char| c.is_whitespace()).unwrap_or(walk.len());
+            let filename = &walk[..end];
+
+            if filename.is_empty() {
+                print!("{}", line);
+                continue;
+            }
+
+            let rest = if end < walk.len() {
+                &walk[end..]
+            } else {
+                ""
+            };
+
+            let sub_reader = match self.open_file(filename) {
+                Some(r) => r,
+                None => return false,
+            };
+
+            if !self.process_file(sub_reader) {
+                return false;
+            }
+
+            if !rest.is_empty() {
+                print!("{}", rest);
+            }
+        }
+
+        true
+    }
+}
+
+fn usage() {
+    eprintln!("usage: soelim [-Crtv] [-I dir] [files]");
+    process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let mut soelim = Soelim::new();
+    let mut optind = 1;
+
+    let mut i = 1;
+    while i < args.len() {
+        let arg = &args[i];
+        if arg == "-C" {
+            soelim.flags |= C_OPTION;
+            i += 1;
+        } else if arg == "-r" || arg == "-v" || arg == "-t" {
+            i += 1;
+        } else if arg.starts_with("-I") {
+            if arg.len() == 2 {
+                if i + 1 >= args.len() {
+                    usage();
+                }
+                soelim.includes.push(args[i + 1].clone());
+                i += 2;
+            } else {
+                soelim.includes.push(arg[2..].to_string());
+                i += 1;
+            }
+        } else if arg.starts_with('-') {
+            usage();
+        } else {
+            optind = i;
+            break;
+        }
+    }
+
+    let files: Vec<String> = args[optind..].to_vec();
+    let mut ret = 0;
+
+    if files.is_empty() {
+        let stdin = BufReader::new(Box::new(io::stdin()));
+        if !soelim.process_file(stdin) {
+            ret = 1;
+        }
+    } else {
+        for f in &files {
+            match soelim.open_file(f) {
+                Some(reader) => {
+                    if !soelim.process_file(reader) {
+                        ret = 1;
+                    }
+                }
+                None => {
+                    ret = 1;
+                }
+            }
+        }
+    }
+
+    process::exit(ret);
+}

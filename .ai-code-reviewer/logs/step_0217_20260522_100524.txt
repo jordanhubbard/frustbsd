@@ -1,0 +1,70 @@
+=== STEP 217 ===
+
+--- REQUEST ---
+
+⚠️  INCOMPLETE RESPONSE DETECTED
+
+Problem: Mismatched <<< >>> delimiters (incomplete EDIT_FILE)
+Response length: 2717 chars
+Last 100 chars: ...(f) { Some(r) => { if !s.proc(r) { ret = 1; } } None => { ret = 1; } } } }
+    process::exit(ret);
+}
+
+Your response appears to have been cut off before completion.
+Please provide a COMPLETE response including:
+1. Your analysis
+2. A SINGLE, COMPLETE ACTION directive
+3. For EDIT_FILE: both complete OLD and NEW blocks
+
+If you're working with a large file causing timeouts:
+- Focus on ONE specific issue at a time
+- Use smaller OLD/NEW blocks
+- Consider SKIP_FILE if the file is too complex
+
+
+--- RESPONSE ---
+
+
+Let me split this into two writes - first the library part:
+
+ACTION: WRITE_FILE usr.bin/soelim/src/lib.rs
+CONTENT:
+use std::fs::File;
+use std::io::{self, BufRead, BufReader, Read};
+const C: u32 = 0x1;
+pub struct S { pub inc: Vec<String>, pub fl: u32 }
+impl S {
+    pub fn new() -> Self { S { inc: Vec::new(), fl: 0 } }
+    pub fn open(&self, n: &str) -> Option<BufReader<Box<dyn Read>>> {
+        if n == "-" { return Some(BufReader::new(Box::new(io::stdin()))); }
+        if let Ok(f) = File::open(n) { return Some(BufReader::new(Box::new(f))); }
+        if n.starts_with('/') { eprintln!("soelim: can't open '{}'", n); return None; }
+        for d in &self.inc {
+            if let Ok(f) = File::open(format!("{}/{}", d, n)) { return Some(BufReader::new(Box::new(f))); }
+        }
+        eprintln!("soelim: can't open '{}'", n); None
+    }
+    pub fn proc(&self, mut r: BufReader<Box<dyn Read>>) -> bool {
+        let mut line = String::new();
+        loop {
+            line.clear();
+            if r.read_line(&mut line).unwrap_or(0) == 0 { break; }
+            if !line.starts_with(".so") { print!("{}", line); continue; }
+            let mut w = &line[3..];
+            if !w.chars().next().map_or(false, |c| c.is_whitespace()) && (self.fl & C) == 0 {
+                print!("{}", line); continue;
+            }
+            w = w.trim_start();
+            let e = w.find(|c: char| c.is_whitespace()).unwrap_or(w.len());
+            let fn_ = &w[..e];
+            if fn_.is_empty() { print!("{}", line); continue; }
+            let rest = if e < w.len() { &w[e..] } else { "" };
+            match self.open(fn_) {
+                Some(sr) => { if !self.proc(sr) { return false; } }
+                None => return false,
+            }
+            if !rest.is_empty() { print!("{}", rest); }
+        }
+        true
+    }
+}

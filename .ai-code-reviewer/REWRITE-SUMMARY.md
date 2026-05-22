@@ -3,6 +3,19 @@
 Progress tracking for code rewrite sessions.
 
 ---
+## 2026-05-22 10:07 - usr.bin/which ✓
+
+**Directory:** `usr.bin/which`
+
+**Summary:** [ai-code-reviewer] which: Rewrite implementation in Rust
+
+**Files changed:**
+  - usr.bin/which/Makefile
+  - usr.bin/which/Cargo.toml
+  - usr.bin/which/src/main.rs
+
+---
+
 ## 2026-05-22 09:14 - usr.bin/basename ✓
 
 **Directory:** `usr.bin/basename`

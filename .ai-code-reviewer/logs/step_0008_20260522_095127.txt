@@ -1,0 +1,9 @@
+=== STEP 8 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*usr.bin/soelim/src/main.rs*'
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/soelim/tests/basic.in

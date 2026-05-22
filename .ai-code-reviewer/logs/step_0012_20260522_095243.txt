@@ -1,0 +1,127 @@
+=== STEP 12 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/soelim/tests/soelim_test.sh:
+PROGRESS:
+📁 Directory: usr.bin/soelim
+   Files: 0/3
+📄 File: usr.bin/soelim/tests/soelim_test.sh
+
+```
+
+atf_test_case stdin
+stdin_head()
+{
+	atf_set "descr" "stdin functionality"
+}
+
+stdin_body()
+{
+	# no file after .so
+	atf_check \
+		-o inline:".so\n" \
+		-e empty \
+		-s exit:0 \
+		soelim <<-EOF
+.so
+EOF
+
+	# only space after .so
+	atf_check \
+		-o inline:".so  	\n" \
+		-e empty \
+		-s exit:0 \
+		soelim <<-EOF
+.so  	
+EOF
+
+	# explicit stdin
+	atf_check \
+		-o inline:".so\n" \
+		-e empty \
+		-s exit:0 \
+		soelim - <<-EOF
+.so
+EOF
+
+	atf_check \
+		-o empty \
+		-e inline:"soelim: can't open 'afile': No such file or directory\n" \
+		-s exit:1 \
+		soelim <<-EOF
+.so afile
+EOF
+
+	atf_check \
+		-o inline:".soafile\n" \
+		-e empty \
+		-s exit:0 \
+		soelim <<-EOF
+.soafile
+EOF
+
+	atf_check \
+		-o empty \
+		-e inline:"soelim: can't open 'afile': No such file or directory\n" \
+		-s exit:1 \
+		soelim -C <<-EOF
+.soafile
+EOF
+}
+
+atf_test_case files
+files_head()
+{
+	atf_set "descr" "testing files"
+}
+
+files_body()
+{
+	atf_check \
+		-o inline:"This is a test\n" \
+		-e inline:"soelim: can't open 'nonexistingfile': No such file or directory\n" \
+		-s exit:1 \
+		soelim $(atf_get_srcdir)/nonexisting.in
+
+	cp $(atf_get_srcdir)/basic .
+	atf_check \
+		-o file:$(atf_get_srcdir)/basic.out \
+		-e empty \
+		-s exit:0 \
+		soelim $(atf_get_srcdir)/basic.in
+
+	rm -f basic
+	atf_check \
+		-o file:$(atf_get_srcdir)/basic.out \
+		-e empty \
+		-s exit:0 \
+		soelim -I$(atf_get_srcdir) $(atf_get_srcdir)/basic.in
+
+	atf_check \
+		-o file:$(atf_get_srcdir)/basic-with-space.out \
+		-e empty \
+		-s exit:0 \
+		soelim -I$(atf_get_srcdir) $(atf_get_srcdir)/basic-with-space.in
+
+}
+
+atf_init_test_cases()
+{
+	atf_add_test_case stdin
+	atf_add_test_case files
+}
+
+```
+
+--- RESPONSE ---
+
+
+Now I understand the full behavior. Let me create the Rust implementation. The program:
+1. Processes `.so` directives in troff/groff files
+2. Recursively includes referenced files
+3. Supports `-C`, `-r`, `-v`, `-t`, `-I dir` options
+4. Returns exit 0 on success, 1 on failure
+
+Let me create the `src/main.rs` and update the `Makefile`.
+
+ACTION: WRITE_FILE usr.bin/soelim/src/main.rs

@@ -1,0 +1,32 @@
+=== STEP 97 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/protect/src/main.rs
+Scope: usr.bin/protect
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/protect/src/main.rs
+OLD:
+<<<
+    let mut idtype: idtype_t = P_PID;
+    let id = unsafe { getpid() };
+    let mut flags: c_int = PPROT_SET;
+    let mut descend = false;
+    let mut inherit = false;
+    let mut idset = false;
+    let mut optind = 1;
+>>>
+NEW:
+<<<
+    let mut idtype: idtype_t = P_PID;
+    let id = unsafe { getpid() };
+    let mut flags: c_int = PPROT_SET;
+    let mut descend = false;
+    let mut inherit = false;
+    let mut idset = false;
+    let mut first = true;
+    let mut optind = 1;
+>>>

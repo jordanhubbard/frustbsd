@@ -1,0 +1,15 @@
+=== STEP 19 ===
+
+--- REQUEST ---
+BUILD_REJECTED: Rust rewrite build did not compile the Rust replacement.
+
+The active build command exited successfully, but its output did not show cargo or rustc running. A side target that must be invoked manually is not enough: the task is not done until the build files make the normal active unit build produce the Rust version instead of the previous C/C++ implementation.
+
+Keep working in usr.bin/soelim: modify the Makefile/build glue so `cargo test --manifest-path usr.bin/soelim/Cargo.toml` invokes the Rust build, then run BUILD again.
+
+--- RESPONSE ---
+
+
+Let me check the current state of the Makefile and verify the Rust code compiles:
+
+ACTION: READ_FILE usr.bin/soelim/Makefile

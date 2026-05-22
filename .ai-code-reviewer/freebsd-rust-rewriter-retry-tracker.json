@@ -111,6 +111,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-21T19:44:21.180208"
   },
+  "usr.bin/bluetooth/bthost": {
+    "attempts": 3,
+    "last_attempt": "2026-05-22T09:42:44.986549"
+  },
   "usr.bin/caesar": {
     "attempts": 2,
     "last_attempt": "2026-05-22T08:55:04.328352"
@@ -163,9 +167,17 @@
     "attempts": 1,
     "last_attempt": "2026-05-21T23:16:33.681504"
   },
+  "usr.bin/protect": {
+    "attempts": 1,
+    "last_attempt": "2026-05-22T09:14:54.939410"
+  },
   "usr.bin/rwall": {
     "attempts": 1,
     "last_attempt": "2026-05-22T07:44:34.194698"
+  },
+  "usr.bin/soelim": {
+    "attempts": 2,
+    "last_attempt": "2026-05-22T09:50:21.037862"
   },
   "usr.bin/tail": {
     "attempts": 1,
@@ -174,6 +186,10 @@
   "usr.bin/uname": {
     "attempts": 2,
     "last_attempt": "2026-05-22T00:11:03.402137"
+  },
+  "usr.bin/which": {
+    "attempts": 1,
+    "last_attempt": "2026-05-22T10:02:32.672624"
   },
   "usr.bin/yes": {
     "attempts": 3,

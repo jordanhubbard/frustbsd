@@ -1,0 +1,17 @@
+=== STEP 3 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/soelim:
+```
+Cargo.toml
+Makefile
+Makefile.depend
+soelim.1
+soelim.c
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/soelim/soelim.c

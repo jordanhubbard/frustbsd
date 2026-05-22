@@ -1,0 +1,22 @@
+=== STEP 7 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/soelim/tests:
+```
+Makefile
+Makefile.depend
+basic
+basic-with-space.in
+basic-with-space.out
+basic.in
+basic.out
+nonexisting.in
+soelim_test.sh
+```
+
+--- RESPONSE ---
+
+
+Let me check if there's a `src` directory already:
+
+ACTION: FIND_FILE usr.bin/soelim/src/main.rs

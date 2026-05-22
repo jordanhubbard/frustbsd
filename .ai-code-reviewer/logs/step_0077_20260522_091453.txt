@@ -1,0 +1,68 @@
+=== STEP 77 ===
+
+--- REQUEST ---
+BUILD_SUCCESS: Build completed successfully.
+Directory usr.bin/basename is now complete.
+Changes committed and pushed.
+Post-success metadata commit: 06ce20b4a952.
+
+Completed directories so far: 1
+NEXT: Use SET_SCOPE usr.bin/protect
+
+FINAL DIFFS:
+--- usr.bin/basename/Makefile ---
+```diff
+diff --git a/usr.bin/basename/Makefile b/usr.bin/basename/Makefile
+index fb590532152..af64be0100d 100644
+--- a/usr.bin/basename/Makefile
++++ b/usr.bin/basename/Makefile
+@@ -1,9 +1,29 @@
+ .include <src.opts.mk>
+ 
+ PROG=	basename
++BINDIR?=	/usr/bin
++BINOWN?=	root
++BINGRP?=	wheel
++BINMODE?=	555
+ MLINKS=	basename.1 dirname.1
+ 
++CARGO?=		cargo
++CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
++
++${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
++	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
++	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
++
++all: ${PROG}
++
++install: ${PROG}
++	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
++
++clean:
++	${RM} ${PROG}
++	${RM} -rf ${CARGO_TARGET_DIR}
++
++CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
++
+ HAS_TESTS=
+ SUBDIR.${MK_TESTS}+= tests
+-
+-.include <bsd.prog.mk>
+```
+
+--- usr.bin/basename/Cargo.toml ---
+```diff
+(no changes)
+```
+
+--- usr.bin/basename/src/main.rs ---
+```diff
+(no changes)
+```
+
+--- RESPONSE ---
+
+
+The `usr.bin/basename` rewrite is complete. Moving to the next unit.
+
+ACTION: SET_SCOPE usr.bin/protect

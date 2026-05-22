@@ -1,0 +1,23 @@
+=== STEP 98 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/protect/src/main.rs
+Scope: usr.bin/protect
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/protect/src/main.rs
+OLD:
+<<<
+            idtype = P_PGID;
+            let _ = parse_id(val);
+            idset = true;
+>>>
+NEW:
+<<<
+            idtype = P_PGID;
+            let _ = parse_id(val, &mut first);
+            idset = true;
+>>>

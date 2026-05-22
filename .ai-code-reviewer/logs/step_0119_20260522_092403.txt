@@ -1,0 +1,30 @@
+=== STEP 119 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/protect/cargo-target/debug:
+```
+.cargo-lock
+.fingerprint
+build
+deps
+examples
+incremental
+```
+
+--- RESPONSE ---
+
+
+The stale cargo-target might be causing issues. Let me clean it up.
+
+ACTION: EDIT_FILE usr.bin/protect/Makefile
+OLD:
+<<<
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+>>>
+NEW:
+<<<
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+
+# Remove stale dependency file that may interfere
+.ORDER: clean ${PROG}
+>>>

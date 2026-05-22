@@ -1,0 +1,210 @@
+=== STEP 81 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/protect/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/protect/src/main.rs
+CONTENT:
+// SPDX-License-Identifier: BSD-2-Clause
+//
+// Copyright (c) 2013 Hudson River Trading LLC
+// Written by: John H. Baldwin <jhb@FreeBSD.org>
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+// OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+// OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+
+use std::env;
+use std::ffi::CString;
+use std::io::{self, Write};
+use std::os::raw::{c_char, c_int};
+use std::process;
+
+// FreeBSD procctl types and constants
+type idtype_t = c_int;
+type id_t = i64;
+
+const P_PID: idtype_t = 0;
+const P_PGID: idtype_t = 1;
+
+const PROC_SPROTECT: c_int = 12;
+
+const PPROT_SET: c_int = 0x0001;
+const PPROT_CLEAR: c_int = 0x0002;
+const PPROT_DESCEND: c_int = 0x0004;
+const PPROT_INHERIT: c_int = 0x0008;
+
+extern "C" {
+    fn procctl(
+        idtype: idtype_t,
+        id: id_t,
+        req: c_int,
+        data: *const c_int,
+    ) -> c_int;
+    fn getpid() -> i64;
+    fn execvp(prog: *const c_char, argv: *const *const c_char) -> c_int;
+}
+
+fn warnx(msg: &str) {
+    let _ = io::stderr().write_all(format!("protect: {}\n", msg).as_bytes());
+}
+
+fn usage() {
+    let _ = io::stderr().write_all(b"usage: protect [-i] command\n");
+    let _ = io::stderr().write_all(b"       protect [-cdi] -g pgrp | -p pid\n");
+    process::exit(1);
+}
+
+fn parse_id(id: &str) -> i64 {
+    static mut FIRST: bool = true;
+    unsafe {
+        if !FIRST {
+            warnx("only one -g or -p flag is permitted");
+            usage();
+        }
+        FIRST = false;
+    }
+    match id.parse::<i64>() {
+        Ok(v) => v,
+        Err(_) => {
+            warnx("invalid process id");
+            usage();
+        }
+    }
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let mut idtype: idtype_t = P_PID;
+    let id = unsafe { getpid() };
+    let mut flags: c_int = PPROT_SET;
+    let mut descend = false;
+    let mut inherit = false;
+    let mut idset = false;
+    let mut optind = 1;
+
+    let mut i = 1;
+    while i < args.len() {
+        let arg = &args[i];
+        if arg == "-c" {
+            flags = PPROT_CLEAR;
+            i += 1;
+        } else if arg == "-d" {
+            descend = true;
+            i += 1;
+        } else if arg == "-i" {
+            inherit = true;
+            i += 1;
+        } else if arg.starts_with("-g") {
+            let val = if arg.len() == 2 {
+                if i + 1 >= args.len() {
+                    usage();
+                }
+                &args[i + 1]
+            } else {
+                &arg[2..]
+            };
+            idtype = P_PGID;
+            let _ = parse_id(val);
+            idset = true;
+            if arg.len() == 2 {
+                i += 2;
+            } else {
+                i += 1;
+            }
+        } else if arg.starts_with("-p") {
+            let val = if arg.len() == 2 {
+                if i + 1 >= args.len() {
+                    usage();
+                }
+                &args[i + 1]
+            } else {
+                &arg[2..]
+            };
+            idtype = P_PID;
+            let _ = parse_id(val);
+            idset = true;
+            if arg.len() == 2 {
+                i += 2;
+            } else {
+                i += 1;
+            }
+        } else if arg.starts_with('-') {
+            usage();
+        } else {
+            optind = i;
+            break;
+        }
+    }
+
+    let remaining: Vec<String> = args[optind..].to_vec();
+
+    if (idset && !remaining.is_empty()) || (!idset && (remaining.is_empty() || descend)) {
+        usage();
+    }
+
+    if descend {
+        flags |= PPROT_DESCEND;
+    }
+    if inherit {
+        flags |= PPROT_INHERIT;
+    }
+
+    let ret = unsafe { procctl(idtype, id, PROC_SPROTECT, &flags) };
+    if ret == -1 {
+        let err = io::Error::last_os_error();
+        eprintln!("protect: procctl: {}", err);
+        process::exit(1);
+    }
+
+    if !remaining.is_empty() {
+        let prog = match CString::new(&remaining[0]) {
+            Ok(s) => s,
+            Err(_) => {
+                eprintln!("protect: invalid command path");
+                process::exit(126);
+            }
+        };
+        let argv: Vec<*const c_char> = remaining
+            .iter()
+            .map(|s| {
+                CString::new(s.as_bytes()).unwrap_or_else(|_| CString::new("").unwrap())
+            })
+            .collect::<Vec<_>>();
+        let argv_ptrs: Vec<*const c_char> = argv.iter().map(|s| s.as_ptr()).collect();
+        let _ = unsafe { execvp(prog.as_ptr(), argv_ptrs.as_ptr()) };
+        // execvp only returns on error
+        let err = io::Error::last_os_error();
+        let code = if err.raw_os_error() == Some(127) {
+            127 // ENOENT
+        } else {
+            126
+        };
+        eprintln!("protect: {}: {}", remaining[0], err);
+        process::exit(code);
+    }
+
+    process::exit(0);
+}

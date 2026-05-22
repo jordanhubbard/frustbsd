@@ -1,0 +1,25 @@
+use std::env;
+use std::io::{self, BufReader};
+use std::process;
+fn usage() { eprintln!("usage: soelim [-Crtv] [-I dir] [files]"); process::exit(1); }
+fn main() {
+    let a: Vec<String> = env::args().collect();
+    let mut fl = 0u32;
+    let mut inc: Vec<String> = Vec::new();
+    let mut oi = 1;
+    let mut i = 1;
+    while i < a.len() {
+        let x = &a[i];
+        if x == "-C" { fl |= 1; i += 1; }
+        else if x == "-r" || x == "-v" || x == "-t" { i += 1; }
+        else if x.starts_with("-I") {
+            if x.len() == 2 { if i+1 >= a.len() { usage(); } inc.push(a[i+1].clone()); i += 2; }
+            else { inc.push(x[2..].to_string()); i += 1; }
+        } else if x.starts_with('-') { usage(); }
+        else { oi = i; break; }
+    }
+    let mut ret = 0;
+    if oi >= a.len() { if !so_proc(BufReader::new(Box::new(io::stdin())), &inc, fl) { ret = 1; } }
+    else { for f in &a[oi..] { if !so_open(f, &inc).map_or(true, |r| !so_proc(r, &inc, fl)) { ret = 1; } } }
+    process::exit(ret);
+}

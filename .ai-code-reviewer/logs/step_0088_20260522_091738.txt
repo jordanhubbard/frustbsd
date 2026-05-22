@@ -1,0 +1,12 @@
+=== STEP 88 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*src.opts.mk*':
+```
+./share/mk/src.opts.mk
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/protect/Makefile

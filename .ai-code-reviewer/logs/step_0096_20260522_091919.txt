@@ -1,0 +1,51 @@
+=== STEP 96 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/protect/cargo-target/debug/deps:
+```
+protect-bd0e566192e8d726.d
+```
+
+--- RESPONSE ---
+
+
+The cargo build appears to have failed - there's only a `.d` dependency file but no binary. The issue is likely the `static mut` usage which is problematic in Rust 2021. Let me fix the Rust code.
+
+ACTION: EDIT_FILE usr.bin/protect/src/main.rs
+OLD:
+<<<
+fn parse_id(id: &str) -> i64 {
+    static mut FIRST: bool = true;
+    unsafe {
+        if !FIRST {
+            warnx("only one -g or -p flag is permitted");
+            usage();
+        }
+        FIRST = false;
+    }
+    match id.parse::<i64>() {
+        Ok(v) => v,
+        Err(_) => {
+            warnx("invalid process id");
+            usage();
+        }
+    }
+}
+>>>
+NEW:
+<<<
+fn parse_id(id: &str, first: &mut bool) -> i64 {
+    if !*first {
+        warnx("only one -g or -p flag is permitted");
+        usage();
+    }
+    *first = false;
+    match id.parse::<i64>() {
+        Ok(v) => v,
+        Err(_) => {
+            warnx("invalid process id");
+            usage();
+        }
+    }
+}
+>>>

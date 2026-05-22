@@ -1,0 +1,12 @@
+=== STEP 154 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/protect/cargo-target/debug/.fingerprint:
+```
+protect-bd0e566192e8d726
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/protect/cargo-target/debug/.fingerprint/protect-bd0e566192e8d726

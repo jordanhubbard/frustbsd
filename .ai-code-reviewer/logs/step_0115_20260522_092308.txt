@@ -1,0 +1,12 @@
+=== STEP 115 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/protect/Makefile
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The `.CURDIR` variable requires `bsd.own.mk` to be defined. Let me check what the successful `basename` Makefile looked like.
+
+ACTION: READ_FILE usr.bin/basename/Makefile

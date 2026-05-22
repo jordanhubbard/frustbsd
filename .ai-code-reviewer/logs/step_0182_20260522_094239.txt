@@ -1,0 +1,9 @@
+=== STEP 182 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*libbluetooth*'
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/bluetooth/bthost

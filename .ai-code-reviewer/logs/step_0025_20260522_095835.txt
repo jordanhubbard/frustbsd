@@ -1,0 +1,13 @@
+=== STEP 25 ===
+
+--- REQUEST ---
+CONTRACT_REJECTED: integrated build did not visibly invoke 'cargo'.
+
+Command was: cargo test --manifest-path usr.bin/soelim/Cargo.toml
+
+--- RESPONSE ---
+
+
+The build command is `cargo test --manifest-path usr.bin/soelim/Cargo.toml` but it's not invoking cargo visibly. Let me check if there's a compilation issue by reading the current source:
+
+ACTION: READ_FILE usr.bin/soelim/src/main.rs
