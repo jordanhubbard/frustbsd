@@ -1,0 +1,63 @@
+=== STEP 8 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📄 File: bin/timeout/timeout.c
+   Chunks: 5/8
+
+```
+=== CHUNK 5/8: /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/timeout/timeout.c === [function: send_sig]
+=== Lines 167-209 (43 lines) ===
+
+static void
+send_sig(pid_t pid, int signo, bool foreground)
+{
+	struct procctl_reaper_kill rk;
+
+	logv("sending signal %s(%d) to command '%s'",
+	    sys_signame[signo], signo, command);
+	if (foreground) {
+		if (kill(pid, signo) < 0 && errno != ESRCH)
+			warn("kill(%d, %s)", (int)pid, sys_signame[signo]);
+	} else {
+		memset(&rk, 0, sizeof(rk));
+		rk.rk_sig = signo;
+		if (procctl(P_PID, getpid(), PROC_REAP_KILL, &rk) < 0 &&
+		    errno != ESRCH) {
+			warn("procctl(PROC_REAP_KILL)");
+			if (rk.rk_fpid > 0) {
+				warnx("failed to signal some processes:"
+				    " first pid=%d", (int)rk.rk_fpid);
+			}
+		}
+		logv("signaled %u processes", rk.rk_killed);
+	}
+
+	/*
+	 * If the child process was stopped by a signal, POSIX.1-2024
+	 * requires to send a SIGCONT signal.  However, the standard also
+	 * allows to send a SIGCONT regardless of the stop state, as we
+	 * are doing here.
+	 */
+	if (signo != SIGKILL && signo != SIGSTOP && signo != SIGCONT) {
+		logv("sending signal %s(%d) to command '%s'",
+		    sys_signame[SIGCONT], SIGCONT, command);
+		if (foreground) {
+			kill(pid, SIGCONT);
+		} else {
+			memset(&rk, 0, sizeof(rk));
+			rk.rk_sig = SIGCONT;
+			procctl(P_PID, getpid(), PROC_REAP_KILL, &rk);
+		}
+	}
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

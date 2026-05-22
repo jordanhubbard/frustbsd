@@ -1,0 +1,55 @@
+=== STEP 9 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📄 File: bin/timeout/timeout.c
+   Chunks: 6/8
+
+```
+=== CHUNK 6/8: /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/timeout/timeout.c === [function: set_interval]
+=== Lines 210-244 (35 lines) ===
+
+static void
+set_interval(double iv)
+{
+	struct itimerval tim;
+
+	memset(&tim, 0, sizeof(tim));
+	if (iv > 0) {
+		tim.it_value.tv_sec = (time_t)iv;
+		iv -= (double)(time_t)iv;
+		tim.it_value.tv_usec = (suseconds_t)(iv * 1000000UL);
+	}
+
+	if (setitimer(ITIMER_REAL, &tim, NULL) < 0)
+		err(EXIT_FAILURE, "setitimer()");
+}
+
+/*
+ * In order to avoid any possible ambiguity that a shell may not set '$?' to
+ * '128+signal_number', POSIX.1-2024 requires that timeout mimic the wait
+ * status of the child process by terminating itself with the same signal,
+ * while disabling core generation.
+ */
+static void __dead2
+kill_self(int signo)
+{
+	sigset_t mask;
+	struct rlimit rl;
+
+	logv("killing self with signal %s(%d)", sys_signame[signo], signo);
+
+	/* Disable core generation. */
+	memset(&rl, 0, sizeof(rl));
+	setrlimit(RLIMIT_CORE, &rl);
+
+	/* Reset the signal disposition and make sure it's unblocked. */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK
