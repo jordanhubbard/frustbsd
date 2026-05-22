@@ -3,6 +3,27 @@
 Progress tracking for code rewrite sessions.
 
 ---
+## 2026-05-22 11:38 - usr.bin/expand ✓
+
+**Directory:** `usr.bin/expand`
+
+**Summary:** [ai-code-reviewer] expand: Rewrite in Rust and update build system
+
+**Files changed:**
+  - usr.bin/expand/Makefile
+  - usr.bin/expand/Cargo.lock
+  - usr.bin/expand/Cargo.toml
+  - usr.bin/expand/cargo-target/.rustc_info.json
+  - usr.bin/expand/cargo-target/CACHEDIR.TAG
+  - usr.bin/expand/cargo-target/debug/.cargo-lock
+  - usr.bin/expand/cargo-target/debug/.fingerprint/expand-7689379ab8f5c6f5/invoked.timestamp
+  - usr.bin/expand/cargo-target/debug/.fingerprint/expand-7689379ab8f5c6f5/output-bin-expand
+  - usr.bin/expand/cargo-target/debug/deps/expand-7689379ab8f5c6f5.d
+  - usr.bin/expand/cargo-target/debug/incremental/expand-2helepjavehmh/s-hirrgxk9zu-0stlcig-working/dep-graph.part.bin
+  - ... and 2 more
+
+---
+
 ## 2026-05-22 11:29 - usr.bin/hesinfo ✓
 
 **Directory:** `usr.bin/hesinfo`

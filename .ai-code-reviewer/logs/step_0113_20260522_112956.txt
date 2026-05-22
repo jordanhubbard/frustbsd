@@ -1,0 +1,125 @@
+=== STEP 113 ===
+
+--- REQUEST ---
+BUILD_SUCCESS: Build completed successfully.
+Directory usr.bin/hesinfo is now complete.
+Changes committed and pushed.
+Post-success metadata commit: eaf9232d4a39.
+
+Completed directories so far: 3
+NEXT: Use SET_SCOPE usr.bin/expand
+
+FINAL DIFFS:
+--- usr.bin/hesinfo/Makefile ---
+```diff
+diff --git a/usr.bin/hesinfo/Makefile b/usr.bin/hesinfo/Makefile
+index bb95e6200d1..a27407ca0c2 100644
+--- a/usr.bin/hesinfo/Makefile
++++ b/usr.bin/hesinfo/Makefile
+@@ -1,3 +1,23 @@
+ PROG=	hesinfo
++BINDIR?=	/usr/bin
++BINOWN?=	root
++BINGRP?=	wheel
++BINMODE?=	555
+ 
+-.include <bsd.prog.mk>
++CARGO?=		cargo
++CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
++
++${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
++	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
++	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
++
++all: ${PROG}
++
++install: ${PROG}
++	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
++
++clean:
++	${RM} ${PROG}
++	${RM} -rf ${CARGO_TARGET_DIR}
++
++CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+\ No newline at end of file
+```
+
+--- usr.bin/hesinfo/Cargo.lock ---
+```diff
+(no changes)
+```
+
+--- usr.bin/hesinfo/Cargo.toml ---
+```diff
+(no changes)
+```
+
+--- usr.bin/hesinfo/cargo-target/.rustc_info.json ---
+```diff
+(no changes)
+```
+
+--- usr.bin/hesinfo/cargo-target/CACHEDIR.TAG ---
+```diff
+(no changes)
+```
+
+--- usr.bin/hesinfo/cargo-target/debug/.cargo-lock ---
+```diff
+(no changes)
+```
+
+--- usr.bin/hesinfo/cargo-target/debug/.fingerprint/hesinfo-c87e176f8d1cab00/invoked.timestamp ---
+```diff
+(no changes)
+```
+
+--- usr.bin/hesinfo/cargo-target/debug/.fingerprint/hesinfo-c87e176f8d1cab00/output-bin-hesinfo ---
+```diff
+fatal: ambiguous argument 'usr.bin/hesinfo/cargo-target/debug/.fingerprint/hesinfo-c87e176f8d1cab00/output-bin-hesinfo': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+```
+
+--- usr.bin/hesinfo/cargo-target/debug/deps/hesinfo-c87e176f8d1cab00.d ---
+```diff
+(no changes)
+```
+
+--- usr.bin/hesinfo/cargo-target/debug/incremental/hesinfo-3tw0t5to1gfum/s-hirr7v7mj1-0gcgv8m-30s0r73huvkzn4q45ff3zbjyo/dep-graph.bin ---
+```diff
+fatal: ambiguous argument 'usr.bin/hesinfo/cargo-target/debug/incremental/hesinfo-3tw0t5to1gfum/s-hirr7v7mj1-0gcgv8m-30s0r73huvkzn4q45ff3zbjyo/dep-graph.bin': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+```
+
+--- usr.bin/hesinfo/cargo-target/debug/incremental/hesinfo-3tw0t5to1gfum/s-hirr7v7mj1-0gcgv8m-30s0r73huvkzn4q45ff3zbjyo/query-cache.bin ---
+```diff
+fatal: ambiguous argument 'usr.bin/hesinfo/cargo-target/debug/incremental/hesinfo-3tw0t5to1gfum/s-hirr7v7mj1-0gcgv8m-30s0r73huvkzn4q45ff3zbjyo/query-cache.bin': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+```
+
+--- usr.bin/hesinfo/cargo-target/debug/incremental/hesinfo-3tw0t5to1gfum/s-hirr7v7mj1-0gcgv8m-30s0r73huvkzn4q45ff3zbjyo/work-products.bin ---
+```diff
+fatal: ambiguous argument 'usr.bin/hesinfo/cargo-target/debug/incremental/hesinfo-3tw0t5to1gfum/s-hirr7v7mj1-0gcgv8m-30s0r73huvkzn4q45ff3zbjyo/work-products.bin': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+```
+
+--- usr.bin/hesinfo/cargo-target/debug/incremental/hesinfo-3tw0t5to1gfum/s-hirr7v7mj1-0gcgv8m.lock ---
+```diff
+fatal: ambiguous argument 'usr.bin/hesinfo/cargo-target/debug/incremental/hesinfo-3tw0t5to1gfum/s-hirr7v7mj1-0gcgv8m.lock': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+```
+
+--- usr.bin/hesinfo/src/main.rs ---
+```diff
+(no changes)
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/expand

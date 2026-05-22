@@ -1,0 +1,17 @@
+=== STEP 126 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/expand/cargo-target/debug:
+```
+.cargo-lock
+.fingerprint
+build
+deps
+examples
+incremental
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/expand/cargo-target/debug/.fingerprint

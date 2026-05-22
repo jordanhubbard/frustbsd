@@ -1,0 +1,231 @@
+use std::env;
+use std::fs::File;
+use std::io::{self, BufReader, Read, Write};
+use std::os::raw::{c_int, c_uint};
+use std::process;
+
+static MAX_TAB_STOPS: usize = 100;
+
+extern "C" {
+    fn wcwidth(c: c_uint) -> c_int;
+    fn setlocale(category: c_int, locale: *const i8) -> *mut i8;
+}
+
+const LC_CTYPE: c_int = 1;
+
+struct TabStops {
+    stops: Vec<usize>,
+}
+
+impl TabStops {
+    fn new() -> Self {
+        TabStops { stops: Vec::new() }
+    }
+
+    fn parse(&mut self, s: &str) {
+        self.stops.clear();
+        let mut cp = s.as_bytes();
+        loop {
+            let mut i: usize = 0;
+            while let Some(&(b'0'..=b'9')) = cp.first() {
+                i = i * 10 + (cp[0] as usize - b'0' as usize);
+                cp = &cp[1..];
+            }
+            if i == 0 {
+                eprintln!("expand: bad tab stop spec");
+                process::exit(1);
+            }
+            if !self.stops.is_empty() && i <= *self.stops.last().unwrap() {
+                eprintln!("expand: bad tab stop spec");
+                process::exit(1);
+            }
+            if self.stops.len() >= MAX_TAB_STOPS {
+                eprintln!("expand: too many tab stops");
+                process::exit(1);
+            }
+            self.stops.push(i);
+            if cp.is_empty() {
+                break;
+            }
+            if cp[0] != b',' && !cp[0].is_ascii_whitespace() {
+                eprintln!("expand: bad tab stop spec");
+                process::exit(1);
+            }
+            cp = &cp[1..];
+        }
+    }
+
+    fn next_tab_stop(&self, column: usize) -> usize {
+        if self.stops.is_empty() {
+            // Default: 8-column tabs
+            ((column / 8) + 1) * 8
+        } else if self.stops.len() == 1 {
+            let t = self.stops[0];
+            // Next multiple of t that is > column
+            ((column / t) + 1) * t
+        } else {
+            for &t in &self.stops {
+                if t > column {
+                    return t;
+                }
+            }
+            // No tab stop beyond current column, advance by 1
+            column + 1
+        }
+    }
+}
+
+fn usage() -> ! {
+    eprintln!("usage: expand [-t tablist] [file ...]");
+    process::exit(1);
+}
+
+fn process_input<R: io::Read>(mut reader: BufReader<R>, tab_stops: &TabStops) -> io::Result<i32> {
+    let stdout = io::stdout();
+    let mut out = stdout.lock();
+    let mut column: usize = 0;
+
+    let mut buf = Vec::new();
+    reader.read_to_end(&mut buf)?;
+
+    let mut pos = 0;
+    while pos < buf.len() {
+        let ch = buf[pos];
+        pos += 1;
+
+        if ch == b'\t' {
+            let next = tab_stops.next_tab_stop(column);
+            while column < next {
+                out.write_all(b" ")?;
+                column += 1;
+            }
+        } else if ch == b'\x08' {
+            if column > 0 {
+                column -= 1;
+            }
+            out.write_all(b"\x08")?;
+        } else if ch == b'\n' {
+            out.write_all(b"\n")?;
+            column = 0;
+        } else if ch & 0x80 != 0 {
+            // UTF-8 multi-byte character - decode and use wcwidth
+            let mut char_len = 0;
+            if ch & 0xE0 == 0xC0 {
+                char_len = 2;
+            } else if ch & 0xF0 == 0xE0 {
+                char_len = 3;
+            } else if ch & 0xF8 == 0xF0 {
+                char_len = 4;
+            }
+
+            if char_len > 0 && pos + char_len - 1 <= buf.len() {
+                let slice = &buf[pos - 1..pos - 1 + char_len];
+                if let Ok(s) = std::str::from_utf8(slice) {
+                    if let Some(c) = s.chars().next() {
+                        let width = unsafe { wcwidth(c as c_uint) };
+                        out.write_all(slice)?;
+                        if width > 0 {
+                            column += width as usize;
+                        }
+                    }
+                    pos += char_len - 1;
+                } else {
+                    out.write_all(&[ch])?;
+                    column += 1;
+                }
+            } else {
+                out.write_all(&[ch])?;
+                column += 1;
+            }
+        } else {
+            out.write_all(&[ch])?;
+            column += 1;
+        }
+    }
+
+    Ok(0)
+}
+
+fn main() {
+    unsafe {
+        setlocale(LC_CTYPE, std::ptr::null());
+    }
+
+    let args: Vec<String> = env::args().collect();
+    let mut tab_stops = TabStops::new();
+    let mut files: Vec<String> = Vec::new();
+    let mut i = 1;
+
+    // Handle obsolete syntax: -<digits>
+    while i < args.len() {
+        let arg = &args[i];
+        if arg.starts_with('-') && arg.len() > 1 && arg.as_bytes()[1].is_ascii_digit() {
+            tab_stops.parse(&arg[1..]);
+            i += 1;
+        } else {
+            break;
+        }
+    }
+
+    // Handle -t option
+    while i < args.len() {
+        let arg = &args[i];
+        if arg == "-t" {
+            i += 1;
+            if i >= args.len() {
+                usage();
+            }
+            tab_stops.parse(&args[i]);
+            i += 1;
+        } else if arg.starts_with('-') {
+            usage();
+        } else {
+            break;
+        }
+    }
+
+    // Remaining args are files
+    while i < args.len() {
+        files.push(args[i].clone());
+        i += 1;
+    }
+
+    let mut rval = 0;
+
+    if files.is_empty() {
+        let stdin = io::stdin();
+        let reader = BufReader::new(stdin);
+        match process_input(reader, &tab_stops) {
+            Ok(code) => rval = code,
+            Err(e) => {
+                eprintln!("expand: stdin: {}", e);
+                rval = 1;
+            }
+        }
+    } else {
+        for file in &files {
+            match File::open(file) {
+                Ok(f) => {
+                    let reader = BufReader::new(f);
+                    match process_input(reader, &tab_stops) {
+                        Ok(code) => {
+                            if code != 0 {
+                                rval = code;
+                            }
+                        }
+                        Err(e) => {
+                            eprintln!("expand: {}: {}", file, e);
+                            rval = 1;
+                        }
+                    }
+                }
+                Err(e) => {
+                    eprintln!("expand: {}: {}", file, e);
+                    rval = 1;
+                }
+            }
+        }
+    }
+
+    process::exit(rval);
+}
