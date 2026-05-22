@@ -3,6 +3,19 @@
 Progress tracking for code rewrite sessions.
 
 ---
+## 2026-05-22 14:09 - usr.bin/number ✓
+
+**Directory:** `usr.bin/number`
+
+**Summary:** [ai-code-reviewer] number: Rewrite C implementation to Rust
+
+**Files changed:**
+  - usr.bin/number/Makefile
+  - usr.bin/number/Cargo.toml
+  - usr.bin/number/src/main.rs
+
+---
+
 ## 2026-05-22 14:04 - usr.bin/backlight ✓
 
 **Directory:** `usr.bin/backlight`

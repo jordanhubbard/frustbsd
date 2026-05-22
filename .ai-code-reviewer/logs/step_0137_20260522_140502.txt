@@ -1,0 +1,146 @@
+=== STEP 137 ===
+
+--- REQUEST ---
+BUILD_SUCCESS: Build completed successfully.
+Directory usr.bin/backlight is now complete.
+Changes committed and pushed.
+Post-success metadata commit: e76476c6e5a5.
+
+Completed directories so far: 3
+NEXT: Use SET_SCOPE usr.bin/number
+
+FINAL DIFFS:
+--- usr.bin/backlight/Makefile ---
+```diff
+diff --git a/usr.bin/backlight/Makefile b/usr.bin/backlight/Makefile
+index f1b310bb1e7..ea783cf93e7 100644
+--- a/usr.bin/backlight/Makefile
++++ b/usr.bin/backlight/Makefile
+@@ -1,4 +1,23 @@
+ PROG=	backlight
+-MAN=	backlight.8
++BINDIR?=	/usr/bin
++BINOWN?=	root
++BINGRP?=	wheel
++BINMODE?=	555
+ 
+-.include <bsd.prog.mk>
++CARGO?=		cargo
++CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
++
++${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
++	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
++	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
++
++all: ${PROG}
++
++install: ${PROG}
++	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
++
++clean:
++	${RM} ${PROG}
++	${RM} -rf ${CARGO_TARGET_DIR}
++
++CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+\ No newline at end of file
+```
+
+--- usr.bin/backlight/.cargo/config.toml ---
+```diff
+(no changes)
+```
+
+--- usr.bin/backlight/Cargo.lock ---
+```diff
+(no changes)
+```
+
+--- usr.bin/backlight/Cargo.toml ---
+```diff
+(no changes)
+```
+
+--- usr.bin/backlight/cargo-target/.rustc_info.json ---
+```diff
+(no changes)
+```
+
+--- usr.bin/backlight/cargo-target/CACHEDIR.TAG ---
+```diff
+(no changes)
+```
+
+--- usr.bin/backlight/cargo-target/debug/.cargo-lock ---
+```diff
+(no changes)
+```
+
+--- usr.bin/backlight/cargo-target/debug/.fingerprint/backlight-7cc95a4aef9c929f/invoked.timestamp ---
+```diff
+(no changes)
+```
+
+--- usr.bin/backlight/cargo-target/debug/.fingerprint/backlight-7cc95a4aef9c929f/output-bin-backlight ---
+```diff
+(no changes)
+```
+
+--- usr.bin/backlight/cargo-target/debug/.fingerprint/backlight-f4f23c4326ac8c4b/invoked.timestamp ---
+```diff
+(no changes)
+```
+
+--- usr.bin/backlight/cargo-target/debug/.fingerprint/backlight-f4f23c4326ac8c4b/output-bin-backlight ---
+```diff
+(no changes)
+```
+
+--- usr.bin/backlight/cargo-target/debug/deps/backlight-7cc95a4aef9c929f.d ---
+```diff
+(no changes)
+```
+
+--- usr.bin/backlight/cargo-target/debug/deps/backlight-f4f23c4326ac8c4b.d ---
+```diff
+(no changes)
+```
+
+--- usr.bin/backlight/cargo-target/debug/incremental/backlight-3oc4wanezbr7f/s-hirvgonsbe-0cywgz4-8svu8nkovmy1m7apxeblwf32e/dep-graph.bin ---
+```diff
+fatal: ambiguous argument 'usr.bin/backlight/cargo-target/debug/incremental/backlight-3oc4wanezbr7f/s-hirvgonsbe-0cywgz4-8svu8nkovmy1m7apxeblwf32e/dep-graph.bin': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+```
+
+--- usr.bin/backlight/cargo-target/debug/incremental/backlight-3oc4wanezbr7f/s-hirvgonsbe-0cywgz4-8svu8nkovmy1m7apxeblwf32e/query-cache.bin ---
+```diff
+fatal: ambiguous argument 'usr.bin/backlight/cargo-target/debug/incremental/backlight-3oc4wanezbr7f/s-hirvgonsbe-0cywgz4-8svu8nkovmy1m7apxeblwf32e/query-cache.bin': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+```
+
+--- usr.bin/backlight/cargo-target/debug/incremental/backlight-3oc4wanezbr7f/s-hirvgonsbe-0cywgz4-8svu8nkovmy1m7apxeblwf32e/work-products.bin ---
+```diff
+fatal: ambiguous argument 'usr.bin/backlight/cargo-target/debug/incremental/backlight-3oc4wanezbr7f/s-hirvgonsbe-0cywgz4-8svu8nkovmy1m7apxeblwf32e/work-products.bin': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+```
+
+--- usr.bin/backlight/cargo-target/debug/incremental/backlight-3oc4wanezbr7f/s-hirvgonsbe-0cywgz4.lock ---
+```diff
+fatal: ambiguous argument 'usr.bin/backlight/cargo-target/debug/incremental/backlight-3oc4wanezbr7f/s-hirvgonsbe-0cywgz4.lock': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+```
+
+--- usr.bin/backlight/src/main.rs ---
+```diff
+(no changes)
+```
+
+--- RESPONSE ---
+
+
+Build succeeded for `usr.bin/backlight`. Moving to the next unit: `usr.bin/number`.
+
+ACTION: SET_SCOPE usr.bin/number

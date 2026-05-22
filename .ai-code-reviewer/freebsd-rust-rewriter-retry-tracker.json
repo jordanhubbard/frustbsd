@@ -167,6 +167,10 @@
     "attempts": 2,
     "last_attempt": "2026-05-22T06:46:40.217264"
   },
+  "usr.bin/number": {
+    "attempts": 1,
+    "last_attempt": "2026-05-22T14:05:03.396458"
+  },
   "usr.bin/printf": {
     "attempts": 1,
     "last_attempt": "2026-05-21T23:16:33.681504"
