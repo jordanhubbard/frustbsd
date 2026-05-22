@@ -159,10 +159,6 @@
     "attempts": 1,
     "last_attempt": "2026-05-21T23:16:33.681504"
   },
-  "usr.bin/resizewin": {
-    "attempts": 1,
-    "last_attempt": "2026-05-22T07:28:55.047460"
-  },
   "usr.bin/tail": {
     "attempts": 1,
     "last_attempt": "2026-05-22T01:11:28.327863"
