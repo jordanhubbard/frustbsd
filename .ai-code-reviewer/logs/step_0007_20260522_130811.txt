@@ -1,0 +1,18 @@
+=== STEP 7 ===
+
+--- REQUEST ---
+GREP_RESULT for '_int_to_time':
+```
+./include/timeconv.h:58:time_t _int_to_time(int tint);
+./lib/libc/stdtime/time32.c:92:_int_to_time(int tint)
+./usr.bin/rwho/rwho.c:181:		t = _int_to_time(mp->myutmp.out_time);
+./usr.bin/rusers/rusers.c:123:		time_t t = _int_to_time(up->utmpidlearr_val[x].ui_utmp.ut_time);
+```
+
+--- RESPONSE ---
+
+
+Let me check the capsicum_helpers and understand the build environment better:
+
+ACTION: FIND_FILE capsicum_helpers.h
+ACTION: READ_FILE include/timeconv.h

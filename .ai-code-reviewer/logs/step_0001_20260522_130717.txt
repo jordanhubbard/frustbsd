@@ -1,0 +1,199 @@
+=== STEP 1 ===
+
+--- REQUEST ---
+WORKFLOW MODE: Rewrite (rewrite)
+
+REWRITE CONFIGURATION:
+Objective: Translate FreeBSD userland C/C++ libraries and commands to Rust in small, buildable, behavior-preserving work-unit increments.
+Strategy: Start with small buildable bin/usr.bin/lib/libexec units. Create or extend a side-by-side Rust crate inside the active work unit, integrate it into that unit Makefile, run the normal active unit build, then move to the next pending unit after a successful commit.
+Output policy: For commands, produce a Rust binary that can replace the original program once behavior is validated. For libraries, produce a Rust crate whose FreeBSD-facing artifact is a C ABI compatible lib*.a or lib*.so as appropriate; keep public headers and consumers compatible.
+	Work-unit selection: small_first
+	Required source suffixes: .c, .cc, .cpp, .cxx
+
+	
+FreeBSD Rust command Makefile template:
+Use this local template for simple command rewrites when no real Rust make
+fragment exists. Replace <prog> with the command name and adjust paths only when
+the active unit needs them.
+
+```make
+PROG=	<prog>
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml 	    --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} 	    ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+```
+
+Do not include bsd.prog.mk or invent bsd.rust.mk unless the included file exists
+and the resulting normal active unit build still invokes cargo or rustc.
+
+
+	Constraints:
+	- Do not treat metadata-only, log-only, comment-only, or formatting-only changes as a successful Rust rewrite.
+- Every completed work unit must add or modify Rust source and Cargo.toml unless the unit is explicitly skipped with a reason.
+- Use side-by-side Rust during bring-up; do not delete the original C/C++ implementation until the Rust replacement builds and behavior is validated.
+- Use no external crates unless they are already vendored in the tree; cargo must not need network access.
+- Preserve public CLI behavior, exit statuses, file formats, symbols, headers, and ABI unless the objective explicitly says otherwise.
+- Keep edits scoped to the active work unit and necessary build glue.
+- After BUILD_SUCCESS, treat the active work unit as closed and move to the suggested next pending unit; do not reopen completed units for polish.
+
+Success criteria:
+- The active work unit contains Rust source and Cargo.toml for the replacement crate.
+- cargo build --manifest-path <crate>/Cargo.toml succeeds using an object/target directory outside the source crate when possible.
+- The active FreeBSD unit build command, usually make -C <unit>, succeeds and visibly invokes cargo or rustc for the Rust replacement.
+- For libraries, the FreeBSD-visible output remains the expected lib*.a or lib*.so artifact with C ABI compatible entry points and existing headers still usable by consumers.
+- For commands, the normal active unit build produces or stages the Rust binary as the replacement path, not merely a side target that must be built manually.
+
+
+Here is your bootstrap instruction file:
+
+```markdown
+# FreeBSD Rust Rewriter
+
+You rewrite FreeBSD userland code from C or C++ to Rust in small, buildable,
+behavior-preserving work units. You are not a code review persona. Your job is
+to produce source changes, build glue, and validation evidence for the active
+rewrite scope.
+
+## Mission
+
+For each selected work unit, create a real Rust replacement and integrate it
+into the FreeBSD build path for that unit. Translation is one rewrite form, but
+the configured objective controls the exact rewrite. When the objective is
+C/C++ to Rust, the completed work unit must contain Rust source, a Cargo
+manifest, and the Makefile or related build changes needed for the normal unit
+build to compile the Rust replacement.
+
+## Scope Discipline
+
+- Work one active rewrite unit at a time.
+- Prefer small userland commands and libraries before large bootstrap or
+  kernel-adjacent components.
+- Keep edits inside the active unit except for build glue that is strictly
+  required by that unit.
+- If a unit has no source relevant to the configured objective, choose another
+  unit instead of fabricating placeholder Rust.
+- Do not claim completion for metadata-only, comment-only, formatting-only, or
+  review-only changes.
+
+## Required Completion Bar
+
+A work unit is not done until all applicable conditions are true:
+
+- Rust source exists for the replacement implementation.
+- A Cargo.toml manifest exists for the replacement crate.
+- The active FreeBSD build files compile the Rust replacement instead of
+  leaving it as a manual side target.
+- `cargo` or `rustc` is visibly invoked by the normal active unit build, when
+  the configured contract requires it.
+- The explicit Rust build command succeeds offline when configured.
+- Commands preserve CLI behavior, output, exit status, and file interactions
+  unless the rewrite objective explicitly changes them.
+- Libraries preserve the FreeBSD-facing ABI, installed artifact name, headers,
+  and consumer expectations unless the objective explicitly changes them.
+
+## Rust and FreeBSD Rules
+
+- Use safe Rust where practical; isolate unavoidable `unsafe` behind small,
+  documented FFI or syscall boundaries.
+- Do not add network-fetched crates. Use only the Rust standard library or
+  crates already vendored in the tree.
+- Do not invent FreeBSD make fragments such as `bsd.rust.mk`. Before adding
+  any `.include <...>` line, verify the included file exists in the tree or in
+  the system make path. If no Rust make fragment exists, add explicit local
+  Makefile rules or a real local include file that the active unit build can
+  find.
+- The normal unit build must not depend on missing build infrastructure.
+- Keep Cargo target/output directories outside the source crate when possible.
+- For commands, build a binary that can occupy the normal program path after
+  validation.
+- For libraries, build a C ABI compatible artifact such as a staticlib or
+  cdylib as appropriate for the FreeBSD unit.
+- Preserve installed names, manpage expectations, flags, environment handling,
+  file formats, errno behavior, and exit statuses.
+
+## Operating Method
+
+1. Read the Makefile and the C/C++ entry points for the active unit.
+2. Identify the smallest coherent behavior slice that can be rewritten and
+   compiled.
+3. Create or extend the Rust crate in that unit.
+4. Update the unit build files so the normal build path compiles Rust.
+5. Build the active unit and fix compile errors.
+6. Add CLI or artifact validation where practical.
+7. Commit only after the active unit build and configured rewrite contract
+   pass.
+
+If the build system cannot yet support the Rust replacement, fix the build
+integration first. A Rust file that builds only by a manual side command is an
+incomplete rewrite.
+
+```
+
+=== REWRITE INDEX SUMMARY ===
+Progress: 44/8132 work units completed (0%)
+
+CURRENT: usr.bin/rwho
+NEXT: include/arm
+
+Recently completed:
+  ✓ usr.bin/asa (2026-05-22)
+  ✓ usr.bin/basename (2026-05-22)
+  ✓ usr.bin/biff (2026-05-22)
+
+Next in queue:
+  → include/arm [foundation/freebsd-library]
+  → include/arpa [foundation/freebsd-library]
+  → include/gssapi [foundation/freebsd-library]
+  → include/i386 [foundation/freebsd-library]
+  → include/protocols [foundation/freebsd-library]
+
+
+=== LESSONS LEARNED FROM PAST MISTAKES ===
+
+**CRITICAL**: Before making ANY edit, consult these lessons to avoid repeating mistakes!
+
+```markdown
+# Lessons Learned
+
+This file tracks mistakes made during rewrite runs to avoid repeating them.
+Each lesson is recorded with timestamp, category, and remediation advice.
+
+
+```
+
+**Remember**: These lessons were learned the hard way (build failures, reverted changes).
+Check this list before every EDIT_FILE action to ensure you're not repeating a documented mistake.
+
+
+RESUME rewriting: `usr.bin/rwho` (already in progress)
+Use: ACTION: SET_SCOPE usr.bin/rwho
+
+Begin rewriting.
+
+--- RESPONSE ---
+
+
+I'll start by setting the scope to `usr.bin/rwho` and examining its contents.
+
+ACTION: SET_SCOPE usr.bin/rwho
+
+ACTION: LIST_DIR usr.bin/rwho

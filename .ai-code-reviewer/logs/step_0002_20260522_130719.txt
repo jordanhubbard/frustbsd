@@ -1,0 +1,16 @@
+=== STEP 2 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/rwho:
+```
+Makefile
+Makefile.depend
+rwho.1
+rwho.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/rwho/rwho.c
+ACTION: READ_FILE usr.bin/rwho/Makefile

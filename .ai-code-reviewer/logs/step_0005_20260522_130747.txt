@@ -1,0 +1,21 @@
+=== STEP 5 ===
+
+--- REQUEST ---
+GREP_RESULT for '_PATH_RWHODIR':
+```
+./include/protocols/rwhod.h:64:#define	_PATH_RWHODIR	"/var/rwho"
+./usr.bin/ruptime/ruptime.c:99:	if (chdir(_PATH_RWHODIR) || (dirp = opendir(".")) == NULL)
+./usr.bin/ruptime/ruptime.c:100:		err(1, "%s", _PATH_RWHODIR);
+./usr.bin/ruptime/ruptime.c:244:			errx(1, "no hosts in %s", _PATH_RWHODIR);
+./usr.bin/rwho/rwho.c:110:	if (chdir(_PATH_RWHODIR) < 0)
+./usr.bin/rwho/rwho.c:111:		err(1, "chdir(%s)", _PATH_RWHODIR);
+./usr.bin/rwho/rwho.c:113:		err(1, "opendir(%s)", _PATH_RWHODIR);
+./usr.sbin/rwhod/rwhod.c:218:	if (chdir(_PATH_RWHODIR) < 0) {
+./usr.sbin/rwhod/rwhod.c:219:		syslog(LOG_ERR, "%s: %m", _PATH_RWHODIR);
+./usr.sbin/rwhod/rwhod.c:352:		syslog(LOG_WARNING, "%s: %m", _PATH_RWHODIR);
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE include/protocols/rwhod.h
