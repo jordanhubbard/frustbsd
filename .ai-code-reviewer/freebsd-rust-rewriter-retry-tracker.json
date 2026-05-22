@@ -143,10 +143,6 @@
     "attempts": 1,
     "last_attempt": "2026-05-22T01:11:10.571575"
   },
-  "usr.bin/hesinfo": {
-    "attempts": 1,
-    "last_attempt": "2026-05-22T11:08:44.454347"
-  },
   "usr.bin/id": {
     "attempts": 1,
     "last_attempt": "2026-05-21T23:15:10.423865"
