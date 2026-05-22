@@ -1,0 +1,15 @@
+=== STEP 16 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/true/src/main.rs
+CONTENT:
+<<<
+fn main() {
+    std::process::exit(0);
+}
+<<<

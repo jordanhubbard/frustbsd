@@ -1,0 +1,14 @@
+=== STEP 10 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory bin/csh skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE bin/mv
+
+--- RESPONSE ---
+
+
+Many `bin/` units are auto-skipped. Let me try a `usr.bin/` unit that hasn't been completed yet.
+
+ACTION: SET_SCOPE usr.bin/base64

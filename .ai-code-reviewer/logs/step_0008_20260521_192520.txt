@@ -1,0 +1,14 @@
+=== STEP 8 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory bin/chmod skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE bin/csh
+
+--- RESPONSE ---
+
+
+Many `bin/` units are auto-skipped. Let me try a `usr.bin/` directory instead, since those have been completing successfully.
+
+ACTION: SET_SCOPE usr.bin/dirname
