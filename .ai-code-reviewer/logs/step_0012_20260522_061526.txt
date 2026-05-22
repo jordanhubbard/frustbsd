@@ -1,0 +1,11 @@
+=== STEP 12 ===
+
+--- REQUEST ---
+EDIT_FILE_ERROR: Missing OLD or NEW block
+
+--- RESPONSE ---
+
+
+Let me re-read the Makefile to get the exact content.
+
+ACTION: READ_FILE usr.bin/nohup/Makefile
