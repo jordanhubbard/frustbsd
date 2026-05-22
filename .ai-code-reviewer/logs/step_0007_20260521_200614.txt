@@ -1,0 +1,66 @@
+=== STEP 7 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📄 File: bin/timeout/timeout.c
+   Chunks: 4/8
+
+```
+=== CHUNK 4/8: /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/timeout/timeout.c === [function: sig_handler]
+=== Lines 121-166 (46 lines) ===
+
+static void
+sig_handler(int signo)
+{
+	if (signo == killsig) {
+		sig_term = signo;
+		return;
+	}
+
+	switch (signo) {
+	case SIGCHLD:
+		sig_chld = 1;
+		break;
+	case SIGALRM:
+		sig_alrm = 1;
+		break;
+	case SIGHUP:
+	case SIGINT:
+	case SIGQUIT:
+	case SIGILL:
+	case SIGTRAP:
+	case SIGABRT:
+	case SIGEMT:
+	case SIGFPE:
+	case SIGBUS:
+	case SIGSEGV:
+	case SIGSYS:
+	case SIGPIPE:
+	case SIGTERM:
+	case SIGXCPU:
+	case SIGXFSZ:
+	case SIGVTALRM:
+	case SIGPROF:
+	case SIGUSR1:
+	case SIGUSR2:
+		/*
+		 * Signals with default action to terminate the process.
+		 * See the sigaction(2) man page.
+		 */
+		sig_term = signo;
+		break;
+	default:
+		sig_other = signo;
+		break;
+	}
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

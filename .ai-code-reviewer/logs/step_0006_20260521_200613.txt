@@ -1,0 +1,58 @@
+=== STEP 6 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📄 File: bin/timeout/timeout.c
+   Chunks: 3/8
+
+```
+=== CHUNK 3/8: /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/timeout/timeout.c === [function: parse_duration]
+=== Lines 83-120 (38 lines) ===
+
+static double
+parse_duration(const char *duration)
+{
+	double ret;
+	char *suffix;
+
+	ret = strtod(duration, &suffix);
+	if (suffix == duration)
+		errx(EXIT_INVALID, "duration is not a number");
+
+	if (*suffix == '\0')
+		return (ret);
+
+	if (suffix[1] != '\0')
+		errx(EXIT_INVALID, "duration unit suffix too long");
+
+	switch (*suffix) {
+	case 's':
+		break;
+	case 'm':
+		ret *= 60;
+		break;
+	case 'h':
+		ret *= 60 * 60;
+		break;
+	case 'd':
+		ret *= 60 * 60 * 24;
+		break;
+	default:
+		errx(EXIT_INVALID, "duration unit suffix invalid");
+	}
+
+	if (ret < 0 || ret >= 100000000UL)
+		errx(EXIT_INVALID, "duration out of range");
+
+	return (ret);
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK
