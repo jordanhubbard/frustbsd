@@ -1,0 +1,62 @@
+=== STEP 403 ===
+
+--- REQUEST ---
+BUILD_SUCCESS: Build completed successfully.
+Directory usr.bin/from is now complete.
+Changes committed and pushed.
+Post-success metadata commit: 43c13ef18936.
+
+Completed directories so far: 2
+NEXT: Use SET_SCOPE usr.bin/caesar
+
+FINAL DIFFS:
+--- usr.bin/from/Makefile ---
+```diff
+diff --git a/usr.bin/from/Makefile b/usr.bin/from/Makefile
+index c27be3f50a2..528ba04a8b8 100644
+--- a/usr.bin/from/Makefile
++++ b/usr.bin/from/Makefile
+@@ -1,3 +1,23 @@
+ PROG=	from
++BINDIR?=	/usr/bin
++BINOWN?=	root
++BINGRP?=	wheel
++BINMODE?=	555
+ 
+-.include <bsd.prog.mk>
++CARGO?=		cargo
++CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
++
++${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
++	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
++	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
++
++all: ${PROG}
++
++install: ${PROG}
++	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
++
++clean:
++	${RM} ${PROG}
++	${RM} -rf ${CARGO_TARGET_DIR}
++
++CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+\ No newline at end of file
+```
+
+--- usr.bin/from/Cargo.toml ---
+```diff
+(no changes)
+```
+
+--- usr.bin/from/src/main.rs ---
+```diff
+(no changes)
+```
+
+--- RESPONSE ---
+
+
+The `usr.bin/from` unit completed successfully. Moving to the next unit.
+
+ACTION: SET_SCOPE usr.bin/caesar

@@ -111,6 +111,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-21T19:44:21.180208"
   },
+  "usr.bin/caesar": {
+    "attempts": 1,
+    "last_attempt": "2026-05-22T08:45:11.456626"
+  },
   "usr.bin/cksum": {
     "attempts": 1,
     "last_attempt": "2026-05-21T23:26:14.041313"

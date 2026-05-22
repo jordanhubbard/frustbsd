@@ -1,0 +1,140 @@
+=== STEP 407 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/caesar/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/caesar/src/main.rs
+CONTENT:
+<<<
+use std::io::{self, Read, Write};
+use std::process;
+
+const LINELENGTH: usize = 2048;
+
+const STDF: [f64; 26] = [
+    7.97, 1.35, 3.61, 4.78, 12.37, 2.01, 1.46, 4.49, 6.39, 0.04,
+    0.42, 3.81, 2.69, 5.92, 6.96, 2.91, 0.08, 6.63, 8.77, 9.68,
+    2.62, 0.81, 1.88, 0.23, 2.07, 0.06,
+];
+
+fn rotate(ch: u8, perm: i32) -> u8 {
+    if ch < 128 {
+        if ch >= b'A' && ch <= b'Z' {
+            b'A' + ((ch - b'A' + perm as u8) % 26)
+        } else if ch >= b'a' && ch <= b'z' {
+            b'a' + ((ch - b'a' + perm as u8) % 26)
+        } else {
+            ch
+        }
+    } else {
+        ch
+    }
+}
+
+fn printit(rot: i32) -> ! {
+    let stdin = io::stdin();
+    let stdout = io::stdout();
+    let mut lock = stdout.lock();
+    let mut buf = [0u8; 1];
+    loop {
+        match stdin.lock().read(&mut buf) {
+            Ok(0) => break,
+            Ok(1) => {
+                let _ = lock.write_all(&[rotate(buf[0], rot)]);
+            }
+            Err(_) => break,
+        }
+    }
+    process::exit(0);
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+
+    if args.len() > 1 {
+        match args[1].parse::<i32>() {
+            Ok(rot) if rot >= 0 => printit(rot),
+            _ => {
+                eprintln!("caesar: bad rotation value.");
+                process::exit(1);
+            }
+        }
+    }
+
+    let mut inbuf = vec![0u8; LINELENGTH];
+    let mut obs = [0i32; 26];
+
+    let stdin = io::stdin();
+    let mut handle = stdin.lock();
+
+    let nread = match handle.read(&mut inbuf) {
+        Ok(n) => n,
+        Err(e) => {
+            eprintln!("caesar: {}", e);
+            process::exit(1);
+        }
+    };
+
+    for i in 0..nread {
+        let ch = inbuf[i];
+        if ch < 128 {
+            if ch >= b'a' && ch <= b'z' {
+                obs[(ch - b'a') as usize] += 1;
+            } else if ch >= b'A' && ch <= b'Z' {
+                obs[(ch - b'A') as usize] += 1;
+            }
+        }
+    }
+
+    // Adjust frequency table
+    let mut adj: [f64; 26] = [0.0; 26];
+    for i in 0..26 {
+        adj[i] = (STDF[i]).ln() + (26.0 / 100.0).ln();
+    }
+
+    // Find best rotation
+    let mut winner = 0;
+    let mut winnerdot = f64::NEG_INFINITY;
+
+    for try_rot in 0..26 {
+        let mut dot = 0.0;
+        for i in 0..26 {
+            dot += obs[i] as f64 * adj[(i + try_rot) % 26];
+        }
+        if try_rot == 0 {
+            winnerdot = dot;
+        }
+        if dot > winnerdot {
+            winner = try_rot;
+            winnerdot = dot;
+        }
+    }
+
+    let stdout = io::stdout();
+    let mut lock = stdout.lock();
+
+    let mut offset = 0;
+    let mut nread = nread;
+
+    loop {
+        for i in 0..nread {
+            let ch = inbuf[offset + i];
+            let _ = lock.write_all(&[rotate(ch, winner as i32)]);
+        }
+        if nread < LINELENGTH {
+            break;
+        }
+        match handle.read(&mut inbuf) {
+            Ok(n) => nread = n,
+            Err(e) => {
+                eprintln!("caesar: {}", e);
+                process::exit(1);
+            }
+        }
+    }
+}
+>>>

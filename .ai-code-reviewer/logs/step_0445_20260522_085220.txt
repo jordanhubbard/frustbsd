@@ -1,0 +1,13 @@
+=== STEP 445 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/caesar/Makefile.depend
+CONTENT:
+<<<
+# placeholder
+>>>
