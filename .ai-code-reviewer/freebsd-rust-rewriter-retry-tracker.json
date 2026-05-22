@@ -111,10 +111,6 @@
     "attempts": 3,
     "last_attempt": "2026-05-21T19:44:21.180208"
   },
-  "usr.bin/asa": {
-    "attempts": 1,
-    "last_attempt": "2026-05-22T06:01:53.193080"
-  },
   "usr.bin/cksum": {
     "attempts": 1,
     "last_attempt": "2026-05-21T23:26:14.041313"
