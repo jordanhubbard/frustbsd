@@ -1,0 +1,17 @@
+=== STEP 129 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/ypcat/Makefile
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/ypcat/Makefile
+CONTENT:
+PACKAGE=	yp
+PROG=	ypcat
+
+WARNS?=	3
+
+.include <bsd.prog.mk>

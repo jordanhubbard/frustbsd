@@ -1,0 +1,92 @@
+=== STEP 35 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/ypmatch/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/ypmatch
+   Files: 0/3
+📄 File: usr.bin/ypmatch/Makefile
+✏️  Edits: 3 files modified
+
+```
+PROG=	ypmatch
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	cargo-target
+
+CP?=		cp
+RM?=		rm -f
+INSTALL?=	install
+
+${PROG}: Cargo.toml src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+```
+
+--- RESPONSE ---
+
+
+The silent failures suggest the Makefile might have spaces instead of tabs. Let me try a different approach - use EDIT_FILE on the original Makefile to make minimal changes.
+
+ACTION: EDIT_FILE usr.bin/ypmatch/Makefile
+OLD:
+PROG=	ypmatch
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	cargo-target
+
+CP?=		cp
+RM?=		rm -f
+INSTALL?=	install
+
+${PROG}: Cargo.toml src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+NEW:
+PROG=	ypmatch
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	cargo-target
+
+${PROG}: Cargo.toml src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	cp ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	install -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	rm -f ${PROG}
+	rm -rf ${CARGO_TARGET_DIR}

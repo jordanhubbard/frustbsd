@@ -1,0 +1,11 @@
+=== STEP 30 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.sanity.mk*'
+
+--- RESPONSE ---
+
+
+Let me find what make include files exist in the tree.
+
+ACTION: FIND_FILE bsd.prog.mk

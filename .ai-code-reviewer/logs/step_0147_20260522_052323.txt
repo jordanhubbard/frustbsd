@@ -1,0 +1,23 @@
+=== STEP 147 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/ypcat:
+```
+.depend
+.depend.ypcat.pieo
+Makefile
+Makefile.depend
+ypcat.1
+ypcat.c
+ypcat.pieo
+```
+
+--- RESPONSE ---
+
+
+Let me try a different approach - use a shell script to generate the Makefile with proper tabs.
+
+ACTION: WRITE_FILE usr.bin/ypcat/genmake.sh
+CONTENT:
+#!/bin/sh
+printf 'PACKAGE=\ty\nPROG=\t%s\nMAN=\nBINDIR?=\t/usr/bin\nBINOWN?=\troot\nBINGRP?=\twheel\nBINMODE?=\t555\n\nCARGO?=\t\tcargo\nCARGO_TARGET_DIR?=\t${.OBJDIR}/cargo-target\n\n.PHONY: all install clean\n\nall: ${PROG}\n\n${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs\n\t${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}\n\t${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}\n\ninstall: ${PROG}\n\t${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}\n\nclean:\n\t${RM} ${PROG}\n\t${RM} -rf ${CARGO_TARGET_DIR}\n\nCLEANFILES+=\t${PROG} ${CARGO_TARGET_DIR}\n' "$PROG"

@@ -159,12 +159,20 @@
     "attempts": 2,
     "last_attempt": "2026-05-22T00:11:03.402137"
   },
+  "usr.bin/unexpand": {
+    "attempts": 1,
+    "last_attempt": "2026-05-22T04:46:16.536885"
+  },
   "usr.bin/yes": {
     "attempts": 3,
     "last_attempt": "2026-05-21T22:50:38.271361"
   },
-  "usr.bin/ypmatch": {
+  "usr.bin/ypcat": {
     "attempts": 2,
-    "last_attempt": "2026-05-22T04:21:40.966926"
+    "last_attempt": "2026-05-22T05:09:58.940523"
+  },
+  "usr.bin/ypmatch": {
+    "attempts": 3,
+    "last_attempt": "2026-05-22T04:31:46.528600"
   }
 }

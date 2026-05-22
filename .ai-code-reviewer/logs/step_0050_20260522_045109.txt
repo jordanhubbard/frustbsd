@@ -1,0 +1,304 @@
+=== STEP 50 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/unexpand/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+I need to fix the Rust code - `as_utf8_bytes()` isn't a valid method. Let me fix that and update the Makefile.
+
+ACTION: WRITE_FILE usr.bin/unexpand/src/main.rs
+CONTENT:
+/*-
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * Copyright (c) 1980, 1993
+ *	The Regents of the University of California.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+use std::env;
+use std::fs::File;
+use std::io::{self, BufRead, BufReader, Write};
+use std::process;
+
+const MAX_TABSTOPS: usize = 100;
+
+fn usage() -> ! {
+    eprintln!("usage: unexpand [-a | -t tablist] [file ...]");
+    process::exit(1);
+}
+
+fn getstops(spec: &str) -> Vec<usize> {
+    let mut stops: Vec<usize> = Vec::new();
+    let mut prev: usize = 0;
+    let mut cp = spec.as_bytes();
+    while !cp.is_empty() {
+        let mut i: usize = 0;
+        while let Some(&b) = cp.first() {
+            if b.is_ascii_digit() {
+                i = i * 10 + (b - b'0') as usize;
+                cp = &cp[1..];
+            } else {
+                break;
+            }
+        }
+        if i == 0 {
+            errx("bad tab stop spec");
+        }
+        if i <= prev {
+            errx("bad tab stop spec");
+        }
+        if stops.len() >= MAX_TABSTOPS {
+            errx("too many tab stops");
+        }
+        prev = i;
+        stops.push(i);
+        if cp.is_empty() {
+            break;
+        }
+        if cp[0] != b',' && !cp[0].is_ascii_whitespace() {
+            errx("bad tab stop spec");
+        }
+        cp = &cp[1..];
+    }
+    if stops.is_empty() {
+        errx("bad tab stop spec");
+    }
+    stops
+}
+
+fn errx(msg: &str) -> ! {
+    eprintln!("{}", msg);
+    process::exit(1);
+}
+
+fn warn(msg: &str) {
+    eprintln!("unexpand: {}", msg);
+}
+
+fn wcwidth_rune(ch: char) -> usize {
+    if ch == '\0' {
+        return 0;
+    }
+    if ch.is_ascii_graphic() || ch == ' ' {
+        return 1;
+    }
+    let cp = ch as u32;
+    if (0x1100..=0x115F).contains(&cp)
+        || (0x2E80..=0xA4CF).contains(&cp)
+        || (0xAC00..=0xD7A3).contains(&cp)
+        || (0xF900..=0xFAFF).contains(&cp)
+        || (0xFE10..=0xFE19).contains(&cp)
+        || (0xFE30..=0xFE6F).contains(&cp)
+        || (0xFF00..=0xFF60).contains(&cp)
+        || (0xFFE0..=0xFFE6).contains(&cp)
+        || (0x20000..=0x2FFFD).contains(&cp)
+        || (0x30000..=0x3FFFD).contains(&cp)
+    {
+        return 2;
+    }
+    1
+}
+
+fn tabify<R: BufRead, W: Write>(mut reader: R, mut writer: W, all: bool, tabstops: &[usize]) -> bool {
+    let mut buf = String::new();
+    if reader.read_line(&mut buf).is_err() {
+        return false;
+    }
+
+    let limit = if tabstops.len() == 1 {
+        usize::MAX
+    } else {
+        *tabstops.last().unwrap() - 1
+    };
+
+    let tab0 = if tabstops.is_empty() { 8 } else { tabstops[0] };
+
+    let mut chars = buf.chars().peekable();
+    let mut dcol: usize = 0;
+    let mut ocol: usize = 0;
+    let mut doneline = false;
+
+    while let Some(&ch) = chars.peek() {
+        chars.next();
+
+        if ch == ' ' && !doneline {
+            dcol += 1;
+            if dcol >= limit {
+                doneline = true;
+            }
+            continue;
+        } else if ch == '\t' {
+            if tabstops.len() == 1 {
+                dcol = (1 + dcol / tab0) * tab0;
+                continue;
+            } else {
+                let mut n = 0;
+                while n < tabstops.len() && tabstops[n] - 1 < dcol {
+                    n += 1;
+                }
+                if n < tabstops.len() - 1 && tabstops[n] - 1 < limit {
+                    dcol = tabstops[n];
+                    continue;
+                }
+                doneline = true;
+            }
+        }
+
+        // Output maximal number of tabs
+        if tabstops.len() == 1 {
+            while (ocol + tab0) / tab0 <= dcol / tab0 {
+                if dcol - ocol < 2 {
+                    break;
+                }
+                let _ = writer.write_all(b"\t");
+                ocol = (1 + ocol / tab0) * tab0;
+            }
+        } else {
+            let mut n = 0;
+            while n < tabstops.len() && tabstops[n] - 1 < ocol {
+                n += 1;
+            }
+            while ocol < dcol && n < tabstops.len() && ocol < limit {
+                let _ = writer.write_all(b"\t");
+                ocol = tabstops[n];
+                n += 1;
+            }
+        }
+
+        // Then spaces
+        while ocol < dcol && ocol < limit {
+            let _ = writer.write_all(b" ");
+            ocol += 1;
+        }
+
+        if ch == '\b' {
+            let _ = writer.write_all(b"\x08");
+            if ocol > 0 {
+                ocol -= 1;
+                dcol -= 1;
+            }
+        } else if ch == '\n' {
+            let _ = writer.write_all(b"\n");
+            doneline = false;
+            ocol = 0;
+            dcol = 0;
+            continue;
+        } else if ch != ' ' || dcol > limit {
+            let mut buf = [0u8; 4];
+            let encoded = ch.encode_utf8(&mut buf);
+            let _ = writer.write_all(encoded.as_bytes());
+            let width = wcwidth_rune(ch);
+            if width > 0 {
+                ocol += width;
+                dcol += width;
+            }
+        }
+
+        // Only processing leading blanks or we've gone past the last tab stop
+        if !all || dcol >= limit {
+            // Emit remainder unchanged
+            let remaining: String = chars.collect();
+            let _ = writer.write_all(remaining.as_bytes());
+            doneline = false;
+            ocol = 0;
+            dcol = 0;
+            break;
+        }
+    }
+
+    true
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let mut all = false;
+    let mut tabstops: Vec<usize> = vec![8];
+    let mut optind = 1;
+
+    while optind < args.len() {
+        let arg = &args[optind];
+        if arg == "-a" {
+            all = true;
+            optind += 1;
+        } else if arg.starts_with("-t") {
+            let spec = if arg.len() > 2 {
+                &arg[2..]
+            } else if optind + 1 < args.len() {
+                optind += 1;
+                &args[optind]
+            } else {
+                usage();
+            };
+            tabstops = getstops(spec);
+            all = true;
+            optind += 1;
+        } else if arg.starts_with('-') {
+            usage();
+        } else {
+            break;
+        }
+    }
+
+    let files: Vec<String> = args[optind..].to_vec();
+    let mut failed = false;
+
+    if files.is_empty() {
+        let stdin = io::stdin();
+        let reader = BufReader::new(stdin.lock());
+        let stdout = io::stdout();
+        let writer = stdout.lock();
+        if !tabify(reader, writer, all, &tabstops) {
+            warn("stdin");
+            failed = true;
+        }
+    } else {
+        for filename in &files {
+            match File::open(filename) {
+                Ok(f) => {
+                    let reader = BufReader::new(f);
+                    let stdout = io::stdout();
+                    let writer = stdout.lock();
+                    if !tabify(reader, writer, all, &tabstops) {
+                        warn(filename);
+                        failed = true;
+                    }
+                }
+                Err(_) => {
+                    warn(filename);
+                    failed = true;
+                }
+            }
+        }
+    }
+
+    if failed {
+        process::exit(1);
+    }
+}

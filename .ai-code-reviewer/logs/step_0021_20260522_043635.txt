@@ -1,0 +1,58 @@
+=== STEP 21 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/ypmatch/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/ypmatch
+   Files: 0/3
+📄 File: usr.bin/ypmatch/Makefile
+✏️  Edits: 3 files modified
+
+```
+PROG=	ypmatch
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	cargo-target
+
+${PROG}: Cargo.toml src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+```
+
+--- RESPONSE ---
+
+
+The Makefile might need standard FreeBSD make variables. Let me try including bsd.prog.mk and overriding the build.
+
+ACTION: WRITE_FILE usr.bin/ypmatch/Makefile
+CONTENT:
+PROG=	ypmatch
+SRCS=
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+.PHONY: cargo-build
+
+${PROG}: cargo-build
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+cargo-build:
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+
+.include <bsd.prog.mk>

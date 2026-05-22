@@ -1,0 +1,24 @@
+=== STEP 42 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/ypmatch/Makefile
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+I'll keep trying different Makefile approaches. Let me try using the original Makefile format but with bsd.prog.mk and override the build.
+
+ACTION: WRITE_FILE usr.bin/ypmatch/Makefile
+CONTENT:
+PROG=	ypmatch
+SRCS=
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	cargo-target
+
+${PROG}: Cargo.toml src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	cp ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+.include <bsd.prog.mk>

@@ -1,0 +1,12 @@
+=== STEP 54 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/unexpand/Makefile
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Let me check a recently completed unit to see what Makefile format worked.
+
+ACTION: READ_FILE usr.bin/fsync/Makefile

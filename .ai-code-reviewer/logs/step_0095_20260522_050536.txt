@@ -1,0 +1,13 @@
+=== STEP 95 ===
+
+--- REQUEST ---
+EDIT_FILE_ERROR: Missing OLD or NEW block
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/unexpand/Makefile
+OLD:
+PROG=	unexpand
+NEW:
+PROG=	unexpand

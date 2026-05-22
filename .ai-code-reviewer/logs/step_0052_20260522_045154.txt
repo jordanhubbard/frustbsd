@@ -1,0 +1,21 @@
+=== STEP 52 ===
+
+--- REQUEST ---
+EDIT_FILE_ERROR: Missing OLD or NEW block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/unexpand/Makefile
+CONTENT:
+PROG=	unexpand
+MAN=
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	cargo-target
+
+${PROG}: Cargo.toml src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	cp ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+.include <bsd.prog.mk>

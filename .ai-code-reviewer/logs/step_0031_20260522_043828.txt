@@ -1,0 +1,15 @@
+=== STEP 31 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*bsd.prog.mk*':
+```
+./tools/build/mk/bsd.prog.mk
+./share/mk/bsd.prog.mk
+```
+
+--- RESPONSE ---
+
+
+Let me read the bsd.prog.mk to understand how to integrate properly.
+
+ACTION: READ_FILE share/mk/bsd.prog.mk
