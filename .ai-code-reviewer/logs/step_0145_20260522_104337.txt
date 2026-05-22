@@ -1,0 +1,247 @@
+=== STEP 145 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/leave/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/leave
+   Files: 0/3
+📄 File: usr.bin/leave/Makefile
+
+```
+PROG=	leave
+
+NO_WFORMAT=
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/leave/src/main.rs
+CONTENT:
+<<<
+/*-
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * Copyright (c) 1980, 1988, 1993
+ *	The Regents of the University of California.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+use std::io::{self, Write};
+use std::process;
+use std::time::{Duration, SystemTime};
+
+fn usage() -> ! {
+    eprintln!("usage: leave [[+]hhmm]");
+    process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+
+    let input: String;
+    if args.len() < 2 {
+        let msg = "When do you have to leave? ";
+        io::stdout().write_all(msg.as_bytes()).unwrap();
+        io::stdout().flush().unwrap();
+        let mut buf = String::new();
+        io::stdin().read_line(&mut buf).unwrap_or_default();
+        input = buf;
+        if input.is_empty() || input.trim() == "" {
+            process::exit(0);
+        }
+    } else if args.len() > 2 {
+        usage();
+    } else {
+        input = args[1].clone();
+    }
+
+    let mut cp = input.trim_end_matches('\n');
+
+    let plusnow = if cp.starts_with('+') {
+        cp = &cp[1..];
+        true
+    } else {
+        false
+    };
+
+    if cp.is_empty() {
+        usage();
+    }
+
+    for c in cp.chars() {
+        if !c.is_ascii_digit() {
+            usage();
+        }
+    }
+
+    let num: u32 = cp.parse().unwrap_or_else(|_| usage());
+    let minutes = num % 100;
+    let hours = num / 100;
+
+    if minutes > 59 {
+        usage();
+    }
+
+    let secs: u64 = if plusnow {
+        (hours as u64) * 3600 + (minutes as u64) * 60
+    } else {
+        if hours > 23 {
+            usage();
+        }
+
+        let now = SystemTime::now()
+            .duration_since(SystemTime::UNIX_EPOCH)
+            .unwrap();
+        let now_secs = now.as_secs();
+
+        // Get current time components
+        let now_minutes = (now_secs / 60) % 60;
+        let now_hours = (now_secs / 3600) % 24;
+
+        // Convert to 12-hour time (0:00...11:59)
+        let hours_12 = if hours > 11 { hours - 12 } else { hours };
+        let now_hours_12 = if now_hours > 11 { now_hours - 12 } else { now_hours };
+
+        let mut target_hours = hours_12;
+        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {
+            target_hours += 12;
+        }
+
+        let mut secs = (target_hours as u64 - now_hours_12 as u64) * 3600;
+        secs += (minutes as u64 - now_minutes) * 60;
+        secs -= now_secs % 60;
+        secs
+    };
+
+    doalarm(secs);
+    process::exit(0);
+}
+
+fn doalarm(secs: u64) {
+    let pid = unsafe { libc::fork() };
+
+    if pid > 0 {
+        let now = SystemTime::now()
+            .duration_since(SystemTime::UNIX_EPOCH)
+            .unwrap();
+        let alarm_time = now + Duration::from_secs(secs);
+
+        // Format time using strftime-like format
+        let ts = chrono_like_format(alarm_time);
+        println!("Alarm set for {}. (pid {})", ts, pid);
+        process::exit(0);
+    } else if pid == 0 {
+        // Child process
+        std::thread::sleep(Duration::from_secs(2));
+        let mut secs = if secs >= 2 { secs - 2 } else { 0 };
+
+        const FIVEMIN: u64 = 5 * 60;
+        const ONEMIN: u64 = 60;
+
+        if secs >= FIVEMIN {
+            std::thread::sleep(Duration::from_secs(secs - FIVEMIN));
+            let msg = "\x07\x07You have to leave in 5 minutes.\n";
+            if write_stdout(msg) {
+                process::exit(0);
+            }
+            secs = FIVEMIN;
+        }
+
+        if secs >= ONEMIN {
+            std::thread::sleep(Duration::from_secs(secs - ONEMIN));
+            let msg = "\x07\x07Just one more minute!\n";
+            if write_stdout(msg) {
+                process::exit(0);
+            }
+        }
+
+        for _ in 0..10 {
+            std::thread::sleep(Duration::from_secs(ONEMIN));
+            let msg = "\x07\x07Time to leave!\n";
+            if write_stdout(msg) {
+                process::exit(0);
+            }
+        }
+
+        let msg = "\x07\x07That was the last time I'll tell you.  Bye.\n";
+        let _ = write_stdout(msg);
+        process::exit(0);
+    } else {
+        eprintln!("fork failed");
+        process::exit(1);
+    }
+}
+
+fn write_stdout(msg: &str) -> bool {
+    use std::os::unix::io::AsRawFd;
+    let fd = io::stdout().as_raw_fd();
+    unsafe {
+        let ret = libc::write(fd, msg.as_ptr() as *const libc::c_void, msg.len());
+        ret < 0
+    }
+}
+
+fn chrono_like_format(dt: Duration) -> String {
+    let secs = dt.as_secs();
+    let yday = yday_from_secs(secs);
+    let mut buf = [0u8; 80];
+    unsafe {
+        let tm = make_tm(secs);
+        let fmt = b"%+\0";
+        let ret = libc::strftime(
+            buf.as_mut_ptr() as *mut libc::c_char,
+            buf.len(),
+            fmt.as_ptr() as *const libc::c_char,
+            &tm,
+        );
+        if ret > 0 {
+            String::from_utf8_lossy(&buf[..ret as usize]).into_owned()
+        } else {
+            "unknown".to_string()
+        }
+    }
+}
+
+fn yday_from_secs(_secs: u64) -> i32 {
+    0
+}
+
+fn make_tm(secs: u64) -> libc::tm {
+    let mut tm: libc::tm = unsafe { std::mem::zeroed() };
+    let mut ts = secs as libc::time_t;
+    unsafe {
+        libc::gmtime_r(&mut ts, &mut tm);
+        // Convert to local time
+        let mut local_tm: libc::tm = unsafe { std::mem::zeroed() };
+        libc::localtime_r(&mut ts, &mut local_tm);
+        local_tm
+    }
+}
+>>>

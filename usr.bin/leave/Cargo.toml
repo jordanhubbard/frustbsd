@@ -1,0 +1,9 @@
+[package]
+name = "leave"
+version = "0.1.0"
+edition = "2021"
+description = "FreeBSD leave - alarm reminder command"
+
+[[bin]]
+name = "leave"
+path = "src/main.rs"

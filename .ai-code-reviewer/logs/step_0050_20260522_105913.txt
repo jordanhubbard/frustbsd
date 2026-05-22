@@ -1,0 +1,229 @@
+=== STEP 50 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/leave/cargo-target/debug/.fingerprint/leave-f12fb7aa0db49ca5/output-bin-leave:
+PROGRESS:
+📁 Directory: usr.bin/leave
+   Files: 1/3
+📄 File: usr.bin/leave/cargo-target/debug/.fingerprint/leave-f12fb7aa0db49ca5/output-bin-leave
+✏️  Edits: 3 files modified
+
+```
+{"$message_type":"diagnostic","message":"mismatched types","code":{"code":"E0308","explanation":"Expected type did not match the received type.\n\nErroneous code examples:\n\n```compile_fail,E0308\nfn plus_one(x: i32) -> i32 {\n    x + 1\n}\n\nplus_one(\"Not a number\");\n//       ^^^^^^^^^^^^^^ expected `i32`, found `&str`\n\nif \"Not a bool\" {\n// ^^^^^^^^^^^^ expected `bool`, found `&str`\n}\n\nlet x: f32 = \"Not a float\";\n//     ---   ^^^^^^^^^^^^^ expected `f32`, found `&str`\n//     |\n//     expected due to this\n```\n\nThis error occurs when an expression was used in a place where the compiler\nexpected an expression of a different type. It can occur in several cases, the\nmost common being when calling a function and passing an argument which has a\ndifferent type than the matching type in the function declaration.\n"},"level":"error","spans":[{"file_name":"src/main.rs","byte_start":2469,"byte_end":2481,"line_start":106,"line_end":106,"column_start":23,"column_end":35,"is_primary":true,"text":[{"text":"        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {","highlight_start":23,"highlight_end":35}],"label":"expected `u32`, found `u64`","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"src/main.rs","byte_start":2458,"byte_end":2466,"line_start":106,"line_end":106,"column_start":12,"column_end":20,"is_primary":false,"text":[{"text":"        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {","highlight_start":12,"highlight_end":20}],"label":"expected because this is `u32`","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"you can convert `hours_12` from `u32` to `u64`, matching the type of `now_hours_12`","code":null,"level":"help","spans":[{"file_name":"src/main.rs","byte_start":2458,"byte_end":2458,"line_start":106,"line_end":106,"column_start":12,"column_end":12,"is_primary":true,"text":[{"text":"        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {","highlight_start":12,"highlight_end":12}],"label":null,"suggested_replacement":"u64::from(","suggestion_applicability":"MachineApplicable","expansion":null},{"file_name":"src/main.rs","byte_start":2466,"byte_end":2466,"line_start":106,"line_end":106,"column_start":20,"column_end":20,"is_primary":true,"text":[{"text":"        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {","highlight_start":20,"highlight_end":20}],"label":null,"suggested_replacement":")","suggestion_applicability":"MachineApplicable","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[38;5;9merror[E0308]\u001b[0m\u001b[0m\u001b[1m: mismatched types\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0msrc/main.rs:106:23\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m106\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--------\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;9m^^^^^^^^^^^^\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;9mexpected `u32`, found `u64`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mexpected because this is `u32`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: you can convert `hours_12` from `u32` to `u64`, matching the type of `now_hours_12`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m106\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m        if \u001b[0m\u001b[0m\u001b[38;5;10mu64::from(\u001b[0m\u001b[0mhours_12\u001b[0m\u001b[0m\u001b[38;5;10m)\u001b[0m\u001b[0m < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[38;5;10m++++++++++\u001b[0m\u001b[0m        \u001b[0m\u001b[0m\u001b[38;5;10m+\u001b[0m\n\n"}
+{"$message_type":"diagnostic","message":"mismatched types","code":{"code":"E0308","explanation":"Expected type did not match the received type.\n\nErroneous code examples:\n\n```compile_fail,E0308\nfn plus_one(x: i32) -> i32 {\n    x + 1\n}\n\nplus_one(\"Not a number\");\n//       ^^^^^^^^^^^^^^ expected `i32`, found `&str`\n\nif \"Not a bool\" {\n// ^^^^^^^^^^^^ expected `bool`, found `&str`\n}\n\nlet x: f32 = \"Not a float\";\n//     ---   ^^^^^^^^^^^^^ expected `f32`, found `&str`\n//     |\n//     expected due to this\n```\n\nThis error occurs when an expression was used in a place where the compiler\nexpected an expression of a different type. It can occur in several cases, the\nmost common being when calling a function and passing an argument which has a\ndifferent type than the matching type in the function declaration.\n"},"level":"error","spans":[{"file_name":"src/main.rs","byte_start":2498,"byte_end":2510,"line_start":106,"line_end":106,"column_start":52,"column_end":64,"is_primary":true,"text":[{"text":"        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {","highlight_start":52,"highlight_end":64}],"label":"expected `u32`, found `u64`","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"src/main.rs","byte_start":2486,"byte_end":2494,"line_start":106,"line_end":106,"column_start":40,"column_end":48,"is_primary":false,"text":[{"text":"        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {","highlight_start":40,"highlight_end":48}],"label":"expected because this is `u32`","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"you can convert `hours_12` from `u32` to `u64`, matching the type of `now_hours_12`","code":null,"level":"help","spans":[{"file_name":"src/main.rs","byte_start":2486,"byte_end":2486,"line_start":106,"line_end":106,"column_start":40,"column_end":40,"is_primary":true,"text":[{"text":"        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {","highlight_start":40,"highlight_end":40}],"label":null,"suggested_replacement":"u64::from(","suggestion_applicability":"MachineApplicable","expansion":null},{"file_name":"src/main.rs","byte_start":2494,"byte_end":2494,"line_start":106,"line_end":106,"column_start":48,"column_end":48,"is_primary":true,"text":[{"text":"        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {","highlight_start":48,"highlight_end":48}],"label":null,"suggested_replacement":")","suggestion_applicability":"MachineApplicable","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[38;5;9merror[E0308]\u001b[0m\u001b[0m\u001b[1m: mismatched types\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0msrc/main.rs:106:52\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m106\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                        \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--------\u001b[0m\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;9m^^^^^^^^^^^^\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;9mexpected `u32`, found `u64`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                        \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                        \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mexpected because this is `u32`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: you can convert `hours_12` from `u32` to `u64`, matching the type of `now_hours_12`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m106\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m        if hours_12 < now_hours_12 || (\u001b[0m\u001b[0m\u001b[38;5;10mu64::from(\u001b[0m\u001b[0mhours_12\u001b[0m\u001b[0m\u001b[38;5;10m)\u001b[0m\u001b[0m == now_hours_12 && minutes <= now_minutes) {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                        \u001b[0m\u001b[0m\u001b[38;5;10m++++++++++\u001b[0m\u001b[0m        \u001b[0m\u001b[0m\u001b[38;5;10m+\u001b[0m\n\n"}
+{"$message_type":"diagnostic","message":"mismatched types","code":{"code":"E0308","explanation":"Expected type did not match the received type.\n\nErroneous code examples:\n\n```compile_fail,E0308\nfn plus_one(x: i32) -> i32 {\n    x + 1\n}\n\nplus_one(\"Not a number\");\n//       ^^^^^^^^^^^^^^ expected `i32`, found `&str`\n\nif \"Not a bool\" {\n// ^^^^^^^^^^^^ expected `bool`, found `&str`\n}\n\nlet x: f32 = \"Not a float\";\n//     ---   ^^^^^^^^^^^^^ expected `f32`, found `&str`\n//     |\n//     expected due to this\n```\n\nThis error occurs when an expression was used in a place where the compiler\nexpected an expression of a different type. It can occur in several cases, the\nmost common being when calling a function and passing an argument which has a\ndifferent type than the matching type in the function declaration.\n"},"level":"error","spans":[{"file_name":"src/main.rs","byte_start":2525,"byte_end":2536,"line_start":106,"line_end":106,"column_start":79,"column_end":90,"is_primary":true,"text":[{"text":"        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {","highlight_start":79,"highlight_end":90}],"label":"expected `u32`, found `u64`","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"src/main.rs","byte_start":2514,"byte_end":2521,"line_start":106,"line_end":106,"column_start":68,"column_end":75,"is_primary":false,"text":[{"text":"        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {","highlight_start":68,"highlight_end":75}],"label":"expected because this is `u32`","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"you can convert `minutes` from `u32` to `u64`, matching the type of `now_minutes`","code":null,"level":"help","spans":[{"file_name":"src/main.rs","byte_start":2514,"byte_end":2514,"line_start":106,"line_end":106,"column_start":68,"column_end":68,"is_primary":true,"text":[{"text":"        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {","highlight_start":68,"highlight_end":68}],"label":null,"suggested_replacement":"u64::from(","suggestion_applicability":"MachineApplicable","expansion":null},{"file_name":"src/main.rs","byte_start":2521,"byte_end":2521,"line_start":106,"line_end":106,"column_start":75,"column_end":75,"is_primary":true,"text":[{"text":"        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {","highlight_start":75,"highlight_end":75}],"label":null,"suggested_replacement":")","suggestion_applicability":"MachineApplicable","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[38;5;9merror[E0308]\u001b[0m\u001b[0m\u001b[1m: mismatched types\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0msrc/main.rs:106:79\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m106\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes <= now_minutes) {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                                    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-------\u001b[0m\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;9m^^^^^^^^^^^\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;9mexpected `u32`, found `u64`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                                    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                                    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mexpected because this is `u32`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: you can convert `minutes` from `u32` to `u64`, matching the type of `now_minutes`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m106\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && \u001b[0m\u001b[0m\u001b[38;5;10mu64::from(\u001b[0m\u001b[0mminutes\u001b[0m\u001b[0m\u001b[38;5;10m)\u001b[0m\u001b[0m <= now_minutes) {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                                    \u001b[0m\u001b[0m\u001b[38;5;10m++++++++++\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[38;5;10m+\u001b[0m\n\n"}
+{"$message_type":"diagnostic","message":"aborting due to 3 previous errors","code":null,"level":"error","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[38;5;9merror\u001b[0m\u001b[0m\u001b[1m: aborting due to 3 previous errors\u001b[0m\n\n"}
+{"$message_type":"diagnostic","message":"For more information about this error, try `rustc --explain E0308`.","code":null,"level":"failure-note","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1mFor more information about this error, try `rustc --explain E0308`.\u001b[0m\n"}
+
+```
+
+--- RESPONSE ---
+
+
+Now I can see the actual Rust compilation errors. Line 106 has type mismatches between `u32` and `u64`. Let me fix the source.
+
+ACTION: WRITE_FILE usr.bin/leave/src/main.rs
+CONTENT:
+use std::ffi::CString;
+use std::io::{self, Write};
+use std::os::raw::{c_char, c_int, c_long, c_uint, c_void};
+use std::os::unix::io::AsRawFd;
+use std::process;
+
+extern "C" {
+    fn fork() -> c_int;
+    fn sleep(secs: c_uint) -> c_uint;
+    fn write(fd: c_int, buf: *const c_void, count: usize) -> c_long;
+    fn time(tp: *mut c_long) -> c_long;
+    fn localtime(tp: *const c_long) -> *mut tm;
+    fn strftime(
+        s: *mut c_char,
+        maxsize: usize,
+        format: *const c_char,
+        tm: *const tm,
+    ) -> usize;
+}
+
+#[repr(C)]
+struct tm {
+    tm_sec: c_int,
+    tm_min: c_int,
+    tm_hour: c_int,
+    tm_mday: c_int,
+    tm_mon: c_int,
+    tm_year: c_int,
+    tm_wday: c_int,
+    tm_yday: c_int,
+    tm_isdst: c_int,
+}
+
+fn usage() -> ! {
+    eprintln!("usage: leave [[+]hhmm]");
+    process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+
+    let input: String;
+    if args.len() < 2 {
+        let msg = "When do you have to leave? ";
+        io::stdout().write_all(msg.as_bytes()).unwrap();
+        io::stdout().flush().unwrap();
+        let mut buf = String::new();
+        io::stdin().read_line(&mut buf).unwrap_or_default();
+        input = buf;
+        if input.is_empty() || input.trim() == "" {
+            process::exit(0);
+        }
+    } else if args.len() > 2 {
+        usage();
+    } else {
+        input = args[1].clone();
+    }
+
+    let mut cp = input.trim_end_matches('\n');
+
+    let plusnow = if cp.starts_with('+') {
+        cp = &cp[1..];
+        true
+    } else {
+        false
+    };
+
+    if cp.is_empty() {
+        usage();
+    }
+
+    for c in cp.chars() {
+        if !c.is_ascii_digit() {
+            usage();
+        }
+    }
+
+    let num: u32 = cp.parse().unwrap_or_else(|_| usage());
+    let minutes: u32 = num % 100;
+    let hours: u32 = num / 100;
+
+    if minutes > 59 {
+        usage();
+    }
+
+    let secs: u64 = if plusnow {
+        (hours as u64) * 3600 + (minutes as u64) * 60
+    } else {
+        if hours > 23 {
+            usage();
+        }
+
+        let mut now: c_long = 0;
+        unsafe {
+            now = time(&mut now);
+        }
+        let now_secs = now as u64;
+
+        let now_minutes = (now_secs / 60) % 60;
+        let now_hours = (now_secs / 3600) % 24;
+
+        let hours_12: u64 = if hours > 11 { (hours - 12) as u64 } else { hours as u64 };
+        let now_hours_12: u64 = if now_hours > 11 { now_hours - 12 } else { now_hours };
+
+        let mut target_hours = hours_12;
+        if hours_12 < now_hours_12 || (hours_12 == now_hours_12 && minutes as u64 <= now_minutes) {
+            target_hours += 12;
+        }
+
+        let mut secs = (target_hours - now_hours_12) * 3600;
+        secs += (minutes as u64 - now_minutes) * 60;
+        secs -= now_secs % 60;
+        secs
+    };
+
+    doalarm(secs);
+    process::exit(0);
+}
+
+fn doalarm(secs: u64) {
+    let pid = unsafe { fork() };
+
+    if pid > 0 {
+        let mut daytime: c_long = 0;
+        unsafe {
+            daytime = time(&mut daytime);
+        }
+        daytime += secs as c_long;
+
+        let mut tb = [0u8; 80];
+        unsafe {
+            let tm_ptr = localtime(&daytime);
+            let fmt = CString::new("%+").unwrap();
+            let ret = strftime(
+                tb.as_mut_ptr() as *mut c_char,
+                tb.len(),
+                fmt.as_ptr(),
+                tm_ptr,
+            );
+            if ret > 0 {
+                let s = String::from_utf8_lossy(&tb[..ret]);
+                println!("Alarm set for {}. (pid {})", s, pid);
+            } else {
+                println!("Alarm set. (pid {})", pid);
+            }
+        }
+        process::exit(0);
+    } else if pid == 0 {
+        unsafe {
+            sleep(2);
+        }
+        let mut secs = if secs >= 2 { secs - 2 } else { 0 };
+
+        const FIVEMIN: u64 = 5 * 60;
+        const ONEMIN: u64 = 60;
+
+        if secs >= FIVEMIN {
+            unsafe {
+                sleep((secs - FIVEMIN) as c_uint);
+            }
+            let msg = "\x07\x07You have to leave in 5 minutes.\n";
+            if write_stdout(msg) {
+                process::exit(0);
+            }
+            secs = FIVEMIN;
+        }
+
+        if secs >= ONEMIN {
+            unsafe {
+                sleep((secs - ONEMIN) as c_uint);
+            }
+            let msg = "\x07\x07Just one more minute!\n";
+            if write_stdout(msg) {
+                process::exit(0);
+            }
+        }
+
+        for _ in 0..10 {
+            unsafe {
+                sleep(ONEMIN as c_uint);
+            }
+            let msg = "\x07\x07Time to leave!\n";
+            if write_stdout(msg) {
+                process::exit(0);
+            }
+        }
+
+        let msg = "\x07\x07That was the last time I'll tell you.  Bye.\n";
+        let _ = write_stdout(msg);
+        process::exit(0);
+    } else {
+        eprintln!("fork failed");
+        process::exit(1);
+    }
+}
+
+fn write_stdout(msg: &str) -> bool {
+    let fd = io::stdout().as_raw_fd();
+    unsafe {
+        let ret = write(fd, msg.as_ptr() as *const c_void, msg.len());
+        ret < 0
+    }
+}

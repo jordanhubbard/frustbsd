@@ -3,6 +3,27 @@
 Progress tracking for code rewrite sessions.
 
 ---
+## 2026-05-22 11:01 - usr.bin/leave ✓
+
+**Directory:** `usr.bin/leave`
+
+**Summary:** [ai-code-reviewer] leave: Rewrite utility in Rust
+
+**Files changed:**
+  - usr.bin/leave/Makefile
+  - usr.bin/leave/Makefile.depend
+  - usr.bin/leave/Cargo.lock
+  - usr.bin/leave/Cargo.toml
+  - usr.bin/leave/cargo-target/.rustc_info.json
+  - usr.bin/leave/cargo-target/CACHEDIR.TAG
+  - usr.bin/leave/cargo-target/debug/.cargo-lock
+  - usr.bin/leave/cargo-target/debug/.fingerprint/leave-f12fb7aa0db49ca5/invoked.timestamp
+  - usr.bin/leave/cargo-target/debug/.fingerprint/leave-f12fb7aa0db49ca5/output-bin-leave
+  - usr.bin/leave/cargo-target/debug/deps/leave-f12fb7aa0db49ca5.d
+  - ... and 3 more
+
+---
+
 ## 2026-05-22 10:40 - usr.bin/enigma ✓
 
 **Directory:** `usr.bin/enigma`

@@ -1,0 +1,12 @@
+=== STEP 48 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/leave/cargo-target/debug/.fingerprint:
+```
+leave-f12fb7aa0db49ca5
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/leave/cargo-target/debug/.fingerprint/leave-f12fb7aa0db49ca5

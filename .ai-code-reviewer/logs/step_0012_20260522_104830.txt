@@ -1,0 +1,197 @@
+=== STEP 12 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/leave/Makefile
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+I need to fix the Rust source - I'm using `libc::fork()` which requires the `libc` crate. Since no external crates are allowed, I need to use raw FFI declarations instead.
+
+ACTION: WRITE_FILE usr.bin/leave/src/main.rs
+CONTENT:
+use std::io::{self, Write};
+use std::process;
+use std::time::{Duration, SystemTime};
+
+extern "C" {
+    fn fork() -> i32;
+}
+
+fn usage() -> ! {
+    eprintln!("usage: leave [[+]hhmm]");
+    process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let mut cp: Option<&str> = None;
+
+    if args.len() < 2 {
+        let msg = "When do you have to leave? ";
+        let _ = io::stdout().write_all(msg.as_bytes());
+        let _ = io::stdout().flush();
+        let mut buf = String::new();
+        match io::stdin().read_line(&mut buf) {
+            Ok(_) => {
+                if buf.is_empty() || buf == "\n" {
+                    process::exit(0);
+                }
+                cp = Some(buf.trim_end_matches('\n'));
+            }
+            Err(_) => process::exit(0),
+        }
+    } else if args.len() > 2 {
+        usage();
+    } else {
+        cp = Some(&args[1]);
+    }
+
+    let mut cp = cp.unwrap_or("");
+    let mut plusnow = false;
+
+    if cp.starts_with('+') {
+        plusnow = true;
+        cp = &cp[1..];
+    }
+
+    let mut hours = 0u32;
+    for c in cp.chars() {
+        if c == '\n' {
+            break;
+        }
+        if !c.is_ascii_digit() {
+            usage();
+        }
+        hours = hours * 10 + c.to_digit(10).unwrap();
+    }
+
+    let minutes = hours % 100;
+    hours /= 100;
+
+    if minutes > 59 {
+        usage();
+    }
+
+    let secs = if plusnow {
+        hours * 3600 + minutes * 60
+    } else {
+        if hours > 23 {
+            usage();
+        }
+
+        let now = SystemTime::now()
+            .duration_since(SystemTime::UNIX_EPOCH)
+            .unwrap();
+        let now_secs = now.as_secs() as i64;
+
+        let tm = localtime(now_secs);
+
+        let hours_12 = if hours > 11 { hours - 12 } else { hours };
+        let tm_12 = if tm.tm_hour > 11 {
+            tm.tm_hour - 12
+        } else {
+            tm.tm_hour
+        };
+
+        let mut adj_hours = hours_12;
+        if adj_hours < tm_12 || (adj_hours == tm_12 && minutes <= tm.tm_min as u32) {
+            adj_hours += 12;
+        }
+
+        let secs = (adj_hours - tm_12) * 3600
+            + (minutes - tm.tm_min as u32) * 60
+            - (now_secs % 60) as u32;
+        secs
+    };
+
+    doalarm(secs);
+    process::exit(0);
+}
+
+struct Tm {
+    tm_min: i32,
+    tm_hour: i32,
+}
+
+fn localtime(secs: i64) -> Tm {
+    let secs = secs % 86400;
+    let total_min = secs / 60;
+    let hour = total_min / 60;
+    let min = total_min % 60;
+    Tm {
+        tm_hour: hour as i32,
+        tm_min: min as i32,
+    }
+}
+
+fn doalarm(secs: u32) {
+    let pid = unsafe { fork() };
+    match pid {
+        0 => {
+            // child
+            std::thread::sleep(Duration::from_secs(2));
+            let mut secs = secs;
+            if secs >= 2 {
+                secs -= 2;
+            }
+
+            let five_min = 5 * 60u32;
+            if secs >= five_min {
+                std::thread::sleep(Duration::from_secs(secs - five_min));
+                let msg = "\x07\x07You have to leave in 5 minutes.\n";
+                match io::stdout().write_all(msg.as_bytes()) {
+                    Ok(_) => {}
+                    Err(_) => process::exit(0),
+                }
+                secs = five_min;
+            }
+
+            let one_min = 60u32;
+            if secs >= one_min {
+                std::thread::sleep(Duration::from_secs(secs - one_min));
+                let msg = "\x07\x07Just one more minute!\n";
+                match io::stdout().write_all(msg.as_bytes()) {
+                    Ok(_) => {}
+                    Err(_) => process::exit(0),
+                }
+            }
+
+            for _ in 0..10 {
+                std::thread::sleep(Duration::from_secs(one_min));
+                let msg = "\x07\x07Time to leave!\n";
+                match io::stdout().write_all(msg.as_bytes()) {
+                    Ok(_) => {}
+                    Err(_) => process::exit(0),
+                }
+            }
+
+            let msg = "\x07\x07That was the last time I'll tell you.  Bye.\n";
+            let _ = io::stdout().write_all(msg.as_bytes());
+            process::exit(0);
+        }
+        p if p > 0 => {
+            let now = SystemTime::now()
+                .duration_since(SystemTime::UNIX_EPOCH)
+                .unwrap();
+            let daytime = now.as_secs() + secs as u64;
+            let tb = format_time(daytime);
+            println!("Alarm set for {}. (pid {})", tb, p);
+            process::exit(0);
+        }
+        _ => {
+            eprintln!("fork failed");
+            process::exit(1);
+        }
+    }
+}
+
+fn format_time(secs: u64) -> String {
+    let secs = secs % 86400;
+    let total_min = secs / 60;
+    let hour = total_min / 60;
+    let min = total_min % 60;
+    let hour = if hour > 11 { hour - 12 } else { hour };
+    format!("{:02}:{:02}", hour, min)
+}
