@@ -1,0 +1,20 @@
+=== STEP 7 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/unexpand/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "unexpand"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "unexpand"
+path = "src/main.rs"
+<<<

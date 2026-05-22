@@ -1,0 +1,41 @@
+=== STEP 22 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*usr.bin/unexpand/cargo-target/debug/unexpand*'
+
+--- RESPONSE ---
+
+
+The binary wasn't built. The issue might be with `${.OBJDIR}` not being set properly. Let me fix the Makefile to use a more robust path.
+
+ACTION: EDIT_FILE usr.bin/unexpand/Makefile
+OLD:
+<<<
+PROG=	unexpand
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+>>>
+NEW:
+<<<
+PROG=	unexpand
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+>>>

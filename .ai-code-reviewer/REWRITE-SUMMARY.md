@@ -3,6 +3,27 @@
 Progress tracking for code rewrite sessions.
 
 ---
+## 2026-05-22 05:35 - usr.bin/unexpand ✓
+
+**Directory:** `usr.bin/unexpand`
+
+**Summary:** [ai-code-reviewer] unexpand: Rewrite utility in Rust
+
+**Files changed:**
+  - usr.bin/unexpand/Makefile
+  - usr.bin/unexpand/Cargo.lock
+  - usr.bin/unexpand/Cargo.toml
+  - usr.bin/unexpand/cargo-target/.rustc_info.json
+  - usr.bin/unexpand/cargo-target/CACHEDIR.TAG
+  - usr.bin/unexpand/cargo-target/debug/.cargo-lock
+  - usr.bin/unexpand/cargo-target/debug/.fingerprint/unexpand-c77b249fb3d14261/invoked.timestamp
+  - usr.bin/unexpand/cargo-target/debug/.fingerprint/unexpand-c77b249fb3d14261/output-bin-unexpand
+  - usr.bin/unexpand/cargo-target/debug/deps/unexpand-c77b249fb3d14261.d
+  - usr.bin/unexpand/cargo-target/debug/incremental/unexpand-2b2qfmm55e1ot/s-hirhi7t13e-0oqtqzb-working/dep-graph.part.bin
+  - ... and 2 more
+
+---
+
 ## 2026-05-22 03:45 - usr.bin/what ✓
 
 **Directory:** `usr.bin/what`
