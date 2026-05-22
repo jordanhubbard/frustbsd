@@ -187,10 +187,6 @@
     "attempts": 2,
     "last_attempt": "2026-05-22T00:11:03.402137"
   },
-  "usr.bin/which": {
-    "attempts": 1,
-    "last_attempt": "2026-05-22T10:02:32.672624"
-  },
   "usr.bin/yes": {
     "attempts": 3,
     "last_attempt": "2026-05-21T22:50:38.271361"
