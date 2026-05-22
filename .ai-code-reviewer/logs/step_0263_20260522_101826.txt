@@ -1,0 +1,11 @@
+=== STEP 263 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*usr.bin/enigma/.gitignore*'
+
+--- RESPONSE ---
+
+
+Let me check if the Makefile has proper tabs:
+
+ACTION: READ_FILE usr.bin/enigma/Makefile

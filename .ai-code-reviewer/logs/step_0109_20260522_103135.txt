@@ -1,0 +1,40 @@
+=== STEP 109 ===
+
+--- REQUEST ---
+READ_FILE_ERROR: File not found: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/enigma/.gitignore
+TIP: Use FIND_FILE to locate files
+
+--- RESPONSE ---
+
+
+Let me try a completely fresh approach with the Makefile - copying the exact pattern from `asa`:
+
+ACTION: WRITE_FILE usr.bin/enigma/Makefile
+CONTENT:
+<<<
+.include <src.opts.mk>
+
+PROG=	enigma
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs ${.CURDIR}/build.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+>>>

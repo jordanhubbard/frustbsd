@@ -1,0 +1,22 @@
+=== STEP 261 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/enigma:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+build.rs
+cargo-target
+enigma.1
+enigma.c
+src
+```
+
+--- RESPONSE ---
+
+
+Let me check if there's a .gitignore issue or if the cargo-target directory is interfering:
+
+ACTION: LIST_DIR usr.bin/enigma/src

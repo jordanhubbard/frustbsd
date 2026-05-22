@@ -1,0 +1,24 @@
+=== STEP 303 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: usr.bin/enigma
+Pending source/build changes: 5 files modified
+Files: usr.bin/enigma/cargo-target/debug/.fingerprint/enigma-ed75bad22ee64eff/run-build-script-build-script-build, usr.bin/enigma/cargo-target/debug/.fingerprint/enigma-ed75bad22ee64eff/run-build-script-build-script-build.json, usr.bin/enigma/cargo-target/debug/incremental/enigma-2dns2xkap0rzz/s-hirpavslla-17e208w-working/dep-graph.part.bin, usr.bin/enigma/cargo-target/debug/incremental/enigma-2dns2xkap0rzz/s-hirpprec69-06aoaoz-working/dep-graph.part.bin, usr.bin/enigma/cargo-target/debug/incremental/enigma-2dns2xkap0rzz/s-hirpprec69-06aoaoz.lock
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in usr.bin/enigma
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: usr.bin/ed
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

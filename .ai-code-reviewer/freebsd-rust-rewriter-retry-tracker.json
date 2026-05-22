@@ -127,6 +127,10 @@
     "attempts": 1,
     "last_attempt": "2026-05-22T07:03:11.300903"
   },
+  "usr.bin/enigma": {
+    "attempts": 3,
+    "last_attempt": "2026-05-22T10:22:16.739825"
+  },
   "usr.bin/env": {
     "attempts": 1,
     "last_attempt": "2026-05-22T00:06:33.829160"

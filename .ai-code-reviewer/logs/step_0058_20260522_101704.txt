@@ -1,0 +1,251 @@
+=== STEP 58 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/enigma/src/main.rs:
+PROGRESS:
+📁 Directory: usr.bin/enigma
+   Files: 0/3
+📄 File: usr.bin/enigma/src/main.rs
+✏️  Edits: 4 files modified
+
+```
+/*-
+ *	"enigma.c" is in file cbw.tar from
+ *	anonymous FTP host watmsg.waterloo.edu: pub/crypt/cbw.tar.Z
+ *
+ *	A one-rotor machine designed along the lines of Enigma
+ *	but considerably trivialized.
+ *
+ *	A public-domain replacement for the UNIX "crypt" command.
+ *
+ *	Upgraded to function properly on 64-bit machines.
+ */
+
+use std::env;
+use std::ffi::{CStr, CString};
+use std::os::raw::{c_char, c_int};
+use std::process;
+
+const MINUSKVAR: &str = "CrYpTkEy";
+const ROTORSZ: usize = 256;
+const MASK: u32 = 0o377;
+
+static mut T1: [u8; ROTORSZ] = [0; ROTORSZ];
+static mut T2: [u8; ROTORSZ] = [0; ROTORSZ];
+static mut T3: [u8; ROTORSZ] = [0; ROTORSZ];
+static mut DECK: [u8; ROTORSZ] = [0; ROTORSZ];
+static mut BUF: [u8; 13] = [0; 13];
+
+extern "C" {
+    fn crypt_set_format(fmt: *const c_char) -> c_int;
+    fn crypt(key: *const c_char, salt: *const c_char) -> *mut c_char;
+    fn getpass(prompt: *const c_char) -> *mut c_char;
+}
+
+unsafe fn setup(pw: &str) {
+    let c_pw = CString::new(pw).unwrap();
+
+    if crypt_set_format(b"des\0".as_ptr() as *const c_char) == 0 {
+        eprintln!("crypt_set_format(\"des\") failed.");
+        process::exit(1);
+    }
+
+    let mut salt = [0u8; 3];
+    let pw_bytes = c_pw.as_bytes();
+    let len = pw_bytes.len().min(2);
+    salt[..len].copy_from_slice(&pw_bytes[..len]);
+
+    let cryptpw = crypt(c_pw.as_ptr(), salt.as_ptr() as *const c_char);
+    if cryptpw.is_null() {
+        eprintln!("crypt(3) failure");
+        process::exit(1);
+    }
+
+    let cryptpw_str = CStr::from_ptr(cryptpw);
+    let cryptpw_bytes = cryptpw_str.to_bytes();
+    let copy_len = cryptpw_bytes.len().min(13);
+    BUF[..copy_len].copy_from_slice(&cryptpw_bytes[..copy_len]);
+
+    let mut seed: i32 = 123;
+    for i in 0..13 {
+        seed = seed * BUF[i] as i32 + i;
+    }
+
+    for i in 0..ROTORSZ {
+        T1[i] = i as u8;
+        DECK[i] = i as u8;
+    }
+
+    for i in 0..ROTORSZ {
+        seed = 5 * seed + BUF[i % 13] as i32;
+        let rnd = (seed % 65521) as u32;
+        let k = (ROTORSZ - 1 - i) as u32;
+        let ic = ((rnd & MASK) % (k + 1)) as usize;
+        let _rnd_shifted = rnd >> 8;
+
+        let temp = T1[k as usize];
+        T1[k as usize] = T1[ic];
+        T1[ic] = temp;
+
+        if T3[k as usize] != 0 {
+            continue;
+        }
+        let mut ic2 = ((rnd & MASK) % k) as usize;
+        while T3[ic2] != 0 {
+            ic2 = (ic2 + 1) % (k as usize);
+        }
+        T3[k as usize] = ic2 as u8;
+        T3[ic2] = k as u8;
+    }
+
+    for i in 0..ROTORSZ {
+        T2[T1[i] as usize & MASK as usize] = i as u8;
+    }
+}
+
+unsafe fn shuffle() {
+    let mut seed: i32 = 123;
+    for i in 0..ROTORSZ {
+        seed = 5 * seed + BUF[i % 13] as i32;
+        let rnd = (seed % 65521) as u32;
+        let k = (ROTORSZ - 1 - i) as u32;
+        let ic = ((rnd & MASK) % (k + 1)) as usize;
+
+        let temp = DECK[k as usize];
+        DECK[k as usize] = DECK[ic];
+        DECK[ic] = temp;
+    }
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let mut secureflg = false;
+    let mut kflag = false;
+
+    let mut start = 1;
+    if args.len() > 1 && args[1].starts_with('-') {
+        match args[1].as_str() {
+            "-s" => {
+                secureflg = true;
+                start = 2;
+            }
+            "-k" => {
+                kflag = true;
+                start = 2;
+            }
+            _ => {}
+        }
+    }
+
+    let key: String;
+    unsafe {
+        if kflag {
+            match env::var(MINUSKVAR) {
+                Ok(v) => key = v,
+                Err(_) => {
+                    eprintln!("{} not set", MINUSKVAR);
+                    process::exit(1);
+                }
+            }
+        } else if args.len() > start {
+            key = args[start].clone();
+        } else {
+            let prompt = CString::new("Enter key:").unwrap();
+            let raw = getpass(prompt.as_ptr());
+            if raw.is_null() {
+                eprintln!("getpass failed");
+                process::exit(1);
+            }
+            key = CStr::from_ptr(raw).to_string_lossy().into_owned();
+        }
+
+        setup(&key);
+    }
+
+    let stdin = std::io::stdin();
+    let stdout = std::io::stdout();
+    let mut out = stdout.lock();
+    let mut n1: usize = 0;
+    let mut n2: usize = 0;
+    let mut nr2: i32 = 0;
+
+    for byte_result in stdin.bytes() {
+        let mut i = match byte_result {
+            Ok(b) => b as i32,
+            Err(_) => break,
+        };
+
+        let nr1: i32;
+        unsafe {
+            if secureflg {
+                nr1 = (DECK[n1] & MASK as u8) as i32;
+                nr2 = (DECK[nr1 as usize] & MASK as u8) as i32;
+            } else {
+                nr1 = i;
+            }
+
+            // i = t2[(t3[(t1[(i+nr1)&MASK]+nr2)&MASK]-nr2)&MASK]-nr1;
+            let step1 = ((i + nr1) & MASK as i32) as usize;
+            let step2 = (T1[step1] as i32 + nr2) & MASK as i32;
+            let step3 = step2 as usize;
+            let step4 = (T3[step3] as i32 - nr2) & MASK as i32;
+            let step5 = step4 as usize;
+            let step6 = (T2[step5] as i32 - nr1);
+            i = step6;
+        }
+
+        out.write_all(&[(i & MASK as i32) as u8]).unwrap();
+
+        n1 += 1;
+        if n1 == ROTORSZ {
+            n1 = 0;
+            n2 += 1;
+            if n2 == ROTORSZ {
+                n2 = 0;
+            }
+            unsafe {
+                if secureflg {
+                    shuffle();
+                } else {
+                    nr2 = n2 as i32;
+                }
+            }
+        }
+    }
+
+    process::exit(0);
+}
+```
+
+--- RESPONSE ---
+
+
+The Makefile likely has spaces instead of tabs. Let me rewrite it completely:
+
+ACTION: WRITE_FILE usr.bin/enigma/Makefile
+CONTENT:
+<<<
+PROG=	enigma
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs ${.CURDIR}/build.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+>>>

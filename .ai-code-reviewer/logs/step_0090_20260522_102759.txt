@@ -1,0 +1,70 @@
+=== STEP 90 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/enigma/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/enigma
+   Files: 0/3
+📄 File: usr.bin/enigma/Makefile
+✏️  Edits: 5 files modified
+
+```
+PROG=	enigma
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs ${.CURDIR}/build.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+```
+
+--- RESPONSE ---
+
+
+The Makefile seems to have lost the `.include <src.opts.mk>` line and the `--offline` flag. Let me fix it:
+
+ACTION: WRITE_FILE usr.bin/enigma/Makefile
+CONTENT:
+<<<
+.include <src.opts.mk>
+
+PROG=	enigma
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs ${.CURDIR}/build.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+>>>

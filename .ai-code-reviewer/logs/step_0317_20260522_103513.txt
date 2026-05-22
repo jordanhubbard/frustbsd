@@ -1,0 +1,49 @@
+=== STEP 317 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/enigma/build.rs:
+PROGRESS:
+📁 Directory: usr.bin/enigma
+   Files: 0/4
+📄 File: usr.bin/enigma/build.rs
+✏️  Edits: 1 files modified
+
+```
+fn main() {
+    println!("cargo:rustc-link-lib=crypt");
+    println!("cargo:rustc-link-lib=c");
+}
+```
+
+--- RESPONSE ---
+
+
+The build.rs links to libcrypt which is needed for the FFI calls. Let me check if Makefile.depend is causing issues:
+
+ACTION: WRITE_FILE usr.bin/enigma/Makefile
+CONTENT:
+.include <src.opts.mk>
+
+PROG=	enigma
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs ${.CURDIR}/build.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}

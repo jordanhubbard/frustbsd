@@ -1,0 +1,13 @@
+=== STEP 88 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/enigma/Makefile.depend
+Scope: usr.bin/enigma
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Let me check if there's a stale cargo-target directory causing issues:
+
+ACTION: LIST_DIR usr.bin/enigma
