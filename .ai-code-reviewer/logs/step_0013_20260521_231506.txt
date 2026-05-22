@@ -1,0 +1,14 @@
+=== STEP 13 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/echo is already marked complete.
+
+Completed work units are closed after a successful build and commit; do not reopen the same unit for incremental polish.
+NEXT: Use SET_SCOPE bin/chio
+
+--- RESPONSE ---
+
+
+bin/echo is already complete. Let me try a unit that hasn't been attempted yet.
+
+ACTION: SET_SCOPE bin/sleep

@@ -1,0 +1,12 @@
+=== STEP 7 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory bin/cp skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE bin/chio
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE freebsd-rust-rewriter-retry-tracker.json

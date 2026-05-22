@@ -1,0 +1,62 @@
+=== STEP 32 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/id
+   Files: 0/5
+📄 File: usr.bin/id/id.c
+   Chunks: 12/21
+
+```
+=== CHUNK 12/21: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/id/id.c === [function: pretty]
+=== Lines 226-265 (40 lines) ===
+
+static void
+pretty(struct passwd *pw)
+{
+	struct group *gr;
+	u_int eid, rid;
+	char *login;
+
+	if (pw) {
+		(void)printf("uid\t%s\n", pw->pw_name);
+		(void)printf("groups\t");
+		group(pw, true);
+	} else {
+		if ((login = getlogin()) == NULL)
+			err(1, "getlogin");
+
+		pw = getpwuid(rid = getuid());
+		if (pw == NULL || strcmp(login, pw->pw_name))
+			(void)printf("login\t%s\n", login);
+		if (pw)
+			(void)printf("uid\t%s\n", pw->pw_name);
+		else
+			(void)printf("uid\t%u\n", rid);
+
+		if ((eid = geteuid()) != rid) {
+			if ((pw = getpwuid(eid)))
+				(void)printf("euid\t%s\n", pw->pw_name);
+			else
+				(void)printf("euid\t%u\n", eid);
+		}
+		if ((rid = getgid()) != (eid = getegid())) {
+			if ((gr = getgrgid(rid)))
+				(void)printf("rgid\t%s\n", gr->gr_name);
+			else
+				(void)printf("rgid\t%u\n", rid);
+		}
+		(void)printf("groups\t");
+		group(NULL, true);
+	}
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

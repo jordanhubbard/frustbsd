@@ -1,0 +1,12 @@
+=== STEP 2 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory bin/timeout skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE bin/df
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/df

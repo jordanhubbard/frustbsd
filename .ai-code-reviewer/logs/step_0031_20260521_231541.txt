@@ -1,0 +1,183 @@
+=== STEP 31 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/id
+   Files: 0/5
+📄 File: usr.bin/id/id.c
+   Chunks: 11/21
+
+```
+=== CHUNK 11/21: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/id/id.c === [function: main]
+=== Lines 65-225 (161 lines) ===
+
+int
+main(int argc, char *argv[])
+{
+	struct group *gr;
+	struct passwd *pw;
+	bool Aflag, Gflag, Mflag, Pflag;
+	bool cflag, dflag, gflag, nflag, pflag, rflag, sflag, uflag;
+	int ch, combo, error, id;
+	const char *myname, *optstr;
+	char loginclass[MAXLOGNAME];
+
+	Aflag = Gflag = Mflag = Pflag = false;
+	cflag = dflag = gflag = nflag = pflag = rflag = sflag = uflag = false;
+
+	myname = getprogname();
+	optstr = "AGMPacdgnprsu";
+	if (strcmp(myname, "groups") == 0) {
+		isgroups = true;
+		optstr = "";
+		Gflag = nflag = true;
+	}
+	else if (strcmp(myname, "whoami") == 0) {
+		iswhoami = true;
+		optstr = "";
+		uflag = nflag = true;
+	}
+
+	while ((ch = getopt(argc, argv, optstr)) != -1) {
+		switch(ch) {
+#ifdef USE_BSM_AUDIT
+		case 'A':
+			Aflag = true;
+			break;
+#endif
+		case 'G':
+			Gflag = true;
+			break;
+		case 'M':
+			Mflag = true;
+			break;
+		case 'P':
+			Pflag = true;
+			break;
+		case 'a':
+			break;
+		case 'c':
+			cflag = true;
+			break;
+		case 'd':
+			dflag = true;
+			break;
+		case 'g':
+			gflag = true;
+			break;
+		case 'n':
+			nflag = true;
+			break;
+		case 'p':
+			pflag = true;
+			break;
+		case 'r':
+			rflag = true;
+			break;
+		case 's':
+			sflag = true;
+			break;
+		case 'u':
+			uflag = true;
+			break;
+		default:
+			usage();
+		}
+	}
+	argc -= optind;
+	argv += optind;
+
+	if (iswhoami && argc > 0)
+		usage();
+	if ((cflag || Aflag || Mflag) && argc > 0)
+		usage();
+
+	combo = Aflag + Gflag + Mflag + Pflag + gflag + pflag + uflag;
+	if (combo + dflag + sflag > 1)
+		usage();
+	if (combo > 1)
+		usage();
+	if (combo == 0 && (nflag || rflag))
+		usage();
+
+	pw = *argv ? who(*argv) : NULL;
+
+	if (Mflag && pw != NULL)
+		usage();
+
+#ifdef USE_BSM_AUDIT
+	if (Aflag) {
+		auditid();
+		exit(0);
+	}
+#endif
+
+	if (cflag) {
+		error = getloginclass(loginclass, sizeof(loginclass));
+		if (error != 0)
+			err(1, "loginclass");
+		(void)printf("%s\n", loginclass);
+		exit(0);
+	}
+
+	if (gflag) {
+		id = pw ? pw->pw_gid : rflag ? getgid() : getegid();
+		if (nflag && (gr = getgrgid(id)))
+			(void)printf("%s\n", gr->gr_name);
+		else
+			(void)printf("%u\n", id);
+		exit(0);
+	}
+
+	if (uflag) {
+		id = pw ? pw->pw_uid : rflag ? getuid() : geteuid();
+		if (nflag && (pw = getpwuid(id)))
+			(void)printf("%s\n", pw->pw_name);
+		else
+			(void)printf("%u\n", id);
+		exit(0);
+	}
+
+	if (dflag) {
+		dir(pw);
+		exit(0);
+	}
+
+	if (Gflag) {
+		group(pw, nflag);
+		exit(0);
+	}
+
+	if (Mflag) {
+		maclabel();
+		exit(0);
+	}
+
+	if (Pflag) {
+		pline(pw);
+		exit(0);
+	}
+
+	if (pflag) {
+		pretty(pw);
+		exit(0);
+	}
+
+	if (sflag) {
+		shell(pw);
+		exit(0);
+	}
+
+	id_print(pw);
+	exit(0);
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

@@ -1,0 +1,24 @@
+=== STEP 19 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/id
+   Files: 0/5
+📄 File: usr.bin/id/id.c
+   Chunks: 4/21
+
+```
+=== CHUNK 4/21: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/id/id.c === [function: pretty]
+=== Lines 52-53 (2 lines) ===
+
+static void	pretty(struct passwd *);
+#ifdef USE_BSM_AUDIT
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SKIP_FILE

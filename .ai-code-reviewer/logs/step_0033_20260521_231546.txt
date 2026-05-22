@@ -1,0 +1,93 @@
+=== STEP 33 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/id
+   Files: 0/5
+📄 File: usr.bin/id/id.c
+   Chunks: 13/21
+
+```
+=== CHUNK 13/21: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/id/id.c === [function: id_print]
+=== Lines 266-336 (71 lines) ===
+
+static void
+id_print(struct passwd *pw)
+{
+	struct group *gr;
+	gid_t gid, egid, lastgid;
+	uid_t uid, euid;
+	int cnt, ngroups;
+	long ngroups_max;
+	gid_t *groups;
+	const char *fmt;
+	bool print_dbinfo;
+
+	print_dbinfo = pw != NULL;
+	if (print_dbinfo) {
+		uid = pw->pw_uid;
+		gid = pw->pw_gid;
+	}
+	else {
+		uid = getuid();
+		gid = getgid();
+		pw = getpwuid(uid);
+	}
+
+	ngroups_max = sysconf(_SC_NGROUPS_MAX) + 1;
+	if ((groups = malloc(sizeof(gid_t) * ngroups_max)) == NULL)
+		err(1, "malloc");
+
+	if (print_dbinfo) {
+		ngroups = ngroups_max;
+		getgrouplist(pw->pw_name, gid, groups, &ngroups);
+	}
+	else {
+		ngroups = getgroups(ngroups_max, groups);
+	}
+
+	/*
+	 * We always resolve uids and gids where we can to a name, even if we
+	 * are printing the running process credentials, to be nice.
+	 */
+	if (pw != NULL)
+		printf("uid=%u(%s)", uid, pw->pw_name);
+	else
+		printf("uid=%u", uid);
+	printf(" gid=%u", gid);
+	if ((gr = getgrgid(gid)))
+		(void)printf("(%s)", gr->gr_name);
+	if (!print_dbinfo && (euid = geteuid()) != uid) {
+		(void)printf(" euid=%u", euid);
+		if ((pw = getpwuid(euid)))
+			(void)printf("(%s)", pw->pw_name);
+	}
+	if (!print_dbinfo && (egid = getegid()) != gid) {
+		(void)printf(" egid=%u", egid);
+		if ((gr = getgrgid(egid)))
+			(void)printf("(%s)", gr->gr_name);
+	}
+	fmt = " groups=%u";
+	for (lastgid = -1, cnt = 0; cnt < ngroups; ++cnt) {
+		if (lastgid == (gid = groups[cnt]))
+			continue;
+		printf(fmt, gid);
+		fmt = ",%u";
+		if ((gr = getgrgid(gid)))
+			printf("(%s)", gr->gr_name);
+		lastgid = gid;
+	}
+	printf("\n");
+	free(groups);
+}
+
+#ifdef USE_BSM_AUDIT
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

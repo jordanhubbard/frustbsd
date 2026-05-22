@@ -1,0 +1,23 @@
+=== STEP 17 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/id
+   Files: 0/5
+📄 File: usr.bin/id/id.c
+   Chunks: 2/21
+
+```
+=== CHUNK 2/21: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/id/id.c === [function: id_print]
+=== Lines 50-50 (1 lines) ===
+
+static void	id_print(struct passwd *);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK
