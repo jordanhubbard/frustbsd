@@ -1,0 +1,46 @@
+=== STEP 44 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/enigma/Makefile
+Scope: usr.bin/enigma
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+I need to link against libcrypt and libc for the FFI calls. Let me update Cargo.toml:
+
+ACTION: EDIT_FILE usr.bin/enigma/Cargo.toml
+OLD:
+<<<
+[package]
+name = "enigma"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "enigma"
+path = "src/main.rs"
+>>>
+NEW:
+<<<
+[package]
+name = "enigma"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "enigma"
+path = "src/main.rs"
+
+[dependencies]
+
+[build-dependencies]
+
+[profile.dev]
+opt-level = 0
+
+[package.metadata.rustc-link-lib]
+crypt = "crypt"
+c = "c"
+>>>

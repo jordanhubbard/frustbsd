@@ -127,10 +127,6 @@
     "attempts": 1,
     "last_attempt": "2026-05-22T07:03:11.300903"
   },
-  "usr.bin/enigma": {
-    "attempts": 1,
-    "last_attempt": "2026-05-22T10:07:34.484344"
-  },
   "usr.bin/env": {
     "attempts": 1,
     "last_attempt": "2026-05-22T00:06:33.829160"
@@ -178,10 +174,6 @@
   "usr.bin/rwall": {
     "attempts": 1,
     "last_attempt": "2026-05-22T07:44:34.194698"
-  },
-  "usr.bin/soelim": {
-    "attempts": 2,
-    "last_attempt": "2026-05-22T09:50:21.037862"
   },
   "usr.bin/tail": {
     "attempts": 1,
