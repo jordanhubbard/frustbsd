@@ -3,6 +3,19 @@
 Progress tracking for code rewrite sessions.
 
 ---
+## 2026-05-22 02:08 - usr.bin/getopt ✓
+
+**Directory:** `usr.bin/getopt`
+
+**Summary:** [ai-code-reviewer] getopt: Rewrite implementation in Rust
+
+**Files changed:**
+  - usr.bin/getopt/Makefile
+  - usr.bin/getopt/Cargo.toml
+  - usr.bin/getopt/src/main.rs
+
+---
+
 ## 2026-05-22 02:05 - usr.bin/lsvfs ✓
 
 **Directory:** `usr.bin/lsvfs`

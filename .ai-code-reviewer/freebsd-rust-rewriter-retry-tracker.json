@@ -123,6 +123,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-21T20:49:38.897585"
   },
+  "usr.bin/getopt": {
+    "attempts": 1,
+    "last_attempt": "2026-05-22T02:05:45.887222"
+  },
   "usr.bin/head": {
     "attempts": 1,
     "last_attempt": "2026-05-22T01:11:10.571575"

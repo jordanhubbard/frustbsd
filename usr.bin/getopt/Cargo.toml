@@ -1,0 +1,8 @@
+[package]
+name = "getopt"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "getopt"
+path = "src/main.rs"

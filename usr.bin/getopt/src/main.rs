@@ -1,0 +1,69 @@
+use std::env;
+use std::process;
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    if args.len() < 2 {
+        eprintln!("getopt: missing optstring");
+        process::exit(1);
+    }
+
+    let optstring = args[1].as_str();
+    let mut optind = 2;
+    let mut status = 0;
+
+    // Parse options
+    while optind < args.len() {
+        let arg = args[optind].as_str();
+        if arg.len() < 2 || arg.as_bytes()[0] != b'-' {
+            break;
+        }
+        if arg == "-" {
+            break;
+        }
+        if arg == "--" {
+            optind += 1;
+            break;
+        }
+
+        let mut ch_idx = 1;
+        while ch_idx < arg.len() {
+            let ch = arg.as_bytes()[ch_idx] as char;
+            ch_idx += 1;
+
+            if let Some(pos) = optstring.find(ch) {
+                let next_pos = pos + ch.len_utf8();
+                if next_pos < optstring.len() && optstring.as_bytes()[next_pos] == b':' {
+                    // Option takes an argument
+                    if ch_idx < arg.len() {
+                        // Argument is rest of current arg
+                        let optarg = &arg[ch_idx..];
+                        print!(" -{} {}", ch, optarg);
+                        ch_idx = arg.len();
+                    } else if optind + 1 < args.len() {
+                        optind += 1;
+                        print!(" -{} {}", ch, args[optind]);
+                    } else {
+                        eprintln!("getopt: option requires an argument -- {}", ch);
+                        status = 1;
+                    }
+                } else {
+                    print!(" -{}", ch);
+                }
+            } else {
+                eprintln!("getopt: illegal option -- {}", ch);
+                status = 1;
+            }
+        }
+        optind += 1;
+    }
+
+    print!(" --");
+    while optind < args.len() {
+        print!(" {}", args[optind]);
+        optind += 1;
+    }
+    println!();
+
+    process::exit(status);
+}

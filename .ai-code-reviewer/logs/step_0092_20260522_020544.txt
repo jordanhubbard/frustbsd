@@ -1,0 +1,55 @@
+=== STEP 92 ===
+
+--- REQUEST ---
+BUILD_SUCCESS: Build completed successfully.
+Directory usr.bin/lsvfs is now complete.
+Changes committed and pushed.
+Post-success metadata commit: 79a3b600d45b.
+
+Completed directories so far: 4
+NEXT: Use SET_SCOPE usr.bin/getopt
+
+FINAL DIFFS:
+--- usr.bin/lsvfs/Makefile ---
+```diff
+diff --git a/usr.bin/lsvfs/Makefile b/usr.bin/lsvfs/Makefile
+index 70c8f642897..038a902f343 100644
+--- a/usr.bin/lsvfs/Makefile
++++ b/usr.bin/lsvfs/Makefile
+@@ -1,3 +1,19 @@
+ PROG=	lsvfs
+ 
+-.include <bsd.prog.mk>
++CARGO?=		cargo
++CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
++
++${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
++	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
++	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
++
++all: ${PROG}
++
++install: ${PROG}
++	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
++
++clean:
++	${RM} ${PROG}
++	${RM} -rf ${CARGO_TARGET_DIR}
++
++CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+```
+
+--- usr.bin/lsvfs/Cargo.toml ---
+```diff
+(no changes)
+```
+
+--- usr.bin/lsvfs/src/main.rs ---
+```diff
+(no changes)
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/getopt
