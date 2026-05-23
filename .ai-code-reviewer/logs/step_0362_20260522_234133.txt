@@ -1,0 +1,39 @@
+=== STEP 362 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium:
+```
+.gitignore
+.travis.yml
+AUTHORS
+ChangeLog
+LICENSE
+Makefile.am
+README.markdown
+THANKS
+appveyor.yml
+autogen.sh
+builds
+configure.ac
+contrib
+dist-build
+lgtm.yml
+libsodium-uninstalled.pc.in
+libsodium.pc.in
+libsodium.sln
+libsodium.vcxproj
+libsodium.vcxproj.filters
+m4
+msvc-scripts
+packaging
+regen-msvc
+src
+test
+```
+
+--- RESPONSE ---
+
+
+This unit is a kernel-adjacent contrib library with complex build system issues. Let me move to a simpler userland unit.
+
+ACTION: SET_SCOPE bin/cat

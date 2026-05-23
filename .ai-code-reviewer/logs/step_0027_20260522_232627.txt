@@ -1,0 +1,46 @@
+=== STEP 27 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/lldb:
+```
+LICENSE.TXT
+bindings
+docs
+include
+source
+tools
+utils
+```
+
+--- RESPONSE ---
+
+
+This is LLVM vendor code without a FreeBSD Makefile. The build errors are system-level Makefile.inc1 issues. Let me create a local Makefile that builds the Rust crate directly.
+
+ACTION: WRITE_FILE contrib/llvm-project/lldb/tools/argdumper/Makefile
+CONTENT:
+<<<
+# $FreeBSD$
+
+PROG=	argdumper
+SRCS=	argdumper.cpp
+
+# Rust replacement
+CARGO_MANIFEST=	${CURDIR}/Cargo.toml
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+.if defined(WITH_RUST_ARGDUMPER) || defined(RUST_REPLACE)
+# Build Rust replacement
+RUST_PROG=	${CARGO_TARGET_DIR}/debug/argdumper
+
+all:	${RUST_PROG}
+
+${RUST_PROG}: ${CARGO_MANIFEST} ${CURDIR}/src/main.rs
+	cargo build --manifest-path ${CARGO_MANIFEST} --target-dir ${CARGO_TARGET_DIR}
+
+install: ${RUST_PROG}
+	${INSTALL_PROGRAM} ${RUST_PROG} ${DESTDIR}${PREFIX}/bin/argdumper
+.else
+.include <bsd.prog.mk>
+.endif
+>>>

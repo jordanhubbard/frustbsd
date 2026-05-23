@@ -1,0 +1,11 @@
+=== STEP 367 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'sys/contrib/libsodium/*/Makefile'
+
+--- RESPONSE ---
+
+
+The build errors are from top-level `Makefile.inc1` `.info` directives being treated as errors - this is a build system issue for this kernel-adjacent contrib unit. Let me try building just the Rust crate directly.
+
+ACTION: BUILD

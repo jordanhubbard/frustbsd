@@ -116,8 +116,8 @@
     "last_attempt": "2026-05-22T16:48:20.861620"
   },
   "contrib/llvm-project/clang/lib/DirectoryWatcher/default": {
-    "attempts": 1,
-    "last_attempt": "2026-05-22T23:04:13.236090"
+    "attempts": 2,
+    "last_attempt": "2026-05-22T23:48:40.942336"
   },
   "contrib/llvm-project/lldb/tools/argdumper": {
     "attempts": 2,

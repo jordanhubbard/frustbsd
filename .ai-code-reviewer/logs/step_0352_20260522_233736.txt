@@ -1,0 +1,15 @@
+=== STEP 352 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_hash:
+```
+Makefile
+crypto_hash.c
+sha256
+sha512
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE sys/contrib/libsodium/src/libsodium/crypto_hash/crypto_hash.c

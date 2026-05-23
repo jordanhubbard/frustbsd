@@ -1,0 +1,14 @@
+=== STEP 2 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory contrib/netbsd-tests/lib/semaphore/pthread skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/llvm-project/lldb/tools/argdumper
+
+--- RESPONSE ---
+
+
+The auto-skipped directory had 3 failed attempts. Let me try the current unit from the rewrite index instead.
+
+ACTION: SET_SCOPE contrib/file/python/file_magic

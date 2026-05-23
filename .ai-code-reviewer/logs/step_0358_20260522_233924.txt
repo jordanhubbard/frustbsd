@@ -1,0 +1,96 @@
+=== STEP 358 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/include/sodium/crypto_hash.h:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_hash
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/include/sodium/crypto_hash.h
+✏️  Edits: 2 files modified
+
+```
+#ifndef crypto_hash_H
+#define crypto_hash_H
+
+/*
+ * WARNING: Unless you absolutely need to use SHA512 for interoperatibility,
+ * purposes, you might want to consider crypto_generichash() instead.
+ * Unlike SHA512, crypto_generichash() is not vulnerable to length
+ * extension attacks.
+ */
+
+#include <stddef.h>
+
+#include "crypto_hash_sha512.h"
+#include "export.h"
+
+#ifdef __cplusplus
+# ifdef __GNUC__
+#  pragma GCC diagnostic ignored "-Wlong-long"
+# endif
+extern "C" {
+#endif
+
+#define crypto_hash_BYTES crypto_hash_sha512_BYTES
+SODIUM_EXPORT
+size_t crypto_hash_bytes(void);
+
+SODIUM_EXPORT
+int crypto_hash(unsigned char *out, const unsigned char *in,
+                unsigned long long inlen);
+
+#define crypto_hash_PRIMITIVE "sha512"
+SODIUM_EXPORT
+const char *crypto_hash_primitive(void)
+            __attribute__ ((warn_unused_result));
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_hash/rust/src/lib.rs
+CONTENT:
+```rust
+#![no_std]
+
+use core::ffi::c_char;
+
+// crypto_hash_BYTES == crypto_hash_sha512_BYTES == 64
+const CRYPTO_HASH_BYTES: usize = 64;
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_hash_bytes() -> usize {
+    CRYPTO_HASH_BYTES
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_hash(
+    out: *mut u8,
+    in_ptr: *const u8,
+    inlen: u64,
+) -> i32 {
+    // Thin wrapper: delegate to crypto_hash_sha512
+    crypto_hash_sha512(out, in_ptr, inlen)
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_hash_primitive() -> *const c_char {
+    b"sha512\0" as *const u8 as *const c_char
+}
+
+// Forward declaration of sha512 function from the sha512 sub-library
+extern "C" {
+    fn crypto_hash_sha512(
+        out: *mut u8,
+        in_ptr: *const u8,
+        inlen: u64,
+    ) -> i32;
+}
+```

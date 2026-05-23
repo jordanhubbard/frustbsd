@@ -1,0 +1,20 @@
+=== STEP 13 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE contrib/llvm-project/lldb/tools/argdumper/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "argdumper"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "argdumper"
+path = "src/main.rs"
+<<<

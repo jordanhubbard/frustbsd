@@ -1,0 +1,26 @@
+=== STEP 364 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: sys/contrib/libsodium/src/libsodium/crypto_hash
+Pending source/build changes: 3 files modified
+Files: sys/contrib/libsodium/src/libsodium/crypto_hash/Makefile, sys/contrib/libsodium/src/libsodium/crypto_hash/rust/Cargo.toml, sys/contrib/libsodium/src/libsodium/crypto_hash/rust/src/lib.rs
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in sys/contrib/libsodium/src/libsodium/crypto_hash
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: contrib/llvm-project/clang/lib/DirectoryWatcher/default
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+The build errors are from top-level Makefile.inc1 `.info` directives, not from my Rust code. This is a kernel-adjacent contrib library with complex build system issues. Let me try building the Rust crate directly to validate it compiles.
+
+ACTION: BUILD

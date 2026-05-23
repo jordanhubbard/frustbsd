@@ -1,0 +1,30 @@
+=== STEP 372 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/clang/lib/DirectoryWatcher:
+```
+DirectoryScanner.cpp
+DirectoryScanner.h
+default
+linux
+mac
+windows
+```
+
+--- RESPONSE ---
+
+
+This is a small stub C++ file that returns an error for unsupported platforms. Let me create a Rust replacement.
+
+ACTION: WRITE_FILE contrib/llvm-project/clang/lib/DirectoryWatcher/default/Cargo.toml
+CONTENT:
+```toml
+[package]
+name = "directory_watcher_not_implemented"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "directory_watcher_not_implemented"
+crate-type = ["staticlib"]
+```

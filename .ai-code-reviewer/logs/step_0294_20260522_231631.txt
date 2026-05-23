@@ -1,0 +1,43 @@
+=== STEP 294 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: sys/contrib/libsodium/src/libsodium/crypto_hash
+Pending source/build changes: 3 files modified
+Files: sys/contrib/libsodium/src/libsodium/crypto_hash/rust/Cargo.toml, sys/contrib/libsodium/src/libsodium/crypto_hash/rust/src/lib.rs, sys/contrib/libsodium/src/libsodium/crypto_hash/Makefile
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in sys/contrib/libsodium/src/libsodium/crypto_hash
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: bin/
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_hash/Makefile
+CONTENT:
+```makefile
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+all: libcrypto_hash.a
+
+libcrypto_hash.a:
+	${CARGO} build --release --manifest-path ${.CURDIR}/rust/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m 444 \
+	    ${CARGO_TARGET_DIR}/release/libcrypto_hash.a ${.OBJDIR}/libcrypto_hash.a
+
+clean:
+	rm -rf ${CARGO_TARGET_DIR}
+	rm -f ${.OBJDIR}/libcrypto_hash.a
+
+.PHONY: all clean
+```

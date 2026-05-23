@@ -1,0 +1,29 @@
+=== STEP 9 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_hash/rust/Cargo.toml:
+PROGRESS:
+📁 Directory: contrib/llvm-project/lldb/tools/argdumper
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/crypto_hash/rust/Cargo.toml
+
+```
+```toml
+[package]
+name = "crypto_hash"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "crypto_hash"
+path = "src/lib.rs"
+crate-type = ["staticlib"]
+```
+```
+
+--- RESPONSE ---
+
+
+The pending changes are from a previous scope (libsodium). This argdumper unit is LLVM vendor code with no standalone Makefile. Let me check the build situation and create a proper Rust replacement.
+
+ACTION: FIND_FILE Makefile

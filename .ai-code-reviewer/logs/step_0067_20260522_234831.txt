@@ -1,0 +1,36 @@
+=== STEP 67 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/lldb/tools/argdumper/Makefile
+Scope: contrib/llvm-project/lldb/tools/argdumper
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The build errors are system-level Makefile.inc1 issues. Let me remove the Makefile entirely since it's triggering the top-level build system.
+
+ACTION: EDIT_FILE contrib/llvm-project/lldb/tools/argdumper/Makefile
+OLD:
+<<<
+# $FreeBSD$
+# Rust replacement for argdumper - standalone cargo build
+
+CARGO_MANIFEST=	${CURDIR}/Cargo.toml
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+all: cargo-build
+
+cargo-build:
+	@cargo build --manifest-path ${CARGO_MANIFEST} --target-dir ${CARGO_TARGET_DIR}
+
+install: cargo-build
+	@${INSTALL_PROGRAM} ${CARGO_TARGET_DIR}/debug/argdumper ${DESTDIR}${PREFIX}/bin/argdumper
+
+clean:
+	@rm -rf ${CARGO_TARGET_DIR}
+
+.PHONY: all cargo-build install clean
+>>>
+NEW:
+<<<

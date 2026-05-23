@@ -1,0 +1,40 @@
+=== STEP 371 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/clang/lib/DirectoryWatcher/default/DirectoryWatcher-not-implemented.cpp:
+PROGRESS:
+📁 Directory: contrib/llvm-project/clang/lib/DirectoryWatcher/default
+   Files: 0/1
+📄 File: contrib/llvm-project/clang/lib/DirectoryWatcher/default/DirectoryWatcher-not-implemented.cpp
+
+```
+//===- DirectoryWatcher-not-implemented.cpp -------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#include "clang/DirectoryWatcher/DirectoryWatcher.h"
+
+using namespace llvm;
+using namespace clang;
+
+llvm::Expected<std::unique_ptr<DirectoryWatcher>> clang::DirectoryWatcher::create(
+    StringRef Path,
+    std::function<void(llvm::ArrayRef<DirectoryWatcher::Event>, bool)> Receiver,
+    bool WaitForInitialSync) {
+  return llvm::make_error<llvm::StringError>(
+      "DirectoryWatcher is not implemented for this platform!",
+      llvm::inconvertibleErrorCode());
+}
+
+```
+
+--- RESPONSE ---
+
+
+This is a small stub C++ file for platforms where DirectoryWatcher is not implemented. Let me check the build structure.
+
+ACTION: LIST_DIR contrib/llvm-project/clang/lib/DirectoryWatcher

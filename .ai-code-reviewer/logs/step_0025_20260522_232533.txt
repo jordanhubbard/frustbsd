@@ -1,0 +1,22 @@
+=== STEP 25 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project:
+```
+FREEBSD-Xlist
+clang
+compiler-rt
+libc
+libcxx
+libunwind
+lld
+lldb
+llvm
+openmp
+third-party
+```
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE contrib/llvm-project/lldb/Makefile

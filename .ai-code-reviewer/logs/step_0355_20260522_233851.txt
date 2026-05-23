@@ -1,0 +1,50 @@
+=== STEP 355 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_hash/Makefile:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_hash
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/crypto_hash/Makefile
+✏️  Edits: 1 files modified
+
+```
+```makefile
+# Standalone Makefile for Rust crypto_hash replacement
+# Does not include FreeBSD bsd.*.mk to avoid build system conflicts
+
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+all: libcrypto_hash.a
+
+libcrypto_hash.a:
+	${CARGO} build --release --manifest-path ${.CURDIR}/rust/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR}
+	cp ${CARGO_TARGET_DIR}/release/libcrypto_hash.a ${.CURDIR}/libcrypto_hash.a
+
+clean:
+	rm -rf ${CARGO_TARGET_DIR}
+	rm -f ${.CURDIR}/libcrypto_hash.a
+
+.PHONY: all clean
+```
+```
+
+--- RESPONSE ---
+
+
+I need to create the Rust crate that the Makefile references. Let me set up the proper Rust source files.
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_hash/rust/Cargo.toml
+CONTENT:
+```toml
+[package]
+name = "crypto_hash"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "crypto_hash"
+crate-type = ["staticlib"]
+```

@@ -1,0 +1,12 @@
+=== STEP 351 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1.
+Remaining files in sys/contrib/libsodium/src/libsodium/crypto_hash:
+  (All tracked files rewritten or skipped in this directory)
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR sys/contrib/libsodium/src/libsodium/crypto_hash
