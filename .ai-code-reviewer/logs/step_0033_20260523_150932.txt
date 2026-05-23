@@ -1,0 +1,12 @@
+=== STEP 33 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/env is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE sys/cddl/contrib/opensolaris/uts/riscv/dtrace
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/printenv

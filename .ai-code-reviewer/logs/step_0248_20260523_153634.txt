@@ -1,0 +1,36 @@
+=== STEP 248 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/whereis
+   Files: 0/4
+📄 File: usr.bin/whereis/whereis.c
+   Chunks: 7/13
+
+```
+=== CHUNK 7/13: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whereis/whereis.c === [function: usage]
+=== Lines 87-100 (14 lines) ===
+
+static void
+usage(void)
+{
+	(void)fprintf(stderr,
+	     "usage: whereis [-abmqsux] [-BMS dir ... -f] program ...\n");
+	exit(EX_USAGE);
+}
+
+/*
+ * Scan options passed to program.
+ *
+ * Note that the -B/-M/-S options expect a list of directory
+ * names that must be terminated with -f.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

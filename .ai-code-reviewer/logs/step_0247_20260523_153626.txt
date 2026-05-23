@@ -1,0 +1,40 @@
+=== STEP 247 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/whereis
+   Files: 0/4
+📄 File: usr.bin/whereis/whereis.c
+   Chunks: 6/13
+
+```
+=== CHUNK 6/13: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whereis/whereis.c === [function: usage]
+=== Lines 69-86 (18 lines) ===
+
+static void	 usage(void);
+
+/*
+ * Throughout this program, a number of strings are dynamically
+ * allocated but never freed.  Their memory is written to when
+ * splitting the strings into string lists which will later be
+ * processed.  Since it's important that those string lists remain
+ * valid even after the functions allocating the memory returned,
+ * those functions cannot free them.  They could be freed only at end
+ * of main(), which is pretty pointless anyway.
+ *
+ * The overall amount of memory to be allocated for processing the
+ * strings is not expected to exceed a few kilobytes.  For that
+ * reason, allocation can usually always be assumed to succeed (within
+ * a virtual memory environment), thus we simply bail out using
+ * abort(3) in case of an allocation failure.
+ */
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

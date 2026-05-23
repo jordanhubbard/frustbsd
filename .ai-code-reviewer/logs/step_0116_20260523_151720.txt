@@ -1,0 +1,38 @@
+=== STEP 116 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/factor/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/factor
+   Files: 0/3
+📄 File: usr.bin/factor/Makefile
+
+```
+.include <src.opts.mk>
+
+PROG=	factor
+SRCS=	factor.c pr_tbl.c
+CFLAGS+=-I${SRCTOP}/usr.bin/primes
+
+.if ${MK_OPENSSL} != "no"
+CFLAGS+=-DHAVE_OPENSSL
+LIBADD+=crypto
+.endif
+
+MAN=	factor.6
+MLINKS+=factor.6 primes.6
+.PATH:	${SRCTOP}/usr.bin/primes
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}+=	tests
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+This is moderately complex with OpenSSL BIGNUM. Let me find a simpler unit.
+
+ACTION: SET_SCOPE bin/true

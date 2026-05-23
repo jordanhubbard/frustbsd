@@ -1,0 +1,9 @@
+=== STEP 21 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'bin/*/Makefile'
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR bin

@@ -1,0 +1,23 @@
+=== STEP 245 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/whereis
+   Files: 0/4
+📄 File: usr.bin/whereis/whereis.c
+   Chunks: 4/13
+
+```
+=== CHUNK 4/13: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whereis/whereis.c === [function: defaults]
+=== Lines 67-67 (1 lines) ===
+
+static void	 defaults(void);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

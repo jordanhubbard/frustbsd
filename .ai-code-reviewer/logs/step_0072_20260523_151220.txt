@@ -1,0 +1,295 @@
+=== STEP 72 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/limits/limits.c:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/limits/limits.c
+   Total chunks: 15
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: usr.bin/limits
+   Files: 0/3
+📄 File: usr.bin/limits/limits.c
+   Chunks: 1/15
+
+```
+=== CHUNK 1/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/limits/limits.c === [header: file_header]
+=== Lines 1-266 (266 lines) ===
+
+/*-
+ * Copyright (c) 1997 by
+ * David L. Nugent <davidn@blaze.net.au>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, is permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice immediately at the beginning of the file, without modification,
+ *    this list of conditions, and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. This work was done expressly for inclusion into FreeBSD.  Other use
+ *    is permitted provided this notation is included.
+ * 4. Absolutely no warranty of function or purpose is made by the authors.
+ * 5. Modifications may be freely made to this file providing the above
+ *    conditions are met.
+ *
+ * Display/change(+runprogram)/eval resource limits.
+ */
+
+#include <sys/cdefs.h>
+#include <err.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/sysctl.h>
+#include <sys/user.h>
+#include <sys/param.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdarg.h>
+#include <stdint.h>
+#include <ctype.h>
+#include <errno.h>
+#include <pwd.h>
+#include <login_cap.h>
+#include <sys/time.h>
+#include <sys/resource.h>
+
+enum
+{
+    SH_NONE,
+    SH_SH,      /* sh */
+    SH_CSH,     /* csh */
+    SH_BASH,    /* gnu bash */
+    SH_TCSH,    /* tcsh */
+    SH_KSH,     /* (pd)ksh */
+    SH_ZSH,     /* zsh */
+    SH_RC,      /* rc or es */
+    SH_NUMBER
+};
+
+
+/* eval emitter for popular shells.
+ * Why aren't there any standards here? Most shells support either
+ * the csh 'limit' or sh 'ulimit' command, but each varies just
+ * enough that they aren't very compatible from one to the other.
+ */
+static struct {
+    const char * name;	    /* Name of shell */
+    const char * inf;	    /* Name used for 'unlimited' resource */
+    const char * cmd;	    /* Intro text */
+    const char * hard;	    /* Hard limit text */
+    const char * soft;	    /* Soft limit text */
+    const char * both;	    /* Hard+Soft limit text */
+    struct {
+	const char * pfx;
+	const char * sfx;
+	int divisor;
+    } lprm[RLIM_NLIMITS];
+} shellparm[] =
+{
+    { "", "infinity", "Resource limits%s%s:\n", "-max", "-cur", "",
+      {
+	  { "  cputime%-4s          %8s", " secs\n",  1    },
+	  { "  filesize%-4s         %8s", " kB\n",    1024 },
+	  { "  datasize%-4s         %8s", " kB\n",    1024 },
+	  { "  stacksize%-4s        %8s", " kB\n",    1024 },
+	  { "  coredumpsize%-4s     %8s", " kB\n",    1024 },
+	  { "  memoryuse%-4s        %8s", " kB\n",    1024 },
+	  { "  memorylocked%-4s     %8s", " kB\n",    1024 },
+	  { "  maxprocesses%-4s     %8s", "\n",       1    },
+	  { "  openfiles%-4s        %8s", "\n",       1    },
+	  { "  sbsize%-4s           %8s", " bytes\n", 1    },
+	  { "  vmemoryuse%-4s       %8s", " kB\n",    1024 },
+	  { "  pseudo-terminals%-4s %8s", "\n",       1    },
+	  { "  swapuse%-4s          %8s", " kB\n",    1024 },
+	  { "  kqueues%-4s          %8s", "\n",       1    },
+	  { "  umtxp%-4s            %8s", "\n",       1    },
+	  { "  pipebuf%-4s          %8s", " kB\n",    1024 },
+	  { "  vms%-4s              %8s", "\n",       1    },
+      }
+    },
+    { "sh", "unlimited", "", " -H", " -S", "",
+      {
+	  { "ulimit%s -t %s", ";\n",  1    },
+	  { "ulimit%s -f %s", ";\n",  512  },
+	  { "ulimit%s -d %s", ";\n",  1024 },
+	  { "ulimit%s -s %s", ";\n",  1024 },
+	  { "ulimit%s -c %s", ";\n",  512  },
+	  { "ulimit%s -m %s", ";\n",  1024 },
+	  { "ulimit%s -l %s", ";\n",  1024 },
+	  { "ulimit%s -u %s", ";\n",  1    },
+	  { "ulimit%s -n %s", ";\n",  1    },
+	  { "ulimit%s -b %s", ";\n",  1    },
+	  { "ulimit%s -v %s", ";\n",  1024 },
+	  { "ulimit%s -p %s", ";\n",  1    },
+	  { "ulimit%s -w %s", ";\n",  1024 },
+	  { "ulimit%s -k %s", ";\n",  1    },
+	  { "ulimit%s -o %s", ";\n",  1    },
+	  { "ulimit%s -y %s", ";\n",  1024 },
+	  { "ulimit%s -V %s", ";\n",  1    },
+      }
+    },
+    { "csh", "unlimited", "", " -h", "", NULL,
+      {
+	  { "limit%s cputime %s",         ";\n",  1    },
+	  { "limit%s filesize %s",        ";\n",  1024 },
+	  { "limit%s datasize %s",        ";\n",  1024 },
+	  { "limit%s stacksize %s",       ";\n",  1024 },
+	  { "limit%s coredumpsize %s",    ";\n",  1024 },
+	  { "limit%s memoryuse %s",       ";\n",  1024 },
+	  { "limit%s memorylocked %s",    ";\n",  1024 },
+	  { "limit%s maxproc %s",         ";\n",  1    },
+	  { "limit%s openfiles %s",       ";\n",  1    },
+	  { "limit%s sbsize %s",          ";\n",  1    },
+	  { "limit%s vmemoryuse %s",      ";\n",  1024 },
+	  { "limit%s pseudoterminals %s", ";\n",  1    },
+	  { "limit%s swapsize %s",        ";\n",  1024 },
+	  { "limit%s kqueues %s",         ";\n",  1    },
+	  { "limit%s umtxp %s",           ";\n",  1    },
+      }
+    },
+    { "bash|bash2", "unlimited", "", " -H", " -S", "",
+      {
+	  { "ulimit%s -t %s", ";\n",  1    },
+	  { "ulimit%s -f %s", ";\n",  1024 },
+	  { "ulimit%s -d %s", ";\n",  1024 },
+	  { "ulimit%s -s %s", ";\n",  1024 },
+	  { "ulimit%s -c %s", ";\n",  1024 },
+	  { "ulimit%s -m %s", ";\n",  1024 },
+	  { "ulimit%s -l %s", ";\n",  1024 },
+	  { "ulimit%s -u %s", ";\n",  1    },
+	  { "ulimit%s -n %s", ";\n",  1    },
+	  { "ulimit%s -b %s", ";\n",  1    },
+	  { "ulimit%s -v %s", ";\n",  1024 },
+	  { "ulimit%s -p %s", ";\n",  1    },
+	  { "ulimit%s -w %s", ";\n",  1024 }
+      }
+    },
+    { "tcsh", "unlimited", "", " -h", "", NULL,
+      {
+	  { "limit%s cputime %s",         ";\n",  1    },
+	  { "limit%s filesize %s",        ";\n",  1024 },
+	  { "limit%s datasize %s",        ";\n",  1024 },
+	  { "limit%s stacksize %s",       ";\n",  1024 },
+	  { "limit%s coredumpsize %s",    ";\n",  1024 },
+	  { "limit%s memoryuse %s",       ";\n",  1024 },
+	  { "limit%s memorylocked %s",    ";\n",  1024 },
+	  { "limit%s maxproc %s",         ";\n",  1    },
+	  { "limit%s descriptors %s",     ";\n",  1    },
+	  { "limit%s sbsize %s",          ";\n",  1    },
+	  { "limit%s vmemoryuse %s",      ";\n",  1024 },
+	  { "limit%s pseudoterminals %s", ";\n",  1    },
+	  { "limit%s swapsize %s",        ";\n",  1024 },
+	  { "limit%s kqueues %s",         ";\n",  1    },
+	  { "limit%s umtxp %s",           ";\n",  1    },
+      }
+    },
+    { "ksh|pdksh", "unlimited", "", " -H", " -S", "",
+      {
+	  { "ulimit%s -t %s", ";\n",  1    },
+	  { "ulimit%s -f %s", ";\n",  512  },
+	  { "ulimit%s -d %s", ";\n",  1024 },
+	  { "ulimit%s -s %s", ";\n",  1024 },
+	  { "ulimit%s -c %s", ";\n",  512  },
+	  { "ulimit%s -m %s", ";\n",  1024 },
+	  { "ulimit%s -l %s", ";\n",  1024 },
+	  { "ulimit%s -p %s", ";\n",  1    },
+	  { "ulimit%s -n %s", ";\n",  1    },
+	  { "ulimit%s -b %s", ";\n",  1    },
+	  { "ulimit%s -v %s", ";\n",  1024 },
+	  { "ulimit%s -p %s", ";\n",  1    },
+	  { "ulimit%s -w %s", ";\n",  1024 }
+      }
+    },
+    { "zsh", "unlimited", "", " -H", " -S", "",
+      {
+	  { "ulimit%s -t %s", ";\n",  1    },
+	  { "ulimit%s -f %s", ";\n",  512  },
+	  { "ulimit%s -d %s", ";\n",  1024 },
+	  { "ulimit%s -s %s", ";\n",  1024 },
+	  { "ulimit%s -c %s", ";\n",  512  },
+	  { "ulimit%s -m %s", ";\n",  1024 },
+	  { "ulimit%s -l %s", ";\n",  1024 },
+	  { "ulimit%s -u %s", ";\n",  1    },
+	  { "ulimit%s -n %s", ";\n",  1    },
+	  { "ulimit%s -b %s", ";\n",  1    },
+	  { "ulimit%s -v %s", ";\n",  1024 },
+	  { "ulimit%s -p %s", ";\n",  1    },
+	  { "ulimit%s -w %s", ";\n",  1024 }
+      }
+    },
+    { "rc|es", "unlimited", "", " -h", "", NULL,
+      {
+	  { "limit%s cputime %s",         ";\n",  1    },
+	  { "limit%s filesize %s",        ";\n",  1024 },
+	  { "limit%s datasize %s",        ";\n",  1024 },
+	  { "limit%s stacksize %s",       ";\n",  1024 },
+	  { "limit%s coredumpsize %s",    ";\n",  1024 },
+	  { "limit%s memoryuse %s",       ";\n",  1024 },
+	  { "limit%s lockedmemory %s",    ";\n",  1024 },
+	  { "limit%s processes %s",       ";\n",  1    },
+	  { "limit%s descriptors %s",     ";\n",  1    },
+	  { "limit%s sbsize %s",          ";\n",  1    },
+	  { "limit%s vmemoryuse %s",      ";\n",  1024 },
+	  { "limit%s pseudoterminals %s", ";\n",  1    },
+	  { "limit%s swapuse %s",         ";\n",  1024 }
+      }
+    },
+    { NULL, NULL, NULL, NULL, NULL, NULL,
+      { }
+    }
+};
+
+static struct {
+    const char * cap;
+    rlim_t (*func)(login_cap_t *, const char *, rlim_t, rlim_t);
+} resources[] = {
+    { "cputime",	login_getcaptime },
+    { "filesize",	login_getcapsize },
+    { "datasize",	login_getcapsize },
+    { "stacksize",	login_getcapsize },
+    { "coredumpsize",	login_getcapsize },
+    { "memoryuse",	login_getcapsize },
+    { "memorylocked",	login_getcapsize },
+    { "maxproc",	login_getcapnum  },
+    { "openfiles",	login_getcapnum  },
+    { "sbsize",		login_getcapsize },
+    { "vmemoryuse",	login_getcapsize },
+    { "pseudoterminals",login_getcapnum  },
+    { "swapuse",	login_getcapsize },
+    { "kqueues",	login_getcapnum  },
+    { "umtxp",		login_getcapnum  },
+    { "pipebuf",	login_getcapnum  },
+    { "vmms",		login_getcapnum  },
+};
+
+_Static_assert(nitems(resources) == RLIM_NLIMITS,
+    "Please add entries to resources[] for the new limits");
+
+/*
+ * One letter for each resource levels.
+ * NOTE: There is a dependency on the corresponding
+ * letter index being equal to the resource number.
+ * If sys/resource.h defines are changed, this needs
+ * to be modified accordingly!
+ */
+static const char rcs_string[] = "tfdscmlunbvpwkoyV";
+_Static_assert(sizeof(rcs_string) - 1 == RLIM_NLIMITS,
+    "Please add letters to rcs_string[] for the new limits");
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SKIP_FILE

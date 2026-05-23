@@ -1,0 +1,11 @@
+=== STEP 16 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/libxo/Makefile*'
+
+--- RESPONSE ---
+
+
+This unit is part of a third-party autotools project (contrib/libxo) with no FreeBSD Makefile. It's not suitable for the FreeBSD build-integrated Rust rewrite objective. Let me find a better unit.
+
+ACTION: SET_SCOPE bin/cat

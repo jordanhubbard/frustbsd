@@ -1,0 +1,52 @@
+=== STEP 90 ===
+
+--- REQUEST ---
+SET_SCOPE_OK: Now rewriting usr.bin/w
+
+HIERARCHY:
+  Level 1: Source tree (8132 work units)
+  Level 2: usr.bin/w ← YOU ARE HERE
+  Level 3: 7 candidate files
+  Level 4: Functions (auto-chunked for large files)
+
+WORK UNIT:
+  Kind: directory
+  Stage: unknown
+  Depends on: (none)
+  Related files:
+    - usr.bin/w/Makefile
+    - usr.bin/w/extern.h
+    - usr.bin/w/pr_time.c
+    - usr.bin/w/proc_compare.c
+    - usr.bin/w/uptime.1
+    - usr.bin/w/w.1
+    - usr.bin/w/w.c
+
+✓ Directory has Makefile - valid source module
+
+FILES TO REWRITE:
+  - usr.bin/w/Makefile
+  - usr.bin/w/extern.h
+  - usr.bin/w/pr_time.c
+  - usr.bin/w/proc_compare.c
+  - usr.bin/w/uptime.1
+  - usr.bin/w/w.1
+  - usr.bin/w/w.c
+
+📁 Directory: usr.bin/w
+   Files: 0/7
+
+WORKFLOW:
+1. Rewrite each relevant file (READ_FILE, NEXT_CHUNK for large files)
+2. Make changes as needed (EDIT_FILE or WRITE_FILE)
+3. When ALL relevant files are rewritten: ACTION: BUILD
+4. If build succeeds: Changes committed for entire directory
+5. Move to next directory (SET_SCOPE)
+
+Attempts recorded for usr.bin/w: 2/3.
+1 attempt(s) remain before auto-skip.
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/w/w.c

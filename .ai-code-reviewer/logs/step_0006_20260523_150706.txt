@@ -1,0 +1,12 @@
+=== STEP 6 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/libxo/encoder/test
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/libxo/encoder/test

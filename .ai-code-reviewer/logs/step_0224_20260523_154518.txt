@@ -1,0 +1,63 @@
+=== STEP 224 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/banner/src/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now I'll create the build.rs to extract data from the C source, then main.rs.
+
+ACTION: WRITE_FILE usr.bin/banner/src/build.rs
+CONTENT:
+use std::env;
+use std::fs;
+use std::io::Write;
+use std::path::Path;
+
+fn main() {
+    let out_dir = env::var("OUT_DIR").unwrap();
+    let dest_path = Path::new(&out_dir).join("data.rs");
+    let mut f = fs::File::create(&dest_path).unwrap();
+
+    // Read the C source to extract data tables
+    let c_src = fs::read_to_string("banner.c").unwrap();
+
+    // Extract asc_ptr values
+    let asc_ptr_start = c_src.find("asc_ptr[NCHARS] = {").unwrap() + "asc_ptr[NCHARS] = {".len();
+    let asc_ptr_end = c_src[asc_ptr_start..].find("};").unwrap() + 2;
+    let asc_ptr_str = &c_src[asc_ptr_start..asc_ptr_start + asc_ptr_end];
+    let asc_vals: Vec<i32> = asc_ptr_str
+        .split(',')
+        .filter_map(|s| s.trim().parse::<i32>().ok())
+        .filter(|&v| v != 0 || true)
+        .collect();
+
+    // Extract data_table values
+    let dt_start = c_src.find("data_table[NBYTES] = {").unwrap() + "data_table[NBYTES] = {".len();
+    let dt_end = c_src[dt_start..].find("};").unwrap() + 2;
+    let dt_str = &c_src[dt_start..dt_start + dt_end];
+    let dt_vals: Vec<u8> = dt_str
+        .split(',')
+        .filter_map(|s| s.trim().parse::<u8>().ok())
+        .collect();
+
+    writeln!(f, "pub static ASC_PTR: [i32; {}] = [", asc_vals.len()).unwrap();
+    for (i, v) in asc_vals.iter().enumerate() {
+        if i % 8 == 0 { write!(f, "    ").unwrap(); }
+        write!(f, "{}, ", v).unwrap();
+        if i % 8 == 7 { writeln!(f).unwrap(); }
+    }
+    writeln!(f, "];").unwrap();
+
+    writeln!(f, "pub static DATA_TABLE: [u8; {}] = [", dt_vals.len()).unwrap();
+    for (i, v) in dt_vals.iter().enumerate() {
+        if i % 10 == 0 { write!(f, "    ").unwrap(); }
+        write!(f, "{}, ", v).unwrap();
+        if i % 10 == 9 { writeln!(f).unwrap(); }
+    }
+    writeln!(f, "];").unwrap();
+
+    println!("cargo:rerun-if-changed=banner.c");
+}

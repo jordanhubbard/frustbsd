@@ -1,0 +1,23 @@
+=== STEP 244 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/whereis
+   Files: 0/4
+📄 File: usr.bin/whereis/whereis.c
+   Chunks: 3/13
+
+```
+=== CHUNK 3/13: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whereis/whereis.c === [function: decolonify]
+=== Lines 66-66 (1 lines) ===
+
+static void	 decolonify(char *, ccharp **, int *);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

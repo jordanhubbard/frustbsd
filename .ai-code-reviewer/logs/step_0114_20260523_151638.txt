@@ -1,0 +1,44 @@
+=== STEP 114 ===
+
+--- REQUEST ---
+SET_SCOPE_OK: Now rewriting usr.bin/factor
+
+HIERARCHY:
+  Level 1: Source tree (8132 work units)
+  Level 2: usr.bin/factor ← YOU ARE HERE
+  Level 3: 3 candidate files
+  Level 4: Functions (auto-chunked for large files)
+
+WORK UNIT:
+  Kind: directory
+  Stage: unknown
+  Depends on: (none)
+  Related files:
+    - usr.bin/factor/Makefile
+    - usr.bin/factor/factor.6
+    - usr.bin/factor/factor.c
+
+✓ Directory has Makefile - valid source module
+
+FILES TO REWRITE:
+  - usr.bin/factor/Makefile
+  - usr.bin/factor/factor.6
+  - usr.bin/factor/factor.c
+
+📁 Directory: usr.bin/factor
+   Files: 0/3
+
+WORKFLOW:
+1. Rewrite each relevant file (READ_FILE, NEXT_CHUNK for large files)
+2. Make changes as needed (EDIT_FILE or WRITE_FILE)
+3. When ALL relevant files are rewritten: ACTION: BUILD
+4. If build succeeds: Changes committed for entire directory
+5. Move to next directory (SET_SCOPE)
+
+Attempts recorded for usr.bin/factor: 1/3.
+2 attempt(s) remain before auto-skip.
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/factor/factor.c

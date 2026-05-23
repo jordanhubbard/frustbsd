@@ -1,0 +1,17 @@
+=== STEP 92 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/w/w.c.
+Remaining files in usr.bin/w:
+  - usr.bin/w/Makefile
+  - usr.bin/w/extern.h
+  - usr.bin/w/pr_time.c
+  - usr.bin/w/proc_compare.c
+  - usr.bin/w/uptime.1
+  ... plus 1 more
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/wall
