@@ -1,0 +1,106 @@
+=== STEP 368 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/units/units.c:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/units/units.c
+   Total chunks: 36
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: usr.bin/units
+   Files: 0/4
+📄 File: usr.bin/units/units.c
+   Chunks: 1/36
+
+```
+=== CHUNK 1/36: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/units/units.c === [header: file_header]
+=== Lines 1-77 (77 lines) ===
+
+/*-
+ * SPDX-License-Identifier: BSD-2-Clause
+ *
+ * units.c   Copyright (c) 1993 by Adrian Mariano (adrian@cam.cornell.edu)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. The name of the author may not be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
+ * Disclaimer:  This software is provided by the author "as is".  The author
+ * shall not be liable for any damages caused in any way by this software.
+ *
+ * I would appreciate (though I do not require) receiving a copy of any
+ * improvements you might make to this program.
+ */
+
+#include <ctype.h>
+#include <err.h>
+#include <errno.h>
+#include <histedit.h>
+#include <getopt.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#include <capsicum_helpers.h>
+
+#ifndef UNITSFILE
+#define UNITSFILE "/usr/share/misc/definitions.units"
+#endif
+
+#define MAXUNITS 1000
+#define MAXPREFIXES 100
+
+#define MAXSUBUNITS 500
+
+#define PRIMITIVECHAR '!'
+
+static const char *powerstring = "^";
+static const char *numfmt = "%.8g";
+
+static struct {
+	char *uname;
+	char *uval;
+}      unittable[MAXUNITS];
+
+struct unittype {
+	char *numerator[MAXSUBUNITS];
+	char *denominator[MAXSUBUNITS];
+	double factor;
+	double offset;
+	int quantity;
+};
+
+static struct {
+	char *prefixname;
+	char *prefixval;
+}      prefixtable[MAXPREFIXES];
+
+
+static char NULLUNIT[] = "";
+
+#define SEPARATOR      ":"
+
+static int unitcount;
+static int prefixcount;
+static bool verbose = false;
+static bool terse = false;
+static const char * outputformat;
+static const char * havestr;
+static const char * wantstr;
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

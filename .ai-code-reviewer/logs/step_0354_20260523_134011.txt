@@ -1,0 +1,23 @@
+=== STEP 354 ===
+
+--- REQUEST ---
+No valid ACTION found in your response.
+
+
+Correct format:
+ACTION: EDIT_FILE src/example.c
+OLD:
+<<<
+exact text
+>>>
+NEW:
+<<<
+new text
+>>>
+
+--- RESPONSE ---
+
+
+I need to find a valid pending userland unit. Let me check the rewrite index.
+
+ACTION: READ_FILE .ai-code-reviewer/REWRITE-INDEX.md

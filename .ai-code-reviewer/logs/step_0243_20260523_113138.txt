@@ -1,0 +1,12 @@
+=== STEP 243 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/cat

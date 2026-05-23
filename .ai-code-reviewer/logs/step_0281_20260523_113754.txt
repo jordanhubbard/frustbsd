@@ -1,0 +1,15 @@
+=== STEP 281 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012:
+```
+ref
+stream_salsa2012.c
+```
+
+--- RESPONSE ---
+
+
+The scope `sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012` has no Makefile and is part of a larger autotools build. The build harness seems to be running a top-level build that picks up stale state. Let me try a different approach and find a small, buildable unit.
+
+ACTION: SET_SCOPE usr.bin/units

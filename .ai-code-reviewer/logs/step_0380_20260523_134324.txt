@@ -1,0 +1,11 @@
+=== STEP 380 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+No Rust make fragment exists. I'll need to add explicit local Makefile rules. Let me now create the Rust replacement for `column`.
+
+ACTION: WRITE_FILE usr.bin/column/rust/Cargo.toml

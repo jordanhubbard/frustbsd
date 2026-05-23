@@ -1,0 +1,26 @@
+=== STEP 213 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libssp_nonshared/Cargo.toml:
+PROGRESS:
+📁 Directory: lib/libssp_nonshared
+   Files: 0/2
+📄 File: lib/libssp_nonshared/Cargo.toml
+✏️  Edits: 4 files modified
+
+```
+[package]
+name = "libssp_nonshared"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+name = "ssp_nonshared"
+crate-type = ["staticlib"]
+path = "src/lib.rs"
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE lib/libssp_nonshared/src/lib.rs

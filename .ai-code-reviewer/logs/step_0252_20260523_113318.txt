@@ -1,0 +1,13 @@
+=== STEP 252 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src:
+```
+Makefile.am
+libsodium
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR sys/contrib/libsodium/src/libsodium

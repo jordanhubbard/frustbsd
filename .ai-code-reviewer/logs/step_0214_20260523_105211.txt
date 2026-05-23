@@ -1,0 +1,26 @@
+=== STEP 214 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libssp_nonshared:
+```
+Makefile
+Makefile.depend
+libssp_nonshared.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE lib/libssp_nonshared/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "libssp_nonshared"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+name = "ssp_nonshared"
+path = "src/lib.rs"
+>>>

@@ -1,0 +1,15 @@
+=== STEP 79 ===
+
+--- REQUEST ---
+GREP_RESULT for 'build_command':
+```
+./sys/dev/isci/scil/scic_sds_remote_device.c:880:   context = scic_sds_remote_device_build_command_context(this_device, request);
+./sys/dev/isci/scil/scic_sds_remote_device.h:455:#define scic_sds_remote_device_build_command_context(device, command) \
+./usr.sbin/pmcstudy/pmcstudy.c:2667:build_command_for_exp(struct expression *exp)
+./usr.sbin/pmcstudy/pmcstudy.c:2768:	command = build_command_for_exp(exp);
+```
+
+--- RESPONSE ---
+
+
+ACTION: GREP bsd.prog.mk

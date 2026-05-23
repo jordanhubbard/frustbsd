@@ -1,0 +1,12 @@
+=== STEP 250 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*crypto_stream_salsa2012.h*':
+```
+./sys/contrib/libsodium/src/libsodium/include/sodium/crypto_stream_salsa2012.h
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE sys/contrib/libsodium/src/libsodium/include/sodium/crypto_stream_salsa2012.h

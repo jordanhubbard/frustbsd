@@ -1,0 +1,45 @@
+=== STEP 334 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012/stream_salsa2012.c:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012/stream_salsa2012.c
+
+```
+#include "crypto_stream_salsa2012.h"
+#include "randombytes.h"
+
+size_t
+crypto_stream_salsa2012_keybytes(void)
+{
+    return crypto_stream_salsa2012_KEYBYTES;
+}
+
+size_t
+crypto_stream_salsa2012_noncebytes(void)
+{
+    return crypto_stream_salsa2012_NONCEBYTES;
+}
+
+size_t
+crypto_stream_salsa2012_messagebytes_max(void)
+{
+    return crypto_stream_salsa2012_MESSAGEBYTES_MAX;
+}
+
+void
+crypto_stream_salsa2012_keygen(unsigned char k[crypto_stream_salsa2012_KEYBYTES])
+{
+    randombytes_buf(k, crypto_stream_salsa2012_KEYBYTES);
+}
+
+```
+
+--- RESPONSE ---
+
+
+I'm stuck in `sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012` with uncommitted changes from a previous session. This is a kernel-adjacent crypto directory, not a valid userland build unit. Let me examine the pending changes and the directory structure.
+
+ACTION: LIST_DIR sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012/ref

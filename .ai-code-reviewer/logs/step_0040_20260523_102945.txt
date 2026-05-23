@@ -1,0 +1,47 @@
+=== STEP 40 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/col
+   Files: 0/4
+📄 File: usr.bin/col/col.c
+   Chunks: 10/16
+
+```
+=== CHUNK 10/16: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/col/col.c === [function: flush_lines]
+=== Lines 365-389 (25 lines) ===
+
+static void
+flush_lines(int nflush)
+{
+	LINE *l;
+
+	while (--nflush >= 0) {
+		l = lines;
+		lines = l->l_next;
+		if (l->l_line) {
+			flush_blanks();
+			flush_line(l);
+			free(l->l_line);
+		}
+		if (l->l_next)
+			nblank_lines++;
+		free_line(l);
+	}
+	if (lines)
+		lines->l_prev = NULL;
+}
+
+/*
+ * Print a number of newline/half newlines.
+ * nblank_lines is the number of half line feeds.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

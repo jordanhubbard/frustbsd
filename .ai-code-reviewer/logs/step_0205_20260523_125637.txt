@@ -1,0 +1,24 @@
+=== STEP 205 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: lib/libssp_nonshared
+Pending source/build changes: 4 files modified
+Files: lib/libssp_nonshared/Cargo.toml, lib/libssp_nonshared/src/lib.rs, lib/libssp_nonshared/Makefile, Makefile.inc1
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in lib/libssp_nonshared
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: usr.bin/command
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

@@ -1,0 +1,31 @@
+=== STEP 215 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libssp_nonshared/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE lib/libssp_nonshared/src/lib.rs
+CONTENT:
+<<<
+// Rust replacement for libssp_nonshared
+// Provides __stack_chk_fail_local which delegates to __stack_chk_fail
+
+// __stack_chk_fail is provided by libssp, not this library.
+extern "C" {
+    fn __stack_chk_fail();
+}
+
+/// Local stack check failure handler.
+/// Calls the global __stack_chk_fail.
+/// Hidden visibility to avoid symbol conflicts.
+#[no_mangle]
+#[cfg_attr(not(test), link_section = ".text")]
+pub extern "C" fn __stack_chk_fail_local() {
+    unsafe {
+        __stack_chk_fail();
+    }
+}
+>>>

@@ -1,0 +1,17 @@
+=== STEP 345 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_stream/salsa208:
+```
+ref
+stream_salsa208.c
+```
+
+--- RESPONSE ---
+
+
+This is `sys/contrib/libsodium` - kernel-adjacent crypto code, not a userland unit. The objective explicitly says "Start with small buildable bin/usr.bin/lib/libexec units" and "If the selected unit has no source relevant to the configured objective, choose another scope instead of fabricating a rewrite."
+
+Let me find a proper userland unit to work on.
+
+ACTION: SET_SCOPE bin/cat

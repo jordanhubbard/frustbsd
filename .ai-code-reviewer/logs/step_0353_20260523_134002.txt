@@ -1,0 +1,12 @@
+=== STEP 353 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/unexpand is already marked complete.
+
+Completed work units are closed after a successful build and commit; do not reopen the same unit for incremental polish.
+NEXT: Use SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012
+
+--- RESPONSE ---
+
+
+I need to find a pending userland unit. Let me check the rewrite index for available units.

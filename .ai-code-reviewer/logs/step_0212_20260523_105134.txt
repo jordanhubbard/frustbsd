@@ -1,0 +1,32 @@
+=== STEP 212 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libssp_nonshared/libssp_nonshared.c:
+PROGRESS:
+📁 Directory: lib/libssp_nonshared
+   Files: 0/2
+📄 File: lib/libssp_nonshared/libssp_nonshared.c
+
+```
+/*
+ * Written by Alexander Kabaev <kan@FreeBSD.org>
+ * The file is in public domain.
+ */
+
+#include <sys/cdefs.h>
+void __stack_chk_fail(void);
+void __stack_chk_fail_local(void);
+
+void __hidden
+__stack_chk_fail_local(void)
+{
+
+	__stack_chk_fail();
+}
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE lib/libssp_nonshared/Makefile

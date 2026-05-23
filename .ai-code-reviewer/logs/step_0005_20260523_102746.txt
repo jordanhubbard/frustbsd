@@ -1,0 +1,14 @@
+=== STEP 5 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory sys/contrib/libsodium/src/libsodium/crypto_hash skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/llvm-project/clang/lib/DirectoryWatcher/default
+
+--- RESPONSE ---
+
+
+Let me try one of the units from the next-in-queue list instead.
+
+ACTION: SET_SCOPE bin/cat/tests

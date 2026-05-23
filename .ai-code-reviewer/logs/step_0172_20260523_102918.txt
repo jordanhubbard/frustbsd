@@ -1,0 +1,61 @@
+=== STEP 172 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24/Makefile:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24
+   Files: 0/2
+📄 File: sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24/Makefile
+✏️  Edits: 3 files modified
+
+```
+# Rust replacement for crypto_shorthash_siphash24 stub functions
+CARGO_TARGET_DIR=	${.OBJDIR}/cargo-target
+
+all: libcrypto_shorthash_siphash24.a
+
+libcrypto_shorthash_siphash24.a:
+	@cargo build --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} --release
+	@cp ${CARGO_TARGET_DIR}/release/libcrypto_shorthash_siphash24.a ${.TARGET}
+
+clean:
+	@rm -f libcrypto_shorthash_siphash24.a
+	@rm -rf ${CARGO_TARGET_DIR}
+```
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24/Makefile
+OLD:
+<<<
+# Rust replacement for crypto_shorthash_siphash24 stub functions
+CARGO_TARGET_DIR=	${.OBJDIR}/cargo-target
+
+all: libcrypto_shorthash_siphash24.a
+
+libcrypto_shorthash_siphash24.a:
+	@cargo build --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} --release
+	@cp ${CARGO_TARGET_DIR}/release/libcrypto_shorthash_siphash24.a ${.TARGET}
+
+clean:
+	@rm -f libcrypto_shorthash_siphash24.a
+	@rm -rf ${CARGO_TARGET_DIR}
+>>>
+NEW:
+<|mask_start|>#!/usr/bin/make
+# Rust replacement for crypto_shorthash_siphash24 stub functions
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+all: libcrypto_shorthash_siphash24.a
+
+libcrypto_shorthash_siphash24.a:
+	@cargo build --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} --release
+	@cp ${CARGO_TARGET_DIR}/release/libcrypto_shorthash_siphash24.a ${.TARGET}
+
+clean:
+	@rm -f libcrypto_shorthash_siphash24.a
+	@rm -rf ${CARGO_TARGET_DIR}<|mask_end|

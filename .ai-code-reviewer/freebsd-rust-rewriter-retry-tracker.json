@@ -144,8 +144,8 @@
     "last_attempt": "2026-05-22T21:46:57.529904"
   },
   "lib/libssp_nonshared": {
-    "attempts": 1,
-    "last_attempt": "2026-05-23T07:53:33.098028"
+    "attempts": 2,
+    "last_attempt": "2026-05-23T10:51:22.964477"
   },
   "sbin/md5": {
     "attempts": 1,
@@ -172,8 +172,12 @@
     "last_attempt": "2026-05-23T10:01:32.971754"
   },
   "sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012": {
+    "attempts": 2,
+    "last_attempt": "2026-05-23T11:32:46.991529"
+  },
+  "sys/contrib/libsodium/src/libsodium/crypto_stream/salsa208": {
     "attempts": 1,
-    "last_attempt": "2026-05-23T08:01:15.115914"
+    "last_attempt": "2026-05-23T13:38:12.689367"
   },
   "tools/regression/tls/libxx": {
     "attempts": 1,
@@ -210,6 +214,10 @@
   "usr.bin/colrm": {
     "attempts": 1,
     "last_attempt": "2026-05-22T07:03:11.300903"
+  },
+  "usr.bin/column": {
+    "attempts": 1,
+    "last_attempt": "2026-05-23T13:42:53.634602"
   },
   "usr.bin/comm": {
     "attempts": 3,
@@ -344,8 +352,8 @@
     "last_attempt": "2026-05-22T21:00:37.814897"
   },
   "usr.bin/units": {
-    "attempts": 1,
-    "last_attempt": "2026-05-23T08:04:51.114103"
+    "attempts": 2,
+    "last_attempt": "2026-05-23T13:41:46.529718"
   },
   "usr.bin/w": {
     "attempts": 1,

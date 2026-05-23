@@ -1,0 +1,61 @@
+=== STEP 230 ===
+
+--- REQUEST ---
+EDIT_FILE_ERROR: OLD text not found in /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1
+Closest match found in file (copy this EXACT block for OLD):
+<<<
+.if (make(buildworld) || make(buildkernel) || make(kernel-toolchain) || \
+    make(toolchain) || make(_cross-tools))
+.if ${USING_SYSTEM_COMPILER} == "yes"
+@echo "SYSTEM_COMPILER: Determined that CC=${CC} matches the source tree.  Not bootstrapping a cross-compiler."
+.elif ${MK_CLANG_BOOTSTRAP} == "yes"
+@echo "SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler."
+.endif
+.if ${USING_SYSTEM_LINKER} == "yes"
+@echo "SYSTEM_LINKER: Determined that LD=${LD} matches the source tree.  Not bootstrapping a cross-linker."
+.elif ${MK_LLD_BOOTSTRAP} == "yes"
+@echo "SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker."
+.endif
+.endif
+>>>
+
+HINT: The OLD block must be EXACTLY copied from the file.
+Re-read the file and copy the exact text you want to replace,
+including all whitespace and indentation. Do not paraphrase.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE Makefile.inc1
+OLD:
+<<<
+.if (make(buildworld) || make(buildkernel) || make(kernel-toolchain) || \
+    make(toolchain) || make(_cross-tools))
+.if ${USING_SYSTEM_COMPILER} == "yes"
+@echo "SYSTEM_COMPILER: Determined that CC=${CC} matches the source tree.  Not bootstrapping a cross-compiler."
+.elif ${MK_CLANG_BOOTSTRAP} == "yes"
+@echo "SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler."
+.endif
+.if ${USING_SYSTEM_LINKER} == "yes"
+@echo "SYSTEM_LINKER: Determined that LD=${LD} matches the source tree.  Not bootstrapping a cross-linker."
+.elif ${MK_LLD_BOOTSTRAP} == "yes"
+@echo "SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker."
+.endif
+.endif
+>>>
+NEW:
+<<<
+.if (make(buildworld) || make(buildkernel) || make(kernel-toolchain) || \
+    make(toolchain) || make(_cross-tools))
+.if ${USING_SYSTEM_COMPILER} == "yes"
+@echo "SYSTEM_COMPILER: Determined that CC=${CC} matches the source tree.  Not bootstrapping a cross-compiler."
+.elif ${MK_CLANG_BOOTSTRAP} == "yes"
+@echo "SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler."
+.endif
+.if ${USING_SYSTEM_LINKER} == "yes"
+@echo "SYSTEM_LINKER: Determined that LD=${LD} matches the source tree.  Not bootstrapping a cross-linker."
+.elif ${MK_LLD_BOOTSTRAP} == "yes"
+@echo "SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker."
+.endif
+.endif
+>>>

@@ -1,0 +1,33 @@
+=== STEP 142 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/col/tests/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/col
+   Files: 0/4
+📄 File: usr.bin/col/tests/Makefile
+✏️  Edits: 4 files modified
+
+```
+PACKAGE=	tests
+
+ATF_TESTS_SH=	col_test
+
+${PACKAGE}FILES+= \
+		hlf.in \
+		hlf2.in \
+		nl.in \
+		nl2.in \
+		nl3.in \
+		rlf.in \
+		rlf2.in \
+		rlf3.in
+
+.include <bsd.test.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/col/Makefile.depend

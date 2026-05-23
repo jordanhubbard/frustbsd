@@ -1,0 +1,69 @@
+=== STEP 251 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/include/sodium/crypto_stream_salsa2012.h:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/include/sodium/crypto_stream_salsa2012.h
+
+```
+#ifndef crypto_stream_salsa2012_H
+#define crypto_stream_salsa2012_H
+
+/*
+ *  WARNING: This is just a stream cipher. It is NOT authenticated encryption.
+ *  While it provides some protection against eavesdropping, it does NOT
+ *  provide any security against active attacks.
+ *  Unless you know what you're doing, what you are looking for is probably
+ *  the crypto_box functions.
+ */
+
+#include <stddef.h>
+#include "export.h"
+
+#ifdef __cplusplus
+# ifdef __GNUC__
+#  pragma GCC diagnostic ignored "-Wlong-long"
+# endif
+extern "C" {
+#endif
+
+#define crypto_stream_salsa2012_KEYBYTES 32U
+SODIUM_EXPORT
+size_t crypto_stream_salsa2012_keybytes(void);
+
+#define crypto_stream_salsa2012_NONCEBYTES 8U
+SODIUM_EXPORT
+size_t crypto_stream_salsa2012_noncebytes(void);
+
+#define crypto_stream_salsa2012_MESSAGEBYTES_MAX SODIUM_SIZE_MAX
+SODIUM_EXPORT
+size_t crypto_stream_salsa2012_messagebytes_max(void);
+
+SODIUM_EXPORT
+int crypto_stream_salsa2012(unsigned char *c, unsigned long long clen,
+                            const unsigned char *n, const unsigned char *k);
+
+SODIUM_EXPORT
+int crypto_stream_salsa2012_xor(unsigned char *c, const unsigned char *m,
+                                unsigned long long mlen, const unsigned char *n,
+                                const unsigned char *k);
+
+SODIUM_EXPORT
+void crypto_stream_salsa2012_keygen(unsigned char k[crypto_stream_salsa2012_KEYBYTES]);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+
+```
+
+--- RESPONSE ---
+
+
+This is a kernel-adjacent libsodium crypto module, not a userland command. The objective says to start with small buildable bin/usr.bin/lib/libexec units. Let me skip this and find a better unit.
+
+ACTION: SET_SCOPE bin/cat/tests

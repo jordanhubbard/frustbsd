@@ -1,0 +1,25 @@
+=== STEP 213 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libssp_nonshared/Makefile:
+PROGRESS:
+📁 Directory: lib/libssp_nonshared
+   Files: 0/2
+📄 File: lib/libssp_nonshared/Makefile
+
+```
+PACKAGE=	clibs
+LIB=		ssp_nonshared
+NO_PIC=
+
+SRCS=		libssp_nonshared.c
+CFLAGS+=	-fPIC
+
+.include <bsd.lib.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR lib/libssp_nonshared

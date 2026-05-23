@@ -1,0 +1,100 @@
+=== STEP 228 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/asa/Makefile:
+PROGRESS:
+📁 Directory: lib/libssp_nonshared
+   Files: 0/2
+📄 File: usr.bin/asa/Makefile
+✏️  Edits: 3 files modified
+
+```
+.include <src.opts.mk>
+
+PROG=	asa
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}=	tests
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE lib/libssp_nonshared/Makefile
+OLD:
+<<<
+#!/usr/bin/make
+
+# Rust replacement for libssp_nonshared
+# Provides __stack_chk_fail_local which delegates to __stack_chk_fail
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+LIB=		ssp_nonshared
+
+${LIB}.a: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR} --release
+	${CP} ${CARGO_TARGET_DIR}/release/libssp_nonshared.a ${.TARGET}
+
+all: ${LIB}.a
+
+install: ${LIB}.a
+	${INSTALL} -o root -g wheel -m 444 ${LIB}.a ${DESTDIR}/usr/lib/${LIB}.a
+
+clean:
+	${RM} ${LIB}.a
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${LIB}.a ${CARGO_TARGET_DIR}
+>>>
+NEW:
+<<<
+.include <src.opts.mk>
+
+# Rust replacement for libssp_nonshared
+# Provides __stack_chk_fail_local which delegates to __stack_chk_fail
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+LIB=		ssp_nonshared
+
+${LIB}.a: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/libssp_nonshared.a ${.TARGET}
+
+all: ${LIB}.a
+
+install: ${LIB}.a
+	${INSTALL} -o root -g wheel -m 444 ${LIB}.a ${DESTDIR}/usr/lib/${LIB}.a
+
+clean:
+	${RM} ${LIB}.a
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${LIB}.a ${CARGO_TARGET_DIR}
+>>>

@@ -1,0 +1,407 @@
+=== STEP 133 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/col/src/main.rs:
+PROGRESS:
+📁 Directory: usr.bin/col
+   Files: 0/4
+📄 File: usr.bin/col/src/main.rs
+✏️  Edits: 4 files modified
+
+```
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright (c) 1990, 1993, 1994 The Regents of the University of California.
+// All rights reserved.
+
+use std::io::{self, BufRead, Write};
+use std::process;
+
+const BS: char = '\x08';
+const TAB: char = '\t';
+const SPACE: char = ' ';
+const NL: char = '\n';
+const CR: char = '\r';
+const ESC: char = '\x1b';
+const SI: char = '\x0f';
+const SO: char = '\x0e';
+const VT: char = '\x0b';
+const RLF: char = '7';
+const RHLF: char = '8';
+const FHLF: char = '9';
+const BUFFER_MARGIN: i32 = 32;
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum CSet { Normal, Alternate }
+
+#[derive(Clone)]
+struct CI { col: i32, set: CSet, ch: char, width: i32 }
+
+struct Line {
+    chars: Vec<CI>,
+    prev: Option<Box<Line>>,
+    next: Option<Box<Line>>,
+    needs_sort: bool,
+    max_col: i32,
+}
+
+impl Line {
+    fn new() -> Self {
+        Line { chars: Vec::new(), prev: None, next: None, needs_sort: false, max_col: 0 }
+    }
+}
+
+struct State {
+    last_set: CSet,
+    compress_spaces: bool,
+    fine: bool,
+    max_bufd_lines: i32,
+    nblank_lines: i32,
+    no_backspaces: bool,
+    pass_unknown: bool,
+    lines: Option<Box<Line>>,
+}
+
+fn putc(s: &mut State, ch: char) {
+    let stdout = io::stdout();
+    let mut h = stdout.lock();
+    let mut buf = [0u8; 4];
+    let s = ch.encode_utf8(&mut buf);
+    if h.write_all(s.as_bytes()).is_err() {
+        eprintln!("write error");
+        process::exit(1);
+    }
+}
+
+fn addto_lineno(lno: &mut i32, offset: i32) {
+    if offset > 0 {
+        if *lno >= i32::MAX - offset {
+            eprintln!("too many lines");
+            process::exit(1);
+        }
+    } else {
+        if *lno < i32::MIN - offset {
+            eprintln!("too many reverse line feeds");
+            process::exit(1);
+        }
+    }
+    *lno += offset;
+}
+
+fn flush_blanks(s: &mut State) {
+    let mut half = false;
+    let mut nb = s.nblank_lines;
+    if nb & 1 != 0 {
+        if s.fine { half = true; } else { nb += 1; }
+    }
+    nb /= 2;
+    for _ in 0..nb { putc(s, NL); }
+    if half {
+        putc(s, ESC);
+        putc(s, FHLF);
+        if nb == 0 { putc(s, CR); }
+    }
+    s.nblank_lines = 0;
+}
+
+fn flush_line(s: &mut State, l: &Line) {
+    let c: &[CI];
+    if l.needs_sort {
+        let mut sorted = l.chars.clone();
+        sorted.sort_by_key(|ci| ci.col);
+        c = &sorted;
+    } else {
+        c = &l.chars;
+    }
+    let mut last_col: i32 = 0;
+    let mut idx = 0;
+    let n = c.len();
+    while idx < n {
+        let this_col = c[idx].col;
+        let mut endc = idx;
+        while endc < n && c[endc].col == this_col { endc += 1; }
+        if s.no_backspaces {
+            let li = endc - 1;
+            if endc < n && this_col + c[li].width > c[endc].col {
+                idx = endc;
+                continue;
+            }
+        }
+        if this_col > last_col {
+            let mut nspace = this_col - last_col;
+            if s.compress_spaces && nspace > 1 {
+                loop {
+                    let tc = (last_col + 8) & !7;
+                    if tc > this_col { break; }
+                    let ts = tc - last_col;
+                    if ts == 1 { putc(s, SPACE); } else { putc(s, TAB); }
+                    nspace -= ts;
+                    last_col = tc;
+                }
+            }
+            for _ in 0..nspace { putc(s, SPACE); }
+            last_col = this_col;
+        }
+        let mut ci = idx;
+        while ci < endc {
+            if c[ci].set != s.last_set {
+                match c[ci].set {
+                    CSet::Normal => putc(s, SI),
+                    CSet::Alternate => putc(s, SO),
+                }
+                s.last_set = c[ci].set;
+            }
+            putc(s, c[ci].ch);
+            if ci + 1 < endc {
+                for _ in 0..c[ci].width { putc(s, BS); }
+            }
+            ci += 1;
+        }
+        last_col += c[endc - 1].width;
+        idx = endc;
+    }
+}
+
+fn flush_lines(s: &mut State, mut nflush: i32) {
+    while nflush > 0 {
+        let line = s.lines.take().unwrap();
+        let next = line.next;
+        if !line.chars.is_empty() {
+            flush_blanks(s);
+            flush_line(s, &line);
+        }
+        if next.is_some() { s.nblank_lines += 1; }
+        s.lines = next;
+        nflush -= 1;
+    }
+    if let Some(ref mut l) = s.lines { l.prev = None; }
+}
+
+fn usage() {
+    eprintln!("usage: col [-bfhpx] [-l nline]");
+    process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let mut optind = 1;
+    let mut i = 1;
+    let mut s = State {
+        last_set: CSet::Normal, compress_spaces: true, fine: false,
+        max_bufd_lines: 256, nblank_lines: 0, no_backspaces: false,
+        pass_unknown: false, lines: None,
+    };
+    while i < args.len() {
+        let a = &args[i];
+        if a == "-b" { s.no_backspaces = true; i += 1; }
+        else if a == "-f" { s.fine = true; i += 1; }
+        else if a == "-h" { s.compress_spaces = true; i += 1; }
+        else if a == "-l" {
+            i += 1;
+            if i >= args.len() { usage(); }
+            let v: i32 = match args[i].parse() { Ok(v) => v, Err(_) => usage() };
+            if v < 1 || v > (i32::MAX - BUFFER_MARGIN) / 2 {
+                eprintln!("bad -l argument: {}", args[i]);
+                process::exit(1);
+            }
+            s.max_bufd_lines = v * 2;
+            i += 1;
+        }
+        else if a == "-p" { s.pass_unknown = true; i += 1; }
+        else if a == "-x" { s.compress_spaces = false; i += 1; }
+        else if a.starts_with('-') { usage(); }
+        else { optind = i; break; }
+    }
+    if optind != args.len() { usage(); }
+
+    let mut cur_col: i32 = 0;
+    let mut cur_line: i32 = 0;
+    let mut max_line: i32 = 0;
+    let mut this_line: i32 = 0;
+    let mut adjust: i32 = 0;
+    let mut extra_lines: i32 = 0;
+    let mut nflushd_lines: i32 = 0;
+    let mut warned: bool = false;
+    let mut cur_set = CSet::Normal;
+
+    s.lines = Some(Box::new(Line::new()));
+
+    let stdin = io::stdin();
+    let mut reader = stdin.lock();
+    let mut all_input = String::new();
+    let mut buf = String::new();
+    loop {
+        buf.clear();
+        match reader.read_line(&mut buf) {
+            Ok(0) => break,
+            Ok(_) => all_input.push_str(&buf),
+            Err(_) => { eprintln!("read error"); process::exit(1); }
+        }
+    }
+    let chars: Vec<char> = all_input.chars().collect();
+    let mut pos: usize = 0;
+
+    while pos < chars.len() {
+        let ch = chars[pos];
+        pos += 1;
+
+        let is_graph = ch.is_ascii_graphic() || (ch as u32) > 127;
+        if !is_graph {
+            match ch {
+                BS => { if cur_col == 0 { continue; } cur_col -= 1; continue; }
+                CR => { cur_col = 0; continue; }
+                ESC => {
+                    if pos >= chars.len() { continue; }
+                    let ea = chars[pos]; pos += 1;
+                    match ea {
+                        '\x07' | RLF => { addto_lineno(&mut cur_line, -2); }
+                        '\x08' | RHLF => { addto_lineno(&mut cur_line, -1); }
+                        '\x09' | FHLF => {
+                            addto_lineno(&mut cur_line, 1);
+                            if cur_line > max_line { max_line = cur_line; }
+                        }
+                        _ => {
+                            if s.pass_unknown { putc(&mut s, ESC); putc(&mut s, ea); }
+                        }
+                    }
+                    continue;
+                }
+                NL => {
+                    addto_lineno(&mut cur_line, 2);
+                    if cur_line > max_line { max_line = cur_line; }
+                    cur_col = 0; continue;
+                }
+                SPACE => { cur_col += 1; continue; }
+                SI => { cur_set = CSet::Normal; continue; }
+                SO => { cur_set = CSet::Alternate; continue; }
+                TAB => { cur_col |= 7; cur_col += 1; continue; }
+                VT => { addto_lineno(&mut cur_line, -2); continue; }
+                _ => {
+                    if ch.is_whitespace() {
+                        cur_col += 1; continue;
+                    }
+                    if !s.pass_unknown { continue; }
+                }
+            }
+        }
+
+        // Navigate to correct line
+        if cur_line + adjust != this_line {
+            adjust = if !s.fine && (cur_line & 1) != 0 { 1 } else { 0 };
+            if cur_line + adjust < this_line {
+                while cur_line + adjust < this_line {
+                    if let Some(ref mut l) = s.lines {
+                        if let Some(ref prev) = l.prev {
+                            let mut p = prev.clone();
+                            if let Some(ref mut pl) = p {
+                                pl.next = Some(Box::new(Line::new()));
+                            }
+                            // Move back
+                            let old = s.lines.take();
+                            if let Some(ref mut l) = s.lines {
+                                // already taken
+                            }
+                            // Simplified: just move prev
+                            let mut current = s.lines.take().unwrap();
+                            let prev_box = current.prev.take().unwrap();
+                            if let Some(ref mut pb) = Some(prev_box) {
+                                pb.next = Some(current);
+                            }
+                            s.lines = Some(prev_box);
+                            this_line -= 1;
+                        } else {
+                            break;
+                        }
+                    } else { break; }
+                }
+                if cur_line + adjust < this_line {
+                    if nflushd_lines == 0 {
+                        while cur_line + adjust < this_line {
+                            let new_l = Box::new(Line::new());
+                            if let Some(ref mut l) = s.lines {
+                                l.prev = Some(new_l);
+                            }
+                            let mut nl = Box::new(Line::new());
+                            let old = std::mem::replace(&mut s.lines, Some(nl));
+                            if let Some(ref mut n) = s.lines {
+                                n.next = old;
+                            }
+                            extra_lines += 1;
+                            this_line -= 1;
+                        }
+                    } else {
+                        if !warned {
+                            eprintln!("warning: can't back up {}",
+                                if cur_line < 0 { "past first line" } else { "-- line already flushed" });
+                            warned = true;
+                        }
+                        cur_line = this_line - adjust;
+                    }
+                }
+            } else {
+                while cur_line + adjust > this_line {
+                    if let Some(ref mut l) = s.lines {
+                        if l.next.is_none() {
+                            let new_l = Box::new(Line::new());
+                            let old = std::mem::replace(&mut s.lines, Some(new_l));
+                            if let Some(ref mut n) = s.lines {
+                                n.prev = old;
+                            }
+                        }
+                        if let Some(ref mut l) = s.lines {
+                            let next = l.next.take().unwrap();
+                            if let Some(ref mut n) = Some(next) {
+                                n.prev = Some(Box::new(Line::new()));
+                            }
+                            s.lines = Some(next);
+                        }
+                        this_line += 1;
+                    } else { break; }
+                }
+            }
+            if this_line > nflushd_lines && this_line - nflushd_lines >= s.max_bufd_lines + BUFFER_MARGIN {
+                if extra_lines > 0 {
+                    flush_lines(&mut s, extra_lines);
+                    extra_lines = 0;
+                }
+                flush_lines(&mut s, this_line - nflushd_lines - s.max_bufd_lines);
+                nflushd_lines = this_line - s.max_bufd_lines;
+            }
+        }
+
+        // Add character to current line
+        if let Some(ref mut l) = s.lines {
+            let width = if ch.is_ascii() { 1 } else { 1 };
+            l.chars.push(CI { col: cur_col, set: cur_set, ch, width: width as i32 });
+            if cur_col < l.max_col { l.needs_sort = true; }
+            else { l.max_col = cur_col; }
+            if width > 0 { cur_col += width as i32; }
+        }
+    }
+
+    if extra_lines > 0 {
+        flush_lines(&mut s, extra_lines);
+        this_line = 0;
+    }
+
+    // Find last line with content
+    let mut tl = this_line;
+    let mut cur = &s.lines;
+    while let Some(ref l) = cur {
+        if l.next.is_some() { tl += 1; }
+        cur = &l.next;
+    }
+    flush_lines(&mut s, tl - nflushd_lines + 1);
+
+    if s.last_set != CSet::Normal { putc(&mut s, SI); }
+    if max_line >= this_line {
+        s.nblank_lines = max_line - this_line + (max_line & 1);
+    }
+    if s.nblank_lines == 0 { s.nblank_lines = 2; }
+    flush_blanks(&mut s);
+}
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/col/tests

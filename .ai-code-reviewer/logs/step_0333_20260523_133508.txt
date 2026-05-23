@@ -1,0 +1,12 @@
+=== STEP 333 ===
+
+--- REQUEST ---
+READ_FILE_ERROR: File not found: /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libssp_nonshared/Cargo.toml
+TIP: Use FIND_FILE to locate files
+
+--- RESPONSE ---
+
+
+I have uncommitted changes from a previous session that are blocking scope changes. The current scope `sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012` is a kernel-adjacent crypto directory, not a valid userland build unit. I need to examine the pending changes and the C source to understand what's needed.
+
+ACTION: READ_FILE sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012/stream_salsa2012.c

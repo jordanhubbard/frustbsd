@@ -1,0 +1,25 @@
+=== STEP 155 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/crypto/krb5/src/plugins/kdb/db2/libdb2/test:
+```
+Makefile.in
+README
+SEQ_TEST
+btree.tests
+dbtest.c
+deps
+dictionary
+hash1.tests
+hash2.tests
+run.test
+t.be.txt
+t.le.txt
+```
+
+--- RESPONSE ---
+
+
+This is a test utility inside the third-party MIT Kerberos codebase (`crypto/krb5/`), not FreeBSD userland. The objective is to translate FreeBSD userland C/C++ libraries and commands. This unit is not relevant to the configured objective.
+
+ACTION: SET_SCOPE bin/cat/tests

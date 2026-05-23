@@ -1,0 +1,19 @@
+=== STEP 127 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/col:
+```
+Cargo.toml
+Makefile
+Makefile.depend
+README
+col.1
+col.c
+src
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

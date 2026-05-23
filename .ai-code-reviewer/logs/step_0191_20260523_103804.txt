@@ -1,0 +1,71 @@
+=== STEP 191 ===
+
+--- REQUEST ---
+BUILD_FAILED: Build errors detected
+
+No changes were committed. Rewrite units are atomic: source changes, build glue, and configured contract checks must pass together before the unit can be marked complete.
+
+BUILD ERROR REPORT:
+BUILD FAILED: 2 errors, 0 warnings
+Duration: 29.5 seconds
+
+============================================================
+ERRORS (fix these first):
+============================================================
+
+[1] /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1:371: error: SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler.
+
+[2] /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1:376: error: SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker.
+
+
+NEXT STEPS:
+1. Keep the active scope.
+2. Fix the source/build integration that caused this failure.
+3. BUILD again when the complete rewrite unit is ready.
+
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24/Makefile
+OLD:
+<<<
+#!/usr/bin/make
+# Rust replacement for crypto_shorthash_siphash24 stub functions
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+all: libcrypto_shorthash_siphash24.a
+
+libcrypto_shorthash_siphash24.a:
+	@cargo build --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} --release
+	@cp ${CARGO_TARGET_DIR}/release/libcrypto_shorthash_siphash24.a ${.TARGET}
+
+clean:
+	@rm -f libcrypto_shorthash_siphash24.a
+	@rm -rf ${CARGO_TARGET_DIR}
+>>>
+NEW:
+<<<
+#!/usr/bin/make
+.include <src.opts.mk>
+
+# Rust replacement for crypto_shorthash_siphash24 stub functions
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+LIB=	crypto_shorthash_siphash24
+
+${LIB}.a: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/libcrypto_shorthash_siphash24.a ${.TARGET}
+
+all: ${LIB}.a
+
+clean:
+	${RM} ${LIB}.a
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${LIB}.a ${CARGO_TARGET_DIR}
+>>>

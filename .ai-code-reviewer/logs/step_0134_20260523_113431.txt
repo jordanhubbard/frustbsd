@@ -1,0 +1,22 @@
+=== STEP 134 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/col/tests:
+```
+Makefile
+Makefile.depend
+col_test.sh
+hlf.in
+hlf2.in
+nl.in
+nl2.in
+nl3.in
+rlf.in
+rlf2.in
+rlf3.in
+```
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

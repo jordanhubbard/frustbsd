@@ -1,0 +1,11 @@
+=== STEP 195 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1
+Scope: lib/libssp_nonshared
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

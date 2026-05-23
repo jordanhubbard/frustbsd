@@ -1,0 +1,54 @@
+=== STEP 43 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/col
+   Files: 0/4
+📄 File: usr.bin/col/col.c
+   Chunks: 13/16
+
+```
+=== CHUNK 13/16: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/col/col.c === [function: addto_lineno]
+=== Lines 532-563 (32 lines) ===
+
+void
+addto_lineno(int *lno, int offset)
+{
+	if (offset > 0) {
+		if (*lno >= INT_MAX - offset)
+			errx(1, "too many lines");
+	} else {
+		if (*lno < INT_MIN - offset)
+			errx(1, "too many reverse line feeds");
+	}
+	*lno += offset;
+}
+
+#define	NALLOC 64
+
+static LINE *line_freelist;
+
+static LINE *
+alloc_line(void)
+{
+	LINE *l;
+	int i;
+
+	if (!line_freelist) {
+		if ((l = realloc(NULL, sizeof(LINE) * NALLOC)) == NULL)
+			err(1, NULL);
+		line_freelist = l;
+		for (i = 1; i < NALLOC; i++, l++)
+			l->l_next = l + 1;
+		l->l_next = NULL;
+	}
+	l = line_freelist;
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

@@ -1,0 +1,24 @@
+=== STEP 161 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libssp_nonshared/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE lib/libssp_nonshared/src/lib.rs
+CONTENT:
+<<<
+// SPDX-License-Identifier: Public Domain
+// Replacement for libssp_nonshared.c
+
+extern "C" {
+    fn __stack_chk_fail();
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn __stack_chk_fail_local() {
+    __stack_chk_fail();
+}
+>>>

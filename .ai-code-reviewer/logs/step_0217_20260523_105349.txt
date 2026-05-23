@@ -1,0 +1,66 @@
+=== STEP 217 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libssp_nonshared/Makefile
+Scope: lib/libssp_nonshared
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE lib/libssp_nonshared/Makefile
+OLD:
+<<<
+PACKAGE=	clibs
+LIB=		ssp_nonshared
+NO_PIC=
+
+SRCS=		libssp_nonshared.c
+CFLAGS+=	-fPIC
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+# Build Rust replacement alongside C source
+${CARGO_TARGET_DIR}/release/libssp_nonshared.a: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR} --release
+
+# Use Rust-built library as the final artifact
+.if exists(${.CURDIR}/Cargo.toml)
+LIBADD=		${CARGO_TARGET_DIR}/release/libssp_nonshared.a
+.endif
+
+.include <bsd.lib.mk>
+
+# After bsd.lib.mk, ensure Rust build runs
+post-build: ${CARGO_TARGET_DIR}/release/libssp_nonshared.a
+	${CP} ${CARGO_TARGET_DIR}/release/libssp_nonshared.a ${.OBJDIR}/libssp_nonshared.a
+
+clean:
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${CARGO_TARGET_DIR}
+>>>
+NEW:
+<<<
+PACKAGE=	clibs
+LIB=		ssp_nonshared
+NO_PIC=
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+# Rust replacement for libssp_nonshared
+# Build the Rust staticlib, then use it as the library artifact
+${LIB}.a: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR} --release
+	${CP} ${CARGO_TARGET_DIR}/release/libssp_nonshared.a ${.TARGET}
+
+all: ${LIB}.a
+
+clean:
+	${RM} ${LIB}.a
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${LIB}.a ${CARGO_TARGET_DIR}
+>>>

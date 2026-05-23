@@ -1,0 +1,24 @@
+=== STEP 177 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24
+Pending source/build changes: 3 files modified
+Files: sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24/Cargo.toml, sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24/src/lib.rs, sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24/Makefile
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: usr.bin/hostname
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/asa/Makefile

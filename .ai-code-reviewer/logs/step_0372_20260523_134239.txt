@@ -1,0 +1,31 @@
+=== STEP 372 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/units/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/units
+   Files: 0/4
+📄 File: usr.bin/units/Makefile
+
+```
+.include <src.opts.mk>
+
+PROG=	units
+FILES=	definitions.units
+FILESDIR=	${SHAREDIR}/misc
+
+LIBADD=	edit
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}+= tests
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+This is a fairly large program (36 chunks). Let me look for a simpler unit to rewrite first.
+
+ACTION: SET_SCOPE bin/cat

@@ -1,0 +1,51 @@
+=== STEP 41 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/col
+   Files: 0/4
+📄 File: usr.bin/col/col.c
+   Chunks: 11/16
+
+```
+=== CHUNK 11/16: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/col/col.c === [function: flush_blanks]
+=== Lines 390-418 (29 lines) ===
+
+static void
+flush_blanks(void)
+{
+	int half, i, nb;
+
+	half = 0;
+	nb = nblank_lines;
+	if (nb & 1) {
+		if (fine)
+			half = 1;
+		else
+			nb++;
+	}
+	nb /= 2;
+	for (i = nb; --i >= 0;)
+		PUTC('\n');
+	if (half) {
+		PUTC(ESC);
+		PUTC(FHLF);
+		if (!nb)
+			PUTC('\r');
+	}
+	nblank_lines = 0;
+}
+
+/*
+ * Write a line to stdout taking care of space to tab conversion (-h flag)
+ * and character set shifts.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

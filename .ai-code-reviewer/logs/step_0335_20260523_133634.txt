@@ -1,0 +1,14 @@
+=== STEP 335 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012/ref:
+```
+stream_salsa2012_ref.c
+```
+
+--- RESPONSE ---
+
+
+I need to understand the pending changes from the previous session. Let me examine the Makefile.inc1 changes and the libssp_nonshared files.
+
+ACTION: NEXT_CHUNK

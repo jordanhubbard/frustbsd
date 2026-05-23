@@ -1,0 +1,12 @@
+=== STEP 12 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory tools/regression/tls/ttls1 skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE crypto/krb5/src/plugins/kdb/db2/libdb2/test/hash2.tests/passwd
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/dirname

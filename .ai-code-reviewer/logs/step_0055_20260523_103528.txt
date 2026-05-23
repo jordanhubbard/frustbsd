@@ -1,0 +1,517 @@
+=== STEP 55 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/col/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/col/src/main.rs
+CONTENT:
+<<<
+// SPDX-License-Identifier: BSD-3-Clause
+//
+// Copyright (c) 1990, 1993, 1994
+//	The Regents of the University of California.  All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+// 3. Neither the name of the University nor the names of its contributors
+//    may be used to endorse or promote products derived from this software
+//    without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+// OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+// OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+
+use std::io::{self, BufRead, Write};
+use std::process;
+
+// Control characters
+const BS: char = '\x08';
+const TAB: char = '\t';
+const SPACE: char = ' ';
+const NL: char = '\n';
+const CR: char = '\r';
+const ESC: char = '\x1b';
+const SI: char = '\x0f';
+const SO: char = '\x0e';
+const VT: char = '\x0b';
+const RLF: char = '7';
+const RHLF: char = '8';
+const FHLF: char = '9';
+
+const BUFFER_MARGIN: i32 = 32;
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum CSet {
+    Normal,
+    Alternate,
+}
+
+#[derive(Clone)]
+struct CharInfo {
+    c_column: i32,
+    c_set: CSet,
+    c_char: char,
+    c_width: i32,
+}
+
+struct Line {
+    l_line: Vec<CharInfo>,
+    l_prev: Option<Box<Line>>,
+    l_next: Option<Box<Line>>,
+    l_line_len: usize,
+    l_needs_sort: bool,
+    l_max_col: i32,
+}
+
+impl Line {
+    fn new() -> Self {
+        Line {
+            l_line: Vec::new(),
+            l_prev: None,
+            l_next: None,
+            l_line_len: 0,
+            l_needs_sort: false,
+            l_max_col: 0,
+        }
+    }
+}
+
+// Global state
+static mut LAST_SET: CSet = CSet::Normal;
+static mut COMPRESS_SPACES: bool = true;
+static mut FINE: bool = false;
+static mut MAX_BUFD_LINES: i32 = 256;
+static mut NBLANK_LINES: i32 = 0;
+static mut NO_BACKSPACES: bool = false;
+static mut PASS_UNKNOWN_SEQS: bool = false;
+
+fn putc(ch: char) {
+    let stdout = io::stdout();
+    let mut handle = stdout.lock();
+    if handle.write_all(ch.encode_utf8(&mut [0u8; 4]).as_bytes()).is_err() {
+        eprintln!("write error");
+        process::exit(1);
+    }
+}
+
+fn addto_lineno(lno: &mut i32, offset: i32) {
+    if offset > 0 {
+        if *lno >= i32::MAX - offset {
+            eprintln!("too many lines");
+            process::exit(1);
+        }
+    } else {
+        if *lno < i32::MIN - offset {
+            eprintln!("too many reverse line feeds");
+            process::exit(1);
+        }
+    }
+    *lno += offset;
+}
+
+fn dowarn(line: i32) {
+    eprintln!(
+        "warning: can't back up {}",
+        if line < 0 {
+            "past first line"
+        } else {
+            "-- line already flushed"
+        }
+    );
+}
+
+fn flush_blanks() {
+    let mut half = false;
+    let mut nb = unsafe { NBLANK_LINES };
+    if nb & 1 != 0 {
+        if unsafe { FINE } {
+            half = true;
+        } else {
+            nb += 1;
+        }
+    }
+    nb /= 2;
+    for _ in 0..nb {
+        putc(NL);
+    }
+    if half {
+        putc(ESC);
+        putc(FHLF);
+        if nb == 0 {
+            putc(CR);
+        }
+    }
+    unsafe { NBLANK_LINES = 0 };
+}
+
+fn flush_line(l: &Line) {
+    let mut c: &[CharInfo];
+    let mut nchars: usize;
+
+    if l.l_needs_sort {
+        // Sort by column, preserving order within same column
+        let mut sorted: Vec<CharInfo> = l.l_line.clone();
+        sorted.sort_by_key(|ci| ci.c_column);
+        c = &sorted;
+        nchars = sorted.len();
+    } else {
+        c = &l.l_line;
+        nchars = l.l_line_len;
+    }
+
+    let mut last_col: i32 = 0;
+    let mut idx: usize = 0;
+
+    while idx < nchars {
+        let this_col = c[idx].c_column;
+        let mut endc = idx;
+        while endc < nchars && c[endc].c_column == this_col {
+            endc += 1;
+        }
+
+        // If -b only print last character
+        if unsafe { NO_BACKSPACES } {
+            let last_in_group = endc - 1;
+            if endc < nchars && this_col + c[last_in_group].c_width > c[endc].c_column {
+                idx = endc;
+                continue;
+            }
+        }
+
+        if this_col > last_col {
+            let mut nspace = this_col - last_col;
+            if unsafe { COMPRESS_SPACES } && nspace > 1 {
+                loop {
+                    let tab_col = (last_col + 8) & !7;
+                    if tab_col > this_col {
+                        break;
+                    }
+                    let tab_size = tab_col - last_col;
+                    if tab_size == 1 {
+                        putc(SPACE);
+                    } else {
+                        putc(TAB);
+                    }
+                    nspace -= tab_size;
+                    last_col = tab_col;
+                }
+            }
+            for _ in 0..nspace {
+                putc(SPACE);
+            }
+            last_col = this_col;
+        }
+
+        let mut ci = idx;
+        while ci < endc {
+            if c[ci].c_set != unsafe { LAST_SET } {
+                match c[ci].c_set {
+                    CSet::Normal => putc(SI),
+                    CSet::Alternate => putc(SO),
+                }
+                unsafe { LAST_SET = c[ci].c_set };
+            }
+            putc(c[ci].c_char);
+            if ci + 1 < endc {
+                for _ in 0..c[ci].c_width {
+                    putc(BS);
+                }
+            }
+            ci += 1;
+        }
+        last_col += c[endc - 1].c_width;
+        idx = endc;
+    }
+}
+
+fn flush_lines(nflush: &mut i32) {
+    let mut remaining = unsafe { std::ptr::read(&LINES) };
+    let mut count = *nflush;
+
+    while count > 0 {
+        let line = remaining.take().unwrap();
+        let next = line.l_next;
+        if !line.l_line.is_empty() {
+            flush_blanks();
+            flush_line(&line);
+        }
+        if next.is_some() {
+            unsafe { NBLANK_LINES += 1 };
+        }
+        remaining = next;
+        count -= 1;
+    }
+
+    if let Some(ref mut l) = remaining {
+        l.l_prev = None;
+    }
+    unsafe {
+        LINES = remaining;
+    }
+    *nflush = count;
+}
+
+static mut LINES: Option<Box<Line>> = None;
+
+fn alloc_line() -> Box<Line> {
+    Box::new(Line::new())
+}
+
+fn usage() {
+    eprintln!("usage: col [-bfhpx] [-l nline]");
+    process::exit(1);
+}
+
+fn main() {
+    use std::env;
+
+    // Set locale for character handling
+    // Note: Rust doesn't have setlocale, but we handle UTF-8 natively
+
+    let args: Vec<String> = env::args().collect();
+    let mut optind = 1;
+
+    let mut i = 1;
+    while i < args.len() {
+        let arg = &args[i];
+        if arg == "-b" {
+            unsafe { NO_BACKSPACES = true };
+            i += 1;
+        } else if arg == "-f" {
+            unsafe { FINE = true };
+            i += 1;
+        } else if arg == "-h" {
+            unsafe { COMPRESS_SPACES = true };
+            i += 1;
+        } else if arg == "-l" {
+            i += 1;
+            if i >= args.len() {
+                usage();
+            }
+            let val: i32 = match args[i].parse() {
+                Ok(v) => v,
+                Err(_) => usage(),
+            };
+            if val < 1 || val > (i32::MAX - BUFFER_MARGIN) / 2 {
+                eprintln!("bad -l argument: {}", args[i]);
+                process::exit(1);
+            }
+            unsafe { MAX_BUFD_LINES = val * 2 };
+            i += 1;
+        } else if arg == "-p" {
+            unsafe { PASS_UNKNOWN_SEQS = true };
+            i += 1;
+        } else if arg == "-x" {
+            unsafe { COMPRESS_SPACES = false };
+            i += 1;
+        } else if arg.starts_with('-') {
+            usage();
+        } else {
+            optind = i;
+            break;
+        }
+    }
+
+    if optind != args.len() {
+        usage();
+    }
+
+    // Initialize state
+    let mut cur_col: i32 = 0;
+    let mut cur_line: i32 = 0;
+    let mut max_line: i32 = 0;
+    let mut this_line: i32 = 0;
+    let mut adjust: i32 = 0;
+    let mut extra_lines: i32 = 0;
+    let mut nflushd_lines: i32 = 0;
+    let mut warned: bool = false;
+    let mut cur_set = CSet::Normal;
+    unsafe { LAST_SET = CSet::Normal };
+
+    let first_line = alloc_line();
+    unsafe { LINES = Some(first_line) };
+
+    let stdin = io::stdin();
+    let mut reader = stdin.lock();
+    let mut buf = String::new();
+
+    // Read all input as UTF-8
+    let mut all_input = String::new();
+    loop {
+        buf.clear();
+        match reader.read_line(&mut buf) {
+            Ok(0) => break,
+            Ok(_) => all_input.push_str(&buf),
+            Err(_) => {
+                eprintln!("read error");
+                process::exit(1);
+            }
+        }
+    }
+
+    let chars: Vec<char> = all_input.chars().collect();
+    let mut pos: usize = 0;
+
+    // Helper to get current line pointer
+    let mut l_ptr: *mut Option<Box<Line>> = unsafe { &mut LINES };
+
+    while pos < chars.len() {
+        let ch = chars[pos];
+        pos += 1;
+
+        if ch.is_ascii_graphic() || ch as u32 > 127 {
+            // Graphical character - must stuff in a line
+        } else {
+            match ch {
+                BS => {
+                    if cur_col == 0 {
+                        continue;
+                    }
+                    cur_col -= 1;
+                    continue;
+                }
+                CR => {
+                    cur_col = 0;
+                    continue;
+                }
+                ESC => {
+                    if pos >= chars.len() {
+                        continue;
+                    }
+                    let esc_arg = chars[pos];
+                    pos += 1;
+                    match esc_arg {
+                        '\x07' | RLF => {
+                            addto_lineno(&mut cur_line, -2);
+                        }
+                        '\x08' | RHLF => {
+                            addto_lineno(&mut cur_line, -1);
+                        }
+                        '\x09' | FHLF => {
+                            addto_lineno(&mut cur_line, 1);
+                            if cur_line > max_line {
+                                max_line = cur_line;
+                            }
+                        }
+                        _ => {
+                            // Unknown escape sequence
+                            if unsafe { PASS_UNKNOWN_SEQS } {
+                                putc(ESC);
+                                putc(esc_arg);
+                            }
+                        }
+                    }
+                    continue;
+                }
+                NL => {
+                    addto_lineno(&mut cur_line, 2);
+                    if cur_line > max_line {
+                        max_line = cur_line;
+                    }
+                    cur_col = 0;
+                    continue;
+                }
+                SPACE => {
+                    cur_col += 1;
+                    continue;
+                }
+                SI => {
+                    cur_set = CSet::Normal;
+                    continue;
+                }
+                SO => {
+                    cur_set = CSet::Alternate;
+                    continue;
+                }
+                TAB => {
+                    cur_col |= 7;
+                    cur_col += 1;
+                    continue;
+                }
+                VT => {
+                    addto_lineno(&mut cur_line, -2);
+                    continue;
+                }
+                _ => {
+                    // Other whitespace or control
+                    if ch.is_whitespace() {
+                        let width = if ch == '\t' { 8 } else { 1 };
+                        if width > 0 {
+                            cur_col += width as i32;
+                        }
+                        continue;
+                    }
+                    if !unsafe { PASS_UNKNOWN_SEQS } {
+                        continue;
+                    }
+                    // Fall through to output unknown
+                }
+            }
+        }
+
+        // Navigate to the correct line
+        if cur_line + adjust != this_line {
+            adjust = if !unsafe { FINE } && (cur_line & 1) != 0 { 1 } else { 0 };
+
+            if cur_line + adjust < this_line {
+                // Go backward
+                loop {
+                    if cur_line + adjust >= this_line {
+                        break;
+                    }
+                    let mut current = unsafe { LINES.clone() };
+                    if let Some(ref mut line) = current {
+                        if line.l_prev.is_some() {
+                            let prev = line.l_prev.take();
+                            unsafe { LINES = prev };
+                            if let Some(ref mut l) = unsafe { LINES } {
+                                l.l_next = current;
+                            }
+                            this_line -= 1;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+
+                if cur_line + adjust < this_line {
+                    if nflushd_lines == 0 {
+                        while cur_line + adjust < this_line {
+                            let new_line = alloc_line();
+                            if let Some(ref mut l) = unsafe { LINES } {
+                                l.l_prev = Some(new_line);
+                            }
+                            let mut new_line = alloc_line();
+                            if let Some(ref mut l) = unsafe { LINES } {
+                                let old = std::mem::replace(&mut unsafe { LINES }, Some(new_line));
+                                if let Some(ref mut nl) = unsafe { LINES } {
+                                    nl.l_next = old;
+                                }
+                            }
+                            extra_lines += 1;
+                            this_line -= 1;
+                        }
+                    } else {
+                        if !warned {
+                            dowarn(cur_line);
+                            warned =

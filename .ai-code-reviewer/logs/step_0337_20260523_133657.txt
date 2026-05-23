@@ -1,0 +1,14 @@
+=== STEP 337 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012/ref:
+```
+stream_salsa2012_ref.c
+```
+
+--- RESPONSE ---
+
+
+Let me examine the pending changes from the previous session.
+
+ACTION: READ_FILE lib/libssp_nonshared/Cargo.toml

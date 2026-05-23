@@ -1,0 +1,9 @@
+=== STEP 48 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/basename/Makefile

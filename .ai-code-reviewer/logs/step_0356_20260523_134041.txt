@@ -1,0 +1,199 @@
+=== STEP 356 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_stream/salsa208
+   Files: 0/1
+📄 File: .ai-code-reviewer/REWRITE-INDEX.md
+   Chunks: 2/66
+
+```
+=== CHUNK 2/66: /usr/home/jkh/Src/freebsd-src-on-angry-AI/.ai-code-reviewer/REWRITE-INDEX.md === [line_chunk: chunk_2]
+=== Lines 251-500 (250 lines) ===
+
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/profile-n` (1 .c, 0 .h, 568 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/profile-n/tst.func.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/profile-n/tst.mod.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/profile-n/tst.sym.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/profile-n/tst.ufunc.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/profile-n/tst.ufuncsort.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/profile-n/tst.ufuncsort.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/profile-n/tst.umod.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/profile-n/tst.usym.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/raise` (3 .c, 0 .h, 147 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/raise/tst.raise1.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/raise/tst.raise2.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/raise/tst.raise3.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/safety` (0 .c, 0 .h, 51 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/safety/tst.violentdeath.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/scripting` (0 .c, 0 .h, 947 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/scripting/tst.D_MACRO_UNUSED.overflow.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/scripting/tst.arguments.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/scripting/tst.egid.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/scripting/tst.euid.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/scripting/tst.gid.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/scripting/tst.ppid.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/scripting/tst.projid.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/scripting/tst.sid.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/scripting/tst.stringmacro.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/scripting/tst.taskid.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/scripting/tst.uid.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sdt` (1 .c, 0 .h, 47 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sdt/tst.sdtargs.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/stop` (2 .c, 0 .h, 70 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/stop/tst.stop1.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/stop/tst.stop2.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/syscall` (1 .c, 0 .h, 116 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/syscall/tst.args.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/syscall/tst.openret.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sysevent` (2 .c, 0 .h, 94 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sysevent/tst.post.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sysevent/tst.post_chan.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/translators` (0 .c, 0 .h, 122 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/translators/tst.TestTransStability1.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/translators/tst.TestTransStability2.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf` (4 .c, 0 .h, 1033 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/err.invalidtype.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/err.invalidtype2.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/err.user64mode.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.aouttype.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.aouttype.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.chasestrings.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.chasestrings.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.libtype.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.libtype.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.linkmap.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.pidprint.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.pidprinttarg.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.printtype.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.printtype.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.printtypetarg.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.userlandkey.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/uctf/tst.userstrings.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt` (3 .c, 1 .h, 3294 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/prov.h", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.andpid.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.argmap.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.args.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.badguess.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.corruptenv.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.dlclose1.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.dlclose2.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.dlclose3.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.eliminate.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.enabled.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.enabled2.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.entryreturn.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.fork.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.forker.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.forker.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.guess32.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.guess64.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.header.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.include.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.linkpriv.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.linkunpriv.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.multiple.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.multiprov.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.nodtrace.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.noprobes.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.noreap.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.noreapring.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.onlyenabled.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.reap.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.reeval.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.sameprovmulti.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.static.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.static2.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/usdt/tst.user.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/ustack` (2 .c, 0 .h, 374 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/ustack/tst.bigstack.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/ustack/tst.depth.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/ustack/tst.spin.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/ustack/tst.spin.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/vars` (0 .c, 0 .h, 65 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/vars/tst.ucaller.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/i386/pid` (0 .c, 0 .h, 397 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/i386/pid/tst.badinstr.s", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/i386/pid/tst.branch.s", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/i386/pid/tst.embedded.s", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/i386/pid/tst.ret.s", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/i386/pid/tst.retlist.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/i386/pid/tst.retlist.s"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/i386/ustack` (2 .c, 0 .h, 168 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/i386/ustack/tst.annotated.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/i386/ustack/tst.circstack.s", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/i386/ustack/tst.helper.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/i86xpv/xdt` (0 .c, 0 .h, 401 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/i86xpv/xdt/tst.basic.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/i86xpv/xdt/tst.hvmenable.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/i86xpv/xdt/tst.memenable.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/i86xpv/xdt/tst.schedargs.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/i86xpv/xdt/tst.schedenable.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/lockstat` (2 .c, 0 .h, 2704 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/lockstat/lockstat.1", "cddl/contrib/opensolaris/cmd/lockstat/lockstat.c", "cddl/contrib/opensolaris/cmd/lockstat/sym.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/mdb/tools/common` (1 .c, 1 .h, 138 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/mdb/tools/common/die.c", "cddl/contrib/opensolaris/cmd/mdb/tools/common/util.h"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/plockstat` (1 .c, 0 .h, 1022 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/plockstat/plockstat.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/pyzfs` (0 .c, 0 .h, 79 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/pyzfs/pyzfs.py"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/stat/common` (1 .c, 1 .h, 99 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/stat/common/statcommon.h", "cddl/contrib/opensolaris/cmd/stat/common/timestamp.c"], "kind": "director
+
+... [history compacted: omitted 14145 chars] ...
+
+h, 80 lines)
+  <!-- unit: {"files": ["cddl/sbin/zpool/Makefile"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/share` (0 .c, 0 .h, 7 lines)
+  <!-- unit: {"files": ["cddl/share/Makefile"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/share/zfs` (0 .c, 0 .h, 7 lines)
+  <!-- unit: {"files": ["cddl/share/zfs/Makefile"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/share/zfs/compatibility.d` (0 .c, 0 .h, 68 lines)
+  <!-- unit: {"files": ["cddl/share/zfs/compatibility.d/Makefile"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/tests` (0 .c, 0 .h, 4 lines)
+  <!-- unit: {"files": ["cddl/tests/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.bin` (0 .c, 0 .h, 20 lines)
+  <!-- unit: {"files": ["cddl/usr.bin/Makefile", "cddl/usr.bin/Makefile.inc"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/usr.bin/ctfconvert` (0 .c, 0 .h, 138 lines)
+  <!-- unit: {"files": ["cddl/usr.bin/ctfconvert/Makefile", "cddl/usr.bin/ctfconvert/ctfconvert.1"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/usr.bin/ctfconvert/tests` (0 .c, 0 .h, 64 lines)
+  <!-- unit: {"files": ["cddl/usr.bin/ctfconvert/tests/Makefile", "cddl/usr.bin/ctfconvert/tests/ctfconvert_test.sh"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.bin/ctfdump` (0 .c, 0 .h, 110 lines)
+  <!-- unit: {"files": ["cddl/usr.bin/ctfdump/Makefile", "cddl/usr.bin/ctfdump/ctfdump.1"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/usr.bin/ctfmerge` (0 .c, 0 .h, 163 lines)
+  <!-- unit: {"files": ["cddl/usr.bin/ctfmerge/Makefile", "cddl/usr.bin/ctfmerge/ctfmerge.1"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/usr.bin/tests` (0 .c, 0 .h, 4 lines)
+  <!-- unit: {"files": ["cddl/usr.bin/tests/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.bin/zinject` (0 .c, 0 .h, 26 lines)
+  <!-- unit: {"files": ["cddl/usr.bin/zinject/Makefile"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/usr.bin/zstream` (0 .c, 0 .h, 39 lines)
+  <!-- unit: {"files": ["cddl/usr.bin/zstream/Makefile"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/usr.bin/ztest` (0 .c, 0 .h, 35 lines)
+  <!-- unit: {"files": ["cddl/usr.bin/ztest/Makefile"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/usr.bin/ztest/tests` (0 .c, 0 .h, 56 lines)
+  <!-- unit: {"files": ["cddl/usr.bin/ztest/tests/Makefile", "cddl/usr.bin/ztest/tests/ztest.sh"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.libexec` (0 .c, 0 .h, 9 lines)
+  <!-- unit: {"files": ["cddl/usr.libexec/Makefile"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/usr.libexec/zfs_prepare_disk` (0 .c, 0 .h, 17 lines)
+  <!-- unit: {"files": ["cddl/usr.libexec/zfs_prepare_disk/Makefile"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/usr.libexec/zpool_influxdb` (0 .c, 0 .h, 25 lines)
+  <!-- unit: {"files": ["cddl/usr.libexec/zpool_influxdb/Makefile"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin` (0 .c, 0 .h, 41 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/Makefile", "cddl/usr.sbin/Makefile.inc"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace` (0 .c, 0 .h, 43 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/Makefile"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests` (0 .c, 0 .h, 69 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/Makefile", "cddl/usr.sbin/dtrace/tests/dtrace.test.mk"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/amd64` (0 .c, 0 .h, 7 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/amd64/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/amd64/arrays` (0 .c, 0 .h, 18 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/amd64/arrays/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common` (0 .c, 0 .h, 91 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/aggs` (0 .c, 0 .h, 191 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/aggs/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/arithmetic` (0 .c, 0 .h, 32 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/arithmetic/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/arrays` (0 .c, 0 .h, 29 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/arrays/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/assocs` (0 .c, 0 .h, 32 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/assocs/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/begin` (0 .c, 0 .h, 22 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/begin/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/bitfields` (0 .c, 0 .h, 26 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/bitfields/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/buffering` (0 .c, 0 .h, 37 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/buffering/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/builtinvar` (0 .c, 0 .h, 48 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/builtinvar/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/cg` (0 .c, 0 .h, 18 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/cg/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/clauses` (0 .c, 0 .h, 26 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/clauses/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/cpc` (0 .c, 0 .h, 27 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/cpc/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/decls` (0 .c, 0 .h, 30 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/decls/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/docsExamples` (0 .c, 0 .h, 32 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/docsExamples/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/drops` (0 .c, 0 .h, 24 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/drops/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/dtraceUtil` (0 .c, 0 .h, 118 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/dtraceUtil/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/end` (0 .c, 0 .h, 21 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/end/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/enum` (0 .c, 0 .h, 21 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/enum/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/env` (0 .c, 0 .h, 30 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/env/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/error` (0 .c, 0 .h, 21 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/error/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/exit` (0 .c, 0 .h, 19 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/exit/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/fbtprovider` (0 .c, 0 .h, 28 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/fbtprovider/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/funcs` (0 .c, 0 .h, 113 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/funcs/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/grammar` (0 .c, 0 .h, 20 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/grammar/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/include` (0 .c, 0 .h, 17 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/include/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/inline` (0 .c, 0 .h, 28 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/inline/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/io` (0 .c, 0 .h, 18 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/io/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/ip` (0 .c, 0 .h, 48 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/ip/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/java_api` (0 .c, 0 .h, 44 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/java_api/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/json` (0 .c, 0 .h, 23 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/json/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/kinst` (0 .c, 0 .h, 17 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/kinst/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/lexer` (0 .c, 0 .h, 30 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/lexer/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/llquantize` (0 .c, 0 .h, 51 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/llquantize/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/mdb` (0 .c, 0 .h, 17 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/mdb/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/mib` (0 .c, 0 .h, 19 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/mib/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/misc` (0 .c, 0 .h, 30 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/misc/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/multiaggs` (0 .c, 0 .h, 34 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/multiaggs/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/nfs` (0 .c, 0 .h, 19 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/nfs/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/offsetof` (0 .c, 0 .h, 28 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/offsetof/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/oformat` (0 .c, 0 .h, 42 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/oformat/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/operators` (0 .c, 0 .h, 18 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/operators/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `cddl/usr.sbin/dtrace/tests/common/pid` (0 .c, 0 .h, 69 lines)
+  <!-- unit: {"files": ["cddl/usr.sbin/dtrace/tests/common/pid/Makefile"], "kind": "tests", "stage": "unknown"} -->
+
+```
+
+--- RESPONSE ---
+
+
+The rewrite index is very large. Let me skip it and search for a good small userland unit with C source files.
+
+ACTION: SKIP_FILE
