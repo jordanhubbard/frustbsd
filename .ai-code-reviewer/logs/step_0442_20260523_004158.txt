@@ -1,0 +1,11 @@
+=== STEP 442 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'which cargo'
+
+--- RESPONSE ---
+
+
+Let me check if cargo is available on the system.
+
+ACTION: GREP cargo

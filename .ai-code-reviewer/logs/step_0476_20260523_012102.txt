@@ -1,0 +1,70 @@
+=== STEP 476 ===
+
+--- REQUEST ---
+BUILD_FAILED: Build errors detected
+
+No changes were committed. Rewrite units are atomic: source changes, build glue, and configured contract checks must pass together before the unit can be marked complete.
+
+BUILD ERROR REPORT:
+BUILD FAILED: 5 errors, 0 warnings
+Duration: 52.6 seconds
+
+============================================================
+ERRORS (fix these first):
+============================================================
+
+[1] /usr/obj/usr/home/jkh/Src/freebsd-src-on-angry-AI/amd64.amd64/tmp/obj-tools/usr.bin/clang/llvm-objcopy/.depend.llvm-objcopy.o:1: error: ignoring stale .depend for /usr/obj/usr/home/jkh/Src/freebsd-src-on-angry-AI/amd64.amd64/tmp/legacy/usr/include/stddef.h
+
+[2] /usr/obj/usr/home/jkh/Src/freebsd-src-on-angry-AI/amd64.amd64/tmp/obj-tools/usr.bin/clang/llvm-objcopy/.depend.llvm-objcopy.o:1: error: ignoring stale .depend for /usr/obj/usr/home/jkh/Src/freebsd-src-on-angry-AI/amd64.amd64/tmp/legacy/usr/include/sys/_visible.h
+
+[3] /usr/obj/usr/home/jkh/Src/freebsd-src-on-angry-AI/amd64.amd64/tmp/obj-tools/usr.bin/clang/llvm-objcopy/.depend.llvm-objcopy.o:1: error: ignoring stale .depend for /usr/obj/usr/home/jkh/Src/freebsd-src-on-angry-AI/amd64.amd64/tmp/legacy/usr/include/sys/cdefs.h
+
+[4] /usr/obj/usr/home/jkh/Src/freebsd-src-on-angry-AI/amd64.amd64/tmp/obj-tools/usr.bin/clang/llvm-objcopy/.depend.llvm-objcopy.o:1: error: ignoring stale .depend for /usr/obj/usr/home/jkh/Src/freebsd-src-on-angry-AI/amd64.amd64/tmp/legacy/usr/include/sys/_decls.h
+
+[5] /usr/obj/usr/home/jkh/Src/freebsd-src-on-angry-AI/amd64.amd64/tmp/obj-tools/usr.bin/clang/llvm-objcopy/.depend.llvm-objcopy.o:1: error: ignoring stale .depend for /usr/obj/usr/home/jkh/Src/freebsd-src-on-angry-AI/amd64.amd64/tmp/legacy/usr/include/nl_types.h
+
+
+NEXT STEPS:
+1. Keep the active scope.
+2. Fix the source/build integration that caused this failure.
+3. BUILD again when the complete rewrite unit is ready.
+
+
+--- RESPONSE ---
+
+
+These are stale dependency errors in the obj tree, unrelated to the unit changes. Let me revert the Makefile.inc1 changes since they're outside scope.
+
+ACTION: EDIT_FILE Makefile.inc1
+OLD:
+<<<
+.if (make(buildworld) || make(buildkernel) || make(kernel-toolchain) || \
+    make(toolchain) || make(_cross-tools))
+.if ${USING_SYSTEM_COMPILER} == "yes"
+# .info SYSTEM_COMPILER: Determined that CC=${CC} matches the source tree.  Not bootstrapping a cross-compiler.
+.elif ${MK_CLANG_BOOTSTRAP} == "yes"
+# .info SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler.
+.endif
+.if ${USING_SYSTEM_LINKER} == "yes"
+# .info SYSTEM_LINKER: Determined that LD=${LD} matches the source tree.  Not bootstrapping a cross-linker.
+.elif ${MK_LLD_BOOTSTRAP} == "yes"
+# .info SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker.
+.endif
+.endif
+>>>
+NEW:
+<<<
+.if (make(buildworld) || make(buildkernel) || make(kernel-toolchain) || \
+    make(toolchain) || make(_cross-tools))
+.if ${USING_SYSTEM_COMPILER} == "yes"
+.info SYSTEM_COMPILER: Determined that CC=${CC} matches the source tree.  Not bootstrapping a cross-compiler.
+.elif ${MK_CLANG_BOOTSTRAP} == "yes"
+.info SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler.
+.endif
+.if ${USING_SYSTEM_LINKER} == "yes"
+.info SYSTEM_LINKER: Determined that LD=${LD} matches the source tree.  Not bootstrapping a cross-linker.
+.elif ${MK_LLD_BOOTSTRAP} == "yes"
+.info SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker.
+.endif
+.endif
+>>>

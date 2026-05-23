@@ -1,0 +1,33 @@
+=== STEP 8 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*CMakeLists.txt*':
+```
+./contrib/tcpdump/CMakeLists.txt
+./contrib/ofed/librdmacm/man/CMakeLists.txt
+./contrib/libevent/CMakeLists.txt
+./contrib/googletest/googletest/CMakeLists.txt
+./contrib/googletest/googlemock/CMakeLists.txt
+./contrib/googletest/CMakeLists.txt
+./contrib/ntp/sntp/libevent/CMakeLists.txt
+./contrib/processor-trace/libipt/CMakeLists.txt
+./contrib/libder/CMakeLists.txt
+./contrib/libder/libder/CMakeLists.txt
+./contrib/libder/derdump/CMakeLists.txt
+./contrib/libder/tests/CMakeLists.txt
+./contrib/libpcap/testprogs/CMakeLists.txt
+./contrib/libpcap/CMakeLists.txt
+./contrib/libpcap/rpcapd/CMakeLists.txt
+./contrib/libcbor/test/CMakeLists.txt
+./contrib/libcbor/src/CMakeLists.txt
+./contrib/libcbor/examples/CMakeLists.txt
+./contrib/libcbor/CMakeLists.txt
+./contrib/libfido2/regress/CMakeLists.txt
+```
+
+--- RESPONSE ---
+
+
+This is an LLVM contrib project using CMake, not a FreeBSD bsd.sys.mk unit. It depends on LLVM's JSON library which is a large external dependency. This is not a good candidate for the FreeBSD userland rewrite objective. Let me choose a different unit from the queue.
+
+ACTION: SET_SCOPE bin/cat/tests

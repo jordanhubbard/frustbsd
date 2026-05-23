@@ -1,0 +1,15 @@
+=== STEP 503 ===
+
+--- REQUEST ---
+TIMEOUT: You have spent too many iterations on tools/regression/tls/ttls1. This directory is being skipped.
+
+SCOPE_ABANDONED: tools/regression/tls/ttls1 was marked skipped.
+
+Reason: Exceeded 120 iterations without completing the scope
+Any tracked edits were reverted and untracked files created under the scope were removed.
+NEXT: Use SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20

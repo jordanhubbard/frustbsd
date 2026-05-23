@@ -1,0 +1,43 @@
+=== STEP 500 ===
+
+--- REQUEST ---
+EDIT_FILE_ERROR: OLD text not found in /usr/home/jkh/Src/freebsd-src-on-angry-AI/tools/regression/tls/ttls1/rust/Cargo.toml
+Closest match found in file (copy this EXACT block for OLD):
+<<<
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "ttls1"
+path = "src/main.rs"
+>>>
+
+HINT: The OLD block must be EXACTLY copied from the file.
+Re-read the file and copy the exact text you want to replace,
+including all whitespace and indentation. Do not paraphrase.
+
+--- RESPONSE ---
+
+
+Good, the Cargo.toml is already correct. Now let me create the Rust source directory and main.rs.
+
+ACTION: WRITE_FILE tools/regression/tls/ttls1/rust/src/main.rs
+CONTENT:
+use std::process;
+
+extern "C" {
+    static xx1: i32;
+    static xx2: i32;
+    static xxa: [i32; 10];
+    fn xxyy() -> i32;
+}
+
+fn main() {
+    unsafe {
+        let a: [i32; 10] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        println!(
+            "xx1={}, xx2={}, xxa[5]={}, a[5]={}, xxyy()={}",
+            xx1, xx2, xxa[5], a[5], xxyy()
+        );
+    }
+}

@@ -1,0 +1,13 @@
+=== STEP 469 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1
+Scope: tools/regression/tls/ttls1
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The build reports 0 errors/0 warnings but still fails. This is likely because the Rust build is conditional on cargo existing, and the C build might be failing silently. Let me check the C source.
+
+ACTION: LIST_DIR tools/regression/tls/ttls1

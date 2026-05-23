@@ -1,0 +1,12 @@
+=== STEP 508 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*crypto_core_hsalsa20.h*':
+```
+./sys/contrib/libsodium/src/libsodium/include/sodium/crypto_core_hsalsa20.h
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE sys/contrib/libsodium/src/libsodium/include/sodium/crypto_core_hsalsa20.h

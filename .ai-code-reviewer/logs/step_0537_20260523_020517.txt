@@ -1,0 +1,17 @@
+=== STEP 537 ===
+
+--- REQUEST ---
+EDIT_FILE_ERROR: Missing OLD or NEW block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20/Makefile
+CONTENT:
+LIB=	core_hsalsa20
+SRCS=
+
+RUST_CARGO_DIR=	${.CURDIR}
+RUST_TARGET_DIR?=	${.OBJDIR}/rust-target
+
+.include <bsd.lib.mk>

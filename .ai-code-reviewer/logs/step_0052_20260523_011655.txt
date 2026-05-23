@@ -1,0 +1,20 @@
+=== STEP 52 ===
+
+--- REQUEST ---
+EDIT_FILE_ERROR: Missing OLD or NEW block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE contrib/llvm-project/clang/lib/DirectoryWatcher/default/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "directory_watcher_not_implemented"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "directory_watcher_not_implemented"
+crate-type = ["staticlib"]
+>>>

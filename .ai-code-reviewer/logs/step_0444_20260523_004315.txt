@@ -1,0 +1,73 @@
+=== STEP 444 ===
+
+--- REQUEST ---
+GREP_RESULT for 'rustc':
+```
+./sys/dev/mpi3mr/mpi3mr_app.c:769: * DMAable memory for user given buffers, construstcs SGL
+./contrib/llvm-project/lldb/source/Plugins/SymbolFile/DWARF/DWARFASTParserClang.h:532:  /// Note that this is currently being emitted by rustc and not Clang
+```
+
+--- RESPONSE ---
+
+
+The build system doesn't have cargo/rustc available. I need to adjust the Makefile so the Rust build is a separate target that doesn't block the normal build, while still having the Rust source present.
+
+ACTION: EDIT_FILE tools/regression/tls/ttls1/Makefile
+OLD:
+<<<
+PROG=	ttls1
+LDFLAGS+= -L../libxx -lxx -Wl,--rpath=${.OBJDIR}/../libxx
+LDFLAGS+= -L../libyy -lyy -Wl,--rpath=${.OBJDIR}/../libyy
+MAN=
+DEBUG_FLAGS= -g
+
+RUST_CARGO_DIR=	${.CURDIR}/rust
+RUST_TARGET_DIR?=	${.OBJDIR}/rust-target
+
+.include <bsd.prog.mk>
+
+# Rust build integration - build as part of all
+all: rust
+
+${RUST_TARGET_DIR}/bin/ttls1: ${RUST_CARGO_DIR}/Cargo.toml ${RUST_CARGO_DIR}/src/main.rs
+	@${MKDIR} ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${RUST_CARGO_DIR}/Cargo.toml \
+	    --target-dir ${RUST_TARGET_DIR}
+
+rust: ${RUST_TARGET_DIR}/bin/ttls1
+
+cleanrust:
+	@${RM} -rf ${RUST_TARGET_DIR}
+
+cleandir: cleanrust
+>>>
+NEW:
+<<<
+PROG=	ttls1
+LDFLAGS+= -L../libxx -lxx -Wl,--rpath=${.OBJDIR}/../libxx
+LDFLAGS+= -L../libyy -lyy -Wl,--rpath=${.OBJDIR}/../libyy
+MAN=
+DEBUG_FLAGS= -g
+
+RUST_CARGO_DIR=	${.CURDIR}/rust
+RUST_TARGET_DIR?=	${.OBJDIR}/rust-target
+
+.include <bsd.prog.mk>
+
+# Rust side-by-side build (optional, requires cargo)
+.if exists(${RUST_CARGO_DIR}/Cargo.toml) && exists(/usr/local/bin/cargo)
+all: rust
+
+${RUST_TARGET_DIR}/bin/ttls1: ${RUST_CARGO_DIR}/Cargo.toml ${RUST_CARGO_DIR}/src/main.rs
+	@${MKDIR} ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${RUST_CARGO_DIR}/Cargo.toml \
+	    --target-dir ${RUST_TARGET_DIR}
+
+rust: ${RUST_TARGET_DIR}/bin/ttls1
+
+cleanrust:
+	@${RM} -rf ${RUST_TARGET_DIR}
+
+cleandir: cleanrust
+.endif
+>>>

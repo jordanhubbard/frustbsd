@@ -1,0 +1,45 @@
+=== STEP 529 ===
+
+--- REQUEST ---
+BUILD_FAILED: Build errors detected
+
+No changes were committed. Rewrite units are atomic: source changes, build glue, and configured contract checks must pass together before the unit can be marked complete.
+
+BUILD ERROR REPORT:
+BUILD FAILED: 0 errors, 0 warnings
+Duration: 208.6 seconds
+
+============================================================
+ERRORS (fix these first):
+============================================================
+
+
+NEXT STEPS:
+1. Keep the active scope.
+2. Fix the source/build integration that caused this failure.
+3. BUILD again when the complete rewrite unit is ready.
+
+
+--- RESPONSE ---
+
+
+The unit has no Makefile, so the build system can't find anything to build. I need to create a Makefile that integrates the Rust build.
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20/Makefile
+CONTENT:
+RUST_CARGO_DIR=	${.CURDIR}
+RUST_TARGET_DIR?=	${.OBJDIR}/rust-target
+
+all: rust
+
+${RUST_TARGET_DIR}/libcore_hsalsa20.a: ${RUST_CARGO_DIR}/Cargo.toml ${RUST_CARGO_DIR}/src/lib.rs
+	@${MKDIR} ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${RUST_CARGO_DIR}/Cargo.toml \
+	    --target-dir ${RUST_TARGET_DIR}
+
+rust: ${RUST_TARGET_DIR}/libcore_hsalsa20.a
+
+cleanrust:
+	@${RM} -rf ${RUST_TARGET_DIR}
+
+cleandir: cleanrust

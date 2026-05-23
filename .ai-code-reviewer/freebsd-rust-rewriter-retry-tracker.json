@@ -143,6 +143,10 @@
     "attempts": 1,
     "last_attempt": "2026-05-22T23:06:35.707184"
   },
+  "sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20": {
+    "attempts": 2,
+    "last_attempt": "2026-05-23T01:35:09.710831"
+  },
   "sys/contrib/libsodium/src/libsodium/crypto_hash": {
     "attempts": 2,
     "last_attempt": "2026-05-22T23:09:06.271731"
@@ -162,6 +166,10 @@
   "tools/regression/tls/libyy": {
     "attempts": 3,
     "last_attempt": "2026-05-22T16:49:40.321088"
+  },
+  "tools/regression/tls/ttls1": {
+    "attempts": 1,
+    "last_attempt": "2026-05-22T23:56:03.031029"
   },
   "usr.bin/apply": {
     "attempts": 3,

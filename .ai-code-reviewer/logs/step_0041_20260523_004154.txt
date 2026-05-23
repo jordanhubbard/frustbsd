@@ -1,0 +1,27 @@
+=== STEP 41 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/clang/lib/DirectoryWatcher/default/Cargo.toml
+Scope: contrib/llvm-project/lldb/tools/argdumper
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The build reports 0 errors but still fails. This unit is part of the LLVM bootstrap chain and not suitable for the FreeBSD userland rewrite objective. Let me restore all files to their original state.
+
+ACTION: EDIT_FILE contrib/llvm-project/lldb/tools/argdumper/Cargo.toml
+OLD:
+<<<
+[package]
+name = "argdumper"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "argdumper"
+path = "src/main.rs"
+>>>
+NEW:
+<<<
+>>>

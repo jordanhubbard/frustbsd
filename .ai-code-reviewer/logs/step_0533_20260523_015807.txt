@@ -1,0 +1,45 @@
+=== STEP 533 ===
+
+--- REQUEST ---
+GREP_ERROR: Search timed out
+
+--- RESPONSE ---
+
+
+The build is taking very long (334s) with 0 errors/warnings but still failing. This unit is deep in contrib/libsodium which isn't part of the normal FreeBSD build tree. Let me try a different approach with a simpler Makefile.
+
+ACTION: EDIT_FILE sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20/Makefile
+OLD:
+RUST_CARGO_DIR=	${.CURDIR}
+RUST_TARGET_DIR?=	${.OBJDIR}/rust-target
+
+all: rust
+
+${RUST_TARGET_DIR}/libcore_hsalsa20.a: ${RUST_CARGO_DIR}/Cargo.toml ${RUST_CARGO_DIR}/src/lib.rs
+	@${MKDIR} ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${RUST_CARGO_DIR}/Cargo.toml \
+	    --target-dir ${RUST_TARGET_DIR}
+
+rust: ${RUST_TARGET_DIR}/libcore_hsalsa20.a
+
+cleanrust:
+	@${RM} -rf ${RUST_TARGET_DIR}
+
+cleandir: cleanrust
+NEW:
+RUST_CARGO_DIR=	${.CURDIR}
+RUST_TARGET_DIR?=	${.OBJDIR}/rust-target
+
+all: rust
+
+${RUST_TARGET_DIR}/libcore_hsalsa20.a: ${RUST_CARGO_DIR}/Cargo.toml ${RUST_CARGO_DIR}/src/lib.rs
+	@${MKDIR} ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${RUST_CARGO_DIR}/Cargo.toml \
+	    --target-dir ${RUST_TARGET_DIR}
+
+rust: ${RUST_TARGET_DIR}/libcore_hsalsa20.a
+
+cleanrust:
+	@${RM} -rf ${RUST_TARGET_DIR}
+
+cleandir: cleanrust

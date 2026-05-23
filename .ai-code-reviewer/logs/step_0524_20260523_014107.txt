@@ -1,0 +1,39 @@
+=== STEP 524 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium:
+```
+.gitignore
+.travis.yml
+AUTHORS
+ChangeLog
+LICENSE
+Makefile.am
+README.markdown
+THANKS
+appveyor.yml
+autogen.sh
+builds
+configure.ac
+contrib
+dist-build
+lgtm.yml
+libsodium-uninstalled.pc.in
+libsodium.pc.in
+libsodium.sln
+libsodium.vcxproj
+libsodium.vcxproj.filters
+m4
+msvc-scripts
+packaging
+regen-msvc
+src
+test
+```
+
+--- RESPONSE ---
+
+
+This is an upstream libsodium directory with autotools (Makefile.am, configure.ac), not a FreeBSD build unit. There's no FreeBSD Makefile here, so the normal FreeBSD build won't invoke cargo. This unit should be skipped.
+
+ACTION: SET_SCOPE bin/cat/tests

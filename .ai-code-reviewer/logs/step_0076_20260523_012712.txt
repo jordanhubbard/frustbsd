@@ -1,0 +1,71 @@
+=== STEP 76 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/include/sodium/crypto_hash.h:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_hash
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/include/sodium/crypto_hash.h
+
+```
+#ifndef crypto_hash_H
+#define crypto_hash_H
+
+/*
+ * WARNING: Unless you absolutely need to use SHA512 for interoperatibility,
+ * purposes, you might want to consider crypto_generichash() instead.
+ * Unlike SHA512, crypto_generichash() is not vulnerable to length
+ * extension attacks.
+ */
+
+#include <stddef.h>
+
+#include "crypto_hash_sha512.h"
+#include "export.h"
+
+#ifdef __cplusplus
+# ifdef __GNUC__
+#  pragma GCC diagnostic ignored "-Wlong-long"
+# endif
+extern "C" {
+#endif
+
+#define crypto_hash_BYTES crypto_hash_sha512_BYTES
+SODIUM_EXPORT
+size_t crypto_hash_bytes(void);
+
+SODIUM_EXPORT
+int crypto_hash(unsigned char *out, const unsigned char *in,
+                unsigned long long inlen);
+
+#define crypto_hash_PRIMITIVE "sha512"
+SODIUM_EXPORT
+const char *crypto_hash_primitive(void)
+            __attribute__ ((warn_unused_result));
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+
+```
+
+--- RESPONSE ---
+
+
+This is a thin wrapper library around SHA-512. I need to create a Rust crate that exports the three C ABI functions. Let me create the Rust crate.
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_hash/rust/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "crypto_hash"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "crypto_hash"
+crate-type = ["staticlib"]
+path = "lib.rs"
+>>>

@@ -1,0 +1,17 @@
+=== STEP 555 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1.
+Remaining files in sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20:
+  (All tracked files rewritten or skipped in this directory)
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20/Makefile
+CONTENT:
+RUST_TARGET_DIR?=	${.OBJDIR}/rust-target
+
+all:
+	cargo build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR}

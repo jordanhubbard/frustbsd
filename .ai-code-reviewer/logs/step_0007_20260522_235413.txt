@@ -1,0 +1,19 @@
+=== STEP 7 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/lldb/tools:
+```
+argdumper
+compact-unwind
+driver
+lldb-instr
+lldb-rpc
+lldb-server
+```
+
+--- RESPONSE ---
+
+
+Let me check for build files in this LLVM subdirectory.
+
+ACTION: FIND_FILE CMakeLists.txt

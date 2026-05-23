@@ -1,0 +1,11 @@
+=== STEP 521 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*sys/contrib/libsodium/src/Makefile*'
+
+--- RESPONSE ---
+
+
+This unit has no Makefile and is a subdirectory of libsodium contrib. The build system likely doesn't know about this scope. Let me check the parent build structure.
+
+ACTION: FIND_FILE sys/contrib/libsodium/Makefile

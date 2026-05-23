@@ -1,0 +1,45 @@
+=== STEP 458 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/tools/regression/tls/ttls1/Makefile:
+PROGRESS:
+📁 Directory: tools/regression/tls/ttls1
+   Files: 0/2
+📄 File: tools/regression/tls/ttls1/Makefile
+✏️  Edits: 4 files modified
+
+```
+PROG=	ttls1
+LDFLAGS+= -L../libxx -lxx -Wl,--rpath=${.OBJDIR}/../libxx
+LDFLAGS+= -L../libyy -lyy -Wl,--rpath=${.OBJDIR}/../libyy
+MAN=
+DEBUG_FLAGS= -g
+
+RUST_CARGO_DIR=	${.CURDIR}/rust
+RUST_TARGET_DIR?=	${.OBJDIR}/rust-target
+
+.include <bsd.prog.mk>
+
+# Rust side-by-side build (optional, requires cargo)
+.if exists(${RUST_CARGO_DIR}/Cargo.toml) && exists(/usr/local/bin/cargo)
+all: rust
+
+${RUST_TARGET_DIR}/bin/ttls1: ${RUST_CARGO_DIR}/Cargo.toml ${RUST_CARGO_DIR}/src/main.rs
+	@${MKDIR} ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${RUST_CARGO_DIR}/Cargo.toml \
+	    --target-dir ${RUST_TARGET_DIR}
+
+rust: ${RUST_TARGET_DIR}/bin/ttls1
+
+cleanrust:
+	@${RM} -rf ${RUST_TARGET_DIR}
+
+cleandir: cleanrust
+.endif
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE tools/regression/tls/ttls1/rust/Cargo.toml

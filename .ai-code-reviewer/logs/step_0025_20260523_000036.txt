@@ -1,0 +1,50 @@
+=== STEP 25 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*Makefile*':
+```
+./tests/include/Makefile
+./tests/oclo/Makefile
+./tests/sys/acl/Makefile
+./tests/sys/acl/Makefile.depend
+./tests/sys/devrandom/Makefile
+./tests/sys/common/Makefile
+./tests/sys/netinet/Makefile
+./tests/sys/netinet/Makefile.depend
+./tests/sys/netinet/libalias/Makefile
+./tests/sys/net/bpf/Makefile
+./tests/sys/net/routing/Makefile
+./tests/sys/net/Makefile
+./tests/sys/net/if_ovpn/ccd/Makefile
+./tests/sys/net/if_ovpn/Makefile
+./tests/sys/netgraph/Makefile
+./tests/sys/vfs/Makefile
+./tests/sys/vfs/Makefile.depend
+./tests/sys/capsicum/Makefile
+./tests/sys/compat32/Makefile.inc
+./tests/sys/compat32/aarch64/Makefile
+```
+
+--- RESPONSE ---
+
+
+This is an LLVM project directory using CMake, not FreeBSD bsd.sys.mk. I need to create a Makefile that builds the Rust replacement.
+
+ACTION: WRITE_FILE contrib/llvm-project/lldb/tools/argdumper/Makefile
+CONTENT:
+<<<
+# Makefile for argdumper Rust replacement
+
+CARGO ?= cargo
+CARGO_TARGET_DIR ?= ${.OBJDIR}/cargo-target
+
+.PHONY: all clean
+
+all: ${CARGO_TARGET_DIR}/release/argdumper
+
+${CARGO_TARGET_DIR}/release/argdumper: Cargo.toml src/main.rs
+	${CARGO} build --release --target-dir ${CARGO_TARGET_DIR} --manifest-path Cargo.toml
+
+clean:
+	${CARGO} clean --target-dir ${CARGO_TARGET_DIR} --manifest-path Cargo.toml || true
+>>>

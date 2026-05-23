@@ -1,0 +1,33 @@
+=== STEP 532 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20/Makefile:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20/Makefile
+✏️  Edits: 4 files modified
+
+```
+RUST_CARGO_DIR=	${.CURDIR}
+RUST_TARGET_DIR?=	${.OBJDIR}/rust-target
+
+all: rust
+
+${RUST_TARGET_DIR}/libcore_hsalsa20.a: ${RUST_CARGO_DIR}/Cargo.toml ${RUST_CARGO_DIR}/src/lib.rs
+	@${MKDIR} ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${RUST_CARGO_DIR}/Cargo.toml \
+	    --target-dir ${RUST_TARGET_DIR}
+
+rust: ${RUST_TARGET_DIR}/libcore_hsalsa20.a
+
+cleanrust:
+	@${RM} -rf ${RUST_TARGET_DIR}
+
+cleandir: cleanrust
+```
+
+--- RESPONSE ---
+
+
+ACTION: GREP crypto_core/hsalsa20

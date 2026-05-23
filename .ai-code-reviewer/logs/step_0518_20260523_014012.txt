@@ -1,0 +1,15 @@
+=== STEP 518 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_core:
+```
+ed25519
+hchacha20
+hsalsa20
+salsa
+```
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE sys/contrib/libsodium/src/libsodium/Makefile

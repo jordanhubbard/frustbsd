@@ -1,0 +1,33 @@
+=== STEP 431 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/tools/regression/tls/ttls1/rust/Cargo.toml:
+PROGRESS:
+📁 Directory: tools/regression/tls/ttls1
+   Files: 0/2
+📄 File: tools/regression/tls/ttls1/rust/Cargo.toml
+✏️  Edits: 4 files modified
+
+```
+[package]
+name = "ttls1"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "ttls1"
+path = "src/main.rs"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+```
+
+--- RESPONSE ---
+
+
+The scope seems confused - it shows `tools/regression/tls/ttls1` but the rewrite index says CURRENT is `crypto/openssl/crypto/kdf`. Let me set the correct scope.
+
+ACTION: SET_SCOPE crypto/openssl/crypto/kdf

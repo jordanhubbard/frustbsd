@@ -1,0 +1,38 @@
+=== STEP 505 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20/core_hsalsa20.c:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20/core_hsalsa20.c
+
+```
+#include "crypto_core_hsalsa20.h"
+
+size_t
+crypto_core_hsalsa20_outputbytes(void) {
+    return crypto_core_hsalsa20_OUTPUTBYTES;
+}
+
+size_t
+crypto_core_hsalsa20_inputbytes(void) {
+    return crypto_core_hsalsa20_INPUTBYTES;
+}
+
+size_t
+crypto_core_hsalsa20_keybytes(void) {
+    return crypto_core_hsalsa20_KEYBYTES;
+}
+
+size_t
+crypto_core_hsalsa20_constbytes(void) {
+    return crypto_core_hsalsa20_CONSTBYTES;
+}
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20

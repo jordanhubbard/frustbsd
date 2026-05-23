@@ -1,0 +1,11 @@
+=== STEP 522 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*sys/contrib/libsodium/Makefile*'
+
+--- RESPONSE ---
+
+
+Let me find how libsodium is built in the FreeBSD tree.
+
+ACTION: FIND_FILE sys/contrib/libsodium

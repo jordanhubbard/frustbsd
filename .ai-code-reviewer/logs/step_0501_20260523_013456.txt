@@ -1,0 +1,45 @@
+=== STEP 501 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/tools/regression/tls/ttls1/rust/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now let me update the Makefile to integrate the Rust build.
+
+ACTION: EDIT_FILE tools/regression/tls/ttls1/Makefile
+OLD:
+PROG=	ttls1
+LDFLAGS+= -L../libxx -lxx -Wl,--rpath=${.OBJDIR}/../libxx
+LDFLAGS+= -L../libyy -lyy -Wl,--rpath=${.OBJDIR}/../libyy
+MAN=
+DEBUG_FLAGS= -g
+
+.include <bsd.prog.mk>
+NEW:
+PROG=	ttls1
+LDFLAGS+= -L../libxx -lxx -Wl,--rpath=${.OBJDIR}/../libxx
+LDFLAGS+= -L../libyy -lyy -Wl,--rpath=${.OBJDIR}/../libyy
+MAN=
+DEBUG_FLAGS= -g
+
+RUST_CARGO_DIR=	${.CURDIR}/rust
+RUST_TARGET_DIR?=	${.OBJDIR}/rust-target
+
+.include <bsd.prog.mk>
+
+all: rust
+
+${RUST_TARGET_DIR}/bin/ttls1: ${RUST_CARGO_DIR}/Cargo.toml ${RUST_CARGO_DIR}/src/main.rs
+	@${MKDIR} ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${RUST_CARGO_DIR}/Cargo.toml \
+	    --target-dir ${RUST_TARGET_DIR}
+
+rust: ${RUST_TARGET_DIR}/bin/ttls1
+
+cleanrust:
+	@${RM} -rf ${RUST_TARGET_DIR}
+
+cleandir: cleanrust

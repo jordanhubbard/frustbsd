@@ -1,0 +1,49 @@
+=== STEP 23 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/lldb/tools/argdumper/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE contrib/llvm-project/lldb/tools/argdumper/src/main.rs
+CONTENT:
+<<<
+use std::env;
+use std::io::Write;
+
+fn json_escape(s: &str) -> String {
+    let mut out = String::with_capacity(s.len());
+    for c in s.chars() {
+        match c {
+            '"' => out.push_str("\\\""),
+            '\\' => out.push_str("\\\\"),
+            '\n' => out.push_str("\\n"),
+            '\r' => out.push_str("\\r"),
+            '\t' => out.push_str("\\t"),
+            c if (c as u32) < 0x20 => {
+                out.push_str(&format!("\\u{:04x}", c as u32));
+            }
+            c => out.push(c),
+        }
+    }
+    out
+}
+
+fn main() {
+    let args: Vec<String> = env::args().skip(1).collect();
+    let stdout = std::io::stdout();
+    let mut out = stdout.lock();
+
+    let _ = write!(out, "{{\"arguments\":[");
+    for (i, arg) in args.iter().enumerate() {
+        if i > 0 {
+            let _ = write!(out, ",");
+        }
+        let _ = write!(out, "\"{}\"", json_escape(arg));
+    }
+    let _ = write!(out, "]}}");
+    let _ = out.flush();
+}
+>>>

@@ -1,0 +1,37 @@
+=== STEP 71 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_hash/crypto_hash.c:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_hash
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/crypto_hash/crypto_hash.c
+
+```
+
+#include "crypto_hash.h"
+
+size_t
+crypto_hash_bytes(void)
+{
+    return crypto_hash_BYTES;
+}
+
+int
+crypto_hash(unsigned char *out, const unsigned char *in,
+            unsigned long long inlen)
+{
+    return crypto_hash_sha512(out, in, inlen);
+}
+
+const char *
+crypto_hash_primitive(void) {
+    return crypto_hash_PRIMITIVE;
+}
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR sys/contrib/libsodium/src/libsodium/crypto_hash

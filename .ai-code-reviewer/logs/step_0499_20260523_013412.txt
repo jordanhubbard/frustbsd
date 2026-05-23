@@ -1,0 +1,31 @@
+=== STEP 499 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/tools/regression/tls/ttls1/rust/Cargo.toml
+Scope: tools/regression/tls/ttls1
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE tools/regression/tls/ttls1/rust/Cargo.toml
+OLD:
+<<<
+package: ttls1
+version: 0.1.0
+edition: 2021
+bin:
+  - name: ttls1
+    path: src/main.rs
+>>>
+NEW:
+<<<
+[package]
+name = "ttls1"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "ttls1"
+path = "src/main.rs"
+>>>
