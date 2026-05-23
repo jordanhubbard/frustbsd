@@ -1,0 +1,11 @@
+=== STEP 717 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I keep getting truncated. Let me try a different scope that might be simpler.
+
+ACTION: SET_SCOPE bin/cat

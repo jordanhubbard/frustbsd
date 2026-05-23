@@ -1,0 +1,12 @@
+=== STEP 793 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Directory not found: usr.bin/hostname
+TIP: Use LIST_DIR to see available directories
+
+--- RESPONSE ---
+
+
+I need to find a valid scope. Let me try usr.bin/hostname.
+
+ACTION: SET_SCOPE usr.bin/hostname

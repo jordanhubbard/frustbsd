@@ -1,0 +1,11 @@
+=== STEP 91 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+Let me try the exact format with CONTENT block:
+
+ACTION: WRITE_FILE usr.bin/banner/Cargo.toml

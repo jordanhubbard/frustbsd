@@ -1,0 +1,11 @@
+=== STEP 16 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'genpass'
+
+--- RESPONSE ---
+
+
+Let me check how genpass is used in the test infrastructure.
+
+ACTION: READ_FILE crypto/krb5/src/plugins/kdb/db2/libdb2/test/hash2.tests/README

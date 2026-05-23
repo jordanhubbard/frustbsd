@@ -1,0 +1,20 @@
+=== STEP 21 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/crypto:
+```
+.gitignore
+README
+heimdal
+krb5
+libecc
+openssh
+openssl
+```
+
+--- RESPONSE ---
+
+
+Let me check how genpass is actually used in the test scripts.
+
+ACTION: READ_FILE crypto/krb5/src/plugins/kdb/db2/libdb2/test/run.test

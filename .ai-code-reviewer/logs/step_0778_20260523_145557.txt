@@ -1,0 +1,42 @@
+=== STEP 778 ===
+
+--- REQUEST ---
+SET_SCOPE_OK: Now rewriting contrib/llvm-project/clang/lib/Analysis/plugins/CheckerDependencyHandling
+
+HIERARCHY:
+  Level 1: Source tree (8132 work units)
+  Level 2: contrib/llvm-project/clang/lib/Analysis/plugins/CheckerDependencyHandling ← YOU ARE HERE
+  Level 3: 1 candidate files
+  Level 4: Functions (auto-chunked for large files)
+
+WORK UNIT:
+  Kind: directory
+  Stage: unknown
+  Depends on: (none)
+  Related files:
+    - contrib/llvm-project/clang/lib/Analysis/plugins/CheckerDependencyHandling/CheckerDependencyHandling.cpp
+
+⚠ No Makefile - may be subdirectory
+
+FILES TO REWRITE:
+  - contrib/llvm-project/clang/lib/Analysis/plugins/CheckerDependencyHandling/CheckerDependencyHandling.cpp
+
+📁 Directory: contrib/llvm-project/clang/lib/Analysis/plugins/CheckerDependencyHandling
+   Files: 0/1
+
+WORKFLOW:
+1. Rewrite each relevant file (READ_FILE, NEXT_CHUNK for large files)
+2. Make changes as needed (EDIT_FILE or WRITE_FILE)
+3. When ALL relevant files are rewritten: ACTION: BUILD
+4. If build succeeds: Changes committed for entire directory
+5. Move to next directory (SET_SCOPE)
+
+Attempts recorded for contrib/llvm-project/clang/lib/Analysis/plugins/CheckerDependencyHandling: 3/3.
+Next attempt will auto-skip this directory.
+
+--- RESPONSE ---
+
+
+I need to create Cargo.toml with a complete CONTENT block. My responses keep getting truncated. Let me try with a very long response to ensure the full action transmits properly. The Cargo.toml file defines the package metadata for the Rust crate that will replace the C++ implementation. It needs to specify the package name, version, edition, and the library target type. For a C ABI compatible library, I'll use cdylib as the crate type. The package will be named after the directory and will provide the same symbols as the original C++ implementation.
+
+ACTION: WRITE_FILE contrib/llvm-project/clang/lib/Analysis/plugins/CheckerDependencyHandling/Cargo.toml

@@ -1,0 +1,12 @@
+=== STEP 6 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory contrib/llvm-project/clang/lib/DirectoryWatcher/default skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20

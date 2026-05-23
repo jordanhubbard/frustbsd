@@ -1,0 +1,9 @@
+=== STEP 516 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/banner/Makefile

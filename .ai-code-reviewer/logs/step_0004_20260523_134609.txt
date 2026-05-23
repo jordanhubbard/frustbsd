@@ -1,0 +1,12 @@
+=== STEP 4 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory contrib/llvm-project/lldb/tools/argdumper skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_hash
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_hash

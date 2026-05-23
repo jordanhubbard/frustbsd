@@ -1,0 +1,30 @@
+=== STEP 19 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/crypto/krb5/src/plugins/kdb/db2/libdb2:
+```
+CHANGELOG.db2
+Makefile.in
+Makefile.inc
+README
+README.NOT.SLEEPYCAT.DB
+README.db2
+btree
+db
+deps
+docs
+hash
+include
+libdb.exports
+man
+mpool
+recno
+test
+```
+
+--- RESPONSE ---
+
+
+Let me check the FreeBSD build infrastructure for this crypto area.
+
+ACTION: LIST_DIR crypto/krb5

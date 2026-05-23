@@ -1,0 +1,11 @@
+=== STEP 771 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I need to try a different scope. Let me follow the suggestion.
+
+ACTION: SET_SCOPE sys/cddl/contrib/opensolaris/uts/aarch64/dtrace

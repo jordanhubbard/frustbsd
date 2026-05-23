@@ -1,0 +1,14 @@
+=== STEP 157 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*crypto_stream_salsa2012.h*':
+```
+./sys/contrib/libsodium/src/libsodium/include/sodium/crypto_stream_salsa2012.h
+```
+
+--- RESPONSE ---
+
+
+This is a subdirectory without its own Makefile, making build integration difficult. Let me choose a simpler standalone command unit.
+
+ACTION: SET_SCOPE usr.bin/yacc

@@ -1,0 +1,15 @@
+=== STEP 587 ===
+
+--- REQUEST ---
+TIMEOUT: You have spent too many iterations on usr.bin/banner. This directory is being skipped.
+
+SCOPE_ABANDONED: usr.bin/banner was marked skipped.
+
+Reason: Exceeded 120 iterations without completing the scope
+Any tracked edits were reverted and untracked files created under the scope were removed.
+NEXT: Use SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012

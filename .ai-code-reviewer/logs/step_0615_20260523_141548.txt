@@ -1,0 +1,12 @@
+=== STEP 615 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory usr.bin/head skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_stream/salsa208
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/jot

@@ -1,0 +1,43 @@
+=== STEP 156 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012/stream_salsa2012.c:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012/stream_salsa2012.c
+
+```
+#include "crypto_stream_salsa2012.h"
+#include "randombytes.h"
+
+size_t
+crypto_stream_salsa2012_keybytes(void)
+{
+    return crypto_stream_salsa2012_KEYBYTES;
+}
+
+size_t
+crypto_stream_salsa2012_noncebytes(void)
+{
+    return crypto_stream_salsa2012_NONCEBYTES;
+}
+
+size_t
+crypto_stream_salsa2012_messagebytes_max(void)
+{
+    return crypto_stream_salsa2012_MESSAGEBYTES_MAX;
+}
+
+void
+crypto_stream_salsa2012_keygen(unsigned char k[crypto_stream_salsa2012_KEYBYTES])
+{
+    randombytes_buf(k, crypto_stream_salsa2012_KEYBYTES);
+}
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE crypto_stream_salsa2012.h

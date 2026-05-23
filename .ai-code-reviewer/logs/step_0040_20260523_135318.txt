@@ -1,0 +1,27 @@
+=== STEP 40 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libssp_nonshared/Makefile:
+PROGRESS:
+📁 Directory: lib/libssp_nonshared
+   Files: 0/2
+📄 File: lib/libssp_nonshared/Makefile
+
+```
+PACKAGE=	clibs
+LIB=		ssp_nonshared
+NO_PIC=
+
+SRCS=		libssp_nonshared.c
+CFLAGS+=	-fPIC
+
+.include <bsd.lib.mk>
+
+```
+
+--- RESPONSE ---
+
+
+This is a very small library that provides `__stack_chk_fail_local` which just calls `__stack_chk_fail`. Let me create the Rust replacement.
+
+ACTION: WRITE_FILE lib/libssp_nonshared/Cargo.toml

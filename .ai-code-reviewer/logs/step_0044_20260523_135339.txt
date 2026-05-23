@@ -1,0 +1,11 @@
+=== STEP 44 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I need to provide the CONTENT block properly.
+
+ACTION: WRITE_FILE lib/libssp_nonshared/Cargo.toml

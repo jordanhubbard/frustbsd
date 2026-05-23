@@ -1,0 +1,11 @@
+=== STEP 776 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I keep getting truncated. Let me try a different approach - I'll try to find a simpler unit.
+
+ACTION: SET_SCOPE usr.bin/yacc

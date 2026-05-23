@@ -1,0 +1,17 @@
+=== STEP 20 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/crypto/krb5:
+```
+.github
+NOTICE
+README
+src
+```
+
+--- RESPONSE ---
+
+
+Let me check how FreeBSD integrates this crypto area.
+
+ACTION: LIST_DIR crypto

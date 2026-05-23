@@ -1,0 +1,281 @@
+=== STEP 22 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/crypto/krb5/src/plugins/kdb/db2/libdb2/test/run.test:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/crypto/krb5/src/plugins/kdb/db2/libdb2/test/run.test
+   Total chunks: 5
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: crypto/krb5/src/plugins/kdb/db2/libdb2/test/hash2.tests/passwd
+   Files: 0/1
+📄 File: crypto/krb5/src/plugins/kdb/db2/libdb2/test/run.test
+   Chunks: 1/5
+
+```
+=== CHUNK 1/5: /usr/home/jkh/Src/freebsd-src-on-angry-AI/crypto/krb5/src/plugins/kdb/db2/libdb2/test/run.test === [line_chunk: chunk_1]
+=== Lines 1-250 (250 lines) ===
+
+#!/bin/sh -
+#
+#	@(#)run.test	8.13 (Berkeley) 11/2/95
+#
+
+. ./runenv.sh
+
+# db regression tests
+main()
+{
+
+	PROG=./dbtest
+	TMP1=${TMPDIR-.}/t1
+	TMP2=${TMPDIR-.}/t2
+	TMP3=${TMPDIR-.}/t3
+	BINFILES=${TMPDIR-.}/binfiles
+
+	if [ \! -z "$WORDLIST" -a -f "$WORDLIST" ]; then
+		DICT=$WORDLIST
+	elif [ -f /usr/local/lib/dict/words ]; then
+		DICT=/usr/local/lib/dict/words
+	elif [ -f /usr/share/dict/words ]; then
+		DICT=/usr/share/dict/words
+	elif [ -f /usr/dict/words ]; then
+		DICT=/usr/dict/words
+	elif [ -f /usr/share/lib/dict/words ]; then
+		DICT=/usr/share/lib/dict/words
+	elif [ -f $srcdir/../test/dictionary ]; then
+		DICT=`cd $srcdir/../test && pwd`/dictionary
+	else
+		echo 'run.test: no dictionary'
+		exit 1
+	fi
+	
+	dictsize=`wc -l < $DICT`
+
+	bindir=/bin/.
+	find $bindir -type f -exec test -r {} \; -print | head -100 > $BINFILES
+
+	if [ $# -eq 0 ]; then
+		for t in 1 2 3 4 5 6 7 8 9 10 11 12 13 20 40 41 50 60 61 62 63; do
+			test$t
+		done
+	else
+		while [ $# -gt 0 ]
+			do case "$1" in
+			test*)
+				$1;;
+			[0-9]*)
+				test$1;;
+			btree)
+				for t in 1 2 3 7 8 9 10 12 13 40 41 50 60 61 62 63; do
+					test$t
+				done;;
+			hash)
+				for t in 1 2 3 8 13 20; do
+					test$t
+				done;;
+			recno)
+				for t in 1 2 3 4 5 6 7 10 11; do
+					test$t
+				done;;
+			*)
+				echo "run.test: unknown test $1"
+				echo "usage: run.test test# | type"
+				exit 1
+			esac
+			shift
+		done
+	fi
+	rm -f $TMP1 $TMP2 $TMP3 $BINFILES
+	exit 0
+}
+
+getnwords() {
+	# Delete blank lines because the db code appears not to like
+	# empty keys.  Omit lines with non-alphanumeric characters to
+	# avoid shell metacharacters and non-ASCII characters which
+	# could cause 'rev' to choke.
+	LC_ALL=C sed -e '/^$/d' -e '/[^A-Za-z]/d' < $DICT | sed -e ${1}q
+}
+
+# Take the first hundred entries in the dictionary, and make them
+# be key/data pairs.
+test1()
+{
+	echo "Test 1: btree, hash: small key, small data pairs"
+	getnwords 200 > $TMP1
+	for type in btree hash; do
+		rm -f $TMP2 $TMP3
+		for i in `cat $TMP1`; do
+			echo p
+			echo k$i
+			echo d$i
+			echo g
+			echo k$i
+		done > $TMP2
+		$PROG -o $TMP3 $type $TMP2
+		if (cmp -s $TMP1 $TMP3) ; then :
+		else
+			echo "test1: type $type: failed"
+			exit 1
+		fi
+	done
+	echo "Test 1: recno: small key, small data pairs"
+	rm -f $TMP2 $TMP3
+	awk '{ 
+		++i;
+		printf("p\nk%d\nd%s\ng\nk%d\n", i, $0, i);
+	}' < $TMP1 > $TMP2
+	$PROG -o $TMP3 recno $TMP2
+	if (cmp -s $TMP1 $TMP3) ; then :
+	else
+		echo "test1: type recno: failed"
+		exit 1
+	fi
+}
+
+# Take the first 200 entries in the dictionary, and give them
+# each a medium size data entry.
+test2()
+{
+	echo "Test 2: btree, hash: small key, medium data pairs"
+	mdata=abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+	echo $mdata |
+	awk '{ for (i = 1; i < 201; ++i) print $0 }' > $TMP1
+	for type in hash btree; do
+		rm -f $TMP2 $TMP3
+		for i in `getnwords 200`; do
+			echo p
+			echo k$i
+			echo d$mdata
+			echo g
+			echo k$i
+		done > $TMP2
+		$PROG -o $TMP3 $type $TMP2
+		if (cmp -s $TMP1 $TMP3) ; then :
+		else
+			echo "test2: type $type: failed"
+			exit 1
+		fi
+	done
+	echo "Test 2: recno: small key, medium data pairs"
+	rm -f $TMP2 $TMP3
+	echo $mdata | 
+	awk '{  for (i = 1; i < 201; ++i)
+		printf("p\nk%d\nd%s\ng\nk%d\n", i, $0, i);
+	}' > $TMP2
+	$PROG -o $TMP3 recno $TMP2
+	if (cmp -s $TMP1 $TMP3) ; then :
+	else
+		echo "test2: type recno: failed"
+		exit 1
+	fi
+}
+
+# Insert the programs in $bindir with their paths as their keys.
+test3()
+{
+	echo "Test 3: hash: small key, big data pairs"
+	rm -f $TMP1
+	xargs cat < $BINFILES > $TMP1
+	for type in hash; do
+		rm -f $TMP2 $TMP3
+		for i in `cat $BINFILES`; do
+			echo p
+			echo k$i
+			echo D$i
+			echo g
+			echo k$i
+		done > $TMP2
+		$PROG -o $TMP3 $type $TMP2
+		if (cmp -s $TMP1 $TMP3) ; then :
+		else
+			echo "test3: $type: failed"
+			exit 1
+		fi
+	done
+	echo "Test 3: btree: small key, big data pairs"
+	for psize in 512 16384 65536; do
+		echo "    page size $psize"
+		for type in btree; do
+			rm -f $TMP2 $TMP3
+			for i in `cat $BINFILES`; do
+				echo p
+				echo k$i
+				echo D$i
+				echo g
+				echo k$i
+			done > $TMP2
+			$PROG -i psize=$psize -o $TMP3 $type $TMP2
+			if (cmp -s $TMP1 $TMP3) ; then :
+			else
+				echo "test3: $type: page size $psize: failed"
+				exit 1
+			fi
+		done
+	done
+	echo "Test 3: recno: big data pairs"
+	rm -f $TMP2 $TMP3
+	awk '{
+		++i;
+		printf("p\nk%d\nD%s\ng\nk%d\n", i, $0, i);
+	}' < $BINFILES > $TMP2
+	for psize in 512 16384 65536; do
+		echo "    page size $psize"
+		$PROG -i psize=$psize -o $TMP3 recno $TMP2
+		if (cmp -s $TMP1 $TMP3) ; then :
+		else
+			echo "test3: recno: page size $psize: failed"
+			exit 1
+		fi
+	done
+}
+
+# Do random recno entries.
+test4()
+{
+	echo "Test 4: recno: random entries"
+	echo "abcdefg abcdefg abcdefg abcdefg abcdefg abcdefg abcdefg" |
+	awk '{
+		for (i = 37; i <= 37 + 88 * 17; i += 17) {
+			if (i % 41)
+				s = substr($0, 1, i % 41);
+			else
+				s = substr($0, 1);
+			printf("input key %d: %s\n", i, s);
+		}
+		for (i = 1; i <= 15; ++i) {
+			if (i % 41)
+				s = substr($0, 1, i % 41);
+			else
+				s = substr($0, 1);
+			printf("input key %d: %s\n", i, s);
+		}
+		for (i = 19234; i <= 19234 + 61 * 27; i += 27) {
+			if (i % 41)
+				s = substr($0, 1, i % 41);
+			else
+				s = substr($0, 1);
+			printf("input key %d: %s\n", i, s);
+		}
+		exit
+	}' > $TMP1
+	rm -f $TMP2 $TMP3
+	cat $TMP1 |
+	awk 'BEGIN {
+			i = 37;
+			incr = 17;
+		}
+
+```
+
+--- RESPONSE ---
+
+
+Let me check how FreeBSD integrates this krb5 area.
+
+ACTION: LIST_DIR crypto/krb5/src

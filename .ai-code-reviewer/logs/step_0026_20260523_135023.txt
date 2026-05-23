@@ -1,0 +1,11 @@
+=== STEP 26 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*crypto/krb5/Makefile*'
+
+--- RESPONSE ---
+
+
+This unit is deeply nested in contrib krb5 test code with autoconf build files (Makefile.in), not a standard FreeBSD build unit. This is not a good candidate for the rewrite objective. Let me find a better unit.
+
+ACTION: FIND_FILE bin/*/Makefile

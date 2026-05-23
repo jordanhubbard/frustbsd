@@ -1,0 +1,39 @@
+=== STEP 197 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+I need to fix the Makefile since `bsd.rust.mk` doesn't exist in the tree. Let me revert that change and use explicit local rules instead.
+
+ACTION: EDIT_FILE usr.bin/banner/Makefile
+OLD:
+<<<
+PROG=	banner
+MAN=	banner.6
+
+RUSTPROG=	banner
+SRCDIR=	${.CURDIR}
+CARGO_TARGET_DIR=	${.OBJDIR}/cargo-target
+
+.include <bsd.rust.mk>
+.include <bsd.prog.mk>
+>>>
+NEW:
+<<<
+PROG=	banner
+MAN=	banner.6
+
+RUSTSRC=	src/main.rs
+CARGO_TARGET_DIR=	${.OBJDIR}/cargo-target
+
+banner: ${RUSTSRC} Cargo.toml
+	@echo "Building banner from Rust"
+	@mkdir -p ${CARGO_TARGET_DIR}
+	@cargo build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR} --release
+	@cp ${CARGO_TARGET_DIR}/release/banner ${.OBJDIR}/banner
+
+.include <bsd.prog.mk>
+>>>

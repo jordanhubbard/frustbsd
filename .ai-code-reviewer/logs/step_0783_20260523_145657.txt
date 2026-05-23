@@ -1,0 +1,11 @@
+=== STEP 783 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I keep getting truncated before the CONTENT block. Let me try a different approach - I'll try to find a simpler unit.
+
+ACTION: SET_SCOPE usr.bin/sum

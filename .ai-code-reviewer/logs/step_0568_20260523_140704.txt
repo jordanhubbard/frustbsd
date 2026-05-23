@@ -1,0 +1,41 @@
+=== STEP 568 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/banner/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/banner
+   Files: 0/3
+📄 File: usr.bin/banner/Makefile
+✏️  Edits: 1 files modified
+
+```
+PROG=	banner
+MAN=	banner.6
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/banner/Makefile
+OLD:
+<<<
+PROG=	banner
+MAN=	banner.6
+
+.include <bsd.prog.mk>
+>>>
+NEW:
+<<<
+PROG=	banner
+MAN=	banner.6
+
+.include <bsd.prog.mk>
+
+banner-rust:
+	@echo "Building Rust banner..."
+	@cd ${.CURDIR} && cargo build --release --target-dir ${.OBJDIR}/cargo-target 2>&1
+	@cp ${.OBJDIR}/cargo-target/release/banner ${.OBJDIR}/banner-rust
+>>>

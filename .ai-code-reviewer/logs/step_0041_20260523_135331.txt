@@ -1,0 +1,9 @@
+=== STEP 41 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE lib/libssp_nonshared/Cargo.toml

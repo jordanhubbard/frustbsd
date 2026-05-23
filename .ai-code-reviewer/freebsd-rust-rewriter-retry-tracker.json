@@ -115,6 +115,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-22T16:48:20.861620"
   },
+  "contrib/llvm-project/clang/lib/Analysis/plugins/CheckerDependencyHandling": {
+    "attempts": 3,
+    "last_attempt": "2026-05-23T14:55:41.172219"
+  },
   "contrib/llvm-project/clang/lib/DirectoryWatcher/default": {
     "attempts": 3,
     "last_attempt": "2026-05-23T05:12:11.840100"
@@ -151,6 +155,10 @@
     "attempts": 1,
     "last_attempt": "2026-05-22T23:06:35.707184"
   },
+  "sys/cddl/contrib/opensolaris/uts/aarch64/dtrace": {
+    "attempts": 2,
+    "last_attempt": "2026-05-23T14:57:26.485937"
+  },
   "sys/contrib/libsodium/src/libsodium/crypto_core/hsalsa20": {
     "attempts": 3,
     "last_attempt": "2026-05-23T07:15:26.124832"
@@ -172,12 +180,12 @@
     "last_attempt": "2026-05-23T10:01:32.971754"
   },
   "sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012": {
-    "attempts": 2,
-    "last_attempt": "2026-05-23T11:32:46.991529"
+    "attempts": 3,
+    "last_attempt": "2026-05-23T13:49:02.731226"
   },
   "sys/contrib/libsodium/src/libsodium/crypto_stream/salsa208": {
-    "attempts": 1,
-    "last_attempt": "2026-05-23T13:38:12.689367"
+    "attempts": 3,
+    "last_attempt": "2026-05-23T14:38:53.619990"
   },
   "tools/regression/tls/libxx": {
     "attempts": 1,
@@ -194,6 +202,14 @@
   "usr.bin/apply": {
     "attempts": 3,
     "last_attempt": "2026-05-22T19:54:44.158526"
+  },
+  "usr.bin/banner": {
+    "attempts": 1,
+    "last_attempt": "2026-05-23T13:50:02.147532"
+  },
+  "usr.bin/beep": {
+    "attempts": 1,
+    "last_attempt": "2026-05-23T14:18:26.980315"
   },
   "usr.bin/bluetooth/bthost": {
     "attempts": 3,
@@ -352,8 +368,8 @@
     "last_attempt": "2026-05-22T21:00:37.814897"
   },
   "usr.bin/units": {
-    "attempts": 2,
-    "last_attempt": "2026-05-23T13:41:46.529718"
+    "attempts": 3,
+    "last_attempt": "2026-05-23T14:13:31.937026"
   },
   "usr.bin/w": {
     "attempts": 1,
