@@ -1,0 +1,14 @@
+=== STEP 2 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory contrib/libpcap/cmake skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE tools/regression/tls/libyy
+
+--- RESPONSE ---
+
+
+The `contrib/libpcap/cmake` directory is auto-skipped. Let me try the current unit from the rewrite index: `bin/ed/test`.
+
+ACTION: SET_SCOPE bin/ed/test

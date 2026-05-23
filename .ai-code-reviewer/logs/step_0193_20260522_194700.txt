@@ -1,0 +1,27 @@
+=== STEP 193 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/apply/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/apply
+   Files: 0/3
+📄 File: usr.bin/apply/Makefile
+
+```
+.include <src.opts.mk>
+
+PROG=	apply
+
+LIBADD=	sbuf
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}+= tests
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/basename/Makefile

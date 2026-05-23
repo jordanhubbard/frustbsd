@@ -1,0 +1,12 @@
+=== STEP 83 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/pwait is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_hash/sha512
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/pkill

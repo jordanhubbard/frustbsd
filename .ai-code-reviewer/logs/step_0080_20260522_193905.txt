@@ -1,0 +1,35 @@
+=== STEP 80 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/jot
+   Files: 0/3
+📄 File: usr.bin/jot/jot.c
+   Chunks: 8/10
+
+```
+=== CHUNK 8/10: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/jot/jot.c === [function: usage]
+=== Lines 365-377 (13 lines) ===
+
+static void
+usage(void)
+{
+	fprintf(stderr, "%s\n%s\n",
+	"usage: jot [-cnr] [-b word] [-w word] [-s string] [-p precision]",
+	"           [reps [begin [end [s]]]]");
+	exit(1);
+}
+
+/* 
+ * Return the number of digits following the number's decimal point.
+ * Return 0 if no decimal point is found.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

@@ -1,0 +1,59 @@
+=== STEP 97 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/seq
+   Files: 0/3
+📄 File: usr.bin/seq/seq.c
+   Chunks: 7/12
+
+```
+=== CHUNK 7/12: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/seq/seq.c === [function: numeric]
+=== Lines 226-262 (37 lines) ===
+
+static int
+numeric(const char *s)
+{
+	int seen_decimal_pt, decimal_pt_len;
+
+	/* skip any sign */
+	if (ISSIGN((unsigned char)*s))
+		s++;
+
+	seen_decimal_pt = 0;
+	decimal_pt_len = strlen(decimal_point);
+	while (*s) {
+		if (!isdigit((unsigned char)*s)) {
+			if (!seen_decimal_pt &&
+			    strncmp(s, decimal_point, decimal_pt_len) == 0) {
+				s += decimal_pt_len;
+				seen_decimal_pt = 1;
+				continue;
+			}
+			if (ISEXP((unsigned char)*s)) {
+				s++;
+				if (ISSIGN((unsigned char)*s) ||
+				    isdigit((unsigned char)*s)) {
+					s++;
+					continue;
+				}
+			}
+			break;
+		}
+		s++;
+	}
+	return (*s == '\0');
+}
+
+/*
+ * valid_format - validate user specified format string
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

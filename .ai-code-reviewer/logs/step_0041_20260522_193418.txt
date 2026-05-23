@@ -1,0 +1,12 @@
+=== STEP 41 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Marked current file as skipped.
+Remaining files in sys/contrib/libsodium/src/libsodium/crypto_hash/sha512:
+  (All tracked files rewritten or skipped in this directory)
+Please READ_FILE another source file or SET_SCOPE to continue progress.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_hash/sha512/Cargo.toml

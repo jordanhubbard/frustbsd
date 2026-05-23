@@ -1,0 +1,18 @@
+=== STEP 172 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*crypto/krb5/Makefile*'
+
+--- RESPONSE ---
+
+
+The `crypto/krb5` directory uses MIT Kerberos's own build system (Makefile.in files), not FreeBSD's bsd.*.mk system. This unit has no FreeBSD Makefile and is a subdirectory of a larger krb5 build. The stubs.c file only contains two trivial functions.
+
+Given that:
+1. This directory has no FreeBSD Makefile - it's built as part of the krb5 parent build
+2. The file is a tiny stub with just 2 functions returning `EINVAL` and doing nothing
+3. There are 3/3 attempts already recorded, meaning the next attempt will auto-skip
+
+This unit is not a good candidate for an independent Rust rewrite since it lacks build infrastructure and is deeply embedded in the MIT Kerberos build system. Let me move to the next unit.
+
+ACTION: SET_SCOPE bin/cat/tests

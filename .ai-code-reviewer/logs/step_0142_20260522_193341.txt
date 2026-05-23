@@ -1,0 +1,9 @@
+=== STEP 142 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for '^\.info'
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE Makefile.inc1

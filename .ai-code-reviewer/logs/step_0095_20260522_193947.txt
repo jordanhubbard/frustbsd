@@ -1,0 +1,33 @@
+=== STEP 95 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/seq
+   Files: 0/3
+📄 File: usr.bin/seq/seq.c
+   Chunks: 5/12
+
+```
+=== CHUNK 5/12: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/seq/seq.c === [function: valid_format]
+=== Lines 72-82 (11 lines) ===
+
+static int valid_format(const char *);
+
+static char *generate_format(double, double, double, int, char);
+static char *unescape(char *);
+
+/*
+ * The seq command will print out a numeric sequence from 1, the default,
+ * to a user specified upper limit by 1.  The lower bound and increment
+ * maybe indicated by the user on the command line.  The sequence can
+ * be either whole, the default, or decimal numbers.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

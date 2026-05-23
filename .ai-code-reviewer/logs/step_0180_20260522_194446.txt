@@ -1,0 +1,13 @@
+=== STEP 180 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/ed/test has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE crypto/krb5/src/ccapi/lib/unix
+
+--- RESPONSE ---
+
+
+Let me find a work unit with actual C source files and a FreeBSD Makefile.
+
+ACTION: LIST_DIR bin

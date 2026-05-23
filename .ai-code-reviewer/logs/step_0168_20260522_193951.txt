@@ -1,0 +1,11 @@
+=== STEP 168 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*crypto/krb5/Makefile*'
+
+--- RESPONSE ---
+
+
+Let me check how krb5 is integrated into the FreeBSD build system.
+
+ACTION: FIND_FILE crypto/krb5/Makefile

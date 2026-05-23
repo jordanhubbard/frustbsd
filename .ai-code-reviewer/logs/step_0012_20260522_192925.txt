@@ -1,0 +1,34 @@
+=== STEP 12 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium:
+```
+Makefile.am
+crypto_aead
+crypto_auth
+crypto_box
+crypto_core
+crypto_generichash
+crypto_hash
+crypto_kdf
+crypto_kx
+crypto_onetimeauth
+crypto_pwhash
+crypto_scalarmult
+crypto_secretbox
+crypto_secretstream
+crypto_shorthash
+crypto_sign
+crypto_stream
+crypto_verify
+include
+randombytes
+sodium
+```
+
+--- RESPONSE ---
+
+
+This unit is in `sys/contrib/` (third-party kernel-adjacent code), has no Makefile, and is a tiny fragment of a larger library. This doesn't fit the userland rewrite objective well. Let me find a better unit.
+
+ACTION: LIST_DIR bin

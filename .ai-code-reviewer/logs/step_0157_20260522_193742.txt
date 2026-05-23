@@ -1,0 +1,27 @@
+=== STEP 157 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/crypto/krb5/src/ccapi/lib/unix/stubs.c:
+PROGRESS:
+📁 Directory: crypto/krb5/src/ccapi/lib/unix
+   Files: 0/1
+📄 File: crypto/krb5/src/ccapi/lib/unix/stubs.c
+
+```
+#include <errno.h>
+#include "ccapi_os_ipc.h"
+
+cc_int32 cci_os_ipc_thread_init (void)
+{
+    return EINVAL;
+}
+void cci_os_ipc_thread_fini (void)
+{
+}
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR crypto/krb5/src/ccapi/lib

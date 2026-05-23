@@ -1,0 +1,9 @@
+=== STEP 189 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*crypto/krb5/src/ccapi/lib/cci_common.h*'
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/false

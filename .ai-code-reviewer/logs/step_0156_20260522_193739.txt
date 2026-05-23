@@ -1,0 +1,42 @@
+=== STEP 156 ===
+
+--- REQUEST ---
+SET_SCOPE_OK: Now rewriting crypto/krb5/src/ccapi/lib/unix
+
+HIERARCHY:
+  Level 1: Source tree (8132 work units)
+  Level 2: crypto/krb5/src/ccapi/lib/unix ← YOU ARE HERE
+  Level 3: 1 candidate files
+  Level 4: Functions (auto-chunked for large files)
+
+WORK UNIT:
+  Kind: directory
+  Stage: unknown
+  Depends on: (none)
+  Related files:
+    - crypto/krb5/src/ccapi/lib/unix/stubs.c
+
+⚠ No Makefile - may be subdirectory
+
+FILES TO REWRITE:
+  - crypto/krb5/src/ccapi/lib/unix/stubs.c
+
+📁 Directory: crypto/krb5/src/ccapi/lib/unix
+   Files: 0/1
+
+WORKFLOW:
+1. Rewrite each relevant file (READ_FILE, NEXT_CHUNK for large files)
+2. Make changes as needed (EDIT_FILE or WRITE_FILE)
+3. When ALL relevant files are rewritten: ACTION: BUILD
+4. If build succeeds: Changes committed for entire directory
+5. Move to next directory (SET_SCOPE)
+
+Attempts recorded for crypto/krb5/src/ccapi/lib/unix: 3/3.
+Next attempt will auto-skip this directory.
+
+--- RESPONSE ---
+
+
+Let me first read the source file to understand what needs to be rewritten.
+
+ACTION: READ_FILE crypto/krb5/src/ccapi/lib/unix/stubs.c

@@ -1,0 +1,57 @@
+=== STEP 79 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/jot
+   Files: 0/3
+📄 File: usr.bin/jot/jot.c
+   Chunks: 7/10
+
+```
+=== CHUNK 7/10: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/jot/jot.c === [function: putdata]
+=== Lines 330-364 (35 lines) ===
+
+static int
+putdata(double x, bool last)
+{
+
+	if (boring)
+		printf("%s", format);
+	else if (longdata && nosign) {
+		if (x <= (double)ULONG_MAX && x >= (double)0)
+			printf(format, (unsigned long)x);
+		else
+			return (1);
+	} else if (longdata) {
+		if (x <= (double)LONG_MAX && x >= (double)LONG_MIN)
+			printf(format, (long)x);
+		else
+			return (1);
+	} else if (chardata || (intdata && !nosign)) {
+		if (x <= (double)INT_MAX && x >= (double)INT_MIN)
+			printf(format, (int)x);
+		else
+			return (1);
+	} else if (intdata) {
+		if (x <= (double)UINT_MAX && x >= (double)0)
+			printf(format, (unsigned int)x);
+		else
+			return (1);
+
+	} else
+		printf(format, x);
+	if (!last)
+		fputs(sepstring, stdout);
+
+	return (0);
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

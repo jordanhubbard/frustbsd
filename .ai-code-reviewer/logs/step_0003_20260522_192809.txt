@@ -1,0 +1,13 @@
+=== STEP 3 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/ed/test has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE tools/regression/tls/libyy
+
+--- RESPONSE ---
+
+
+`bin/ed/test` has no C/C++ source files to rewrite. Let me try the next suggested unit.
+
+ACTION: SET_SCOPE tools/regression/tls/libyy
