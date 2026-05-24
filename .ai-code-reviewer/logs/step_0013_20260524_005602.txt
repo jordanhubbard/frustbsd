@@ -1,0 +1,12 @@
+=== STEP 13 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE crypto/krb5/src/lib/crypto/openssl/des
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE crypto/krb5/src/lib/crypto/openssl/des

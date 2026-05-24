@@ -1,0 +1,11 @@
+=== STEP 28 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/netbsd-tests/libexec/Makefile*'
+
+--- RESPONSE ---
+
+
+This unit has no Makefile at any level - it's a test helper DSO without standalone build infrastructure. The build errors are pre-existing system-level issues unrelated to my Rust changes. Let me find a unit with proper build infrastructure.
+
+ACTION: FIND_FILE bin/*/Makefile

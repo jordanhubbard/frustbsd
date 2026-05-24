@@ -1,0 +1,14 @@
+=== STEP 10 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/libexec:
+```
+ld.elf_so
+```
+
+--- RESPONSE ---
+
+
+Let me check if there's a Makefile further up in the tree.
+
+ACTION: LIST_DIR contrib/netbsd-tests

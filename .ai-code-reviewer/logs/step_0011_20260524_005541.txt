@@ -1,0 +1,33 @@
+=== STEP 11 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests:
+```
+FREEBSD-upgrade
+bin
+crypto
+dev
+fs
+games
+h_macros.h
+include
+ipf
+kernel
+lib
+libexec
+modules
+net
+rump
+sbin
+share
+sys
+usr.bin
+usr.sbin
+```
+
+--- RESPONSE ---
+
+
+Let me check for Makefiles at higher levels to understand the build system.
+
+ACTION: FIND_FILE contrib/netbsd-tests/*/Makefile

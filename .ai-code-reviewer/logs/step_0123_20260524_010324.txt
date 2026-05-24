@@ -1,0 +1,11 @@
+=== STEP 123 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'SYSTEM_COMPILER'
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level Makefile.inc1, not from my unit. Let me check how the build system actually invokes the unit build.
+
+ACTION: GREP test-system-compiler

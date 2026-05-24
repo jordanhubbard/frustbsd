@@ -1,0 +1,20 @@
+=== STEP 16 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso0/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "helper_symver_dso0"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+name = "helper_symver_dso0"
+<<<

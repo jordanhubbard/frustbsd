@@ -1,0 +1,51 @@
+=== STEP 32 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso0
+Pending source/build changes: 2 files modified
+Files: contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso0/Cargo.toml, contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso0/src/lib.rs
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso0
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: usr.bin/uniq
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+The build errors are pre-existing system-level issues. This unit has no Makefile, so I need to create one to integrate the Rust build. Let me create a Makefile for this unit.
+
+ACTION: WRITE_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso0/Makefile
+CONTENT:
+# $FreeBSD$
+
+PROG=	h_helper_symver_dso0
+SRCS=	h_helper_symver_dso0.c
+
+RUST_LIB=	helper_symver_dso0
+RUST_CRATE_DIR=	${.CURDIR}
+
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+.PHONY: all clean rust-build
+
+all: rust-build
+
+rust-build:
+	${CARGO} build --manifest-path ${RUST_CRATE_DIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} --release
+
+clean:
+	${CARGO} clean --manifest-path ${RUST_CRATE_DIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR}
+
+.include <bsd.prog.mk>

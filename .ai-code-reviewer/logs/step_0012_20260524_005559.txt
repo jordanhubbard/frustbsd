@@ -1,0 +1,11 @@
+=== STEP 12 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'contrib/netbsd-tests/*/Makefile'
+
+--- RESPONSE ---
+
+
+This unit is a test helper DSO without its own Makefile - it's built as part of a larger test infrastructure. Without build integration, I can't satisfy the rewrite requirements. Let me find a better unit.
+
+ACTION: SET_SCOPE bin/cat
