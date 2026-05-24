@@ -1,0 +1,9 @@
+=== STEP 163 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'sys/contrib/libsodium/*/Makefile'
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR sys/contrib/libsodium

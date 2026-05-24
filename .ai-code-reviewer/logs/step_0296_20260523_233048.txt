@@ -1,0 +1,39 @@
+=== STEP 296 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium:
+```
+.gitignore
+.travis.yml
+AUTHORS
+ChangeLog
+LICENSE
+Makefile.am
+README.markdown
+THANKS
+appveyor.yml
+autogen.sh
+builds
+configure.ac
+contrib
+dist-build
+lgtm.yml
+libsodium-uninstalled.pc.in
+libsodium.pc.in
+libsodium.sln
+libsodium.vcxproj
+libsodium.vcxproj.filters
+m4
+msvc-scripts
+packaging
+regen-msvc
+src
+test
+```
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level FreeBSD build system (Makefile.inc1), not from my Rust code. Let me verify the Rust code compiles independently:
+
+ACTION: BUILD

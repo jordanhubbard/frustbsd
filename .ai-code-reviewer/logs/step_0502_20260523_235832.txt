@@ -1,0 +1,9 @@
+=== STEP 502 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso0

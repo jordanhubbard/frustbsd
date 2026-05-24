@@ -1,0 +1,15 @@
+=== STEP 393 ===
+
+--- REQUEST ---
+TIMEOUT: You have spent too many iterations on contrib/llvm-project/lldb/source/Interpreter/Interfaces. This directory is being skipped.
+
+SCOPE_ABANDONED: contrib/llvm-project/lldb/source/Interpreter/Interfaces was marked skipped.
+
+Reason: Exceeded 120 iterations without completing the scope
+Any tracked edits were reverted and untracked files created under the scope were removed.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/csu/dso
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/netbsd-tests/lib/csu/dso

@@ -1,0 +1,14 @@
+=== STEP 240 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*.log':
+```
+./usr.bin/compress/doc/revision.log
+```
+
+--- RESPONSE ---
+
+
+Let me check the bsd.prog.mk to understand what it expects.
+
+ACTION: READ_FILE share/mk/bsd.prog.mk

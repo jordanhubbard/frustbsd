@@ -1,0 +1,9 @@
+=== STEP 253 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Cargo.toml*'
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR sys/contrib/libsodium/src/libsodium

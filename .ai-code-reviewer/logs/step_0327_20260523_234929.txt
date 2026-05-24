@@ -1,0 +1,14 @@
+=== STEP 327 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_shorthash
+
+--- RESPONSE ---
+
+
+Let me try the suggested next unit:
+
+ACTION: SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_shorthash

@@ -1,0 +1,15 @@
+=== STEP 295 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src:
+```
+Makefile.am
+libsodium
+```
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level FreeBSD build system, not my Rust code. Let me check the parent build structure:
+
+ACTION: LIST_DIR sys/contrib/libsodium

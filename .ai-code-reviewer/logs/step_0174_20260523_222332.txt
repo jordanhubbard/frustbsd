@@ -1,0 +1,31 @@
+=== STEP 174 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/FreeBSD_version/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now I need to create a build.rs to pass the FreeBSD version at compile time, and update the Makefile to integrate the Rust build.
+
+ACTION: WRITE_FILE share/examples/FreeBSD_version/build.rs
+CONTENT:
+use std::env;
+use std::process::Command;
+
+fn main() {
+    let version = Command::new("awk")
+        .args(&[
+            "/^#define[[:space:]]*__FreeBSD_version/ { print $3 }",
+            "sys/sys/param.h",
+        ])
+        .output()
+        .ok()
+        .and_then(|out| String::from_utf8(out.stdout).ok())
+        .and_then(|s| s.trim().parse::<u32>().ok())
+        .unwrap_or(0);
+
+    println!("cargo:rustc-env=FREEBSD_VERSION={}", version);
+    println!("cargo:rerun-if-changed=sys/sys/param.h");
+}

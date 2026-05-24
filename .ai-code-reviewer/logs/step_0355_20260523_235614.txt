@@ -1,0 +1,57 @@
+=== STEP 355 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_shorthash/Makefile
+Scope: sys/contrib/libsodium/src/libsodium/crypto_shorthash
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE sys/contrib/libsodium/src/libsodium/crypto_shorthash/Makefile
+OLD:
+<<<
+# Makefile for crypto_shorthash Rust rewrite
+# Builds a C-ABI compatible static library alongside the original C code.
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+SRCS=	crypto_shorthash.c
+
+.include <bsd.sys.mk>
+
+# Rust build target
+RUST_LIB=	${CARGO_TARGET_DIR}/release/libcrypto_shorthash_rs.a
+
+${RUST_LIB}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs ${.CURDIR}/src/siphash24.rs
+	${CARGO} build --release --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+all: ${RUST_LIB}
+
+clean:
+	rm -rf ${CARGO_TARGET_DIR}
+
+.PHONY: all clean
+>>>
+NEW:
+<<<
+# Makefile for crypto_shorthash Rust rewrite
+# Builds a C-ABI compatible static library alongside the original C code.
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+# Rust build target
+RUST_LIB=	${CARGO_TARGET_DIR}/release/libcrypto_shorthash_rs.a
+
+all: ${RUST_LIB}
+
+${RUST_LIB}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs ${.CURDIR}/src/siphash24.rs
+	${CARGO} build --release --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+clean:
+	rm -rf ${CARGO_TARGET_DIR}
+
+.PHONY: all clean
+>>>

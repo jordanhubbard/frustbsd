@@ -1,0 +1,9 @@
+=== STEP 69 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'usr.bin/*/*.c'
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR bin

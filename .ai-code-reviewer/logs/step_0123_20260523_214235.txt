@@ -1,0 +1,15 @@
+=== STEP 123 ===
+
+--- REQUEST ---
+TIMEOUT: You have spent too many iterations on sys/contrib/openzfs/lib/libzfs_core/os/linux. This directory is being skipped.
+
+SCOPE_ABANDONED: sys/contrib/openzfs/lib/libzfs_core/os/linux was marked skipped.
+
+Reason: Exceeded 120 iterations without completing the scope
+Any tracked edits were reverted and untracked files created under the scope were removed.
+NEXT: Use SET_SCOPE contrib/llvm-project/libcxx/src/pstl
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/llvm-project/libcxx/src/pstl

@@ -1,0 +1,30 @@
+=== STEP 251 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Makefile:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Makefile
+
+```
+# Standalone Makefile for Rust rewrite of crypto_scalarmult
+# Does not include any FreeBSD build infrastructure
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+all:
+	@echo "Building crypto_scalarmult Rust replacement..."
+	${CARGO} check --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR} || true
+
+clean:
+	rm -rf ${CARGO_TARGET_DIR}
+
+.PHONY: all clean
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR sys/contrib/libsodium/src/libsodium/crypto_scalarmult/curve25519

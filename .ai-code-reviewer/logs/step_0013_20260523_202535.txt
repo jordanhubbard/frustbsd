@@ -1,0 +1,61 @@
+=== STEP 13 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/openzfs/lib/libzfs_core/os/linux/src/lib.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The Rust source I wrote has issues - it declares `ioctl` as extern but that won't work without the `libc` crate. Let me fix it to use a raw syscall approach.
+
+ACTION: WRITE_FILE sys/contrib/openzfs/lib/libzfs_core/os/linux/src/lib.rs
+CONTENT:
+use std::os::raw::{c_int, c_ulong};
+
+#[repr(C)]
+pub struct zfs_cmd_t {
+    _data: [u8; 0],
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn lzc_ioctl_fd_os(
+    fd: c_int,
+    request: c_ulong,
+    zc: *mut zfs_cmd_t,
+) -> c_int {
+    libc_ioctl(fd, request, zc as libc::c_ulong)
+}
+
+mod libc {
+    use std::os::raw::{c_int, c_ulong};
+
+    pub use c_ulong;
+
+    #[cfg(target_os = "linux")]
+    pub fn ioctl(fd: c_int, request: c_ulong, arg: c_ulong) -> c_int {
+        unsafe {
+            let ret: c_int;
+            core::arch::asm!(
+                "syscall",
+                in("rax") 16u64,
+                in("rdi") fd as u64,
+                in("rsi") request as u64,
+                in("rdx") arg as u64,
+                out("rcx") _,
+                out("r11") _,
+                out("rax") ret,
+                lateout("rdi") _,
+                lateout("rsi") _,
+                lateout("rdx") _,
+                options(nostack)
+            );
+            ret
+        }
+    }
+
+    #[cfg(not(target_os = "linux"))]
+    pub fn ioctl(_fd: c_int, _request: c_ulong, _arg: c_ulong) -> c_int {
+        -1
+    }
+}

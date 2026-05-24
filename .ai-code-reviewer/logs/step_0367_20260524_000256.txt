@@ -1,0 +1,69 @@
+=== STEP 367 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: sys/contrib/libsodium/src/libsodium/crypto_shorthash
+Pending source/build changes: 4 files modified
+Files: sys/contrib/libsodium/src/libsodium/crypto_shorthash/Cargo.toml, sys/contrib/libsodium/src/libsodium/crypto_shorthash/src/lib.rs, sys/contrib/libsodium/src/libsodium/crypto_shorthash/src/siphash24.rs, sys/contrib/libsodium/src/libsodium/crypto_shorthash/Makefile
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in sys/contrib/libsodium/src/libsodium/crypto_shorthash
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: usr.bin/units
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+The build errors stem from `bsd.sys.mk` pulling in the top-level FreeBSD build infrastructure. Let me fix the Makefile to be truly standalone:
+
+ACTION: EDIT_FILE sys/contrib/libsodium/src/libsodium/crypto_shorthash/Makefile
+OLD:
+<<<
+# Makefile for crypto_shorthash Rust rewrite
+# Builds a C-ABI compatible static library alongside the original C code.
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+# Rust build target
+RUST_LIB=	${CARGO_TARGET_DIR}/release/libcrypto_shorthash_rs.a
+
+all: ${RUST_LIB}
+
+${RUST_LIB}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs ${.CURDIR}/src/siphash24.rs
+	${CARGO} build --release --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+clean:
+	rm -rf ${CARGO_TARGET_DIR}
+
+.PHONY: all clean
+>>>
+NEW:
+<<<
+# Makefile for crypto_shorthash Rust rewrite
+# Builds a C-ABI compatible static library alongside the original C code.
+# Standalone - does not include any FreeBSD build infrastructure.
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+# Rust build target
+RUST_LIB=	${CARGO_TARGET_DIR}/release/libcrypto_shorthash_rs.a
+
+all: ${RUST_LIB}
+
+${RUST_LIB}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs ${.CURDIR}/src/siphash24.rs
+	${CARGO} build --release --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+clean:
+	rm -rf ${CARGO_TARGET_DIR}
+
+.PHONY: all clean
+>>>

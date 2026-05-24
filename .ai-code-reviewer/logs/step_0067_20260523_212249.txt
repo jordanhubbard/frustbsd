@@ -1,0 +1,9 @@
+=== STEP 67 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'bin/cat/*.c'
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE bin/*/*.c

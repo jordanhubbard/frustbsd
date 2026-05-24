@@ -1,0 +1,16 @@
+=== STEP 279 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/lldb/source/Interpreter/Interfaces:
+```
+ScriptedInterfaceUsages.cpp
+```
+
+--- RESPONSE ---
+
+
+This unit is third-party LLVM/LLDB source code, not FreeBSD userland. It has no Makefile and is built as part of the larger LLVM toolchain build. It is not a standalone buildable unit and is outside the rewrite objective scope.
+
+Let me check the build command configuration and try to skip this unit properly.
+
+ACTION: READ_FILE contrib/llvm-project/lldb/source/Interpreter/Interfaces/ScriptedInterfaceUsages.cpp

@@ -1,0 +1,30 @@
+=== STEP 544 ===
+
+--- REQUEST ---
+
+⚠️  INCOMPLETE RESPONSE DETECTED
+
+Problem: EDIT_FILE action without OLD block
+Response length: 177 chars
+Last 100 chars: ...
+
+ACTION: EDIT_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso0/h_helper_symver_dso0.c
+
+Your response appears to have been cut off before completion.
+Please provide a COMPLETE response including:
+1. Your analysis
+2. A SINGLE, COMPLETE ACTION directive
+3. For EDIT_FILE: both complete OLD and NEW blocks
+
+If you're working with a large file causing timeouts:
+- Focus on ONE specific issue at a time
+- Use smaller OLD/NEW blocks
+- Consider SKIP_FILE if the file is too complex
+
+
+--- RESPONSE ---
+
+
+I need to provide a complete EDIT_FILE action with both OLD and NEW blocks.
+
+ACTION: EDIT_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso0/h_helper_symver_dso0.c

@@ -1,0 +1,282 @@
+=== STEP 235 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/Makefile:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/Makefile
+   Total chunks: 2
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: share/examples/FreeBSD_version
+   Files: 0/4
+📄 File: share/examples/Makefile
+   Chunks: 1/2
+✏️  Edits: 5 files modified
+
+```
+=== CHUNK 1/2: /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/Makefile === [line_chunk: chunk_1]
+=== Lines 1-250 (250 lines) ===
+
+#
+# Doing a make install builds /usr/share/examples
+
+.include <src.opts.mk>
+
+PACKAGE=examples
+FILESDIR=	${SHAREDIR}/examples
+
+LDIRS=	BSD_daemon \
+	FreeBSD_version \
+	bootforth \
+	csh \
+	etc \
+	find_interface \
+	flua \
+	indent \
+	inotify \
+	ipfw \
+	jails \
+	kld \
+	libvgl \
+	mdoc \
+	netgraph \
+	oci \
+	ppi \
+	ppp \
+	ses \
+	scsi_target \
+	sound \
+	sunrpc \
+	ypldap
+
+
+SE_DIRS+=	BSD_daemon
+SE_BSD_DAEMON= \
+	FreeBSD.pfa \
+	README \
+	beastie.eps \
+	beastie.fig \
+	eps.patch \
+	poster.sh
+
+.if ${MACHINE_CPUARCH} == "amd64" || ${MACHINE_CPUARCH} == "aarch64"
+.if ${MK_BHYVE} != "no"
+LDIRS+=		bhyve
+SE_DIRS+=	bhyve
+SE_BHYVEPACKAGE=bhyve
+SE_BHYVE=	vmrun.sh
+PACKAGE_bhyve/vmrun.sh=	bhyve
+.endif
+.endif
+
+SE_DIRS+=	FreeBSD_version
+SE_FREEBSD_VERSION= \
+	FreeBSD_version.c \
+	Makefile \
+	README
+
+SE_DIRS+=	bootforth
+SE_BOOTFORTH_PACKAGE=bootloader
+SE_BOOTFORTH= \
+	README \
+	boot.4th \
+	frames.4th \
+	loader.rc \
+	menu.4th \
+	menuconf.4th \
+	screen.4th
+
+SE_DIRS+=	csh
+SE_CSHPACKAGE=	csh
+SE_CSH=		dot.cshrc
+
+SE_DIRS+=	etc
+SE_ETC= \
+	README.examples \
+	bsd-style-copyright \
+	make.conf
+
+SE_DIRS+=	find_interface
+SE_FIND_INTERFACE= \
+	Makefile \
+	README \
+	find_interface.c
+
+SE_DIRS+=	flua
+SE_FLUA=	libjail.lua
+
+SE_DIRS+=	indent
+SE_INDENT=	indent.pro
+
+SE_DIRS+=	inotify
+SE_INOTIFY=	inotify.c \
+		Makefile
+
+.if ${MK_IPFILTER} != "no"
+SUBDIR+=	ipfilter
+.endif
+
+SE_DIRS+=	ipfw
+SE_IPFWPACKAGE=	ipfw
+SE_IPFW=	change_rules.sh
+
+SE_DIRS+=	jails
+SE_JAILPACKAGE=	jail
+SE_JAILS= \
+	README \
+	VIMAGE \
+	jail.xxx.conf \
+	jib \
+	jng \
+	rc.conf.jails \
+	rcjail.xxx.conf
+
+SE_DIRS+=	kld
+SE_KLD=	Makefile
+
+SE_DIRS+=	kld/cdev
+SE_KLD_CDEV= \
+	Makefile \
+	README \
+
+SE_DIRS+=	kld/cdev/module
+SE_KLD_CDEV_MODULE= \
+	Makefile \
+	cdev.c \
+	cdev.h \
+	cdevmod.c
+
+SE_DIRS+=	kld/cdev/test
+SE_KLD_CDEV_TEST= \
+	Makefile \
+	testcdev.c
+
+SE_DIRS+=	kld/dyn_sysctl
+SE_KLD_DYN_SYSCTL= \
+	Makefile \
+	README \
+	dyn_sysctl.c
+
+SE_DIRS+=	kld/firmware
+SE_KLD_FIRMWARE= \
+	Makefile \
+	README
+
+SE_DIRS+=	kld/firmware/fwconsumer
+SE_KLD_FIRMWARE_FWCONSUMER= \
+	Makefile \
+	fw_consumer.c
+
+SE_DIRS+=	kld/firmware/fwimage
+SE_KLD_FIRMWARE_FWIMAGE= \
+	Makefile \
+	firmware.img.uu
+
+SE_DIRS+=	kld/khelp
+SE_KLD_KHELP= \
+	Makefile \
+	README \
+	h_example.c
+
+SE_DIRS+=	kld/syscall
+SE_KLD_SYSCALL=	Makefile
+
+SE_DIRS+=	kld/syscall/module
+SE_KLD_SYSCALL_MODULE= \
+	Makefile \
+	syscall.c
+
+SE_DIRS+=	kld/syscall/test
+SE_KLD_SYSCALL_TEST= \
+	Makefile \
+	call.c
+
+SE_DIRS+=	libvgl
+SE_LIBVGL=	\
+	Makefile \
+	demo.c
+
+SE_DIRS+=	mdoc
+SE_MDOC= \
+	POSIX-copyright \
+	deshallify.sh \
+	example.1 \
+	example.3 \
+	example.4 \
+	example.9
+
+SE_DIRS+=	netgraph
+SE_NETGRAPH= \
+	ether.bridge \
+	frame_relay \
+	ngctl \
+	raw \
+	udp.tunnel \
+	virtual.chain \
+	virtual.lan \
+
+SE_DIRS+=	oci
+SE_OCI= \
+	README \
+	Containerfile.pkg
+
+.if ${MK_PF} != "no"
+SE_DIRS+=	pf
+.if ${MK_STAGING} == "no"
+SE_PFPACKAGE=	pf
+SE_PF= \
+	ackpri \
+	faq-example1 \
+	faq-example2 \
+	faq-example3 \
+	pf.conf \
+	queue1 \
+	queue2 \
+	queue3 \
+	queue4 \
+	spamd
+.endif
+.endif
+
+SE_DIRS+=	ppi
+SE_PPI= \
+	Makefile \
+	ppilcd.c
+
+SE_DIRS+=	ppp
+SE_PPPPACKAGE=	ppp
+SE_PPP= \
+	chap-auth \
+	login-auth \
+	ppp.conf.sample \
+	ppp.conf.span-isp \
+	ppp.conf.span-isp.working \
+	ppp.linkdown.sample \
+	ppp.linkdown.span-isp \
+	ppp.linkdown.span-isp.working \
+	ppp.linkup.sample \
+	ppp.linkup.span-isp \
+	ppp.linkup.span-isp.working \
+	ppp.secret.sample \
+	ppp.secret.span-isp \
+	ppp.secret.span-isp.working
+
+.if ${MK_LPR} != "no"
+LDIRS+=		printing
+SE_DIRS+=	printing
+SE_PRINTINGPACKAGE=lp
+SE_PRINTING= \
+	diablo-if-net \
+
+```
+
+--- RESPONSE ---
+
+
+I see - this is a `share/examples` directory that installs example files, not a buildable unit in the traditional sense. The parent Makefile lists `FreeBSD_version` as a subdirectory with files to install. The build harness might be failing because the Makefile structure doesn't match what the parent expects. Let me check the parent Makefile more carefully.
+
+ACTION: NEXT_CHUNK

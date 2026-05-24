@@ -1,0 +1,17 @@
+=== STEP 93 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/openzfs/lib/libzfs_core/os/linux:
+```
+Cargo.toml
+Makefile
+libzfs_core_ioctl.c
+src
+```
+
+--- RESPONSE ---
+
+
+Let me understand what's in this scope.
+
+ACTION: READ_FILE sys/contrib/openzfs/lib/libzfs_core/os/linux/Makefile

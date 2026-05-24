@@ -1,0 +1,11 @@
+=== STEP 385 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'usr.bin/*/Makefile'
+
+--- RESPONSE ---
+
+
+Let me find a simple unit with C source that hasn't been completed yet:
+
+ACTION: LIST_DIR usr.bin/number

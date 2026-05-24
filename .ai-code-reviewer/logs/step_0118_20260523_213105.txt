@@ -1,0 +1,37 @@
+=== STEP 118 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+Pending source/build changes: 2 files modified
+Files: sys/contrib/openzfs/lib/libzfs_core/os/linux/Cargo.toml, sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Makefile
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: usr.bin/vis
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+The build reports 0 errors but still fails. Let me create a proper Rust crate for this unit.
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "crypto_scalarmult"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+path = "src/lib.rs"
+>>>

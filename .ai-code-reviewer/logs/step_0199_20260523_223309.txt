@@ -1,0 +1,69 @@
+=== STEP 199 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/FreeBSD_version/src/main.rs:
+PROGRESS:
+📁 Directory: share/examples/FreeBSD_version
+   Files: 0/4
+📄 File: share/examples/FreeBSD_version/src/main.rs
+✏️  Edits: 4 files modified
+
+```
+fn main() {
+    let compile_version: u32 = match option_env!("FREEBSD_VERSION") {
+        Some(v) => match v.parse() {
+            Ok(n) => n,
+            Err(_) => 0,
+        },
+        None => 0,
+    };
+
+    println!("Compilation release date: {}", compile_version);
+
+    let exec_version = getosreldate();
+    if compile_version >= 199408 {
+        println!("Execution environment release date: {}", exec_version);
+    } else {
+        println!("Execution environment release date: can't tell");
+    }
+}
+
+fn getosreldate() -> u32 {
+    extern "C" {
+        fn sysctl(
+            name: *const i32,
+            namelen: u32,
+            oldp: *mut std::ffi::c_void,
+            oldlenp: *mut usize,
+            newp: *const std::ffi::c_void,
+            newlen: usize,
+        ) -> i32;
+    }
+
+    let name = b"kern.osreldate\0";
+    let mut value: u32 = 0;
+    let mut len = std::mem::size_of::<u32>();
+
+    let ret = unsafe {
+        sysctl(
+            name.as_ptr() as *const i32,
+            1,
+            &mut value as *mut _ as *mut std::ffi::c_void,
+            &mut len,
+            std::ptr::null(),
+            0,
+        )
+    };
+
+    if ret == -1 {
+        0
+    } else {
+        value
+    }
+}
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE share/examples/FreeBSD_version/Cargo.toml

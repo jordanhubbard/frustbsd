@@ -1,0 +1,47 @@
+=== STEP 36 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/openzfs/lib/libzfs_core/os/linux/Makefile:
+PROGRESS:
+📁 Directory: sys/contrib/openzfs/lib/libzfs_core/os/linux
+   Files: 0/1
+📄 File: sys/contrib/openzfs/lib/libzfs_core/os/linux/Makefile
+✏️  Edits: 3 files modified
+
+```
+# SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+
+PROG=	libzfs_core_ioctl_linux
+SRCS=	libzfs_core_ioctl.c
+
+RUST_SRCDIR=	${.CURDIR}
+CARGO_TARGET_DIR=	${.OBJDIR}/cargo-target
+
+.if defined(WITH_RUST)
+RUST_PROG=	${PROG}_rust
+.endif
+
+.include <bsd.prog.mk>
+```
+
+--- RESPONSE ---
+
+
+The build errors are system-level bootstrap issues in `Makefile.inc1` about cross-compiler bootstrapping, completely unrelated to my changes. This is a Linux-only directory that's never built on FreeBSD. Let me remove the Makefile I created and try a different approach.
+
+ACTION: EDIT_FILE sys/contrib/openzfs/lib/libzfs_core/os/linux/Makefile
+OLD:
+# SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+
+PROG=	libzfs_core_ioctl_linux
+SRCS=	libzfs_core_ioctl.c
+
+RUST_SRCDIR=	${.CURDIR}
+CARGO_TARGET_DIR=	${.OBJDIR}/cargo-target
+
+.if defined(WITH_RUST)
+RUST_PROG=	${PROG}_rust
+.endif
+
+.include <bsd.prog.mk>
+NEW:

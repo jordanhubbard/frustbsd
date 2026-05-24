@@ -1,0 +1,13 @@
+=== STEP 590 ===
+
+--- REQUEST ---
+SCOPE_ABANDONED: crypto/krb5/src/lib/crypto/openssl/des was marked skipped.
+
+Reason: LLM returned an invalid response while working this scope: LLM provider returned no text content
+Any tracked edits were reverted and untracked files created under the scope were removed.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso0
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/capto

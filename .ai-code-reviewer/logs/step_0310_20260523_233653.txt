@@ -1,0 +1,23 @@
+=== STEP 310 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/asa:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+asa
+asa.1
+asa.c
+cargo-target
+src
+tests
+```
+
+--- RESPONSE ---
+
+
+Let me check how the completed units integrated Rust with the FreeBSD build:
+
+ACTION: READ_FILE usr.bin/asa/Makefile

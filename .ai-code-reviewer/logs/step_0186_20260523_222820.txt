@@ -1,0 +1,9 @@
+=== STEP 186 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for '\.error SYSTEM_COMPILER'
+
+--- RESPONSE ---
+
+
+ACTION: GREP SYSTEM_COMPILER

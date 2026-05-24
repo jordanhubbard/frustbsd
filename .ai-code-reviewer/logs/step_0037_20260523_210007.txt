@@ -1,0 +1,25 @@
+=== STEP 37 ===
+
+--- REQUEST ---
+EDIT_FILE_ERROR: Missing OLD or NEW block
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE sys/contrib/openzfs/lib/libzfs_core/os/linux/Makefile
+OLD:
+# SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+
+PROG=	libzfs_core_ioctl_linux
+SRCS=	libzfs_core_ioctl.c
+
+RUST_SRCDIR=	${.CURDIR}
+CARGO_TARGET_DIR=	${.OBJDIR}/cargo-target
+
+.if defined(WITH_RUST)
+RUST_PROG=	${PROG}_rust
+.endif
+
+.include <bsd.prog.mk>
+NEW:
+# Linux-specific source, not built on FreeBSD

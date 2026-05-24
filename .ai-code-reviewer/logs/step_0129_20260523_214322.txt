@@ -1,0 +1,38 @@
+=== STEP 129 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/FreeBSD_version/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE share/examples/FreeBSD_version/src/main.rs
+CONTENT:
+<<<
+//! Rust replacement for the FreeBSD_version example program.
+//!
+//! Demonstrates how to determine the FreeBSD release version at both
+//! compile time and runtime.
+
+extern "C" {
+    fn getosreldate() -> u32;
+}
+
+fn main() {
+    // Compile-time FreeBSD version
+    let compile_version = option_env!("FREEBSD_VERSION")
+        .and_then(|v| v.parse::<u32>().ok())
+        .unwrap_or(0);
+
+    println!("Compilation release date: {}", compile_version);
+
+    // Runtime FreeBSD version
+    if compile_version >= 199408 {
+        let runtime_version = unsafe { getosreldate() };
+        println!("Execution environment release date: {}", runtime_version);
+    } else {
+        println!("Execution environment release date: can't tell");
+    }
+}
+>>>

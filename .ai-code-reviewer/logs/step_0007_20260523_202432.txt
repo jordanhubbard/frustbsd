@@ -1,0 +1,14 @@
+=== STEP 7 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/openzfs/lib/libzfs_core/os/linux:
+```
+libzfs_core_ioctl.c
+```
+
+--- RESPONSE ---
+
+
+This is a Linux-specific OpenZFS file with no Makefile. I need to create a Rust replacement with build integration. Let me create a minimal Rust crate that provides the same `ioctl` wrapper functionality.
+
+ACTION: WRITE_FILE sys/contrib/openzfs/lib/libzfs_core/os/linux/Cargo.toml

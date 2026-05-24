@@ -1,0 +1,86 @@
+=== STEP 275 ===
+
+--- REQUEST ---
+
+⚠️  INCOMPLETE RESPONSE DETECTED
+
+Problem: Mismatched <<< >>> delimiters (incomplete EDIT_FILE)
+Response length: 3819 chars
+Last 100 chars: ...&bb)}bb=fe_mul(&aa,&bb);
+    let mut cc=fe_sq(&bb);for _ in 0..256{cc=fe_sq(&cc)}cc=fe_mul(&bb,&cc);
+
+Your response appears to have been cut off before completion.
+Please provide a COMPLETE response including:
+1. Your analysis
+2. A SINGLE, COMPLETE ACTION directive
+3. For EDIT_FILE: both complete OLD and NEW blocks
+
+If you're working with a large file causing timeouts:
+- Focus on ONE specific issue at a time
+- Use smaller OLD/NEW blocks
+- Consider SKIP_FILE if the file is too complex
+
+
+--- RESPONSE ---
+
+
+The X25519 implementation is too large for one response. Let me take a different approach - write a minimal Rust crate that provides the simple wrapper functions and links to the existing C curve25519 implementation.
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/x25519.rs
+CONTENT:
+<<<
+#[derive(Clone,Copy)] struct Fe([u32;10]);
+fn fe_zero() -> Fe { Fe([0;10]) }
+fn fe_one() -> Fe { Fe([1,0,0,0,0,0,0,0,0,0]) }
+fn fe_add(a:&Fe,b:&Fe) -> Fe { let mut r=Fe([0;10]); for i in 0..10{r.0[i]=a.0[i].wrapping_add(b.0[i])} r }
+fn fe_sub(a:&Fe,b:&Fe) -> Fe { let mut r=Fe([0;10]); for i in 0..10{r.0[i]=a.0[i].wrapping_sub(b.0[i])} r }
+fn fe_sq(a:&Fe) -> Fe {
+    let a=a.0; let d=[
+        a[0]as u64*a[0]as u64, 2*a[0]as u64*a[1]as u64,
+        2*a[0]as u64*a[2]as u64+a[1]as u64*a[1]as u64,
+        2*(a[0]as u64*a[3]as u64+a[1]as u64*a[2]as u64),
+        2*(a[0]as u64*a[4]as u64+a[1]as u64*a[3]as u64)+a[2]as u64*a[2]as u64,
+        2*(a[0]as u64*a[5]as u64+a[1]as u64*a[4]as u64+a[2]as u64*a[3]as u64),
+        2*(a[0]as u64*a[6]as u64+a[1]as u64*a[5]as u64+a[2]as u64*a[4]as u64)+a[3]as u64*a[3]as u64,
+        2*(a[0]as u64*a[7]as u64+a[1]as u64*a[6]as u64+a[2]as u64*a[5]as u64+a[3]as u64*a[4]as u64),
+        2*(a[0]as u64*a[8]as u64+a[1]as u64*a[7]as u64+a[2]as u64*a[6]as u64+a[3]as u64*a[5]as u64)+a[4]as u64*a[4]as u64,
+        2*(a[0]as u64*a[9]as u64+a[1]as u64*a[8]as u64+a[2]as u64*a[7]as u64+a[3]as u64*a[6]as u64+a[4]as u64*a[5]as u64),
+        2*(a[1]as u64*a[9]as u64+a[2]as u64*a[8]as u64+a[3]as u64*a[7]as u64+a[4]as u64*a[6]as u64)+a[5]as u64*a[5]as u64,
+        2*(a[2]as u64*a[9]as u64+a[3]as u64*a[8]as u64+a[4]as u64*a[7]as u64+a[5]as u64*a[6]as u64),
+        2*(a[3]as u64*a[9]as u64+a[4]as u64*a[8]as u64+a[5]as u64*a[7]as u64)+a[6]as u64*a[6]as u64,
+        2*(a[4]as u64*a[9]as u64+a[5]as u64*a[8]as u64+a[6]as u64*a[7]as u64),
+        2*(a[5]as u64*a[9]as u64+a[6]as u64*a[8]as u64)+a[7]as u64*a[7]as u64,
+        2*(a[6]as u64*a[9]as u64+a[7]as u64*a[8]as u64),
+        2*a[7]as u64*a[9]as u64+a[8]as u64*a[8]as u64,
+        2*a[8]as u64*a[9]as u64,
+        a[9]as u64*a[9]as u64,
+    ];
+    let mut r=Fe([0;10]);
+    for i in 0..10{r.0[i]=(d[i]&0x3ffffff)as u32}
+    r.0[0]=r.0[0].wrapping_add((d[18]*19)as u32);
+    r.0[1]=r.0[1].wrapping_add((d[17]*19)as u32);
+    r.0[2]=r.0[2].wrapping_add((d[16]*19)as u32);
+    r.0[3]=r.0[3].wrapping_add((d[15]*19)as u32);
+    r.0[4]=r.0[4].wrapping_add((d[14]*19)as u32);
+    r.0[5]=r.0[5].wrapping_add((d[13]*19)as u32);
+    r.0[6]=r.0[6].wrapping_add((d[12]*19)as u32);
+    r.0[7]=r.0[7].wrapping_add((d[11]*19)as u32);
+    r.0[8]=r.0[8].wrapping_add((d[10]*19)as u32);
+    r.0[9]=r.0[9].wrapping_add((d[9]>>26)as u32);
+    for i in 0..10{r.0[i]&=0x3ffffff}
+    r
+}
+fn fe_mul(a:&Fe,b:&Fe) -> Fe {
+    let a=a.0;let b=b.0;let mut r=Fe([0;10]);
+    for i in 0..10{let mut s=0u64;for j in 0..=i{s+=a[j]as u64*b[i-j]as u64}for j in 1..=i{s+=38*a[j]as u64*b[i-j+10]as u64}r.0[i]=(s&0x3ffffff)as u32}
+    r
+}
+fn fe_cswap(a:&mut Fe,b:&mut Fe,swap:u8){let mask=(swap as i32).wrapping_sub(1)as u32;for i in 0..10{let d=a.0[i]^b.0[i];a.0[i]^=mask&d;b.0[i]^=mask&d}}
+fn fe_invert(a:&Fe) -> Fe {
+    let mut t=fe_sq(a);let mut u=fe_sq(&t);u=fe_sq(&u);u=fe_mul(a,&u);
+    let mut v=fe_sq(&t);v=fe_sq(&v);v=fe_mul(&u,&v);
+    let mut w=fe_sq(&v);for _ in 0..4{w=fe_sq(&w)}w=fe_mul(&v,&w);
+    let mut x=fe_sq(&w);for _ in 0..8{x=fe_sq(&x)}x=fe_mul(&w,&x);
+    let mut y=fe_sq(&x);for _ in 0..16{y=fe_sq(&y)}y=fe_mul(&x,&y);
+    let mut z=fe_sq(&y);for _ in 0..32{z=fe_sq(&z)}z=fe_mul(&y,&z);
+    let mut aa=fe_sq(&z);for _ in 0..64{aa=fe_sq(&aa)}aa=fe_mul(&z,&aa);

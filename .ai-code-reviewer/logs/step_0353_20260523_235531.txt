@@ -1,0 +1,99 @@
+=== STEP 353 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_shorthash/src/lib.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_shorthash/src/siphash24.rs
+CONTENT:
+<<<
+//! SipHash-2-4 implementation.
+//!
+//! Reference implementation of SipHash-2-4 as specified by
+//! Jean-Philippe Aumasson and Daniel J. Bernstein.
+
+/// SipHash-2-4 constants
+const C0: u64 = 0x736f6d6570736575;
+const C1: u64 = 0x646f72616e646f6d;
+const C2: u64 = 0x6c7967656e657261;
+const C3: u64 = 0x7465646279746573;
+
+/// Perform one SipRound.
+#[inline]
+fn sip_round(v: &mut [u64; 4]) {
+    v[0] = v[0].wrapping_add(v[1]);
+    v[2] ^= v[0];
+    v[2] = v[2].rotate_left(13);
+    v[1] = v[1].wrapping_mul(5);
+
+    v[2] = v[2].wrapping_add(v[3]);
+    v[0] ^= v[2];
+    v[0] = v[0].rotate_left(16);
+    v[3] = v[3].wrapping_mul(5);
+
+    v[2] = v[2].wrapping_add(v[1]);
+    v[0] ^= v[2];
+    v[0] = v[0].rotate_left(13);
+    v[1] = v[1].wrapping_mul(5);
+
+    v[2] = v[2].wrapping_add(v[3]);
+    v[0] ^= v[2];
+    v[0] = v[0].rotate_left(16);
+    v[3] = v[3].wrapping_mul(5);
+}
+
+/// Compute SipHash-2-4 of the given input with the given 128-bit key.
+///
+/// Returns an 8-byte hash as a little-endian byte array.
+pub fn siphash24(input: &[u8], key: &[u8; 16]) -> [u8; 8] {
+    let k0 = u64::from_le_bytes(key[0..8].try_into().unwrap());
+    let k1 = u64::from_le_bytes(key[8..16].try_into().unwrap());
+
+    let mut v0 = C0 ^ k0;
+    let mut v1 = C1 ^ k1;
+    let mut v2 = C2 ^ k0;
+    let mut v3 = C3 ^ k1;
+
+    let len = input.len() as u64;
+    v3 ^= len;
+
+    let mut i = 0;
+    let mut b = len << 56;
+
+    // Process full 8-byte blocks
+    while i + 8 <= input.len() {
+        let mut m = 0u64;
+        for j in 0..8 {
+            m |= (input[i + j] as u64) << (j * 8);
+        }
+        v3 ^= m;
+        sip_round(&mut [v0, v1, v2, v3]);
+        sip_round(&mut [v0, v1, v2, v3]);
+        v0 ^= m;
+        i += 8;
+    }
+
+    // Handle remaining bytes
+    let remaining = &input[i..];
+    let mut tail = [0u8; 8];
+    tail[..remaining.len()].copy_from_slice(remaining);
+    b |= u64::from_le_bytes(tail);
+
+    v3 ^= b;
+    sip_round(&mut [v0, v1, v2, v3]);
+    sip_round(&mut [v0, v1, v2, v3]);
+    v0 ^= b;
+
+    v2 ^= 0xff;
+    sip_round(&mut [v0, v1, v2, v3]);
+    sip_round(&mut [v0, v1, v2, v3]);
+    sip_round(&mut [v0, v1, v2, v3]);
+    sip_round(&mut [v0, v1, v2, v3]);
+
+    let result = v0 ^ v1 ^ v2 ^ v3;
+    result.to_le_bytes()
+}
+>>>

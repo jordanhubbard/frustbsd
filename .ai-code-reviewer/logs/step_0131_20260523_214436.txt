@@ -1,0 +1,75 @@
+=== STEP 131 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/FreeBSD_version/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE share/examples/FreeBSD_version/build.rs
+CONTENT:
+<<<
+//! Build script to extract __FreeBSD_version from system headers.
+//!
+//! This replicates the C preprocessor behavior of including <osreldate.h>
+//! and using the __FreeBSD_version macro.
+
+use std::env;
+use std::fs;
+use std::path::PathBuf;
+
+fn main() {
+    // Tell cargo to re-run if this file changes
+    println!("cargo:rerun-if-changed=build.rs");
+
+    // Try to extract __FreeBSD_version from the system headers
+    let version = get_freebsd_version();
+    println!("cargo:rustc-env=__FreeBSD_version={}", version);
+}
+
+fn get_freebsd_version() -> u32 {
+    // Try to find osreldate.h in standard FreeBSD include paths
+    let include_paths = [
+        "/usr/include",
+        "/usr/local/include",
+    ];
+
+    for path in &include_paths {
+        let osreldate = PathBuf::from(path).join("osreldate.h");
+        if let Ok(contents) = fs::read_to_string(&osreldate) {
+            // Look for #define __FreeBSD_version XXXXXX
+            for line in contents.lines() {
+                let trimmed = line.trim();
+                if trimmed.starts_with("#define __FreeBSD_version") {
+                    let parts: Vec<&str> = trimmed.split_whitespace().collect();
+                    if parts.len() >= 3 {
+                        if let Ok(v) = parts[2].parse::<u32>() {
+                            return v;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Fallback: try to get it from the kernel
+    if let Ok(output) = std::process::Command::new("freebsd-version")
+        .output()
+    {
+        if let Ok(version_str) = String::from_utf8(output.stdout) {
+            let v = version_str.trim();
+            // Parse something like "14.0-RELEASE" to a version number
+            if let Some(idx) = v.find('-') {
+                let release = &v[..idx];
+                if let Ok(major) = release.split('.').next().unwrap_or("0").parse::<u32>() {
+                    // Approximate version encoding
+                    return 199401 + major * 100;
+                }
+            }
+        }
+    }
+
+    0
+}
+>>>

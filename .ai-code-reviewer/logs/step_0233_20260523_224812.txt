@@ -1,0 +1,40 @@
+=== STEP 233 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/FreeBSD_version/Makefile:
+PROGRESS:
+📁 Directory: share/examples/FreeBSD_version
+   Files: 0/4
+📄 File: share/examples/FreeBSD_version/Makefile
+✏️  Edits: 5 files modified
+
+```
+PACKAGE=examples
+FILESDIR=${SHAREDIR}/examples/${PROG}
+PROG=	FreeBSD_version
+MAN=
+
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+SRCS=	${PROG}.rs
+${PROG}_CARGO=	${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs ${.CURDIR}/build.rs
+
+all: ${PROG}
+
+${PROG}: ${${PROG}_CARGO}
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} --release
+	${INSTALL} -s ${CARGO_TARGET_DIR}/release/${PROG} ${.OBJDIR}/${PROG}
+
+install: all
+	${INSTALL} -s ${.OBJDIR}/${PROG} ${FILESDIR}/${PROG}
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE share/examples/FreeBSD_version/README

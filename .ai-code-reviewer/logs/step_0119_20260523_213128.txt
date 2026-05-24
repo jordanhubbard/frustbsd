@@ -1,0 +1,51 @@
+=== STEP 119 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/lib.rs
+CONTENT:
+<<<
+// Rust replacement for crypto_scalarmult.c
+// This provides the same C ABI interface as the original C implementation.
+
+use std::ffi::c_char;
+
+extern "C" {
+    fn crypto_scalarmult_curve25519_base(q: *mut u8, n: *const u8) -> i32;
+    fn crypto_scalarmult_curve25519(q: *mut u8, n: *const u8, p: *const u8) -> i32;
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_primitive() -> *const c_char {
+    // Returns the primitive name - in the original this is crypto_scalarmult_PRIMITIVE
+    // which is defined as "curve25519"
+    b"curve25519\0".as_ptr() as *const c_char
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_base(q: *mut u8, n: *const u8) -> i32 {
+    crypto_scalarmult_curve25519_base(q, n)
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult(q: *mut u8, n: *const u8, p: *const u8) -> i32 {
+    crypto_scalarmult_curve25519(q, n, p)
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_bytes() -> usize {
+    // crypto_scalarmult_BYTES is 32 for curve25519
+    32
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_scalarbytes() -> usize {
+    // crypto_scalarmult_SCALARBYTES is 32 for curve25519
+    32
+}
+>>>

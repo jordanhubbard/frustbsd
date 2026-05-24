@@ -1,0 +1,11 @@
+=== STEP 320 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'MK_SYSTEM_COMPILER'
+
+--- RESPONSE ---
+
+
+The build errors are from Makefile.inc1 lines 371 and 376. Let me check what's happening there:
+
+ACTION: READ_FILE Makefile.inc1

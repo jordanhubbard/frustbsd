@@ -1,0 +1,9 @@
+=== STEP 410 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR contrib/netbsd-tests/lib/csu

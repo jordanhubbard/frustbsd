@@ -1,0 +1,11 @@
+=== STEP 175 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'sys/contrib/libsodium/src/libsodium/crypto_shorthash*'
+
+--- RESPONSE ---
+
+
+These libsodium subdirectories are problematic - they lack proper FreeBSD build integration. Let me find a simple standalone command instead.
+
+ACTION: LIST_DIR bin/cat

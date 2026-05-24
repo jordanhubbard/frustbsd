@@ -1,0 +1,56 @@
+=== STEP 103 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/openzfs/lib/libzfs_core/os/linux/Makefile:
+PROGRESS:
+📁 Directory: sys/contrib/openzfs/lib/libzfs_core/os/linux
+   Files: 0/1
+📄 File: sys/contrib/openzfs/lib/libzfs_core/os/linux/Makefile
+✏️  Edits: 4 files modified
+
+```
+# Linux-specific source, not built on FreeBSD
+# Rust replacement crate for Linux ZFS core ioctl helpers
+
+RUSTC?=	rustc
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+.PHONY: all clean
+
+all: ${CARGO_TARGET_DIR}/liblibzfs_core_ioctl_linux.a
+
+${CARGO_TARGET_DIR}/liblibzfs_core_ioctl_linux.a: Cargo.toml src/lib.rs
+	@mkdir -p ${CARGO_TARGET_DIR}
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+clean:
+	@rm -rf ${CARGO_TARGET_DIR}
+```
+
+--- RESPONSE ---
+
+
+The build harness seems to be running a broader build. Let me fix the Makefile to be more robust and use a local target directory.
+
+ACTION: WRITE_FILE sys/contrib/openzfs/lib/libzfs_core/os/linux/Makefile
+CONTENT:
+<<<
+# Linux-specific source, not built on FreeBSD
+# Rust replacement crate for Linux ZFS core ioctl helpers
+
+RUSTC?=	rustc
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+.PHONY: all clean
+
+all: ${CARGO_TARGET_DIR}/liblibzfs_core_ioctl_linux.a
+
+${CARGO_TARGET_DIR}/liblibzfs_core_ioctl_linux.a: Cargo.toml src/lib.rs
+	@mkdir -p ${CARGO_TARGET_DIR}
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+clean:
+	@rm -rf ${CARGO_TARGET_DIR}
+>>>

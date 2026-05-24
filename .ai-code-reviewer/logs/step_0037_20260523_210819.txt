@@ -1,0 +1,15 @@
+=== STEP 37 ===
+
+--- REQUEST ---
+GREP_RESULT for 'bsd.prog.mk':
+```
+./tools/regression/tmpfs/h_tools.c:35: * to the limitations of bsd.prog.mk to build a single program in a
+./contrib/netbsd-tests/fs/tmpfs/h_tools.c:31: * to the limitations of bsd.prog.mk to build a single program in a
+```
+
+--- RESPONSE ---
+
+
+Let me try building just this specific directory with make.
+
+ACTION: BUILD

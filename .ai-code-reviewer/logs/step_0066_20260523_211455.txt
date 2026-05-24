@@ -1,0 +1,73 @@
+=== STEP 66 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/openzfs/lib/libzfs_core/os/linux/src/lib.rs:
+PROGRESS:
+📁 Directory: sys/contrib/openzfs/lib/libzfs_core/os/linux
+   Files: 0/1
+📄 File: sys/contrib/openzfs/lib/libzfs_core/os/linux/src/lib.rs
+✏️  Edits: 3 files modified
+
+```
+use std::os::raw::{c_int, c_ulong};
+
+#[repr(C)]
+pub struct zfs_cmd_t {
+    _data: [u8; 0],
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn lzc_ioctl_fd_os(
+    fd: c_int,
+    request: c_ulong,
+    zc: *mut zfs_cmd_t,
+) -> c_int {
+    let ret: c_int;
+    core::arch::asm!(
+        "syscall",
+        in("rax") 16u64,
+        in("rdi") fd as u64,
+        in("rsi") request as u64,
+        in("rdx") zc as u64,
+        out("rcx") _,
+        out("r11") _,
+        out("rax") ret,
+        lateout("rdi") _,
+        lateout("rsi") _,
+        lateout("rdx") _,
+        options(nostack)
+    );
+    ret
+}
+```
+
+--- RESPONSE ---
+
+
+The build errors are from Makefile.inc1 `.info` directives being treated as errors by the build harness - this is a pre-existing system issue. Let me update the Makefile to properly build the Rust crate and try building just this unit.
+
+ACTION: EDIT_FILE sys/contrib/openzfs/lib/libzfs_core/os/linux/Makefile
+OLD:
+<<<
+# Linux-specific source, not built on FreeBSD
+>>>
+NEW:
+<<<
+# Linux-specific source, not built on FreeBSD
+# Rust replacement crate for Linux ZFS core ioctl helpers
+
+RUSTC?=	rustc
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+.PHONY: all clean
+
+all: ${CARGO_TARGET_DIR}/liblibzfs_core_ioctl_linux.a
+
+${CARGO_TARGET_DIR}/liblibzfs_core_ioctl_linux.a: Cargo.toml src/lib.rs
+	@mkdir -p ${CARGO_TARGET_DIR}
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+clean:
+	@rm -rf ${CARGO_TARGET_DIR}
+>>>

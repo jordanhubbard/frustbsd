@@ -1,0 +1,64 @@
+=== STEP 207 ===
+
+--- REQUEST ---
+GREP_RESULT for '\.error':
+```
+./tests/sys/netmap/ctrl-api-test.c:1979:	test_nmctx.error = nmctx_parsing_error;
+./tests/sys/netlink/test_rtnl_route.c:121:	ATF_REQUIRE_INTEQ(e.error, 0);
+./tests/sys/netlink/test_rtnl_route.c:171:	ATF_REQUIRE_INTEQ(e.error, 0);
+./tests/sys/netlink/test_rtnl_route.c:194:	ATF_REQUIRE_INTEQ(e.error, 0);
+./tests/sys/netlink/test_rtnl_gre.c:128:	ATF_REQUIRE_INTEQ(e.error, 0);
+./tests/sys/netlink/test_rtnl_gre.c:163:	ATF_REQUIRE_INTEQ(e.error, 0);
+./tests/sys/netlink/test_snl.c:89:	ATF_CHECK(e.error != 0);
+./tests/sys/netlink/test_snl.c:129:	ATF_CHECK(e.error != 0);
+./tests/sys/netlink/test_snl.c:132:	ATF_CHECK(e.error_str != NULL);
+./sys/compat/linux/linux_event.c:410:	coargs.error = 0;
+./sys/compat/linux/linux_event.c:413:	if (error == 0 && coargs.error != 0)
+./sys/compat/linux/linux_event.c:414:		error = coargs.error;
+./sys/sys/bio.h:139:#define	bio_error	bio_exterr.error
+./sys/sys/buf.h:161:#define	b_error		b_exterr.error
+./sys/kern/kern_procctl.c:554:		w.error = &error;
+./sys/kern/sys_generic.c:2250:	ue->error = td->td_kexterr.error;
+./sys/kern/sys_generic.c:2275:		ue.error = 0;
+./sys/kern/sys_generic.c:2276:		sz = sizeof(ue.error);
+./sys/kern/kern_tc.c:1095:	clock_snap->fb_info.error = bt;
+./sys/kern/kern_tc.c:1114:	clock_snap->ff_info.error = bt;
+./sys/kern/vfs_aio.c:625:		cancelled = job->uaiocb._aiocb_private.error == ECANCELED;
+./sys/kern/vfs_aio.c:1040:	job->uaiocb._aiocb_private.error = error;
+./sys/kern/vfs_aio.c:1453:	return (fuword(&ujob->_aiocb_private.error));
+./sys/netinet/sctp_output.c:13121:			be.error = 0;
+./sys/netinet/sctp_output.c:13129:				if (be.error != 0) {
+./sys/netinet/sctp_output.c:13130:					error = be.error;
+./sys/netinet/libalias/alias_sctp.c:335:/** @brief net.inet.ip.alias.sctp.error_on_ootb */
+./sys/netinet/libalias/alias_sctp.c:505: * @brief sysctl callback for changing net.inet.ip.alias.sctp.error_on_ootb
+./sys/netinet/sctp_sysctl.c:535:				xraddr.error_counter = net->error_count;
+./sys/tests/fib_lookup/fib_lookup.c:520:		return (pa.error);
+./sys/tests/fib_lookup/fib_lookup.c:713:		return (pa.error);
+./sys/dev/mmc/mmcsd.c:1027:	if (cmd.error != MMC_ERR_NONE) {
+./sys/dev/mmc/mmcsd.c:1028:		switch (cmd.error) {
+./sys/dev/mmc/mmcsd.c:1103:	return (cmd.error);
+./sys/dev/mmc/mmc_subr.c:127:			err = appcmd.error;
+./sys/dev/mmc/host/dwmmc.c:1226:		(ccb->mmcio.cmd.error == 0 ? CAM_REQ_CMP : CAM_REQ_CMP_ERR);
+./sys/dev/mmc/mmcspi.c:1451:		if (stop_response & stop.error_mask & MMCSPI_R1_CRC_ERR) {
+./sys/dev/mmc/mmcspi.c:1456:	if (stop_response & stop.error_mask) {
+./sys/dev/mmc/mmcspi.c:1909:	r1_status = rspbuf[0] & cmd.error_mask;
+./sys/dev/pms/freebsd/driver/common/lxencrypt.c:1127:    perr->ioerr.error_id = cmd->serial_number;
+./sys/dev/pms/freebsd/driver/common/lxencrypt.c:1145:            perr->ioerr.error_type = pccb->scsiStatus;
+./sys/dev/pms/freebsd/driver/common/lxencrypt.c:1149:            perr->ioerr.error_type = 0xffffffff;
+./sys/dev/pms/RefTisa/discovery/dm/dmsmp.c:1329:    else if (fis->h.error == REG_DEV_TO_HOST_FIS)
+./sys/dev/pms/RefTisa/discovery/dm/dmsmp.c:1535:    else if (fis->h.error == REG_DEV_TO_HOST_FIS)
+./sys/dev/pms/RefTisa/sallsdk/spc/saint.c:114:    fatal_error.errorInfo0 = value;
+./sys/dev/pms/RefTisa/sallsdk/spc/saint.c:118:    fatal_error.errorInfo1 = value;
+./sys/dev/pms/RefTisa/sallsdk/spc/saint.c:122:    fatal_error.errorInfo2 = value;
+./sys/dev/pms/RefTisa/sallsdk/spc/sahw.c:148:          fatal_error.errorInfo0 = value;
+./sys/dev/pms/RefTisa/sallsdk/spc/sahw.c:151:          fatal_error.errorInfo1 = value;
+./sys/dev/pms/RefTisa/sallsdk/spc/sahw.c:155:          fatal_error.errorInfo2 = value;
+... [615 more matches]
+```
+
+--- RESPONSE ---
+
+
+Let me search for the specific `.error` pattern in Makefile.inc1:
+
+ACTION: GREP \.error

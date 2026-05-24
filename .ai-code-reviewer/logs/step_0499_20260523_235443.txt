@@ -1,0 +1,11 @@
+=== STEP 499 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I need to include the CONTENT block with the actual file content. Let me create the Makefile with the correct format.
+
+ACTION: WRITE_FILE contrib/llvm-project/llvm/lib/Frontend/Directive/Makefile

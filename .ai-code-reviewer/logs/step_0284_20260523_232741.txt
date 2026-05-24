@@ -1,0 +1,19 @@
+=== STEP 284 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_scalarmult:
+```
+Cargo.toml
+Makefile
+crypto_scalarmult.c
+curve25519
+ed25519
+src
+```
+
+--- RESPONSE ---
+
+
+Let me check the Makefile to understand the build integration:
+
+ACTION: READ_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Makefile

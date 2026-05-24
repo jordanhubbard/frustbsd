@@ -1,0 +1,27 @@
+=== STEP 22 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/FreeBSD_version/Makefile:
+PROGRESS:
+📁 Directory: share/examples/FreeBSD_version
+   Files: 0/3
+📄 File: share/examples/FreeBSD_version/Makefile
+
+```
+PACKAGE=examples
+FILESDIR=${SHAREDIR}/examples/${PROG}
+PROG=	FreeBSD_version
+MAN=
+
+install:
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+Let me also read the README for context.
+
+ACTION: READ_FILE share/examples/FreeBSD_version/README

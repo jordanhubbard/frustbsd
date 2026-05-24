@@ -1,0 +1,56 @@
+=== STEP 445 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/lib/csu/dso/h_initfini3_dso.cxx:
+PROGRESS:
+📁 Directory: contrib/netbsd-tests/lib/csu/dso
+   Files: 0/1
+📄 File: contrib/netbsd-tests/lib/csu/dso/h_initfini3_dso.cxx
+
+```
+#include <unistd.h>
+
+#ifdef CHECK_STACK_ALIGNMENT
+#include <stdlib.h>
+
+extern "C" int check_stack_alignment(void);
+#endif
+
+class Test2 {
+public:
+	Test2()
+	{
+		static const char msg[] = "constructor2 executed\n";
+		write(STDOUT_FILENO, msg, sizeof(msg) - 1);
+#ifdef CHECK_STACK_ALIGNMENT
+		if (!check_stack_alignment()) {
+			static const char msg2[] = "stack unaligned \n";
+			write(STDOUT_FILENO, msg2, sizeof(msg2) - 1);
+			exit(1);
+		}
+#endif
+	}
+	~Test2()
+	{
+		static const char msg[] = "destructor2 executed\n";
+		write(STDOUT_FILENO, msg, sizeof(msg) - 1);
+#ifdef CHECK_STACK_ALIGNMENT
+		if (!check_stack_alignment()) {
+			static const char msg2[] = "stack unaligned \n";
+			write(STDOUT_FILENO, msg2, sizeof(msg2) - 1);
+			exit(1);
+		}
+#endif
+	}
+};
+
+Test2 test2;
+
+```
+
+--- RESPONSE ---
+
+
+This is a small test DSO file without its own Makefile - not a good standalone unit. Let me find a better candidate:
+
+ACTION: SET_SCOPE bin/ls

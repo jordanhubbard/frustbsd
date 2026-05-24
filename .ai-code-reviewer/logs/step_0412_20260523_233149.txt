@@ -1,0 +1,10 @@
+=== STEP 412 ===
+
+--- REQUEST ---
+READ_FILE_ERROR: File not found: /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/lib/csu/Makefile
+TIP: Use FIND_FILE to locate files
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE contrib/netbsd-tests/lib/csu/dso/Makefile

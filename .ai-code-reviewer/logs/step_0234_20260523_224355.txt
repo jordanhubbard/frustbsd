@@ -1,0 +1,364 @@
+=== STEP 234 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/col/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/col/src/main.rs
+CONTENT:
+<<<
+/*-
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * Copyright (c) 1990, 1993, 1994
+ *	The Regents of the University of California.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+use std::io::{self, BufRead, Read, Write};
+use std::process;
+
+const BS: u8 = b'\b';
+const TAB: u8 = b'\t';
+const SPACE: u8 = b' ';
+const NL: u8 = b'\n';
+const CR: u8 = b'\r';
+const ESC: u8 = b'\033';
+const SI: u8 = b'\017';
+const SO: u8 = b'\016';
+const VT: u8 = b'\013';
+const RLF: u8 = b'7';
+const RHLF: u8 = b'8';
+const FHLF: u8 = b'9';
+
+const BUFFER_MARGIN: usize = 32;
+
+#[derive(Clone, Copy, PartialEq)]
+enum CSet {
+    Normal = 1,
+    Alternate = 2,
+}
+
+#[derive(Clone)]
+struct CharInfo {
+    column: usize,
+    cset: CSet,
+    ch: u8,
+    width: usize,
+}
+
+#[derive(Clone)]
+struct Line {
+    chars: Vec<CharInfo>,
+    max_col: usize,
+}
+
+impl Line {
+    fn new() -> Self {
+        Line {
+            chars: Vec::new(),
+            max_col: 0,
+        }
+    }
+}
+
+struct ColFilter {
+    lines: Vec<Line>,
+    cur_line: usize,
+    cur_col: usize,
+    cset: CSet,
+    filter_rlf: bool,
+    filter_bs: bool,
+    filter_esc: bool,
+    reset_state: bool,
+    error: bool,
+}
+
+impl ColFilter {
+    fn new() -> Self {
+        ColFilter {
+            lines: vec![Line::new()],
+            cur_line: 0,
+            cur_col: 0,
+            cset: CSet::Normal,
+            filter_rlf: true,
+            filter_bs: true,
+            filter_esc: true,
+            reset_state: true,
+            error: false,
+        }
+    }
+
+    fn add_char(&mut self, ch: u8, width: usize) {
+        if self.cur_line >= self.lines.len() {
+            self.lines.push(Line::new());
+        }
+        let line = &mut self.lines[self.cur_line];
+        line.chars.push(CharInfo {
+            column: self.cur_col,
+            cset: self.cset,
+            ch,
+            width,
+        });
+        if self.cur_col + width > line.max_col {
+            line.max_col = self.cur_col + width;
+        }
+        self.cur_col += width;
+    }
+
+    fn backspace(&mut self) {
+        if self.cur_col > 0 {
+            self.cur_col -= 1;
+        }
+    }
+
+    fn newline(&mut self) {
+        self.cur_line += 1;
+        self.cur_col = 0;
+        if self.cur_line >= self.lines.len() {
+            self.lines.push(Line::new());
+        }
+    }
+
+    fn carriage_return(&mut self) {
+        self.cur_col = 0;
+    }
+
+    fn reverse_line_feed(&mut self) {
+        if self.filter_rlf && self.cur_line > 0 {
+            self.cur_line -= 1;
+            self.cur_col = 0;
+        }
+    }
+
+    fn reverse_half_line_feed(&mut self) {
+        if self.filter_rlf && self.cur_line > 0 {
+            self.cur_line -= 1;
+            self.cur_col = 0;
+        }
+    }
+
+    fn forward_half_line_feed(&mut self) {
+        self.cur_line += 1;
+        self.cur_col = 0;
+        if self.cur_line >= self.lines.len() {
+            self.lines.push(Line::new());
+        }
+    }
+
+    fn flush(&mut self, out: &mut dyn Write) -> io::Result<()> {
+        let mut start = 0;
+        while start < self.lines.len() && start + BUFFER_MARGIN < self.lines.len() {
+            let end = start + BUFFER_MARGIN;
+            for line in &self.lines[start..end] {
+                let mut col = 0;
+                for c in &line.chars {
+                    while col < c.column {
+                        out.write_all(b" ")?;
+                        col += 1;
+                    }
+                    out.write_all(&[c.ch])?;
+                    col += c.width;
+                }
+                out.write_all(b"\n")?;
+            }
+            start = end;
+        }
+        self.lines.drain(..start);
+        Ok(())
+    }
+
+    fn flush_all(&mut self, out: &mut dyn Write) -> io::Result<()> {
+        for line in &self.lines {
+            let mut col = 0;
+            for c in &line.chars {
+                while col < c.column {
+                    out.write_all(b" ")?;
+                    col += 1;
+                }
+                out.write_all(&[c.ch])?;
+                col += c.width;
+            }
+            out.write_all(b"\n")?;
+        }
+        self.lines.clear();
+        Ok(())
+    }
+
+    fn reset(&mut self) {
+        self.cur_line = 0;
+        self.cur_col = 0;
+        self.cset = CSet::Normal;
+        self.lines.clear();
+        self.lines.push(Line::new());
+    }
+
+    fn process(&mut self, input: &mut dyn BufRead, out: &mut dyn Write) -> io::Result<()> {
+        let mut buf = Vec::new();
+        let mut escape = false;
+
+        loop {
+            buf.clear();
+            match input.read_until(NL, &mut buf) {
+                Ok(0) => break,
+                Ok(_) => {}
+                Err(e) => {
+                    if self.reset_state {
+                        self.reset();
+                    }
+                    self.error = true;
+                    return Err(e);
+                }
+            }
+
+            if buf.is_empty() {
+                continue;
+            }
+
+            let mut i = 0;
+            while i < buf.len() {
+                let ch = buf[i];
+                i += 1;
+
+                if escape {
+                    escape = false;
+                    match ch {
+                        SI => self.cset = CSet::Normal,
+                        SO => self.cset = CSet::Alternate,
+                        RLF => self.reverse_line_feed(),
+                        RHLF => self.reverse_half_line_feed(),
+                        FHLF => self.forward_half_line_feed(),
+                        _ => {
+                            if !self.filter_esc {
+                                self.add_char(ESC, 1);
+                                self.add_char(ch, 1);
+                            }
+                        }
+                    }
+                    continue;
+                }
+
+                match ch {
+                    BS => {
+                        if self.filter_bs {
+                            self.backspace();
+                        } else {
+                            self.add_char(ch, 1);
+                        }
+                    }
+                    TAB => {
+                        let tab_stop = (self.cur_col / 8 + 1) * 8;
+                        let spaces = tab_stop - self.cur_col;
+                        for _ in 0..spaces {
+                            self.add_char(SPACE, 1);
+                        }
+                    }
+                    NL => {
+                        self.newline();
+                    }
+                    CR => {
+                        self.carriage_return();
+                    }
+                    ESC => {
+                        escape = true;
+                    }
+                    SI => {
+                        self.cset = CSet::Normal;
+                    }
+                    SO => {
+                        self.cset = CSet::Alternate;
+                    }
+                    VT => {
+                        self.reverse_line_feed();
+                    }
+                    _ => {
+                        self.add_char(ch, 1);
+                    }
+                }
+            }
+
+            self.flush(out)?;
+        }
+
+        self.flush_all(out)
+    }
+}
+
+fn usage() -> ! {
+    eprintln!("usage: col [-bfpx]");
+    process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let mut filter_rlf = true;
+    let mut filter_bs = true;
+    let mut filter_esc = true;
+    let mut reset_state = true;
+
+    let mut i = 1;
+    while i < args.len() {
+        if args[i].starts_with('-') {
+            for ch in args[i][1..].chars() {
+                match ch {
+                    'b' | 'h' => filter_bs = false,
+                    'f' => filter_rlf = false,
+                    'p' => reset_state = false,
+                    'x' => filter_esc = false,
+                    _ => usage(),
+                }
+            }
+        } else {
+            usage();
+        }
+        i += 1;
+    }
+
+    let stdin = io::stdin();
+    let stdout = io::stdout();
+    let mut reader = stdin.lock();
+    let mut writer = stdout.lock();
+
+    let mut col = ColFilter::new();
+    col.filter_rlf = filter_rlf;
+    col.filter_bs = filter_bs;
+    col.filter_esc = filter_esc;
+    col.reset_state = reset_state;
+
+    if let Err(e) = col.process(&mut reader, &mut writer) {
+        eprintln!("col: {}", e);
+        process::exit(1);
+    }
+
+    if writer.flush().is_err() {
+        eprintln!("col: stdout: {}", io::Error::last_os_error());
+        process::exit(1);
+    }
+}
+>>>

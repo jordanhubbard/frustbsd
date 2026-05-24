@@ -1,0 +1,9 @@
+=== STEP 505 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso0/Cargo.toml

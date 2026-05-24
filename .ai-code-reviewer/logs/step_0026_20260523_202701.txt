@@ -1,0 +1,42 @@
+=== STEP 26 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/FreeBSD_version/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+I need a build script to set the compile-time FreeBSD version environment variable.
+
+ACTION: WRITE_FILE share/examples/FreeBSD_version/build.rs
+CONTENT:
+<<<
+use std::process::Command;
+
+fn main() {
+    // Determine FreeBSD version at compile time, mirroring the C logic:
+    // - If __FreeBSD__ == 0: version 199401
+    // - If __FreeBSD__ == 1: version 199405
+    // - Otherwise: use osreldate.h value
+    let version = get_freebsd_version();
+    println!("cargo:rustc-env=FREEBSD_VERSION={}", version);
+}
+
+fn get_freebsd_version() -> u32 {
+    // Try to get the version from the running system's getosreldate
+    // as a proxy for the compile-time __FreeBSD_version
+    let output = Command::new("sh")
+        .arg("-c")
+        .arg("grep -o '[0-9]\\+' /usr/include/osreldate.h 2>/dev/null | head -1")
+        .output();
+
+    match output {
+        Ok(out) if out.status.success() => {
+            let stdout = String::from_utf8_lossy(&out.stdout);
+            stdout.trim().parse().unwrap_or(199401)
+        }
+        _ => 199401,
+    }
+}
+>>>

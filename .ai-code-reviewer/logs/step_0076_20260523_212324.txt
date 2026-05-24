@@ -1,0 +1,14 @@
+=== STEP 76 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/date is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_shorthash
+
+--- RESPONSE ---
+
+
+Let me find a workable unit that isn't skipped.
+
+ACTION: LIST_DIR bin/echo

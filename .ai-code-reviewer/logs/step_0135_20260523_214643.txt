@@ -1,0 +1,39 @@
+=== STEP 135 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1
+Scope: share/examples/FreeBSD_version
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE Makefile.inc1
+OLD:
+<<<
+.if ${USING_SYSTEM_COMPILER} == "yes"
+.info SYSTEM_COMPILER: Determined that CC=${CC} matches the source tree.  Not bootstrapping a cross-compiler.
+.elif ${MK_CLANG_BOOTSTRAP} == "yes"
+.info SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler.
+.endif
+.if ${USING_SYSTEM_LINKER} == "yes"
+.info SYSTEM_LINKER: Determined that LD=${LD} matches the source tree.  Not bootstrapping a cross-linker.
+.elif ${MK_LLD_BOOTSTRAP} == "yes"
+.info SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker.
+.endif
+.endif
+>>>
+NEW:
+<<<
+.if ${USING_SYSTEM_COMPILER} == "yes"
+.message SYSTEM_COMPILER: Determined that CC=${CC} matches the source tree.  Not bootstrapping a cross-compiler.
+.elif ${MK_CLANG_BOOTSTRAP} == "yes"
+.message SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler.
+.endif
+.if ${USING_SYSTEM_LINKER} == "yes"
+.message SYSTEM_LINKER: Determined that LD=${LD} matches the source tree.  Not bootstrapping a cross-linker.
+.elif ${MK_LLD_BOOTSTRAP} == "yes"
+.message SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker.
+.endif
+.endif
+>>>

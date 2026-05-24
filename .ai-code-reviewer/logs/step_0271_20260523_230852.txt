@@ -1,0 +1,68 @@
+=== STEP 271 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/lib.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The FFI approach creates circular dependencies. Let me write a self-contained but minimal Rust implementation. I'll write it in parts using EDIT_FILE.
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/lib.rs
+CONTENT:
+<<<
+//! Rust replacement for libsodium crypto_scalarmult wrapper.
+#![no_std]
+use core::ffi::c_char;
+
+pub const CRYPTO_SCALARMULT_BYTES: usize = 32;
+pub const CRYPTO_SCALARMULT_SCALARBYTES: usize = 32;
+const PRIMITIVE: &str = "curve25519";
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_primitive() -> *const c_char {
+    PRIMITIVE.as_ptr() as *const c_char
+}
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_bytes() -> usize { CRYPTO_SCALARMULT_BYTES }
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_scalarbytes() -> usize { CRYPTO_SCALARMULT_SCALARBYTES }
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_base(q: *mut u8, n: *const u8) -> i32 {
+    crypto_scalarmult_curve25519_base(q, n)
+}
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult(q: *mut u8, n: *const u8, p: *const u8) -> i32 {
+    crypto_scalarmult_curve25519(q, n, p)
+}
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_curve25519_bytes() -> usize { CRYPTO_SCALARMULT_BYTES }
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_curve25519_scalarbytes() -> usize { CRYPTO_SCALARMULT_SCALARBYTES }
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_curve25519(q: *mut u8, n: *const u8, p: *const u8) -> i32 {
+    if q.is_null() || n.is_null() || p.is_null() { return -1; }
+    let mut n2 = [0u8; 32]; let mut p2 = [0u8; 32];
+    core::ptr::copy_nonoverlapping(n, n2.as_mut_ptr(), 32);
+    core::ptr::copy_nonoverlapping(p, p2.as_mut_ptr(), 32);
+    let mut s = n2; s[0] &= 248; s[31] &= 127; s[31] |= 64;
+    let r = x25519(&s, &p2);
+    core::ptr::copy_nonoverlapping(r.as_ptr(), q, 32);
+    0
+}
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_curve25519_base(q: *mut u8, n: *const u8) -> i32 {
+    if q.is_null() || n.is_null() { return -1; }
+    let mut n2 = [0u8; 32];
+    core::ptr::copy_nonoverlapping(n, n2.as_mut_ptr(), 32);
+    let mut s = n2; s[0] &= 248; s[31] &= 127; s[31] |= 64;
+    let base = [9u8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    let r = x25519(&s, &base);
+    core::ptr::copy_nonoverlapping(r.as_ptr(), q, 32);
+    0
+}
+
+mod x25519;
+use x25519::x25519;
+>>>

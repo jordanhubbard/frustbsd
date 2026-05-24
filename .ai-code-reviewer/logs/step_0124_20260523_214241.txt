@@ -1,0 +1,12 @@
+=== STEP 124 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory contrib/llvm-project/libcxx/src/pstl skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE share/examples/FreeBSD_version
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/cat

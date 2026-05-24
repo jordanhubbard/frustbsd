@@ -1,0 +1,13 @@
+=== STEP 410 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: contrib/file/python/file_magic has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE contrib/llvm-project/lldb/source/Interpreter/Interfaces
+
+--- RESPONSE ---
+
+
+Let me find a simple, standalone command with C source:
+
+ACTION: LIST_DIR bin/cat

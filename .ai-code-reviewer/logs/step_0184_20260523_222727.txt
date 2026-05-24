@@ -1,0 +1,14 @@
+=== STEP 184 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1.
+Remaining files in share/examples/FreeBSD_version:
+  - share/examples/FreeBSD_version/build.rs
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+The build errors show `.error` directives in Makefile.inc1 that were likely changed from `.info` in a previous scope. I need to find and revert those.
+
+ACTION: GREP SYSTEM_COMPILER: libclang

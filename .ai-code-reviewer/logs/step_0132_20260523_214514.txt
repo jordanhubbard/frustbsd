@@ -1,0 +1,47 @@
+=== STEP 132 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/FreeBSD_version/build.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE share/examples/FreeBSD_version/build.rs
+CONTENT:
+<<<
+//! Build script to extract __FreeBSD_version from system headers.
+
+use std::fs;
+use std::path::PathBuf;
+
+fn main() {
+    println!("cargo:rerun-if-changed=build.rs");
+
+    let version = get_freebsd_version();
+    println!("cargo:rustc-env=__FreeBSD_version={}", version);
+}
+
+fn get_freebsd_version() -> u32 {
+    let include_paths = ["/usr/include"];
+
+    for path in &include_paths {
+        let osreldate = PathBuf::from(path).join("osreldate.h");
+        if let Ok(contents) = fs::read_to_string(&osreldate) {
+            for line in contents.lines() {
+                let trimmed = line.trim();
+                if trimmed.starts_with("#define __FreeBSD_version") {
+                    let parts: Vec<&str> = trimmed.split_whitespace().collect();
+                    if parts.len() >= 3 {
+                        if let Ok(v) = parts[2].parse::<u32>() {
+                            return v;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    0
+}
+>>>

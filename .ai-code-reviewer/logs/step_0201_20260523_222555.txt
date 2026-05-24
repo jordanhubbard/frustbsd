@@ -1,0 +1,9 @@
+=== STEP 201 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'bin/*/Makefile'
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE bin/echo/Makefile

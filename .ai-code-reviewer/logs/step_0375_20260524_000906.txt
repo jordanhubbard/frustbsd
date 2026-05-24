@@ -1,0 +1,15 @@
+=== STEP 375 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/units/units.c.
+Remaining files in usr.bin/units:
+  - usr.bin/units/README
+  - usr.bin/units/units.1
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+The `usr.bin/units` program is quite complex (36 chunks of C code). This is not a good candidate for a "small_first" strategy. Let me look for a simpler unit.
+
+ACTION: SET_SCOPE usr.bin/true

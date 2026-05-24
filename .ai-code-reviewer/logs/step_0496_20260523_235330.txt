@@ -1,0 +1,14 @@
+=== STEP 496 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Frontend/Directive:
+```
+Spelling.cpp
+```
+
+--- RESPONSE ---
+
+
+This is an LLVM library file, not a standalone FreeBSD command or library. It's part of the LLVM project and built as part of the LLVM build system. There's no Makefile here - it's a subdirectory of the LLVM build. This is not a suitable candidate for a standalone Rust rewrite.
+
+ACTION: SET_SCOPE bin/cat/tests

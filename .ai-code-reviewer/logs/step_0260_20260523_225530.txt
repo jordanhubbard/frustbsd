@@ -1,0 +1,28 @@
+=== STEP 260 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*sys/contrib/libsodium/Makefile*'
+
+--- RESPONSE ---
+
+
+This is a complex crypto library module. The `crypto_scalarmult.c` is a thin wrapper delegating to curve25519 implementations. Let me create a Rust replacement that provides the same C ABI interface.
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "crypto_scalarmult"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "crypto_scalarmult_rs"
+crate-type = ["staticlib"]
+
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 2
+>>>

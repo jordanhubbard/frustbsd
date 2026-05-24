@@ -1,0 +1,11 @@
+=== STEP 187 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'SYSTEM_COMPILER'
+
+--- RESPONSE ---
+
+
+The build errors reference Makefile.inc1 which was modified in a previous scope. Let me check what's been changed.
+
+ACTION: LIST_DIR share/examples/FreeBSD_version

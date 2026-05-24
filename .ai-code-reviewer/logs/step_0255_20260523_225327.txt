@@ -1,0 +1,10 @@
+=== STEP 255 ===
+
+--- REQUEST ---
+READ_FILE_ERROR: File not found: /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_scalarmult/scalarmult_curve25519.h
+TIP: Use FIND_FILE to locate files
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR sys/contrib/libsodium/src/libsodium/crypto_scalarmult

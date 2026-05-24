@@ -1,0 +1,273 @@
+=== STEP 163 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: share/examples/FreeBSD_version
+   Files: 0/3
+📄 File: Makefile.inc1
+   Chunks: 3/17
+✏️  Edits: 4 files modified
+
+```
+=== CHUNK 3/17: /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1 === [line_chunk: chunk_3]
+=== Lines 501-750 (250 lines) ===
+
+NO_OBJWALK=	t
+NO_KERNELOBJ=	t
+.endif
+.if !defined(NO_OBJWALK)
+_obj=		obj
+.endif
+
+LOCAL_TOOL_DIRS?=
+PACKAGEDIR?=	${DESTDIR}/${DISTDIR}
+
+.if empty(SHELL:M*csh*)
+BUILDENV_SHELL?=${SHELL}
+.else
+BUILDENV_SHELL?=/bin/sh
+.endif
+
+.if !defined(_MKSHOWCONFIG)
+
+.if !defined(GIT_CMD) || empty(GIT_CMD)
+. for _P in /usr/bin /usr/local/bin
+.  if exists(${_P}/git)
+GIT_CMD=   ${_P}/git
+.  endif
+. endfor
+.export GIT_CMD
+.endif
+
+.if !defined(OSRELDATE)
+.if exists(/usr/include/osreldate.h)
+OSRELDATE!=	awk '/^\#define[[:space:]]*__FreeBSD_version/ { print $$3 }' \
+		/usr/include/osreldate.h
+.else
+OSRELDATE=	0
+.endif
+.export OSRELDATE
+.endif
+
+# Set VERSION for CTFMERGE to use via the default CTFFLAGS=-L VERSION.
+.for _V in BRANCH REVISION TYPE
+.if !defined(_${_V})
+_${_V}!=	eval $$(awk '/^${_V}=/{print}' ${SRCTOP}/sys/conf/newvers.sh); echo $$${_V}
+.export _${_V}
+.endif
+.endfor
+.if !defined(SRCRELDATE)
+SRCRELDATE!=	awk '/^\#define[[:space:]]*__FreeBSD_version/ { print $$3 }' \
+		${SRCDIR}/sys/sys/param.h
+.export SRCRELDATE
+.endif
+.if !defined(VERSION)
+VERSION=	FreeBSD ${_REVISION}-${_BRANCH:C/-p[0-9]+$//} ${TARGET_ARCH} ${SRCRELDATE}
+.export VERSION
+.endif
+MAJOR_REVISION=	${_REVISION:R}
+
+_PKG_REVISION=	${_REVISION}
+_STRTIMENOW=	%Y%m%d%H%M%S
+_TIMENOW=	${_STRTIMENOW:gmtime}
+BRANCH_EXT=
+.if ${_BRANCH:MCURRENT*} || ${_BRANCH:MSTABLE*} || ${_BRANCH:MPRERELEASE*}
+_PKG_REVISION:= ${MAJOR_REVISION}
+BRANCH_EXT=	${MAJOR_REVISION}.snap
+EXTRA_REVISION=	.snap${_TIMENOW}
+.elif ${_BRANCH:MALPHA*}
+BRANCH_EXT=	alpha
+EXTRA_REVISION=	.a${_BRANCH:C/ALPHA([0-9]+).*/\1/}.${_TIMENOW}
+.elif ${_BRANCH:MBETA*}
+BRANCH_EXT=	beta
+EXTRA_REVISION=	.b${_BRANCH:C/BETA([0-9]+).*/\1/}.${_TIMENOW}
+.elif ${_BRANCH:MRC*}
+BRANCH_EXT=	rc
+EXTRA_REVISION=	.rc${_BRANCH:C/RC([0-9]+).*/\1/}.${_TIMENOW}
+.elif ${_BRANCH:M*-p*}
+EXTRA_REVISION=	p${_BRANCH:C/.*-p([0-9]+$)/\1/}
+.endif
+.if !defined(PKG_VERSION)
+PKG_VERSION:=	${_PKG_REVISION}${EXTRA_REVISION:C/[[:space:]]//g}
+.endif
+
+.endif	# !defined(_MKSHOWCONFIG)
+
+PKG_NAME_PREFIX?=	FreeBSD
+PKG_MAINTAINER?=	re@FreeBSD.org
+PKG_WWW?=		https://www.FreeBSD.org
+PKG_WORKERS_COUNT?=	1
+
+.if make(*package*)
+.export PKG_NAME_PREFIX
+.export PKG_MAINTAINER
+.export PKG_WWW
+
+.if !defined(PKG_TIMESTAMP)
+.if !empty(GIT_CMD) && exists(${GIT_CMD}) && exists(${SRCDIR}/.git)
+SOURCE_DATE_EPOCH!=	${GIT_CMD} -C ${SRCDIR} show -s --format=%ct HEAD
+.else
+TIMEEPOCHNOW=		%s
+SOURCE_DATE_EPOCH=	${TIMEEPOCHNOW:gmtime}
+.endif
+.else
+SOURCE_DATE_EPOCH=	${PKG_TIMESTAMP}
+.endif
+.endif
+
+.if !defined(_MKSHOWCONFIG)
+_CPUTYPE!=	MAKEFLAGS= CPUTYPE=${_TARGET_CPUTYPE} ${MAKE} -f /dev/null \
+		-m ${.CURDIR}/share/mk MK_AUTO_OBJ=no -V CPUTYPE
+.if ${_CPUTYPE} != ${_TARGET_CPUTYPE}
+.error CPUTYPE global should be set with ?=.
+.endif
+.endif
+.if make(buildworld)
+BUILD_ARCH!=	uname -p
+# On some Linux systems uname -p returns "unknown" so skip this check there.
+# This check only exists to tell people to use TARGET_ARCH instead of
+# MACHINE_ARCH so skipping it when crossbuilding on non-FreeBSD should be fine.
+.if ${MACHINE_ARCH} != ${BUILD_ARCH} && ${.MAKE.OS} == "FreeBSD"
+.error To cross-build, set TARGET_ARCH.
+.endif
+.endif
+WORLDTMP?=	${OBJTOP}/tmp
+BPATH=		${CCACHE_WRAPPER_PATH_PFX}${WORLDTMP}/legacy/usr/sbin:${WORLDTMP}/legacy/usr/bin:${WORLDTMP}/legacy/bin:${WORLDTMP}/legacy/usr/libexec
+XPATH=		${WORLDTMP}/bin:${WORLDTMP}/usr/sbin:${WORLDTMP}/usr/bin
+
+# When building we want to find the cross tools before the host tools in ${BPATH}.
+# We also need to add UNIVERSE_TOOLCHAIN_PATH so that we can find the shared
+# toolchain files (clang, lld, etc.) during make universe/tinderbox
+STRICTTMPPATH=	${XPATH}:${BPATH}
+.if defined(UNIVERSE_TOOLCHAIN_PATH)
+STRICTTMPPATH:=${STRICTTMPPATH}:${UNIVERSE_TOOLCHAIN_PATH}
+.endif
+# We should not be using tools from /usr/bin accidentally since this could cause
+# the build to break on other systems that don't have that tool. For now we
+# still allow using the old behaviour (inheriting $PATH) if
+# BUILD_WITH_STRICT_TMPPATH is set to 0 but this will eventually be removed.
+
+# Currently strict $PATH can cause build failures. Once the remaining issues
+# have been resolved it will be turned on by default.
+BUILD_WITH_STRICT_TMPPATH?=0
+.if defined(CROSSBUILD_HOST)
+# When building on non-FreeBSD we can't rely on the tools in /usr/bin being compatible
+# with what FreeBSD expects. Therefore we only use tools from STRICTTMPPATH
+# during the world build stage. We build most tools during the bootstrap-tools
+# phase but symlink host tools that are known to work instead of building them
+BUILD_WITH_STRICT_TMPPATH:=1
+.endif
+.if ${BUILD_WITH_STRICT_TMPPATH} != 0
+TMPPATH=	${STRICTTMPPATH}
+.else
+TMPPATH=	${STRICTTMPPATH}:${PATH}
+.endif
+
+#
+# Avoid running mktemp(1) unless actually needed.
+# It may not be functional, e.g., due to new ABI
+# when in the middle of installing over this system.
+#
+.if make(distributeworld) || make(installworld) || make(stageworld)
+.if ${BUILD_WITH_STRICT_TMPPATH} != 0
+MKTEMP=${WORLDTMP}/legacy/usr/bin/mktemp
+.if !exists(${MKTEMP})
+.error mktemp binary doesn't exist in expected location: ${MKTEMP}
+.endif
+.else
+MKTEMP=mktemp
+.endif
+INSTALLTMP!=	${MKTEMP} -d -u -t install
+
+.if ${.MAKE.OS} == "FreeBSD"
+# When building on FreeBSD we always copy the host tools instead of linking
+# into INSTALLTMP to avoid issues with incompatible libraries (see r364030).
+# Note: we could create links if we don't intend to update the current machine.
+INSTALLTMP_COPY_HOST_TOOL=cp
+.else
+# However, this is not necessary on Linux/macOS. Additionally, copying the host
+# tools to another directory with cp results in AMFI Launch Constraint
+# Violations on macOS Ventura as part of its System Integrity Protection.
+INSTALLTMP_COPY_HOST_TOOL=ln -s
+.endif
+.endif
+
+.if make(stagekernel) || make(distributekernel)
+TAGS+=		kernel
+PACKAGE=	kernel
+.endif
+
+#
+# Building a world goes through the following stages
+#
+# 1. legacy stage [BMAKE]
+#	This stage is responsible for creating compatibility
+#	shims that are needed by the bootstrap-tools,
+#	build-tools and cross-tools stages. These are generally
+#	APIs that tools from one of those three stages need to
+#	build that aren't present on the host.
+# 1. bootstrap-tools stage [BMAKE]
+#	This stage is responsible for creating programs that
+#	are needed for backward compatibility reasons. They
+#	are not built as cross-tools.
+# 2. build-tools stage [TMAKE]
+#	This stage is responsible for creating the object
+#	tree and building any tools that are needed during
+#	the build process. Some programs are listed during
+#	this phase because they build binaries to generate
+#	files needed to build these programs. This stage also
+#	builds the 'build-tools' target rather than 'all'.
+# 3. cross-tools stage [XMAKE]
+#	This stage is responsible for creating any tools that
+#	are needed for building the system. A cross-compiler is one
+#	of them. This differs from build tools in two ways:
+#	1. the 'all' target is built rather than 'build-tools'
+#	2. these tools are installed into TMPPATH for stage 4.
+# 4. world stage [WMAKE]
+#	This stage actually builds the world.
+# 5. install stage (optional) [IMAKE]
+#	This stage installs a previously built world.
+#
+
+BOOTSTRAPPING?=	0
+# Keep these in sync
+MINIMUM_SUPPORTED_OSREL?= 1104001
+MINIMUM_SUPPORTED_REL?= 11.4
+
+# Common environment for world related stages
+CROSSENV+=	\
+		MACHINE_ARCH=${TARGET_ARCH} \
+		MACHINE=${TARGET} \
+		CPUTYPE=${TARGET_CPUTYPE}
+.if ${MK_META_MODE} != "no"
+# Don't rebuild build-tools targets during normal build.
+CROSSENV+=	BUILD_TOOLS_META=.NOMETA
+.endif
+.if defined(TARGET_CFLAGS)
+CROSSENV+=	${TARGET_CFLAGS}
+.endif
+.if (${TARGET} != ${MACHINE} && !defined(WITH_LOCAL_MODULES)) || \
+    defined(WITHOUT_LOCAL_MODULES)
+CROSSENV+=	LOCAL_MODULES=
+.endif
+
+BOOTSTRAPPING_OSRELDATE?=${OSRELDATE}
+
+# bootstrap-tools stage
+BMAKEENV=	INSTALL="sh ${.CURDIR}/tools/install.sh" \
+		TOOLS_PREFIX=${TOOLS_PREFIX_UNDEF:U${WORLDTMP}} \
+		PATH=${BPATH:Q}:${PATH:Q} \
+		WORLDTMP=${WORLDTMP} \
+		MAKEFLAGS="-m ${.CURDIR}/tools/build/mk ${.MAKEFLAGS}"
+# need to keep this in sync with targets/pseudo/bootstrap-tools/Makefile
+BSARGS= 	DESTDIR= \
+		OBJTOP='${WORLDTMP}/obj-tools' \
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

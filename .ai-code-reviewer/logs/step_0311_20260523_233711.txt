@@ -1,0 +1,62 @@
+=== STEP 311 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/asa/Makefile:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+   Files: 0/1
+📄 File: usr.bin/asa/Makefile
+✏️  Edits: 3 files modified
+
+```
+.include <src.opts.mk>
+
+PROG=	asa
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}=	tests
+
+```
+
+--- RESPONSE ---
+
+
+The completed units use a standalone Makefile with explicit cargo build rules. Let me update my Makefile to match that pattern:
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Makefile
+CONTENT:
+<<<
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+all:
+	@echo "Building crypto_scalarmult Rust replacement..."
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+
+clean:
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+.PHONY: all clean
+>>>

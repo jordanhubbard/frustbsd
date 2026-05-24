@@ -1,0 +1,11 @@
+=== STEP 191 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for '\.error SYSTEM'
+
+--- RESPONSE ---
+
+
+The build errors reference Makefile.inc1 lines 371 and 376 which were changed from `.info` to `.error` in a previous scope. I need to revert those changes. Let me find the exact lines:
+
+ACTION: NEXT_CHUNK

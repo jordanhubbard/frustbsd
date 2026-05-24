@@ -1,0 +1,70 @@
+=== STEP 175 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/FreeBSD_version/build.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The build.rs path won't work correctly. Let me fix it to use the source tree root properly.
+
+ACTION: WRITE_FILE share/examples/FreeBSD_version/build.rs
+CONTENT:
+use std::env;
+use std::path::PathBuf;
+
+fn main() {
+    // Try to determine the FreeBSD version from the source tree.
+    // The source tree root is typically the parent of share/examples/FreeBSD_version
+    let manifest_dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap_or_default());
+    // Go up to source root: share/examples/FreeBSD_version -> .. -> .. -> ..
+    let src_root = manifest_dir.parent().and_then(|p| p.parent()).and_then(|p| p.parent());
+
+    let version = if let Some(root) = src_root {
+        let param_h = root.join("sys/sys/param.h");
+        if let Ok(contents) = std::fs::read_to_string(&param_h) {
+            for line in contents.lines() {
+                if line.contains("__FreeBSD_version") {
+                    let parts: Vec<&str> = line.split_whitespace().collect();
+                    if parts.len() >= 3 {
+                        if let Ok(v) = parts[2].parse::<u32>() {
+                            println!("cargo:rustc-env=FREEBSD_VERSION={}", v);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Fallback: use the host system's osreldate.h if available
+    let fallback = [
+        "/usr/include/osreldate.h",
+        "/usr/local/include/osreldate.h",
+    ];
+    let mut found = false;
+    for path in &fallback {
+        if let Ok(contents) = std::fs::read_to_string(path) {
+            for line in contents.lines() {
+                if line.contains("__FreeBSD_version") {
+                    let parts: Vec<&str> = line.split_whitespace().collect();
+                    if parts.len() >= 3 {
+                        if let Ok(v) = parts[2].parse::<u32>() {
+                            println!("cargo:rustc-env=FREEBSD_VERSION={}", v);
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if found {
+                break;
+            }
+        }
+    }
+
+    if !found {
+        println!("cargo:rustc-env=FREEBSD_VERSION=0");
+    }
+}

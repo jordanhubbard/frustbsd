@@ -1,0 +1,17 @@
+=== STEP 334 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24:
+```
+Makefile
+ref
+shorthash_siphash24.c
+shorthash_siphashx24.c
+```
+
+--- RESPONSE ---
+
+
+This libsodium unit is part of a complex autotools-based contrib tree. The build system errors from Makefile.inc1 suggest the BUILD action runs from the source root, which triggers the full FreeBSD build system. Let me check if there's a simpler unit available.
+
+ACTION: SET_SCOPE bin/cat

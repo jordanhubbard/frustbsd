@@ -1,0 +1,11 @@
+=== STEP 307 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*usr.bin/basename/Cargo.toml*'
+
+--- RESPONSE ---
+
+
+Let me check how the recently completed units handled Rust integration:
+
+ACTION: FIND_FILE usr.bin/asa/Cargo.toml

@@ -1,0 +1,14 @@
+=== STEP 66 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory sys/contrib/openzfs/lib/libzfs_core/os/linux skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+
+--- RESPONSE ---
+
+
+Let me find a work unit with actual C source files.
+
+ACTION: FIND_FILE bin/cat/*.c

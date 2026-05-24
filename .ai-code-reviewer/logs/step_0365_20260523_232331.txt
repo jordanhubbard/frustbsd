@@ -1,0 +1,11 @@
+=== STEP 365 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I see the issue - I keep forgetting to include the CONTENT block. Let me create the Makefile properly.
+
+ACTION: WRITE_FILE contrib/llvm-project/lldb/source/Interpreter/Interfaces/Makefile

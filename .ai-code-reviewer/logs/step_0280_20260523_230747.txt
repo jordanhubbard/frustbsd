@@ -1,0 +1,56 @@
+=== STEP 280 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/lldb/source/Interpreter/Interfaces/ScriptedInterfaceUsages.cpp:
+PROGRESS:
+📁 Directory: contrib/llvm-project/lldb/source/Interpreter/Interfaces
+   Files: 0/1
+📄 File: contrib/llvm-project/lldb/source/Interpreter/Interfaces/ScriptedInterfaceUsages.cpp
+
+```
+//===-- ScriptedInterfaceUsages.cpp --------------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#include "lldb/Interpreter/Interfaces/ScriptedInterfaceUsages.h"
+
+using namespace lldb;
+using namespace lldb_private;
+
+void ScriptedInterfaceUsages::Dump(Stream &s, UsageKind kind) const {
+  s.IndentMore();
+  s.Indent();
+  llvm::StringRef usage_kind =
+      (kind == UsageKind::CommandInterpreter) ? "Command Interpreter" : "API";
+  s << usage_kind << " Usages:";
+  const std::vector<llvm::StringRef> &usages =
+      (kind == UsageKind::CommandInterpreter) ? GetCommandInterpreterUsages()
+                                              : GetSBAPIUsages();
+  if (usages.empty())
+    s << " None\n";
+  else if (usages.size() == 1)
+    s << " " << usages.front() << '\n';
+  else {
+    s << '\n';
+    for (llvm::StringRef usage : usages) {
+      s.IndentMore();
+      s.Indent();
+      s << usage << '\n';
+      s.IndentLess();
+    }
+  }
+  s.IndentLess();
+}
+
+```
+
+--- RESPONSE ---
+
+
+This unit is third-party LLVM/LLDB code, not FreeBSD userland. It has no Makefile, is not a standalone buildable unit, and is outside the rewrite objective. I need to skip this unit.
+
+ACTION: BUILD

@@ -1,0 +1,72 @@
+=== STEP 138 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+Pending source/build changes: 4 files modified
+Files: sys/contrib/openzfs/lib/libzfs_core/os/linux/Cargo.toml, sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Makefile, sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Cargo.toml, sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/lib.rs
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: usr.bin/col
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+The build reports 0 errors but still fails. The Rust code references external FFI symbols that won't be available. Let me fix the Rust code to be self-contained.
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/lib.rs
+CONTENT:
+<<<
+// Rust replacement for crypto_scalarmult.c
+// This provides the same C ABI interface as the original C implementation.
+// The actual curve25519 operations are delegated to the libsodium curve25519
+// implementation; this crate provides the wrapper functions.
+
+use std::ffi::c_char;
+
+// These are the actual curve25519 implementations provided by libsodium's
+// crypto_scalarmult/curve25519 subdirectory. We declare them as external
+// since they are compiled separately and linked together.
+extern "C" {
+    fn crypto_scalarmult_curve25519_base(q: *mut u8, n: *const u8) -> i32;
+    fn crypto_scalarmult_curve25519(q: *mut u8, n: *const u8, p: *const u8) -> i32;
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_primitive() -> *const c_char {
+    // Returns the primitive name - in the original this is crypto_scalarmult_PRIMITIVE
+    // which is defined as "curve25519"
+    b"curve25519\0".as_ptr() as *const c_char
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_base(q: *mut u8, n: *const u8) -> i32 {
+    crypto_scalarmult_curve25519_base(q, n)
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult(q: *mut u8, n: *const u8, p: *const u8) -> i32 {
+    crypto_scalarmult_curve25519(q, n, p)
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_bytes() -> usize {
+    // crypto_scalarmult_BYTES is 32 for curve25519
+    32
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_scalarbytes() -> usize {
+    // crypto_scalarmult_SCALARBYTES is 32 for curve25519
+    32
+}
+>>>

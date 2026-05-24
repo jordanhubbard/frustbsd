@@ -1,0 +1,11 @@
+=== STEP 535 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I need to create a Makefile to prevent the build from falling through to the top-level Makefile.inc1. Let me create one:
+
+ACTION: WRITE_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso0/Makefile

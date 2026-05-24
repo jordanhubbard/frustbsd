@@ -1,0 +1,20 @@
+=== STEP 9 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE sys/contrib/openzfs/lib/libzfs_core/os/linux/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "libzfs_core_ioctl_linux"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+path = "src/lib.rs"
+<<<

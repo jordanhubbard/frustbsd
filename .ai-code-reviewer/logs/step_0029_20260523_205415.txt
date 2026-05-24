@@ -1,0 +1,30 @@
+=== STEP 29 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/openzfs/lib/libzfs_core/os/linux:
+```
+Cargo.toml
+libzfs_core_ioctl.c
+src
+```
+
+--- RESPONSE ---
+
+
+The build errors are system-level bootstrap issues in Makefile.inc1, unrelated to my changes. This is a Linux-only directory with no Makefile. Let me create a proper FreeBSD Makefile for this unit.
+
+ACTION: WRITE_FILE sys/contrib/openzfs/lib/libzfs_core/os/linux/Makefile
+CONTENT:
+# SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+
+PROG=	libzfs_core_ioctl_linux
+SRCS=	libzfs_core_ioctl.c
+
+RUST_SRCDIR=	${.CURDIR}
+CARGO_TARGET_DIR=	${.OBJDIR}/cargo-target
+
+.if defined(WITH_RUST)
+RUST_PROG=	${PROG}_rust
+.endif
+
+.include <bsd.prog.mk>

@@ -1,0 +1,27 @@
+=== STEP 51 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: sys/contrib/openzfs/lib/libzfs_core/os/linux
+Pending source/build changes: 3 files modified
+Files: sys/contrib/openzfs/lib/libzfs_core/os/linux/Cargo.toml, sys/contrib/openzfs/lib/libzfs_core/os/linux/src/lib.rs, sys/contrib/openzfs/lib/libzfs_core/os/linux/Makefile
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in sys/contrib/openzfs/lib/libzfs_core/os/linux
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: bin/cat/tests
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+The build errors are system-level bootstrap issues in `Makefile.inc1` about cross-compiler bootstrapping, completely unrelated to my changes. This is a Linux-only directory that's never built on FreeBSD. Let me remove my changes and try to build the original unit.
+
+ACTION: WRITE_FILE sys/contrib/openzfs/lib/libzfs_core/os/linux/Cargo.toml
+CONTENT:

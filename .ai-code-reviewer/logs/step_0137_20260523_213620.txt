@@ -1,0 +1,27 @@
+=== STEP 137 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Cargo.toml:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Cargo.toml
+✏️  Edits: 4 files modified
+
+```
+[package]
+name = "crypto_scalarmult"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+path = "src/lib.rs"
+```
+
+--- RESPONSE ---
+
+
+The build reports 0 errors but still fails. This scope is problematic - it's a libsodium subdirectory without proper build integration. Let me try to find a buildable unit.
+
+ACTION: SET_SCOPE usr.bin/col

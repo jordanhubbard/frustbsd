@@ -1,0 +1,14 @@
+=== STEP 335 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/lldb/source/Interpreter/Interfaces
+
+--- RESPONSE ---
+
+
+Let me find a simpler unit with C source that has a proper FreeBSD build integration:
+
+ACTION: FIND_FILE bin/*/Makefile

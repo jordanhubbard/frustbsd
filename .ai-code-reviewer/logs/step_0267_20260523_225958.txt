@@ -1,0 +1,294 @@
+=== STEP 267 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/include/sodium/crypto_scalarmult_curve25519.h:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/include/sodium/crypto_scalarmult_curve25519.h
+✏️  Edits: 1 files modified
+
+```
+#ifndef crypto_scalarmult_curve25519_H
+#define crypto_scalarmult_curve25519_H
+
+#include <stddef.h>
+
+#include "export.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define crypto_scalarmult_curve25519_BYTES 32U
+SODIUM_EXPORT
+size_t crypto_scalarmult_curve25519_bytes(void);
+
+#define crypto_scalarmult_curve25519_SCALARBYTES 32U
+SODIUM_EXPORT
+size_t crypto_scalarmult_curve25519_scalarbytes(void);
+
+/*
+ * NOTE: Do not use the result of this function directly.
+ *
+ * Hash the result with the public keys in order to compute a shared
+ * secret key: H(q || client_pk || server_pk)
+ *
+ * Or unless this is not an option, use the crypto_kx() API instead.
+ */
+SODIUM_EXPORT
+int crypto_scalarmult_curve25519(unsigned char *q, const unsigned char *n,
+                                 const unsigned char *p)
+            __attribute__ ((warn_unused_result));
+
+SODIUM_EXPORT
+int crypto_scalarmult_curve25519_base(unsigned char *q, const unsigned char *n);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+
+```
+
+--- RESPONSE ---
+
+
+This is a crypto library module. The `crypto_scalarmult.c` is a thin wrapper delegating to curve25519 implementations. I need to create a Rust crate that provides the same C ABI functions. Let me create the Rust implementation.
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/lib.rs
+CONTENT:
+<<<
+//! Rust replacement for libsodium crypto_scalarmult module.
+//!
+//! Provides C ABI compatible functions for X25519 scalar multiplication.
+
+#![no_std]
+
+use core::ffi::c_char;
+
+/// crypto_scalarmult_BYTES - size of a point in bytes
+pub const CRYPTO_SCALARMULT_BYTES: usize = 32;
+
+/// crypto_scalarmult_SCALARBYTES - size of a scalar in bytes
+pub const CRYPTO_SCALARMULT_SCALARBYTES: usize = 32;
+
+/// crypto_scalarmult_PRIMITIVE - name of the primitive
+const CRYPTO_SCALARMULT_PRIMITIVE: &str = "curve25519";
+
+// ---------------------------------------------------------------------------
+// C ABI exports matching the public header
+// ---------------------------------------------------------------------------
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_primitive() -> *const c_char {
+    CRYPTO_SCALARMULT_PRIMITIVE.as_ptr() as *const c_char
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_bytes() -> usize {
+    CRYPTO_SCALARMULT_BYTES
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_scalarbytes() -> usize {
+    CRYPTO_SCALARMULT_SCALARBYTES
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_base(
+    q: *mut u8,
+    n: *const u8,
+) -> i32 {
+    crypto_scalarmult_curve25519_base(q, n)
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult(
+    q: *mut u8,
+    n: *const u8,
+    p: *const u8,
+) -> i32 {
+    crypto_scalarmult_curve25519(q, n, p)
+}
+
+// ---------------------------------------------------------------------------
+// curve25519-specific symbols (same values as the C header)
+// ---------------------------------------------------------------------------
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_curve25519_bytes() -> usize {
+    CRYPTO_SCALARMULT_BYTES
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_curve25519_scalarbytes() -> usize {
+    CRYPTO_SCALARMULT_SCALARBYTES
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_curve25519(
+    q: *mut u8,
+    n: *const u8,
+    p: *const u8,
+) -> i32 {
+    if q.is_null() || n.is_null() || p.is_null() {
+        return -1;
+    }
+
+    let mut n_arr = [0u8; 32];
+    let mut p_arr = [0u8; 32];
+    core::ptr::copy_nonoverlapping(n, n_arr.as_mut_ptr(), 32);
+    core::ptr::copy_nonoverlapping(p, p_arr.as_mut_ptr(), 32);
+
+    // Clamp scalar
+    let mut clamped = n_arr;
+    clamped[0] &= 248;
+    clamped[31] &= 127;
+    clamped[31] |= 64;
+
+    let result = x25519_scalar_mult(&clamped, &p_arr);
+
+    core::ptr::copy_nonoverlapping(result.as_ptr(), q, 32);
+    0
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_curve25519_base(
+    q: *mut u8,
+    n: *const u8,
+) -> i32 {
+    if q.is_null() || n.is_null() {
+        return -1;
+    }
+
+    let mut n_arr = [0u8; 32];
+    core::ptr::copy_nonoverlapping(n, n_arr.as_mut_ptr(), 32);
+
+    // Clamp scalar
+    let mut clamped = n_arr;
+    clamped[0] &= 248;
+    clamped[31] &= 127;
+    clamped[31] |= 64;
+
+    // Base point for X25519 is 9
+    let base: [u8; 32] = [
+        9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ];
+
+    let result = x25519_scalar_mult(&clamped, &base);
+
+    core::ptr::copy_nonoverlapping(result.as_ptr(), q, 32);
+    0
+}
+
+// ---------------------------------------------------------------------------
+// X25519 implementation (ladder-based, constant-time)
+// ---------------------------------------------------------------------------
+
+/// Field element: 10 u32 limbs in radix 2^26 (ref10 style)
+#[derive(Clone, Copy)]
+struct Fe([u64; 10]);
+
+impl Fe {
+    fn new(v: u64) -> Self {
+        let mut r = Self([0u64; 10]);
+        r.0[0] = v & 0x3ffffff;
+        r.0[1] = (v >> 26) & 0x3ffffff;
+        r.0[2] = (v >> 52) & 0x3ffffff;
+        r
+    }
+
+    fn zero() -> Self {
+        Self([0u64; 10])
+    }
+
+    fn one() -> Self {
+        Self([1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+    }
+
+    /// Decode from little-endian bytes
+    fn from_bytes(b: &[u8; 32]) -> Self {
+        let mut r = Self([0u64; 10]);
+        r.0[0] = u64::from_le_bytes(b[0..8].try_into().unwrap());
+        r.0[1] = (r.0[0] >> 26) | (u64::from(b[7]) << 40) | (u64::from(b[8]) << 48);
+        r.0[1] &= 0x3ffffff;
+        r.0[0] &= 0x3ffffff;
+        r.0[2] = (u64::from(b[8]) >> 4) | (u64::from(b[9]) << 4) | (u64::from(b[10]) << 12) | (u64::from(b[11]) << 20) | (u64::from(b[12]) << 28);
+        r.0[2] &= 0x3ffffff;
+        r.0[3] = (u64::from(b[12]) >> 4) | (u64::from(b[13]) << 4) | (u64::from(b[14]) << 12) | (u64::from(b[15]) << 20);
+        r.0[3] &= 0x3ffffff;
+        r.0[4] = (u64::from(b[15]) >> 1) | (u64::from(b[16]) << 7) | (u64::from(b[17]) << 15) | (u64::from(b[18]) << 23);
+        r.0[4] &= 0x3ffffff;
+        r.0[5] = (u64::from(b[18]) >> 5) | (u64::from(b[19]) << 3) | (u64::from(b[20]) << 11) | (u64::from(b[21]) << 19) | (u64::from(b[22]) << 27);
+        r.0[5] &= 0x3ffffff;
+        r.0[6] = (u64::from(b[22]) >> 2) | (u64::from(b[23]) << 6) | (u64::from(b[24]) << 14) | (u64::from(b[25]) << 22);
+        r.0[6] &= 0x3ffffff;
+        r.0[7] = (u64::from(b[25]) >> 3) | (u64::from(b[26]) << 5) | (u64::from(b[27]) << 13) | (u64::from(b[28]) << 21);
+        r.0[7] &= 0x3ffffff;
+        r.0[8] = (u64::from(b[28]) >> 2) | (u64::from(b[29]) << 6) | (u64::from(b[30]) << 14) | (u64::from(b[31]) << 22);
+        r.0[8] &= 0x3ffffff;
+        r.0[9] = (r.0[8] >> 26);
+        r.0[8] &= 0x3ffffff;
+        // Carry propagation
+        let mut carry = r.0[9];
+        r.0[0] += carry * 19;
+        for i in 0..10 {
+            r.0[i] &= 0x3ffffff;
+        }
+        r
+    }
+
+    /// Encode to little-endian bytes
+    fn to_bytes(&self) -> [u8; 32] {
+        let mut r = *self;
+        // Reduce
+        for i in (0..10).rev() {
+            if i == 9 {
+                r.0[0] += r.0[i] * 19;
+            } else {
+                r.0[i + 1] += r.0[i] >> 26;
+            }
+            r.0[i] &= 0x3ffffff;
+        }
+        let mut b = [0u8; 32];
+        b[0] = (r.0[0] >> 0) as u8;
+        b[1] = ((r.0[0] >> 8) & 0xff) as u8;
+        b[2] = ((r.0[0] >> 16) & 0xff) as u8;
+        b[3] = (((r.0[0] >> 24) | (r.0[1] << 2)) & 0xff) as u8;
+        b[4] = ((r.0[1] >> 6) & 0xff) as u8;
+        b[5] = ((r.0[1] >> 14) & 0xff) as u8;
+        b[6] = (((r.0[1] >> 22) | (r.0[2] << 4)) & 0xff) as u8;
+        b[7] = ((r.0[2] >> 6) & 0xff) as u8;
+        b[8] = ((r.0[2] >> 14) & 0xff) as u8;
+        b[9] = (((r.0[2] >> 22) | (r.0[3] << 2)) & 0xff) as u8;
+        b[10] = ((r.0[3] >> 6) & 0xff) as u8;
+        b[11] = ((r.0[3] >> 14) & 0xff) as u8;
+        b[12] = (((r.0[3] >> 22) | (r.0[4] << 4)) & 0xff) as u8;
+        b[13] = ((r.0[4] >> 6) & 0xff) as u8;
+        b[14] = ((r.0[4] >> 14) & 0xff) as u8;
+        b[15] = (((r.0[4] >> 22) | (r.0[5] << 2)) & 0xff) as u8;
+        b[16] = ((r.0[5] >> 6) & 0xff) as u8;
+        b[17] = ((r.0[5] >> 14) & 0xff) as u8;
+        b[18] = (((r.0[5] >> 22) | (r.0[6] << 4)) & 0xff) as u8;
+        b[19] = ((r.0[6] >> 6) & 0xff) as u8;
+        b[20] = ((r.0[6] >> 14) & 0xff) as u8;
+        b[21] = (((r.0[6] >> 22) | (r.0[7] << 2)) & 0xff) as u8;
+        b[22] = ((r.0[7] >> 6) & 0xff) as u8;
+        b[23] = ((r.0[7] >> 14) & 0xff) as u8;
+        b[24] = (((r.0[7] >> 22) | (r.0[8] << 4)) & 0xff) as u8;
+        b[25] = ((r.0[8] >> 6) & 0xff) as u8;
+        b[26] = ((r.0[8] >> 14) & 0xff) as u8;
+        b[27] = (((r.0[8] >> 22) | (r.0[9] << 2)) & 0xff) as u8;
+        b[28] = ((r.0[9] >> 6) & 0xff) as u8;
+        b[29] = ((r.0[9] >> 14) & 0xff) as u8;
+        b[30] = ((r.0[9] >> 22) & 0xff) as u8;
+        b[31] = ((r.0[9] >> 30) & 0xff) as u8;
+        b
+    }
+
+    fn add(&self, b: &Self) -> Self {
+        let mut r = Self([0u64; 10]);
+        for i in 0..1

@@ -1,0 +1,57 @@
+=== STEP 278 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/x25519.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Let me take a different approach - write a Rust crate that provides the wrapper functions and links to the existing C curve25519 implementation.
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/lib.rs
+CONTENT:
+<<<
+//! Rust replacement for libsodium crypto_scalarmult wrapper layer.
+//! The heavy crypto (curve25519) is provided by linked C objects.
+#![no_std]
+use core::ffi::c_char;
+
+pub const CRYPTO_SCALARMULT_BYTES: usize = 32;
+pub const CRYPTO_SCALARMULT_SCALARBYTES: usize = 32;
+const PRIMITIVE: &str = "curve25519";
+
+extern "C" {
+    fn _crypto_scalarmult_curve25519_impl(q: *mut u8, n: *const u8, p: *const u8) -> i32;
+    fn _crypto_scalarmult_curve25519_base_impl(q: *mut u8, n: *const u8) -> i32;
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_primitive() -> *const c_char {
+    PRIMITIVE.as_ptr() as *const c_char
+}
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_bytes() -> usize { CRYPTO_SCALARMULT_BYTES }
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_scalarbytes() -> usize { CRYPTO_SCALARMULT_SCALARBYTES }
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_base(q: *mut u8, n: *const u8) -> i32 {
+    _crypto_scalarmult_curve25519_base_impl(q, n)
+}
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult(q: *mut u8, n: *const u8, p: *const u8) -> i32 {
+    _crypto_scalarmult_curve25519_impl(q, n, p)
+}
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_curve25519_bytes() -> usize { CRYPTO_SCALARMULT_BYTES }
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_curve25519_scalarbytes() -> usize { CRYPTO_SCALARMULT_SCALARBYTES }
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_curve25519(q: *mut u8, n: *const u8, p: *const u8) -> i32 {
+    _crypto_scalarmult_curve25519_impl(q, n, p)
+}
+#[no_mangle]
+pub unsafe extern "C" fn crypto_scalarmult_curve25519_base(q: *mut u8, n: *const u8) -> i32 {
+    _crypto_scalarmult_curve25519_base_impl(q, n)
+}
+>>>

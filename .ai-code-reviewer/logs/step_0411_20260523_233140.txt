@@ -1,0 +1,17 @@
+=== STEP 411 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/lib/csu:
+```
+arch
+dso
+h_initfini1.cxx
+h_initfini3.cxx
+h_initfini_common.cxx
+t_crt0.sh
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE contrib/netbsd-tests/lib/csu/Makefile

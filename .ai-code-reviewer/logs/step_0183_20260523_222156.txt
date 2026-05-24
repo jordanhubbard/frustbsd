@@ -1,0 +1,24 @@
+=== STEP 183 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/yes/Makefile:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_shorthash
+   Files: 0/1
+📄 File: usr.bin/yes/Makefile
+
+```
+.include <src.opts.mk>
+
+PROG=	yes
+HAS_TESTS=
+SUBDIR.${MK_TESTS}=	tests
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/yes

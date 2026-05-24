@@ -1,0 +1,15 @@
+=== STEP 4 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/openzfs/lib/libzfs_core/os:
+```
+freebsd
+linux
+```
+
+--- RESPONSE ---
+
+
+This is a Linux-specific file under `sys/contrib/openzfs/lib/libzfs_core/os/linux/`. On FreeBSD, the `freebsd` subdirectory is used instead. This code is never built on FreeBSD and is irrelevant to the FreeBSD userland rewrite objective. I should skip this unit and move to the next pending unit.
+
+ACTION: SET_SCOPE bin/cat/tests

@@ -1,0 +1,50 @@
+=== STEP 250 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_scalarmult/crypto_scalarmult.c:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/crypto_scalarmult/crypto_scalarmult.c
+
+```
+
+#include "crypto_scalarmult.h"
+
+const char *
+crypto_scalarmult_primitive(void)
+{
+    return crypto_scalarmult_PRIMITIVE;
+}
+
+int
+crypto_scalarmult_base(unsigned char *q, const unsigned char *n)
+{
+    return crypto_scalarmult_curve25519_base(q, n);
+}
+
+int
+crypto_scalarmult(unsigned char *q, const unsigned char *n,
+                  const unsigned char *p)
+{
+    return crypto_scalarmult_curve25519(q, n, p);
+}
+
+size_t
+crypto_scalarmult_bytes(void)
+{
+    return crypto_scalarmult_BYTES;
+}
+
+size_t
+crypto_scalarmult_scalarbytes(void)
+{
+    return crypto_scalarmult_SCALARBYTES;
+}
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Makefile

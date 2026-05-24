@@ -1,0 +1,31 @@
+=== STEP 243 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*.out':
+```
+./sys/contrib/openzfs/tests/zfs-tests/tests/functional/channel_program/lua_core/tst.large_prog.out
+./sys/contrib/openzfs/tests/zfs-tests/tests/functional/channel_program/lua_core/tst.args_to_lua.out
+./sys/contrib/openzfs/tests/zfs-tests/tests/functional/channel_program/synctask_core/tst.get_index_props.out
+./sys/contrib/openzfs/tests/zfs-tests/tests/functional/channel_program/synctask_core/tst.get_number_props.out
+./sys/contrib/openzfs/tests/zfs-tests/tests/functional/channel_program/synctask_core/tst.get_string_props.out
+./sbin/ping/tests/ping_c1_s8_t1_S1.out
+./sbin/ping/tests/ping_c1_s56_t1.out
+./sbin/ping/tests/ping_c1_s56_t1_S127.out
+./sbin/ping/tests/ping_6_c1_s8_t1.out
+./crypto/krb5/src/lib/krb5/os/ref_std_conf.out
+./crypto/krb5/src/lib/krb5/krb/t_ref_kerb.out
+./crypto/openssl/test/recipes/25-test_pkcs7_data/grfc.out
+./tools/tools/shlib-compat/test/regress.2-3.out
+./tools/tools/shlib-compat/test/regress.1-2.out
+./tools/tools/shlib-compat/test/regress.3-3.out
+./tools/tools/shlib-compat/test/regress.2-2.out
+./tools/tools/shlib-compat/test/regress.3-2.out
+./tools/tools/shlib-compat/test/regress.1-3.out
+./tools/tools/shlib-compat/test/regress.3-1.out
+./tools/tools/shlib-compat/test/regress.2-1.out
+```
+
+--- RESPONSE ---
+
+
+ACTION: GREP cargo

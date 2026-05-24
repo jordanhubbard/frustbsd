@@ -131,13 +131,25 @@
     "attempts": 3,
     "last_attempt": "2026-05-23T20:13:55.015565"
   },
+  "contrib/llvm-project/lldb/source/Interpreter/Interfaces": {
+    "attempts": 3,
+    "last_attempt": "2026-05-24T00:15:47.637793"
+  },
   "contrib/llvm-project/lldb/tools/argdumper": {
     "attempts": 3,
     "last_attempt": "2026-05-23T02:28:48.009957"
   },
+  "contrib/llvm-project/llvm/lib/Frontend/Directive": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T00:22:43.395581"
+  },
   "contrib/llvm-project/llvm/lib/Frontend/OpenACC": {
     "attempts": 2,
     "last_attempt": "2026-05-22T21:07:43.325248"
+  },
+  "contrib/netbsd-tests/lib/csu/dso": {
+    "attempts": 2,
+    "last_attempt": "2026-05-24T00:21:20.336471"
   },
   "contrib/netbsd-tests/lib/semaphore/pthread": {
     "attempts": 3,
@@ -164,8 +176,8 @@
     "last_attempt": "2026-05-22T23:06:35.707184"
   },
   "share/examples/FreeBSD_version": {
-    "attempts": 1,
-    "last_attempt": "2026-05-23T19:15:04.891017"
+    "attempts": 3,
+    "last_attempt": "2026-05-23T22:19:33.641774"
   },
   "sys/cddl/contrib/opensolaris/uts/arm/dtrace": {
     "attempts": 2,
@@ -192,12 +204,12 @@
     "last_attempt": "2026-05-22T20:01:23.115564"
   },
   "sys/contrib/libsodium/src/libsodium/crypto_scalarmult": {
-    "attempts": 1,
-    "last_attempt": "2026-05-23T19:34:45.179091"
+    "attempts": 2,
+    "last_attempt": "2026-05-23T22:52:22.060999"
   },
   "sys/contrib/libsodium/src/libsodium/crypto_shorthash": {
-    "attempts": 1,
-    "last_attempt": "2026-05-23T20:08:12.758356"
+    "attempts": 3,
+    "last_attempt": "2026-05-23T23:51:35.976012"
   },
   "sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24": {
     "attempts": 3,
@@ -212,8 +224,8 @@
     "last_attempt": "2026-05-23T13:38:12.689367"
   },
   "sys/contrib/openzfs/lib/libzfs_core/os/linux": {
-    "attempts": 2,
-    "last_attempt": "2026-05-23T19:09:57.629801"
+    "attempts": 3,
+    "last_attempt": "2026-05-23T20:22:15.931538"
   },
   "tools/regression/tls/libxx": {
     "attempts": 1,
@@ -396,8 +408,8 @@
     "last_attempt": "2026-05-22T21:00:37.814897"
   },
   "usr.bin/units": {
-    "attempts": 2,
-    "last_attempt": "2026-05-23T13:41:46.529718"
+    "attempts": 3,
+    "last_attempt": "2026-05-24T00:08:25.881821"
   },
   "usr.bin/w": {
     "attempts": 1,

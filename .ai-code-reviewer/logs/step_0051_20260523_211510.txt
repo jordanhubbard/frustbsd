@@ -1,0 +1,51 @@
+=== STEP 51 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE sys/contrib/openzfs/lib/libzfs_core/os/linux
+
+--- RESPONSE ---
+
+
+Let me try removing the bsd.prog.mk include which pulls in the tree root infrastructure.
+
+ACTION: EDIT_FILE share/examples/FreeBSD_version/Makefile
+OLD:
+<<<
+PROG=	FreeBSD_version
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+all: ${PROG}.rust
+
+${PROG}.rust: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs ${.CURDIR}/build.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR} --release
+	${INSTALL} ${CARGO_TARGET_DIR}/release/${PROG} ${.OBJDIR}/${PROG}.rust
+
+clean:
+	rm -f ${PROG}.rust
+
+install:
+
+.include <bsd.prog.mk>
+>>>
+NEW:
+<<<
+PROG=	FreeBSD_version
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+all: ${PROG}.rust
+
+${PROG}.rust: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs ${.CURDIR}/build.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR} --release
+	${INSTALL} ${CARGO_TARGET_DIR}/release/${PROG} ${.OBJDIR}/${PROG}.rust
+
+clean:
+	rm -f ${PROG}.rust
+
+install:
+	@echo "Nothing to install for ${PROG}"
+>>>

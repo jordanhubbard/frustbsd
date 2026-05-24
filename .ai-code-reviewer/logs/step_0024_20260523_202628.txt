@@ -1,0 +1,22 @@
+=== STEP 24 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+Now I understand the program. It's a small example that prints compile-time and runtime FreeBSD version. Let me create the Rust replacement.
+
+ACTION: WRITE_FILE share/examples/FreeBSD_version/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "FreeBSD_version"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "FreeBSD_version"
+path = "src/main.rs"
+>>>

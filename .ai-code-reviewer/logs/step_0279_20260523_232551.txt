@@ -1,0 +1,63 @@
+=== STEP 279 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/lib.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The FFI approach creates circular dependencies. Let me write a self-contained but compact implementation. I'll write the entire x25519 module in a single compact file.
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/x25519.rs
+CONTENT:
+<<<
+#[derive(Clone,Copy)] struct Fe([u32;10]);
+fn fe_zero() -> Fe { Fe([0;10]) }
+fn fe_one() -> Fe { Fe([1,0,0,0,0,0,0,0,0,0]) }
+fn fe_add(a:&Fe,b:&Fe) -> Fe { let mut r=Fe([0;10]); for i in 0..10{r.0[i]=a.0[i].wrapping_add(b.0[i])} r }
+fn fe_sub(a:&Fe,b:&Fe) -> Fe { let mut r=Fe([0;10]); for i in 0..10{r.0[i]=a.0[i].wrapping_sub(b.0[i])} r }
+fn fe_sq(a:&Fe) -> Fe {
+    let a=a.0; let d=[
+        a[0]as u64*a[0]as u64, 2*a[0]as u64*a[1]as u64,
+        2*a[0]as u64*a[2]as u64+a[1]as u64*a[1]as u64,
+        2*(a[0]as u64*a[3]as u64+a[1]as u64*a[2]as u64),
+        2*(a[0]as u64*a[4]as u64+a[1]as u64*a[3]as u64)+a[2]as u64*a[2]as u64,
+        2*(a[0]as u64*a[5]as u64+a[1]as u64*a[4]as u64+a[2]as u64*a[3]as u64),
+        2*(a[0]as u64*a[6]as u64+a[1]as u64*a[5]as u64+a[2]as u64*a[4]as u64)+a[3]as u64*a[3]as u64,
+        2*(a[0]as u64*a[7]as u64+a[1]as u64*a[6]as u64+a[2]as u64*a[5]as u64+a[3]as u64*a[4]as u64),
+        2*(a[0]as u64*a[8]as u64+a[1]as u64*a[7]as u64+a[2]as u64*a[6]as u64+a[3]as u64*a[5]as u64)+a[4]as u64*a[4]as u64,
+        2*(a[0]as u64*a[9]as u64+a[1]as u64*a[8]as u64+a[2]as u64*a[7]as u64+a[3]as u64*a[6]as u64+a[4]as u64*a[5]as u64),
+        2*(a[1]as u64*a[9]as u64+a[2]as u64*a[8]as u64+a[3]as u64*a[7]as u64+a[4]as u64*a[6]as u64)+a[5]as u64*a[5]as u64,
+        2*(a[2]as u64*a[9]as u64+a[3]as u64*a[8]as u64+a[4]as u64*a[7]as u64+a[5]as u64*a[6]as u64),
+        2*(a[3]as u64*a[9]as u64+a[4]as u64*a[8]as u64+a[5]as u64*a[7]as u64)+a[6]as u64*a[6]as u64,
+        2*(a[4]as u64*a[9]as u64+a[5]as u64*a[8]as u64+a[6]as u64*a[7]as u64),
+        2*(a[5]as u64*a[9]as u64+a[6]as u64*a[8]as u64)+a[7]as u64*a[7]as u64,
+        2*(a[6]as u64*a[9]as u64+a[7]as u64*a[8]as u64),
+        2*a[7]as u64*a[9]as u64+a[8]as u64*a[8]as u64,
+        2*a[8]as u64*a[9]as u64,
+        a[9]as u64*a[9]as u64,
+    ];
+    let mut r=Fe([0;10]);
+    for i in 0..10{r.0[i]=(d[i]&0x3ffffff)as u32}
+    r.0[0]=r.0[0].wrapping_add((d[18]*19)as u32);
+    r.0[1]=r.0[1].wrapping_add((d[17]*19)as u32);
+    r.0[2]=r.0[2].wrapping_add((d[16]*19)as u32);
+    r.0[3]=r.0[3].wrapping_add((d[15]*19)as u32);
+    r.0[4]=r.0[4].wrapping_add((d[14]*19)as u32);
+    r.0[5]=r.0[5].wrapping_add((d[13]*19)as u32);
+    r.0[6]=r.0[6].wrapping_add((d[12]*19)as u32);
+    r.0[7]=r.0[7].wrapping_add((d[11]*19)as u32);
+    r.0[8]=r.0[8].wrapping_add((d[10]*19)as u32);
+    r.0[9]=r.0[9].wrapping_add((d[9]>>26)as u32);
+    for i in 0..10{r.0[i]&=0x3ffffff}
+    r
+}
+fn fe_mul(a:&Fe,b:&Fe) -> Fe {
+    let a=a.0;let b=b.0;let mut r=Fe([0;10]);
+    for i in 0..10{let mut s=0u64;for j in 0..=i{s+=a[j]as u64*b[i-j]as u64}for j in 1..=i{s+=38*a[j]as u64*b[i-j+10]as u64}r.0[i]=(s&0x3ffffff)as u32}
+    r
+}
+fn fe_cswap(a:&mut Fe,b:&mut Fe,swap:u8){let mask=(swap as i32).wrapping_sub(1)as u32;for i in 0..10{let d=a.0[i]^b.0[i];a.0[i]^=mask&d;b.0[i]^=mask&d}}
+fn fe_invert(a:&Fe) -> Fe {
+    let mut t=fe_sq(a);let mut u=fe_sq(&t);u=fe_sq(&u);u=fe_mul(a,&u);

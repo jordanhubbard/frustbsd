@@ -1,0 +1,11 @@
+=== STEP 87 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'SYSTEM_COMPILER'
+
+--- RESPONSE ---
+
+
+The Makefile.inc1 has been reverted. The build errors are from `.info` directives at lines 371 and 376. Let me find them.
+
+ACTION: READ_FILE Makefile.inc1

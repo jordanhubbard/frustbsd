@@ -1,0 +1,26 @@
+=== STEP 317 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+Pending source/build changes: 4 files modified
+Files: sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Cargo.toml, sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/lib.rs, sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/x25519.rs, sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Makefile
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: bin/cat/tests
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level FreeBSD build system, not my Rust code. Let me check if cargo can build the crate directly to verify the Rust code is correct:
+
+ACTION: BUILD
