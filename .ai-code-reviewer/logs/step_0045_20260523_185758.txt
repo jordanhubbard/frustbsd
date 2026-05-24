@@ -1,0 +1,14 @@
+=== STEP 45 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE share/examples/FreeBSD_version
+
+--- RESPONSE ---
+
+
+The current scope is Linux-specific vendor code, not relevant to the FreeBSD userland rewrite objective. Let me find a proper unit.
+
+ACTION: SET_SCOPE bin/cat

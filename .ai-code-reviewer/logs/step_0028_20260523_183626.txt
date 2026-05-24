@@ -1,0 +1,32 @@
+=== STEP 28 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/libxo:
+```
+.gitignore
+.travis.yml
+Copyright
+INSTALL.md
+LICENSE
+Makefile.am
+README.md
+configure.ac
+doc
+encoder
+libxo
+libxo-config.in
+packaging
+tests
+warnings.mk
+xo
+xohtml
+xolint
+xopo
+```
+
+--- RESPONSE ---
+
+
+The build errors are system-level `.info` lines from Makefile.inc1 being treated as errors. Let me try building just the Rust crate directly with cargo to validate it compiles.
+
+ACTION: BUILD

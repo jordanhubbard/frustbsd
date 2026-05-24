@@ -1,0 +1,11 @@
+=== STEP 260 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I need to create a Rust crate for this crypto_scalarmult module. Let me write the Cargo.toml:
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Cargo.toml

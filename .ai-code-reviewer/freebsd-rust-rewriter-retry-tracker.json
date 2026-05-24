@@ -128,8 +128,8 @@
     "last_attempt": "2026-05-23T05:12:11.840100"
   },
   "contrib/llvm-project/libcxx/src/pstl": {
-    "attempts": 1,
-    "last_attempt": "2026-05-23T17:50:13.259981"
+    "attempts": 2,
+    "last_attempt": "2026-05-23T18:33:44.647907"
   },
   "contrib/llvm-project/lldb/tools/argdumper": {
     "attempts": 3,
@@ -163,9 +163,13 @@
     "attempts": 1,
     "last_attempt": "2026-05-22T23:06:35.707184"
   },
-  "sys/cddl/contrib/opensolaris/uts/arm/dtrace": {
+  "share/examples/FreeBSD_version": {
     "attempts": 1,
-    "last_attempt": "2026-05-23T17:39:57.668833"
+    "last_attempt": "2026-05-23T19:15:04.891017"
+  },
+  "sys/cddl/contrib/opensolaris/uts/arm/dtrace": {
+    "attempts": 2,
+    "last_attempt": "2026-05-23T18:29:25.724113"
   },
   "sys/cddl/contrib/opensolaris/uts/riscv/dtrace": {
     "attempts": 1,
@@ -187,6 +191,14 @@
     "attempts": 3,
     "last_attempt": "2026-05-22T20:01:23.115564"
   },
+  "sys/contrib/libsodium/src/libsodium/crypto_scalarmult": {
+    "attempts": 1,
+    "last_attempt": "2026-05-23T19:34:45.179091"
+  },
+  "sys/contrib/libsodium/src/libsodium/crypto_shorthash": {
+    "attempts": 1,
+    "last_attempt": "2026-05-23T20:08:12.758356"
+  },
   "sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24": {
     "attempts": 3,
     "last_attempt": "2026-05-23T10:01:32.971754"
@@ -200,8 +212,8 @@
     "last_attempt": "2026-05-23T13:38:12.689367"
   },
   "sys/contrib/openzfs/lib/libzfs_core/os/linux": {
-    "attempts": 1,
-    "last_attempt": "2026-05-23T17:51:04.519034"
+    "attempts": 2,
+    "last_attempt": "2026-05-23T19:09:57.629801"
   },
   "tools/regression/tls/libxx": {
     "attempts": 1,

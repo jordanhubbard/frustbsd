@@ -1,0 +1,24 @@
+=== STEP 107 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+Pending source/build changes: 2 files modified
+Files: contrib/libxo/encoder/test/src/lib.rs, lib/libxo/encoder/test/Makefile
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in sys/contrib/libsodium/src/libsodium/crypto_scalarmult
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: sys/contrib/libsodium/src/libsodium/crypto_shorthash
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

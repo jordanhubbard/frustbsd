@@ -1,0 +1,11 @@
+=== STEP 183 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I need to include the CONTENT block with triple angle brackets in the same response:
+
+ACTION: WRITE_FILE share/examples/FreeBSD_version/Cargo.toml

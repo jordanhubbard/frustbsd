@@ -1,0 +1,19 @@
+=== STEP 151 ===
+
+--- REQUEST ---
+HALT_REJECTED: No directories have been completed yet.
+You must successfully rewrite at least one directory before halting.
+
+Suggested directories to rewrite next:
+  - bin/cat/tests
+  - bin/chflags/tests
+  - bin/chmod/tests
+  - bin/cp/tests
+  - bin/date/tests
+
+Use ACTION: SET_SCOPE <dir> to continue.
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/cat/tests

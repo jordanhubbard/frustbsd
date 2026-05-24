@@ -1,0 +1,58 @@
+=== STEP 336 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_shorthash/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_shorthash/src/lib.rs
+CONTENT:
+<<<
+use std::os::raw::{c_char, c_int, size_t};
+
+extern "C" {
+    fn crypto_shorthash_siphash24(
+        out: *mut c_char,
+        in_: *const c_char,
+        inlen: u64,
+        k: *const c_char,
+    ) -> c_int;
+    fn randombytes_buf(buf: *mut c_char, len: size_t);
+}
+
+const CRYPTO_SHORTHASH_PRIMITIVE: &[u8] = b"siphash24\0";
+const CRYPTO_SHORTHASH_BYTES: size_t = 8;
+const CRYPTO_SHORTHASH_KEYBYTES: size_t = 16;
+
+#[no_mangle]
+pub extern "C" fn crypto_shorthash_bytes() -> size_t {
+    CRYPTO_SHORTHASH_BYTES
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_shorthash_keybytes() -> size_t {
+    CRYPTO_SHORTHASH_KEYBYTES
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_shorthash_primitive() -> *const c_char {
+    CRYPTO_SHORTHASH_PRIMITIVE.as_ptr() as *const c_char
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_shorthash(
+    out: *mut c_char,
+    in_: *const c_char,
+    inlen: u64,
+    k: *const c_char,
+) -> c_int {
+    unsafe { crypto_shorthash_siphash24(out, in_, inlen, k) }
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_shorthash_keygen(k: *mut c_char) {
+    unsafe { randombytes_buf(k, CRYPTO_SHORTHASH_KEYBYTES) }
+}
+>>>

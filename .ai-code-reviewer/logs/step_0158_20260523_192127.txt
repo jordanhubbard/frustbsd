@@ -1,0 +1,9 @@
+=== STEP 158 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE share/examples/FreeBSD_version/Cargo.toml

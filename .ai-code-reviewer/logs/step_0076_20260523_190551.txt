@@ -1,0 +1,40 @@
+=== STEP 76 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/FreeBSD_version/src/main.rs
+Scope: share/examples/FreeBSD_version
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE share/examples/FreeBSD_version/Makefile
+OLD:
+<<<
+PACKAGE=examples
+FILESDIR=${SHAREDIR}/examples/${PROG}
+PROG=	FreeBSD_version
+MAN=
+
+install:
+
+.include <bsd.prog.mk>
+>>>
+NEW:
+<<<
+PACKAGE=examples
+FILESDIR=${SHAREDIR}/examples/${PROG}
+PROG=	FreeBSD_version
+MAN=
+
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+all:
+	@${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR}
+
+install:
+
+.include <bsd.prog.mk>
+>>>

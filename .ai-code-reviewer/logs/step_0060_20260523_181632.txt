@@ -1,0 +1,15 @@
+=== STEP 60 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/libxo/encoder:
+```
+Makefile.am
+cbor
+csv
+test
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE contrib/libxo/encoder/Makefile.am

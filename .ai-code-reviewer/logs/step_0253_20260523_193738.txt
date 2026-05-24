@@ -1,0 +1,33 @@
+=== STEP 253 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*Makefile*':
+```
+./tests/include/Makefile
+./tests/oclo/Makefile
+./tests/sys/acl/Makefile
+./tests/sys/acl/Makefile.depend
+./tests/sys/devrandom/Makefile
+./tests/sys/common/Makefile
+./tests/sys/netinet/Makefile
+./tests/sys/netinet/Makefile.depend
+./tests/sys/netinet/libalias/Makefile
+./tests/sys/net/bpf/Makefile
+./tests/sys/net/routing/Makefile
+./tests/sys/net/Makefile
+./tests/sys/net/if_ovpn/ccd/Makefile
+./tests/sys/net/if_ovpn/Makefile
+./tests/sys/netgraph/Makefile
+./tests/sys/vfs/Makefile
+./tests/sys/vfs/Makefile.depend
+./tests/sys/capsicum/Makefile
+./tests/sys/compat32/Makefile.inc
+./tests/sys/compat32/aarch64/Makefile
+```
+
+--- RESPONSE ---
+
+
+This is a complex kernel-adjacent crypto library module. It's not a good candidate for a small first rewrite. Let me find a simpler unit with actual C source code to rewrite.
+
+ACTION: SET_SCOPE bin/cat

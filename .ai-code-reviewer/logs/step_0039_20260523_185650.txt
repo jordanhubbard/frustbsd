@@ -1,0 +1,13 @@
+=== STEP 39 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat/tests has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE sys/contrib/openzfs/lib/libzfs_core/os/linux
+
+--- RESPONSE ---
+
+
+The `bin/cat/tests` unit has no C/C++ source files to rewrite. Let me find a proper FreeBSD userland unit with C source.
+
+ACTION: SET_SCOPE bin/cat

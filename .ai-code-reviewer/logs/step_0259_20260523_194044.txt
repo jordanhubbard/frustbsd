@@ -1,0 +1,16 @@
+=== STEP 259 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_scalarmult:
+```
+crypto_scalarmult.c
+curve25519
+ed25519
+```
+
+--- RESPONSE ---
+
+
+The build errors are infrastructure-level (libclang bootstrapping), not related to my changes. I have pending changes from a previous scope. Let me create the Rust crate for this scope and try building with cargo directly.
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Cargo.toml

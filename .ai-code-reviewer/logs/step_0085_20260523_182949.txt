@@ -1,0 +1,14 @@
+=== STEP 85 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Marked current file as skipped.
+Remaining files in sys/cddl/contrib/opensolaris/uts/arm/dtrace:
+  (All tracked files rewritten or skipped in this directory)
+Please READ_FILE another source file or SET_SCOPE to continue progress.
+
+--- RESPONSE ---
+
+
+The file is just a placeholder comment with no real implementation. This is kernel-adjacent code (`sys/` tree) and has no meaningful C code to rewrite. I should move to the next pending unit.
+
+ACTION: SET_SCOPE bin/cat/tests

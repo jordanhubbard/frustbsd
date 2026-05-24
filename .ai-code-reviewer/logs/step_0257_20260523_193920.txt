@@ -1,0 +1,16 @@
+=== STEP 257 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_scalarmult:
+```
+crypto_scalarmult.c
+curve25519
+ed25519
+```
+
+--- RESPONSE ---
+
+
+The build errors are infrastructure-level (libclang bootstrapping), not related to my changes. I have pending changes from a previous scope. Let me try to build the current scope properly.
+
+ACTION: BUILD

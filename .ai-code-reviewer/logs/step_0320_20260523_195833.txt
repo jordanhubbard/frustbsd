@@ -1,0 +1,62 @@
+=== STEP 320 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now I need to create the src directory and lib.rs file for the Rust crate:
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/src/lib.rs
+CONTENT:
+<<<
+use std::ffi::CStr;
+use std::os::raw::{c_char, c_int, size_t};
+
+extern "C" {
+    fn crypto_scalarmult_curve25519_base(
+        q: *mut c_char,
+        n: *const c_char,
+    ) -> c_int;
+    fn crypto_scalarmult_curve25519(
+        q: *mut c_char,
+        n: *const c_char,
+        p: *const c_char,
+    ) -> c_int;
+}
+
+const CRYPTO_SCALARMULT_PRIMITIVE: &[u8] = b"curve25519\0";
+const CRYPTO_SCALARMULT_BYTES: size_t = 32;
+const CRYPTO_SCALARMULT_SCALARBYTES: size_t = 32;
+
+#[no_mangle]
+pub extern "C" fn crypto_scalarmult_primitive() -> *const c_char {
+    CRYPTO_SCALARMULT_PRIMITIVE.as_ptr() as *const c_char
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_scalarmult_base(q: *mut c_char, n: *const c_char) -> c_int {
+    unsafe { crypto_scalarmult_curve25519_base(q, n) }
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_scalarmult(
+    q: *mut c_char,
+    n: *const c_char,
+    p: *const c_char,
+) -> c_int {
+    unsafe { crypto_scalarmult_curve25519(q, n, p) }
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_scalarmult_bytes() -> size_t {
+    CRYPTO_SCALARMULT_BYTES
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_scalarmult_scalarbytes() -> size_t {
+    CRYPTO_SCALARMULT_SCALARBYTES
+}
+>>>

@@ -1,0 +1,22 @@
+=== STEP 319 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+Let me try the exact format specified in the action definition:
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_scalarmult/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "crypto_scalarmult"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+path = "src/lib.rs"
+>>>

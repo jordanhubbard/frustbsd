@@ -1,0 +1,38 @@
+=== STEP 74 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/FreeBSD_version/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE share/examples/FreeBSD_version/src/main.rs
+CONTENT:
+<<<
+//! Rust replacement for FreeBSD_version example program.
+//!
+//! Prints the FreeBSD version at compile time and runtime.
+
+use std::os::freebsd::io::AsRawFd;
+use std::process::Stdio;
+
+extern "C" {
+    fn getosreldate() -> u32;
+}
+
+fn main() {
+    // Compile-time FreeBSD version
+    // In Rust, we approximate this with the version from the build environment
+    // or use a default that matches the C behavior
+    let compile_version = option_env!("OSRELDATE")
+        .and_then(|v| v.parse::<u32>().ok())
+        .unwrap_or_else(|| unsafe { getosreldate() });
+
+    println!("Compilation release date: {}", compile_version);
+
+    // Runtime FreeBSD version
+    let runtime_version = unsafe { getosreldate() };
+    println!("Execution environment release date: {}", runtime_version);
+}
+>>>

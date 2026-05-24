@@ -1,0 +1,21 @@
+=== STEP 43 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE contrib/libxo/encoder/test/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "enc_test"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+name = "enc_test"
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+<<<

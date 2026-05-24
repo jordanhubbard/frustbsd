@@ -1,0 +1,82 @@
+=== STEP 74 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libxo/encoder/csv/Makefile:
+PROGRESS:
+📁 Directory: contrib/libxo/encoder/test
+   Files: 0/1
+📄 File: lib/libxo/encoder/csv/Makefile
+✏️  Edits: 2 files modified
+
+```
+.include <src.opts.mk>
+
+PACKAGE=	runtime
+
+LIBXOSRC=	${SRCTOP}/contrib/libxo
+
+.PATH:	${LIBXOSRC}/encoder/csv
+
+SHLIBDIR=	${LIBDIR}/libxo/encoder
+SHLIB_NAME=	csv.enc
+
+SRCS=	enc_csv.c
+
+CFLAGS+=-I${LIBXOSRC}/libxo -I${.CURDIR}
+CFLAGS+=-DXO_ENCODERDIR=\"${LIBDIR}/libxo/encoder\"
+
+LIBADD=	util xo
+LDFLAGS += -L${.OBJDIR:H:H}/libxo
+
+WARNS?= 5
+
+.include <bsd.lib.mk>
+
+```
+
+--- RESPONSE ---
+
+
+Now I understand the structure. The `contrib/libxo/encoder/test` is the source directory, but the FreeBSD build wraps it through `lib/libxo/encoder/`. The `test` encoder is NOT currently in the FreeBSD build (only `csv` is). I need to:
+
+1. Create `lib/libxo/encoder/test/Makefile` for the FreeBSD build
+2. Update `lib/libxo/encoder/Makefile` to include `test` in SUBDIR
+
+Let me first create the FreeBSD Makefile wrapper for the test encoder.
+
+ACTION: WRITE_FILE lib/libxo/encoder/test/Makefile
+CONTENT:
+```
+.include <src.opts.mk>
+
+PACKAGE=	runtime
+
+LIBXOSRC=	${SRCTOP}/contrib/libxo
+
+.PATH:	${LIBXOSRC}/encoder/test
+
+SHLIBDIR=	${LIBDIR}/libxo/encoder
+SHLIB_NAME=	test.enc
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+LIB=	enc_test
+
+${LIB}.so: ${LIBXOSRC}/encoder/test/Cargo.toml ${LIBXOSRC}/encoder/test/src/lib.rs
+	${CARGO} build --manifest-path ${LIBXOSRC}/encoder/test/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/libenc_test.so ${.TARGET}
+
+all: ${LIB}.so
+
+install: ${LIB}.so
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${LIB}.so ${DESTDIR}${SHLIBDIR}/${SHLIB_NAME}
+
+clean:
+	${RM} ${LIB}.so
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${LIB}.so ${CARGO_TARGET_DIR}
+
+.include <bsd.prog.mk>
+```

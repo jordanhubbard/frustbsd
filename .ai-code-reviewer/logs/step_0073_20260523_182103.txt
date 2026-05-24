@@ -1,0 +1,29 @@
+=== STEP 73 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libxo/encoder/Makefile:
+PROGRESS:
+📁 Directory: contrib/libxo/encoder/test
+   Files: 0/1
+📄 File: lib/libxo/encoder/Makefile
+✏️  Edits: 2 files modified
+
+```
+SHLIBDIR?=      /lib
+
+.include <src.opts.mk>
+
+PACKAGE=	runtime
+
+LIBXOSRC=	${SRCTOP}/contrib/libxo
+
+SUBDIR = csv
+
+.include <bsd.subdir.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE lib/libxo/encoder/csv/Makefile

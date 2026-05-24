@@ -1,0 +1,42 @@
+=== STEP 116 ===
+
+--- REQUEST ---
+SET_SCOPE_OK: Now rewriting sys/contrib/openzfs/lib/libzfs_core/os/linux
+
+HIERARCHY:
+  Level 1: Source tree (8132 work units)
+  Level 2: sys/contrib/openzfs/lib/libzfs_core/os/linux ← YOU ARE HERE
+  Level 3: 1 candidate files
+  Level 4: Functions (auto-chunked for large files)
+
+WORK UNIT:
+  Kind: directory
+  Stage: unknown
+  Depends on: (none)
+  Related files:
+    - sys/contrib/openzfs/lib/libzfs_core/os/linux/libzfs_core_ioctl.c
+
+⚠ No Makefile - may be subdirectory
+
+FILES TO REWRITE:
+  - sys/contrib/openzfs/lib/libzfs_core/os/linux/libzfs_core_ioctl.c
+
+📁 Directory: sys/contrib/openzfs/lib/libzfs_core/os/linux
+   Files: 0/1
+
+WORKFLOW:
+1. Rewrite each relevant file (READ_FILE, NEXT_CHUNK for large files)
+2. Make changes as needed (EDIT_FILE or WRITE_FILE)
+3. When ALL relevant files are rewritten: ACTION: BUILD
+4. If build succeeds: Changes committed for entire directory
+5. Move to next directory (SET_SCOPE)
+
+Attempts recorded for sys/contrib/openzfs/lib/libzfs_core/os/linux: 2/3.
+1 attempt(s) remain before auto-skip.
+
+--- RESPONSE ---
+
+
+This is a Linux-specific directory in the OpenZFS codebase. Let me check the file to confirm it's not relevant to FreeBSD.
+
+ACTION: READ_FILE sys/contrib/openzfs/lib/libzfs_core/os/linux/libzfs_core_ioctl.c

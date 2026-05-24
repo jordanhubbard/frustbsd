@@ -1,0 +1,39 @@
+=== STEP 88 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/FreeBSD_version/src/main.rs:
+PROGRESS:
+📁 Directory: share/examples/FreeBSD_version
+   Files: 0/3
+📄 File: share/examples/FreeBSD_version/src/main.rs
+✏️  Edits: 3 files modified
+
+```
+//! Rust replacement for FreeBSD_version example program.
+//!
+//! Prints the FreeBSD version at compile time and runtime.
+
+extern "C" {
+    fn getosreldate() -> u32;
+}
+
+fn main() {
+    // Compile-time FreeBSD version
+    // In Rust, we approximate this with the version from the build environment
+    // or use a default that matches the C behavior
+    let compile_version = option_env!("OSRELDATE")
+        .and_then(|v| v.parse::<u32>().ok())
+        .unwrap_or_else(|| unsafe { getosreldate() });
+
+    println!("Compilation release date: {}", compile_version);
+
+    // Runtime FreeBSD version
+    let runtime_version = unsafe { getosreldate() };
+    println!("Execution environment release date: {}", runtime_version);
+}
+```
+
+--- RESPONSE ---
+
+
+ACTION: BUILD
