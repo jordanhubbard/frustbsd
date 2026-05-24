@@ -1,0 +1,14 @@
+=== STEP 5 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/chflags/tests:
+```
+Makefile
+Makefile.depend
+chflags_test.sh
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR bin/chmod/tests

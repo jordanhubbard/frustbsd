@@ -1,0 +1,23 @@
+=== STEP 90 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/last
+   Files: 0/3
+📄 File: usr.bin/last/last.c
+   Chunks: 7/19
+
+```
+=== CHUNK 7/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/last/last.c === [function: want]
+=== Lines 98-98 (1 lines) ===
+
+static int	 want(struct utmpx *);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

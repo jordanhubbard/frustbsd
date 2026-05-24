@@ -1,0 +1,60 @@
+=== STEP 98 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/last
+   Files: 0/3
+📄 File: usr.bin/last/last.c
+   Chunks: 15/19
+
+```
+=== CHUNK 15/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/last/last.c === [function: want]
+=== Lines 417-454 (38 lines) ===
+
+static int
+want(struct utmpx *bp)
+{
+	ARG *step;
+
+	if (snaptime)
+		return (NO);
+
+	if (!arglist)
+		return (YES);
+
+	for (step = arglist; step; step = step->next)
+		switch(step->type) {
+		case REBOOT_TYPE:
+			if (bp->ut_type == BOOT_TIME ||
+			    bp->ut_type == SHUTDOWN_TIME)
+				return (YES);
+			break;
+		case HOST_TYPE:
+			if (strcasecmp(step->name, bp->ut_host) == 0)
+				return (YES);
+			break;
+		case TTY_TYPE:
+			if (strcmp(step->name, bp->ut_line) == 0)
+				return (YES);
+			break;
+		case USER_TYPE:
+			if (strcmp(step->name, bp->ut_user) == 0)
+				return (YES);
+			break;
+		}
+	return (NO);
+}
+
+/*
+ * addarg --
+ *	add an entry to a linked list of arguments
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

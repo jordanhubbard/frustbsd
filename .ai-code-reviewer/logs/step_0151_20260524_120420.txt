@@ -1,0 +1,459 @@
+=== STEP 151 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/last/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now let me create the Rust source directory and main.rs:
+
+ACTION: WRITE_FILE usr.bin/last/src/main.rs
+CONTENT:
+<<<
+// SPDX-License-Identifier: BSD-3-Clause
+// Rust replacement for FreeBSD usr.bin/last
+
+use std::ffi::CString;
+use std::io::{self, Write};
+use std::os::unix::process::CommandExt;
+use std::process;
+use std::time::{SystemTime, UNIX_EPOCH};
+
+// FFI bindings for FreeBSD utmpx
+#[repr(C)]
+struct Timeval {
+    tv_sec: i64,
+    tv_usec: i32,
+    _padding: [u8; 4],
+}
+
+#[repr(C)]
+struct Utmpx {
+    ut_type: u16,
+    _pad: u16,
+    ut_id: [u8; 4],
+    ut_pid: i32,
+    ut_user: [u8; 16],
+    ut_line: [u8; 8],
+    ut_host: [u8; 16],
+    _ut_addr: [u8; 8],
+    ut_tv: Timeval,
+    _ut_session: i32,
+    _ut_ss: [u8; 20],
+}
+
+const UT_USER: u16 = 1;
+const UT_FREE: u16 = 2;
+const UT_EXIT: u16 = 3;
+const UT_LOGIN: u16 = 4;
+const UT_INIT: u16 = 5;
+const UT_TIME: u16 = 6;
+const UT_ACCOUNT: u16 = 7;
+const UT_CHANGE: u16 = 8;
+const UT_BOOT_TIME: u16 = 9;
+const UT_CLOCK_TIME: u16 = 10;
+const UT_EXIT_BOOT: u16 = 11;
+const UT_INIT_BOOT: u16 = 12;
+const UT_SHUTDOWN_TIME: u16 = 13;
+const UT_REMOTE: u16 = 14;
+const UT_UNKNOWN: u16 = 15;
+
+const OLD_TIME: u16 = UT_CLOCK_TIME;
+const NEW_TIME: u16 = UT_CLOCK_TIME;
+const BOOT_TIME: u16 = UT_BOOT_TIME;
+const SHUTDOWN_TIME: u16 = UT_SHUTDOWN_TIME;
+const USER_PROCESS: u16 = UT_USER;
+const DEAD_PROCESS: u16 = UT_FREE;
+
+extern "C" {
+    fn getutxent() -> *mut Utmpx;
+    fn endutxent();
+    fn setutxdb(db: u32, file: *const i8) -> i32;
+    fn localtime_r(timep: *const i64, tp: *mut tm) -> *mut tm;
+    fn gmtime_r(timep: *const i64, tp: *mut tm) -> *mut tm;
+    fn mktime(tp: *mut tm) -> i64;
+    fn time(timep: *mut i64) -> i64;
+    fn strftime(s: *mut u8, maxsize: usize, format: *const u8, tm: *const tm) -> usize;
+    fn nl_langinfo(item: u32) -> *const u8;
+    fn setlocale(category: i32, locale: *const u8) -> *mut i8;
+    fn getopt_long(
+        argc: i32,
+        argv: *const *const i8,
+        optstring: *const u8,
+        longopts: *const OptionDescriptor,
+        longindex: *mut i32,
+    ) -> i32;
+}
+
+const UTXDB_LOG: u32 = 0;
+const LC_TIME: i32 = 2;
+const D_MD_ORDER: u32 = 10;
+
+#[repr(C)]
+struct tm {
+    tm_sec: i32,
+    tm_min: i32,
+    tm_hour: i32,
+    tm_mday: i32,
+    tm_mon: i32,
+    tm_year: i32,
+    tm_wday: i32,
+    tm_yday: i32,
+    tm_isdst: i32,
+    tm_gmtoff: i64,
+    tm_zone: *const u8,
+}
+
+#[repr(C)]
+struct OptionDescriptor {
+    name: *const u8,
+    has_arg: i32,
+    flag: *mut i32,
+    val: i32,
+}
+
+#[derive(Clone)]
+struct Arg {
+    name: String,
+    arg_type: ArgType,
+}
+
+#[derive(Clone, PartialEq)]
+enum ArgType {
+    Reboot,
+    Host,
+    Tty,
+    User,
+}
+
+struct IdTab {
+    logout: i64,
+    id: [u8; 4],
+}
+
+struct State {
+    arglist: Vec<Arg>,
+    idlist: Vec<IdTab>,
+    crmsg: Option<String>,
+    currentout: i64,
+    maxrec: Option<i64>,
+    sflag: bool,
+    width: usize,
+    yflag: bool,
+    d_first: bool,
+    snapfound: bool,
+    snaptime: i64,
+}
+
+fn usage() {
+    eprintln!(
+        "usage: last [-swy] [-d [[CC]YY][MMDD]hhmm[.SS]] [-f file] [-h host]\n\
+         \t    [-n maxrec] [-t tty] [user ...]"
+    );
+    process::exit(1);
+}
+
+fn ttyconv(arg: &str) -> String {
+    if arg.len() == 2 {
+        if arg == "co" {
+            return "console".to_string();
+        }
+        return format!("tty{}", arg);
+    }
+    if let Some(stripped) = arg.strip_prefix("/dev/") {
+        return stripped.to_string();
+    }
+    arg.to_string()
+}
+
+fn dateconv(arg: &str) -> i64 {
+    let mut timet: i64 = 0;
+    unsafe { time(&mut timet) };
+
+    let mut t: tm = unsafe { std::mem::zeroed() };
+    unsafe { localtime_r(&timet, &mut t) };
+
+    let (main_part, secs) = if let Some(dot_pos) = arg.find('.') {
+        let main = &arg[..dot_pos];
+        let sec_str = &arg[dot_pos + 1..];
+        if sec_str.len() != 2 {
+            eprintln!("out of range or illegal time specification: [[CC]YY]MMDDhhmm[.SS]");
+            process::exit(1);
+        }
+        let sec: i32 = sec_str.parse().unwrap_or(0);
+        (main, sec)
+    } else {
+        (arg, 0)
+    };
+
+    t.tm_sec = secs;
+
+    let len = main_part.len();
+    let mut yearset = false;
+    let mut p = 0;
+
+    match len {
+        12 => {
+            // CCYYMMDDhhmm
+            let cc: i32 = main_part[p..p + 2].parse().unwrap_or(0);
+            p += 2;
+            t.tm_year = cc * 100;
+            yearset = true;
+            // fall through to 10
+        }
+        _ => {}
+    }
+
+    if len >= 10 {
+        let yy: i32 = main_part[p..p + 2].parse().unwrap_or(0);
+        p += 2;
+        if yearset {
+            t.tm_year += yy;
+        } else {
+            if yy < 69 {
+                t.tm_year = yy + 2000;
+            } else {
+                t.tm_year = yy + 1900;
+            }
+        }
+        t.tm_year -= 1900;
+    }
+
+    if len >= 8 {
+        t.tm_mon = main_part[p..p + 2].parse().unwrap_or(1) - 1;
+        p += 2;
+        t.tm_mday = main_part[p..p + 2].parse().unwrap_or(1);
+        p += 2;
+        t.tm_hour = main_part[p..p + 2].parse().unwrap_or(0);
+        p += 2;
+        t.tm_min = main_part[p..p + 2].parse().unwrap_or(0);
+    } else if len == 4 {
+        t.tm_hour = main_part[p..p + 2].parse().unwrap_or(0);
+        p += 2;
+        t.tm_min = main_part[p..p + 2].parse().unwrap_or(0);
+    } else {
+        eprintln!("out of range or illegal time specification: [[CC]YY]MMDDhhmm[.SS]");
+        process::exit(1);
+    }
+
+    t.tm_isdst = -1;
+    let result = unsafe { mktime(&mut t) };
+    if result == -1 {
+        eprintln!("out of range or illegal time specification: [[CC]YY]MMDDhhmm[.SS]");
+        process::exit(1);
+    }
+    result
+}
+
+fn format_time(t: i64, d_first: bool, yflag: bool) -> String {
+    let mut tm: tm = unsafe { std::mem::zeroed() };
+    unsafe { localtime_r(&t, &mut tm) };
+
+    let fmt = if d_first {
+        if yflag {
+            b"%a %e %b %Y %R"
+        } else {
+            b"%a %e %b %R"
+        }
+    } else {
+        if yflag {
+            b"%a %b %e %Y %R"
+        } else {
+            b"%a %b %e %R"
+        }
+    };
+
+    let mut buf = [0u8; 80];
+    let n = unsafe { strftime(buf.as_mut_ptr(), buf.len(), fmt.as_ptr(), &tm) };
+    String::from_utf8_lossy(&buf[..n]).to_string()
+}
+
+fn format_time_short(t: i64) -> String {
+    let mut tm: tm = unsafe { std::mem::zeroed() };
+    unsafe { localtime_r(&t, &mut tm) };
+
+    let fmt = b"%R";
+    let mut buf = [0u8; 80];
+    let n = unsafe { strftime(buf.as_mut_ptr(), buf.len(), fmt.as_ptr(), &tm) };
+    String::from_utf8_lossy(&buf[..n]).to_string()
+}
+
+fn format_duration(delta: i64, width: usize) -> String {
+    let mut tm: tm = unsafe { std::mem::zeroed() };
+    unsafe { gmtime_r(&delta, &mut tm) };
+
+    let fmt = if width >= 8 { b"%T" } else { b"%R" };
+    let mut buf = [0u8; 80];
+    let n = unsafe { strftime(buf.as_mut_ptr(), buf.len(), fmt.as_ptr(), &tm) };
+    let time_str = String::from_utf8_lossy(&buf[..n]).to_string();
+
+    if delta < 86400 {
+        format!("({})", time_str)
+    } else {
+        format!(" ({}+{})", delta / 86400, time_str)
+    }
+}
+
+fn want(bp: &Utmpx, state: &State) -> bool {
+    if state.snaptime != 0 {
+        return false;
+    }
+    if state.arglist.is_empty() {
+        return true;
+    }
+    for arg in &state.arglist {
+        match arg.arg_type {
+            ArgType::Reboot => {
+                if bp.ut_type == BOOT_TIME || bp.ut_type == SHUTDOWN_TIME {
+                    return true;
+                }
+            }
+            ArgType::Host => {
+                let host = String::from_utf8_lossy(&bp.ut_host)
+                    .trim_end_matches('\0')
+                    .to_string();
+                if arg.name.eq_ignore_ascii_case(&host) {
+                    return true;
+                }
+            }
+            ArgType::Tty => {
+                let line = String::from_utf8_lossy(&bp.ut_line)
+                    .trim_end_matches('\0')
+                    .to_string();
+                if arg.name == line {
+                    return true;
+                }
+            }
+            ArgType::User => {
+                let user = String::from_utf8_lossy(&bp.ut_user)
+                    .trim_end_matches('\0')
+                    .to_string();
+                if arg.name == user {
+                    return true;
+                }
+            }
+        }
+    }
+    false
+}
+
+fn printentry(bp: &Utmpx, tt: Option<&IdTab>, state: &mut State) {
+    if let Some(ref mut maxrec) = state.maxrec {
+        *maxrec -= 1;
+        if *maxrec == 0 {
+            process::exit(0);
+        }
+    }
+
+    let t = bp.ut_tv.tv_sec;
+    let login_time = format_time(t, state.d_first, state.yflag);
+
+    let user_field = match bp.ut_type {
+        BOOT_TIME => "boot time".to_string(),
+        SHUTDOWN_TIME => "shutdown time".to_string(),
+        OLD_TIME | NEW_TIME => {
+            if bp.ut_type == OLD_TIME {
+                "old time".to_string()
+            } else {
+                "new time".to_string()
+            }
+        }
+        USER_PROCESS => {
+            let user = String::from_utf8_lossy(&bp.ut_user).trim_end_matches('\0');
+            let line = String::from_utf8_lossy(&bp.ut_line).trim_end_matches('\0');
+            let host = String::from_utf8_lossy(&bp.ut_host).trim_end_matches('\0');
+            format!("{:<10} {:<8} {:<22}", user, line, host)
+        }
+        _ => return,
+    };
+
+    let stdout = io::stdout();
+    let mut out = stdout.lock();
+
+    if tt.is_none() {
+        let _ = writeln!(out, "{:<42} {}", user_field, login_time);
+        return;
+    }
+
+    let tt = tt.unwrap();
+    let _ = write!(out, "{:<42} {} - ", user_field, login_time);
+
+    if tt.logout == 0 {
+        let _ = writeln!(out, "still logged in");
+    } else if tt.logout < 0 {
+        let logout_time = -tt.logout;
+        let crmsg = state.crmsg.as_deref().unwrap_or("crash");
+        let _ = write!(out, "- {}", crmsg);
+        let delta = logout_time - t;
+        if state.sflag {
+            let _ = writeln!(out, " ({:>8})", delta);
+        } else {
+            let _ = writeln!(out, " {}", format_duration(delta, state.width));
+        }
+    } else {
+        let logout_str = format_time_short(tt.logout);
+        let _ = write!(out, "{}", logout_str);
+        let delta = tt.logout - t;
+        if state.sflag {
+            let _ = writeln!(out, " ({:>8})", delta);
+        } else {
+            let _ = writeln!(out, " {}", format_duration(delta, state.width));
+        }
+    }
+}
+
+fn doentry(bp: &Utmpx, state: &mut State) {
+    if bp.ut_type == BOOT_TIME || bp.ut_type == SHUTDOWN_TIME {
+        state.idlist.clear();
+        state.currentout = -bp.ut_tv.tv_sec;
+        state.crmsg = if bp.ut_type != SHUTDOWN_TIME {
+            Some("crash".to_string())
+        } else {
+            Some("shutdown".to_string())
+        };
+
+        if state.snaptime != 0 && state.snapfound {
+            process::exit(0);
+        }
+
+        if state.snaptime == 0 && want(bp, state) {
+            printentry(bp, None, state);
+        }
+        return;
+    }
+
+    if bp.ut_type == OLD_TIME || bp.ut_type == NEW_TIME {
+        if want(bp, state) && state.snaptime == 0 {
+            printentry(bp, None, state);
+        }
+        return;
+    }
+
+    if bp.ut_type != USER_PROCESS && bp.ut_type != DEAD_PROCESS {
+        return;
+    }
+
+    let mut tt = state.idlist.iter_mut().find(|idtab| {
+        idtab.id == bp.ut_id
+    });
+
+    if tt.is_none() {
+        let new_id = IdTab {
+            logout: state.currentout,
+            id: bp.ut_id,
+        };
+        state.idlist.insert(0, new_id);
+        tt = state.idlist.first_mut();
+    }
+
+    let tt_ref = tt.unwrap();
+
+    if bp.ut_type == USER_PROCESS
+        && (want(bp, state)
+            || (bp.ut_tv.tv_sec < state.snaptime
+                && (tt_ref.logout > state.snaptime || tt_ref.logout < 1)))
+    {
+        state.snapfound = true;
+        printentry(bp, Some(tt_ref), state);

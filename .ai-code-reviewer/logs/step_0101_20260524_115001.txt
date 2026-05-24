@@ -1,0 +1,51 @@
+=== STEP 101 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/last
+   Files: 0/3
+📄 File: usr.bin/last/last.c
+   Chunks: 18/19
+
+```
+=== CHUNK 18/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/last/last.c === [function: ttyconv]
+=== Lines 497-525 (29 lines) ===
+
+static char *
+ttyconv(char *arg)
+{
+	char *mval;
+
+	/*
+	 * kludge -- we assume that all tty's end with
+	 * a two character suffix.
+	 */
+	if (strlen(arg) == 2) {
+		if (strcmp(arg, "co") == 0)
+			mval = strdup("console");
+		else
+			asprintf(&mval, "tty%s", arg);
+		if (mval == NULL)
+			xo_errx(1, "malloc failure");
+		return (mval);
+	}
+	if (strncmp(arg, _PATH_DEV, strlen(_PATH_DEV)) == 0)
+		return (arg + strlen(_PATH_DEV));
+	return (arg);
+}
+
+/*
+ * dateconv --
+ * 	Convert the snapshot time in command line given in the format
+ * 	[[CC]YY]MMDDhhmm[.SS]] to a time_t.
+ * 	Derived from atime_arg1() in usr.bin/touch/touch.c
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

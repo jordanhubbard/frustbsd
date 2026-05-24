@@ -1,0 +1,11 @@
+=== STEP 71 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'SYSTEM_COMPILER'
+
+--- RESPONSE ---
+
+
+Let me check the build infrastructure to understand these errors:
+
+ACTION: READ_FILE Makefile.inc1

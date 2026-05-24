@@ -1,0 +1,12 @@
+=== STEP 18 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/yes is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE lib/libwrap
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE lib/libwrap

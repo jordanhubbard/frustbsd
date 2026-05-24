@@ -1,0 +1,15 @@
+=== STEP 20 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libwrap:
+```
+Makefile
+Makefile.depend
+hosts.allow
+libvars.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE lib/libwrap/libvars.c

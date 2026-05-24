@@ -156,8 +156,8 @@
     "last_attempt": "2026-05-24T08:08:33.309056"
   },
   "contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T08:48:20.354923"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T11:31:05.879569"
   },
   "contrib/llvm-project/llvm/lib/Target/CSKY/TargetInfo": {
     "attempts": 3,
@@ -208,8 +208,8 @@
     "last_attempt": "2026-05-24T10:00:12.751053"
   },
   "lib/libwrap": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T11:11:39.492199"
+    "attempts": 3,
+    "last_attempt": "2026-05-24T11:31:47.260371"
   },
   "lib/liby": {
     "attempts": 1,
@@ -380,8 +380,8 @@
     "last_attempt": "2026-05-22T18:13:07.386524"
   },
   "usr.bin/last": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T06:38:57.456593"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T11:43:16.218202"
   },
   "usr.bin/lastcomm": {
     "attempts": 1,
@@ -431,9 +431,13 @@
     "attempts": 3,
     "last_attempt": "2026-05-22T20:10:15.732158"
   },
-  "usr.bin/morse": {
+  "usr.bin/mkuzip": {
     "attempts": 1,
-    "last_attempt": "2026-05-24T06:37:43.899912"
+    "last_attempt": "2026-05-24T11:33:05.895773"
+  },
+  "usr.bin/morse": {
+    "attempts": 2,
+    "last_attempt": "2026-05-24T11:38:44.513710"
   },
   "usr.bin/nice": {
     "attempts": 3,
@@ -484,8 +488,8 @@
     "last_attempt": "2026-05-24T06:46:29.573429"
   },
   "usr.bin/split": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T06:46:34.315725"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T11:32:40.113772"
   },
   "usr.bin/tail": {
     "attempts": 3,

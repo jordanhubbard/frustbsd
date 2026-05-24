@@ -1,0 +1,9 @@
+=== STEP 23 ===
+
+--- REQUEST ---
+LIST_DIR_ERROR: Directory not found: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/hostname
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/hostname

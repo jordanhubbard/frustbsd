@@ -1,0 +1,123 @@
+=== STEP 57 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/cmp/src/lib.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now let me write the main.rs that uses the library:
+
+ACTION: WRITE_FILE usr.bin/cmp/src/main.rs
+CONTENT:
+<<<
+use std::env;
+use std::fs::File;
+use std::io::{self, BufReader, stdin};
+use std::os::unix::fs::symlink_metadata;
+use std::process;
+
+use cmp::{Flags, xnum, parse_skip, compare_regular, compare_link};
+
+fn usage() -> ! {
+    eprintln!("usage: cmp [-l | -s | -x] [-hz] file1 file2 [skip1 [skip2]]");
+    process::exit(2);
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let mut argv = &args[1..];
+    let mut f = Flags { b: false, l: false, s: false, x: false, z: false };
+    let mut nofollow = false;
+    let mut skip1: i64 = 0;
+    let mut skip2: i64 = 0;
+    let mut limit: i64 = 0;
+
+    while let Some(arg) = argv.first() {
+        if !arg.starts_with('-') { break; }
+        argv = &argv[1..];
+        for c in arg[1..].chars() {
+            match c {
+                'b' => f.b = true,
+                'h' => nofollow = true,
+                'l' => f.l = true,
+                's' => f.s = true,
+                'x' => f.x = true,
+                'z' => f.z = true,
+                _ => usage(),
+            }
+        }
+    }
+
+    if argv.is_empty() { usage(); }
+    let file1 = &argv[0];
+    if argv.len() < 2 { usage(); }
+    let file2 = &argv[1];
+
+    if argv.len() > 2 {
+        if let Some((s1, s2)) = parse_skip(&argv[2]) {
+            skip1 = s1; skip2 = s2;
+        } else {
+            eprintln!("cmp: bad skip specification: {}", argv[2]);
+            process::exit(2);
+        }
+    }
+    if argv.len() > 3 {
+        if let Some(l) = xnum(&argv[3]) { limit = l; }
+        else {
+            eprintln!("cmp: bad limit specification: {}", argv[3]);
+            process::exit(2);
+        }
+    }
+
+    if (f.l && f.x) || (f.l && f.s) || (f.x && f.s) { usage(); }
+
+    let is_sym1 = match symlink_metadata(file1) {
+        Ok(m) => m.file_type().is_symlink(),
+        Err(_) => { eprintln!("cmp: {}: {}", file1, io::Error::last_os_error()); process::exit(2); }
+    };
+    let is_sym2 = match symlink_metadata(file2) {
+        Ok(m) => m.file_type().is_symlink(),
+        Err(_) => { eprintln!("cmp: {}: {}", file2, io::Error::last_os_error()); process::exit(2); }
+    };
+
+    let result = if is_sym1 || is_sym2 {
+        compare_link(file1, skip1, file2, skip2, limit, &f)
+    } else if file1 == "-" && file2 == "-" {
+        let r1 = BufReader::new(stdin());
+        let r2 = BufReader::new(stdin());
+        compare_regular(r1, file1, skip1, -1, r2, file2, skip2, -1, limit, &f)
+    } else if file1 == "-" {
+        let r1 = BufReader::new(stdin());
+        let r2 = match File::open(file2) {
+            Ok(f) => f,
+            Err(_) => { eprintln!("cmp: {}: {}", file2, io::Error::last_os_error()); process::exit(2); }
+        };
+        let len2 = r2.metadata().map(|m| m.len() as i64).unwrap_or(-1);
+        compare_regular(r1, file1, skip1, -1, BufReader::new(r2), file2, skip2, len2, limit, &f)
+    } else if file2 == "-" {
+        let r1 = match File::open(file1) {
+            Ok(f) => f,
+            Err(_) => { eprintln!("cmp: {}: {}", file1, io::Error::last_os_error()); process::exit(2); }
+        };
+        let len1 = r1.metadata().map(|m| m.len() as i64).unwrap_or(-1);
+        let r2 = BufReader::new(stdin());
+        compare_regular(BufReader::new(r1), file1, skip1, len1, r2, file2, skip2, -1, limit, &f)
+    } else {
+        let r1 = match File::open(file1) {
+            Ok(f) => f,
+            Err(_) => { eprintln!("cmp: {}: {}", file1, io::Error::last_os_error()); process::exit(2); }
+        };
+        let len1 = r1.metadata().map(|m| m.len() as i64).unwrap_or(-1);
+        let r2 = match File::open(file2) {
+            Ok(f) => f,
+            Err(_) => { eprintln!("cmp: {}: {}", file2, io::Error::last_os_error()); process::exit(2); }
+        };
+        let len2 = r2.metadata().map(|m| m.len() as i64).unwrap_or(-1);
+        compare_regular(BufReader::new(r1), file1, skip1, len1, BufReader::new(r2), file2, skip2, len2, limit, &f)
+    };
+
+    process::exit(result);
+}
+>>>

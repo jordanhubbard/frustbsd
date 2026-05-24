@@ -1,0 +1,68 @@
+=== STEP 95 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/last
+   Files: 0/3
+📄 File: usr.bin/last/last.c
+   Chunks: 12/19
+
+```
+=== CHUNK 12/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/last/last.c === [function: wtmp]
+=== Lines 218-263 (46 lines) ===
+
+static void
+wtmp(void)
+{
+	struct utmpx *buf = NULL;
+	struct utmpx *ut;
+	static unsigned int amount = 0;
+	time_t t;
+	char ct[80];
+	struct tm *tm;
+
+	SLIST_INIT(&idlist);
+	(void)time(&t);
+
+	xo_open_container("last-information");
+
+	/* Load the last entries from the file. */
+	while ((ut = getutxent()) != NULL) {
+		if (amount % 128 == 0) {
+			buf = realloc(buf, (amount + 128) * sizeof *ut);
+			if (buf == NULL)
+				xo_err(1, "realloc");
+		}
+		memcpy(&buf[amount++], ut, sizeof *ut);
+		if (t > ut->ut_tv.tv_sec)
+			t = ut->ut_tv.tv_sec;
+	}
+	endutxent();
+
+	/* Display them in reverse order. */
+	xo_open_list("last");
+	while (amount > 0)
+		doentry(&buf[--amount]);
+	xo_close_list("last");
+	free(buf);
+	tm = localtime(&t);
+	(void) strftime(ct, sizeof(ct), "%+", tm);
+	xo_emit("\n{:utxdb/%s}", (file == NULL) ? "utx.log" : file);
+	xo_attr("seconds", "%lu", (unsigned long) t);
+	xo_emit(" begins {:begins/%hs}\n", ct);
+	xo_close_container("last-information");
+}
+
+/*
+ * doentry --
+ *	process a single utx.log entry
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

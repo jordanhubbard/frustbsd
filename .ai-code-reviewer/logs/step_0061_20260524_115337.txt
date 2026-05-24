@@ -1,0 +1,14 @@
+=== STEP 61 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory usr.bin/cmp skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/llvm-project/llvm/lib/Target/ARC/TargetInfo
+
+--- RESPONSE ---
+
+
+The `usr.bin/cmp` scope was auto-skipped after 3 failed attempts. Let me pick a different small unit from the queue.
+
+ACTION: SET_SCOPE bin/cat/tests

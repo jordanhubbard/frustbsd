@@ -1,0 +1,489 @@
+=== STEP 52 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/cmp/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/cmp/src/main.rs
+CONTENT:
+<<<
+/*-
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * Copyright (c) 1987, 1990, 1993, 1994
+ *	The Regents of the University of California.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED BY THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+use std::env;
+use std::fs::{self, File, OpenOptions};
+use std::io::{self, BufRead, BufReader, Read, Write, stdin, stdout};
+use std::os::unix::fs::symlink_metadata;
+use std::os::unix::io::AsRawFd;
+use std::path::Path;
+use std::process;
+
+const OK_EXIT: i32 = 0;
+const DIFF_EXIT: i32 = 1;
+const ERR_EXIT: i32 = 2;
+
+struct Flags {
+    bflag: bool,
+    lflag: bool,
+    sflag: bool,
+    xflag: bool,
+    zflag: bool,
+}
+
+fn usage() -> ! {
+    eprintln!(
+        "usage: cmp [-l | -s | -x] [-hz] file1 file2 [skip1 [skip2]]"
+    );
+    process::exit(ERR_EXIT);
+}
+
+fn expand_number(spec: &str) -> Option<i64> {
+    let spec = spec.trim();
+    if spec.is_empty() {
+        return None;
+    }
+    // Handle hex prefix
+    let (digits, radix) = if spec.starts_with("0x") || spec.starts_with("0X") {
+        (&spec[2..], 16)
+    } else if spec.starts_with('0') && spec.len() > 1 {
+        (spec, 8)
+    } else {
+        (spec, 10)
+    };
+    if digits.is_empty() {
+        return None;
+    }
+    i64::from_str_radix(digits, radix).ok()
+}
+
+fn parse_iskipspec(spec: &str) -> Option<(i64, i64)> {
+    let mut parts = spec.splitn(2, ':');
+    let first = parts.next()?;
+    let skip1 = expand_number(first)?;
+    if let Some(second) = parts.next() {
+        let skip2 = expand_number(second)?;
+        Some((skip1, skip2))
+    } else {
+        Some((skip1, skip1))
+    }
+}
+
+fn diffmsg(
+    file1: &str,
+    file2: &str,
+    byte: i64,
+    line: i64,
+    b1: u8,
+    b2: u8,
+    flags: &Flags,
+) {
+    if flags.sflag {
+        // nothing
+    } else if flags.bflag {
+        println!(
+            "{} {} differ: char {}, line {} is {:3o} {:c} {:3o} {:c}",
+            file1,
+            file2,
+            byte,
+            line,
+            b1,
+            b1 as char,
+            b2,
+            b2 as char,
+        );
+    } else {
+        println!("{} {} differ: char {}, line {}", file1, file2, byte, line);
+    }
+}
+
+fn eofmsg(file: &str, flags: &Flags) {
+    if !flags.sflag {
+        eprintln!("cmp: EOF on {}", file);
+    }
+}
+
+fn compare_regular<R1: Read, R2: Read>(
+    mut reader1: BufReader<R1>,
+    file1: &str,
+    skip1: i64,
+    len1: i64,
+    mut reader2: BufReader<R2>,
+    file2: &str,
+    skip2: i64,
+    len2: i64,
+    limit: i64,
+    flags: &Flags,
+) -> i32 {
+    if skip1 > len1 {
+        eofmsg(file1, flags);
+        return DIFF_EXIT;
+    }
+    let len1 = len1 - skip1;
+    if skip2 > len2 {
+        eofmsg(file2, flags);
+        return DIFF_EXIT;
+    }
+    let len2 = len2 - skip2;
+
+    if flags.sflag && len1 != len2 {
+        return DIFF_EXIT;
+    }
+
+    // Skip bytes
+    let mut buf1 = vec![0u8; 8192];
+    let mut buf2 = vec![0u8; 8192];
+    let mut remaining_skip1 = skip1;
+    let mut remaining_skip2 = skip2;
+
+    loop {
+        let to_read = remaining_skip1.min(buf1.len() as i64);
+        if to_read <= 0 {
+            break;
+        }
+        match reader1.by_ref().take(to_read as u64).read_to_end(&mut buf1[..to_read as usize]) {
+            Ok(n) => {
+                if n == 0 {
+                    eofmsg(file1, flags);
+                    return DIFF_EXIT;
+                }
+                remaining_skip1 -= n as i64;
+            }
+            Err(_) => {
+                eprintln!("cmp: {}: {}", file1, io::Error::last_os_error());
+                return ERR_EXIT;
+            }
+        }
+    }
+
+    loop {
+        let to_read = remaining_skip2.min(buf2.len() as i64);
+        if to_read <= 0 {
+            break;
+        }
+        match reader2.by_ref().take(to_read as u64).read_to_end(&mut buf2[..to_read as usize]) {
+            Ok(n) => {
+                if n == 0 {
+                    eofmsg(file2, flags);
+                    return DIFF_EXIT;
+                }
+                remaining_skip2 -= n as i64;
+            }
+            Err(_) => {
+                eprintln!("cmp: {}: {}", file2, io::Error::last_os_error());
+                return ERR_EXIT;
+            }
+        }
+    }
+
+    let length = len1.min(len2);
+    let length = if limit > 0 { length.min(limit) } else { length };
+
+    let mut byte: i64 = 1;
+    let mut line: i64 = 1;
+    let mut dfound = false;
+    let mut buf1 = [0u8; 8192];
+    let mut buf2 = [0u8; 8192];
+    let mut pos1 = 0usize;
+    let mut pos2 = 0usize;
+    let mut avail1 = 0usize;
+    let mut avail2 = 0usize;
+    let mut compared = 0i64;
+
+    while compared < length {
+        if pos1 >= avail1 {
+            match reader1.read(&mut buf1) {
+                Ok(n) => {
+                    if n == 0 {
+                        eofmsg(file1, flags);
+                        return DIFF_EXIT;
+                    }
+                    avail1 = n;
+                    pos1 = 0;
+                }
+                Err(_) => {
+                    eprintln!("cmp: {}: {}", file1, io::Error::last_os_error());
+                    return ERR_EXIT;
+                }
+            }
+        }
+        if pos2 >= avail2 {
+            match reader2.read(&mut buf2) {
+                Ok(n) => {
+                    if n == 0 {
+                        eofmsg(file2, flags);
+                        return DIFF_EXIT;
+                    }
+                    avail2 = n;
+                    pos2 = 0;
+                }
+                Err(_) => {
+                    eprintln!("cmp: {}: {}", file2, io::Error::last_os_error());
+                    return ERR_EXIT;
+                }
+            }
+        }
+
+        let ch1 = buf1[pos1];
+        let ch2 = buf2[pos2];
+        pos1 += 1;
+        pos2 += 1;
+        compared += 1;
+
+        if ch1 != ch2 {
+            dfound = true;
+            if flags.xflag {
+                println!("{:08x} {:02x} {:02x}", byte - 1, ch1, ch2);
+            } else if flags.lflag {
+                if flags.bflag {
+                    println!(
+                        "{:6} {:3o} {:c} {:3o} {:c}",
+                        byte, ch1, ch1 as char, ch2, ch2 as char
+                    );
+                } else {
+                    println!("{:6} {:3o} {:3o}", byte, ch1, ch2);
+                }
+            } else {
+                diffmsg(file1, file2, byte, line, ch1, ch2, flags);
+                return DIFF_EXIT;
+            }
+        }
+        if ch1 == b'\n' {
+            line += 1;
+        }
+        byte += 1;
+    }
+
+    if len1 != len2 {
+        eofmsg(if len1 > len2 { file2 } else { file1 }, flags);
+        return DIFF_EXIT;
+    }
+    if dfound {
+        DIFF_EXIT
+    } else {
+        OK_EXIT
+    }
+}
+
+fn compare_special<R1: Read, R2: Read>(
+    mut reader1: BufReader<R1>,
+    file1: &str,
+    skip1: i64,
+    mut reader2: BufReader<R2>,
+    file2: &str,
+    skip2: i64,
+    limit: i64,
+    flags: &Flags,
+) -> i32 {
+    // Skip bytes
+    let mut skip_buf = [0u8; 8192];
+    let mut remaining = skip1;
+    while remaining > 0 {
+        let to_read = remaining.min(skip_buf.len() as i64) as usize;
+        match reader1.read(&mut skip_buf[..to_read]) {
+            Ok(0) => {
+                eofmsg(file1, flags);
+                return DIFF_EXIT;
+            }
+            Ok(n) => remaining -= n as i64,
+            Err(_) => {
+                eprintln!("cmp: {}: {}", file1, io::Error::last_os_error());
+                return ERR_EXIT;
+            }
+        }
+    }
+    remaining = skip2;
+    while remaining > 0 {
+        let to_read = remaining.min(skip_buf.len() as i64) as usize;
+        match reader2.read(&mut skip_buf[..to_read]) {
+            Ok(0) => {
+                eofmsg(file2, flags);
+                return DIFF_EXIT;
+            }
+            Ok(n) => remaining -= n as i64,
+            Err(_) => {
+                eprintln!("cmp: {}: {}", file2, io::Error::last_os_error());
+                return ERR_EXIT;
+            }
+        }
+    }
+
+    let mut byte: i64 = 1;
+    let mut line: i64 = 1;
+    let mut dfound = false;
+    let mut buf1 = [0u8; 8192];
+    let mut buf2 = [0u8; 8192];
+    let mut pos1 = 0usize;
+    let mut pos2 = 0usize;
+    let mut avail1 = 0usize;
+    let mut avail2 = 0usize;
+    let mut eof1 = false;
+    let mut eof2 = false;
+
+    loop {
+        if limit > 0 && byte > limit {
+            break;
+        }
+        if pos1 >= avail1 && !eof1 {
+            match reader1.read(&mut buf1) {
+                Ok(0) => {
+                    eof1 = true;
+                    break;
+                }
+                Ok(n) => {
+                    avail1 = n;
+                    pos1 = 0;
+                }
+                Err(_) => {
+                    eprintln!("cmp: {}: {}", file1, io::Error::last_os_error());
+                    return ERR_EXIT;
+                }
+            }
+        }
+        if pos2 >= avail2 && !eof2 {
+            match reader2.read(&mut buf2) {
+                Ok(0) => {
+                    eof2 = true;
+                    break;
+                }
+                Ok(n) => {
+                    avail2 = n;
+                    pos2 = 0;
+                }
+                Err(_) => {
+                    eprintln!("cmp: {}: {}", file2, io::Error::last_os_error());
+                    return ERR_EXIT;
+                }
+            }
+        }
+        if eof1 || eof2 {
+            break;
+        }
+
+        let ch1 = buf1[pos1];
+        let ch2 = buf2[pos2];
+        pos1 += 1;
+        pos2 += 1;
+
+        if ch1 != ch2 {
+            dfound = true;
+            if flags.xflag {
+                println!("{:08x} {:02x} {:02x}", byte - 1, ch1, ch2);
+            } else if flags.lflag {
+                if flags.bflag {
+                    println!(
+                        "{:6} {:3o} {:c} {:3o} {:c}",
+                        byte, ch1, ch1 as char, ch2, ch2 as char
+                    );
+                } else {
+                    println!("{:6} {:3o} {:3o}", byte, ch1, ch2);
+                }
+            } else {
+                diffmsg(file1, file2, byte, line, ch1, ch2, flags);
+                return DIFF_EXIT;
+            }
+        }
+        if ch1 == b'\n' {
+            line += 1;
+        }
+        byte += 1;
+    }
+
+    if eof1 && !eof2 {
+        eofmsg(file1, flags);
+        return DIFF_EXIT;
+    }
+    if eof2 && !eof1 {
+        eofmsg(file2, flags);
+        return DIFF_EXIT;
+    }
+    if dfound {
+        DIFF_EXIT
+    } else {
+        OK_EXIT
+    }
+}
+
+fn compare_link(file1: &str, skip1: i64, file2: &str, skip2: i64, limit: i64, flags: &Flags) -> i32 {
+    let buf1 = match fs::read(file1) {
+        Ok(b) => b,
+        Err(_) => {
+            if !flags.sflag {
+                eprintln!("cmp: {}: {}", file1, io::Error::last_os_error());
+            }
+            return ERR_EXIT;
+        }
+    };
+    let buf2 = match fs::read(file2) {
+        Ok(b) => b,
+        Err(_) => {
+            if !flags.sflag {
+                eprintln!("cmp: {}: {}", file2, io::Error::last_os_error());
+            }
+            return ERR_EXIT;
+        }
+    };
+
+    let skip1 = skip1.min(buf1.len() as i64) as usize;
+    let skip2 = skip2.min(buf2.len() as i64) as usize;
+
+    let buf1 = &buf1[skip1..];
+    let buf2 = &buf2[skip2..];
+
+    let len = buf1.len().min(buf2.len());
+    let limit = if limit > 0 { limit as usize } else { len };
+    let len = len.min(limit);
+
+    let mut byte: i64 = 1;
+    let mut dfound = false;
+
+    for i in 0..len {
+        let ch1 = buf1[i];
+        let ch2 = buf2[i];
+        if ch1 != ch2 {
+            dfound = true;
+            if flags.xflag {
+                println!("{:08x} {:02x} {:02x}", byte - 1, ch1, ch2);
+            } else if flags.lflag {
+                if flags.bflag {
+                    println!(
+                        "{:6} {:3o} {:c} {:3o} {:c}",
+                        byte, ch1, ch1 as char, ch2, ch2 as char
+                    );
+                } else {
+                    println!("{:6} {:3o} {:3o}", byte, ch1, ch2);
+                }
+            } else {
+                diffmsg(file1, file2, byte, 1, ch1, ch2, flags);
+                return DIFF_EXIT;
+            }

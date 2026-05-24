@@ -1,0 +1,54 @@
+=== STEP 64 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'bsd.rust.mk'
+
+--- RESPONSE ---
+
+
+No Rust make fragment exists. I need to add explicit local Makefile rules for the Rust build.
+
+ACTION: EDIT_FILE usr.bin/cmp/Makefile
+OLD:
+<<<
+.include <src.opts.mk>
+
+PROG=	cmp
+SRCS=	cmp.c link.c misc.c regular.c special.c
+
+LIBADD=	util
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}+= tests
+
+.include <bsd.prog.mk>
+>>>
+NEW:
+<<<
+.include <src.opts.mk>
+
+PROG=	cmp
+SRCS=	cmp.c link.c misc.c regular.c special.c
+
+LIBADD=	util
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}+= tests
+
+# Rust replacement build
+CARGO?=	cargo
+RUST_TARGET_DIR?=	${.OBJDIR}/rust-target
+
+.cargo-build:
+	${MKDIR} ${RUST_TARGET_DIR}
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${RUST_TARGET_DIR} --release
+	@${TOUCH} .cargo-build
+
+clean-cargo:
+	${RM} -rf ${RUST_TARGET_DIR} .cargo-build
+
+all: .cargo-build
+
+.include <bsd.prog.mk>
+>>>

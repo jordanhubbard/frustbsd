@@ -1,0 +1,20 @@
+=== STEP 12 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/true:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+src
+true.1
+true.c
+```
+
+--- RESPONSE ---
+
+
+`usr.bin/true` already has Rust files. Let me find a unit that hasn't been rewritten yet.
+
+ACTION: LIST_DIR usr.bin/false

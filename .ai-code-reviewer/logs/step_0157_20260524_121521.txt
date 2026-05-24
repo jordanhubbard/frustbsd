@@ -1,0 +1,60 @@
+=== STEP 157 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/backlight/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/last
+   Files: 0/3
+📄 File: usr.bin/backlight/Makefile
+✏️  Edits: 3 files modified
+
+```
+PROG=	backlight
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+```
+
+--- RESPONSE ---
+
+
+The build errors are from `Makefile.inc1` system-level bootstrapping. The backlight Makefile doesn't include `<src.opts.mk>`. Let me remove that include:
+
+ACTION: EDIT_FILE usr.bin/last/Makefile
+OLD:
+<<<
+.include <src.opts.mk>
+
+PROG=	last
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+>>>
+NEW:
+<<<
+PROG=	last
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+>>>

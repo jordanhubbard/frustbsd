@@ -1,0 +1,45 @@
+=== STEP 100 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/last
+   Files: 0/3
+📄 File: usr.bin/last/last.c
+   Chunks: 17/19
+
+```
+=== CHUNK 17/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/last/last.c === [function: hostconv]
+=== Lines 474-496 (23 lines) ===
+
+static void
+hostconv(char *arg)
+{
+	static int first = 1;
+	static char *hostdot, name[MAXHOSTNAMELEN];
+	char *argdot;
+
+	if ((argdot = strchr(arg, '.')) == NULL)
+		return;
+	if (first) {
+		first = 0;
+		if (gethostname(name, sizeof(name)))
+			xo_err(1, "gethostname");
+		hostdot = strchr(name, '.');
+	}
+	if (hostdot != NULL && strcasecmp(hostdot, argdot) == 0)
+		*argdot = '\0';
+}
+
+/*
+ * ttyconv --
+ *	convert tty to correct name.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

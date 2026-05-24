@@ -1,0 +1,99 @@
+=== STEP 96 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/last
+   Files: 0/3
+📄 File: usr.bin/last/last.c
+   Chunks: 13/19
+
+```
+=== CHUNK 13/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/last/last.c === [function: doentry]
+=== Lines 264-340 (77 lines) ===
+
+static void
+doentry(struct utmpx *bp)
+{
+	struct idtab *tt;
+
+	/* the machine stopped */
+	if (bp->ut_type == BOOT_TIME || bp->ut_type == SHUTDOWN_TIME) {
+		/* everybody just logged out */
+		while ((tt = SLIST_FIRST(&idlist)) != NULL) {
+			SLIST_REMOVE_HEAD(&idlist, list);
+			free(tt);
+		}
+		currentout = -bp->ut_tv.tv_sec;
+		crmsg = bp->ut_type != SHUTDOWN_TIME ?
+		    "crash" : "shutdown";
+		/*
+		 * if we're in snapshot mode, we want to exit if this
+		 * shutdown/reboot appears while we are tracking the
+		 * active range
+		 */
+		if (snaptime && snapfound) {
+			if (xo_finish() < 0)
+				xo_err(EXIT_FAILURE, "stdout");
+			exit(EXIT_SUCCESS);
+		}
+		/*
+		 * don't print shutdown/reboot entries unless flagged for
+		 */
+		if (!snaptime && want(bp))
+			printentry(bp, NULL);
+		return;
+	}
+	/* date got set */
+	if (bp->ut_type == OLD_TIME || bp->ut_type == NEW_TIME) {
+		if (want(bp) && !snaptime)
+			printentry(bp, NULL);
+		return;
+	}
+
+	if (bp->ut_type != USER_PROCESS && bp->ut_type != DEAD_PROCESS)
+		return;
+
+	/* find associated identifier */
+	SLIST_FOREACH(tt, &idlist, list)
+	    if (!memcmp(tt->id, bp->ut_id, sizeof bp->ut_id))
+		    break;
+
+	if (tt == NULL) {
+		/* add new one */
+		tt = malloc(sizeof(struct idtab));
+		if (tt == NULL)
+			xo_errx(1, "malloc failure");
+		tt->logout = currentout;
+		memcpy(tt->id, bp->ut_id, sizeof bp->ut_id);
+		SLIST_INSERT_HEAD(&idlist, tt, list);
+	}
+
+	/*
+	 * print record if not in snapshot mode and wanted
+	 * or in snapshot mode and in snapshot range
+	 */
+	if (bp->ut_type == USER_PROCESS && (want(bp) ||
+	    (bp->ut_tv.tv_sec < snaptime &&
+	    (tt->logout > snaptime || tt->logout < 1)))) {
+		snapfound = 1;
+		printentry(bp, tt);
+	}
+	tt->logout = bp->ut_tv.tv_sec;
+}
+
+/*
+ * printentry --
+ *	output an entry
+ *
+ * If `tt' is non-NULL, use it and `crmsg' to print the logout time or
+ * logout type (crash/shutdown) as appropriate.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK
