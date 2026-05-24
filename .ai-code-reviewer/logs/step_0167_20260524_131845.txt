@@ -1,0 +1,14 @@
+=== STEP 167 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/who is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/clang/lib/Analysis/plugins/CheckerOptionHandling
+
+--- RESPONSE ---
+
+
+Let me work with the current scope `usr.bin/whereis`. It has 13 chunks which is manageable. Let me read through the full source to understand the behavior.
+
+ACTION: NEXT_CHUNK

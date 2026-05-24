@@ -1,0 +1,14 @@
+=== STEP 27 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/sleep is already marked complete.
+
+Completed work units are closed after a successful build and commit; do not reopen the same unit for incremental polish.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me try a different unit that hasn't been completed yet.
+
+ACTION: READ_FILE bin/realpath/Makefile

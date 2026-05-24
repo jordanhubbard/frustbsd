@@ -1,0 +1,14 @@
+=== STEP 48 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/stty is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE lib/libwrap
+
+--- RESPONSE ---
+
+
+I'll follow the suggestion and try `lib/libwrap`.
+
+ACTION: SET_SCOPE lib/libwrap

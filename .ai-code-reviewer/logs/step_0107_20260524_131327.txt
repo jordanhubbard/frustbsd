@@ -1,0 +1,20 @@
+=== STEP 107 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/look/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/join
+   Files: 0/3
+📄 File: usr.bin/look/Makefile
+
+```
+PROG=	look
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/look

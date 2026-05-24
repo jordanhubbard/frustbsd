@@ -1,0 +1,24 @@
+=== STEP 171 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/last/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/whereis
+   Files: 0/4
+📄 File: usr.bin/last/Makefile
+
+```
+PROG=	last
+PACKAGE=	acct
+LIBADD=	xo
+
+NO_WFORMAT=
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/last

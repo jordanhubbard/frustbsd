@@ -1,0 +1,11 @@
+=== STEP 20 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bin/hostname/Cargo.toml*'
+
+--- RESPONSE ---
+
+
+The `bin/hostname` unit has Rust build rules in the Makefile but is missing the actual Rust source files. This is a perfect unit to complete. Let me set scope and create the Rust replacement.
+
+ACTION: SET_SCOPE bin/hostname

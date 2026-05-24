@@ -1,0 +1,12 @@
+=== STEP 159 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/logname is already marked complete.
+
+Completed work units are closed after a successful build and commit; do not reopen the same unit for incremental polish.
+NEXT: Use SET_SCOPE contrib/llvm-project/clang/lib/Analysis/plugins/CheckerOptionHandling
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/tty/Makefile

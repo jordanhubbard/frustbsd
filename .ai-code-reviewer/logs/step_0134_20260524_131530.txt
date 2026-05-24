@@ -1,0 +1,9 @@
+=== STEP 134 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*usr.bin/number/number.1*'
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/number

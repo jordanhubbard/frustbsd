@@ -1,0 +1,9 @@
+=== STEP 57 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*usr.bin/basename/Cargo.toml*'
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/basename

@@ -156,8 +156,8 @@
     "last_attempt": "2026-05-24T08:08:33.309056"
   },
   "contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T11:31:05.879569"
+    "attempts": 3,
+    "last_attempt": "2026-05-24T13:06:16.014026"
   },
   "contrib/llvm-project/llvm/lib/Target/CSKY/TargetInfo": {
     "attempts": 3,
@@ -324,8 +324,8 @@
     "last_attempt": "2026-05-21T23:26:14.041313"
   },
   "usr.bin/clang/llvm-dwp": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T11:12:28.554134"
+    "attempts": 3,
+    "last_attempt": "2026-05-24T13:06:51.569115"
   },
   "usr.bin/cmp": {
     "attempts": 3,
@@ -387,13 +387,17 @@
     "attempts": 3,
     "last_attempt": "2026-05-22T20:48:02.583318"
   },
+  "usr.bin/join": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T13:12:22.998342"
+  },
   "usr.bin/jot": {
     "attempts": 1,
     "last_attempt": "2026-05-22T18:13:07.386524"
   },
   "usr.bin/last": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T11:43:16.218202"
+    "attempts": 3,
+    "last_attempt": "2026-05-24T13:18:59.845697"
   },
   "usr.bin/lastcomm": {
     "attempts": 1,
@@ -500,8 +504,8 @@
     "last_attempt": "2026-05-24T06:46:29.573429"
   },
   "usr.bin/split": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T11:32:40.113772"
+    "attempts": 3,
+    "last_attempt": "2026-05-24T13:14:21.810481"
   },
   "usr.bin/tail": {
     "attempts": 3,
@@ -560,8 +564,8 @@
     "last_attempt": "2026-05-22T21:02:33.048865"
   },
   "usr.bin/whereis": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T00:43:38.707886"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T13:16:10.359664"
   },
   "usr.bin/who": {
     "attempts": 2,

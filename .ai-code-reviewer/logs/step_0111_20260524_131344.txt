@@ -1,0 +1,32 @@
+=== STEP 111 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/wc/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/join
+   Files: 0/3
+📄 File: usr.bin/wc/Makefile
+
+```
+.include <src.opts.mk>
+
+PROG=	wc
+LIBADD=	xo
+
+.if ${MK_CASPER} != "no"
+LIBADD+=        casper
+LIBADD+=        cap_fileargs
+CFLAGS+=-DWITH_CASPER
+.endif
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}=	tests
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/tee/Makefile

@@ -1,0 +1,40 @@
+=== STEP 59 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/strings/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/clang/llvm-dwp
+   Files: 0/2
+📄 File: usr.bin/strings/Makefile
+
+```
+.include <src.opts.mk>
+
+PACKAGE=	toolchain
+
+ELFTCDIR=	${SRCTOP}/contrib/elftoolchain
+
+.PATH: ${ELFTCDIR}/strings
+
+PROG=	strings
+
+LIBADD=	elftc elf
+
+.if ${MK_CASPER} != "no" && !defined(BOOTSTRAPPING) && !defined(NXB_TARGET)
+LIBADD+=	casper
+LIBADD+=	cap_fileargs
+CFLAGS+=	-DWITH_CASPER
+.endif
+
+CFLAGS+=-I${ELFTCDIR}/libelftc -I${ELFTCDIR}/common
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+This depends on elftoolchain libraries. Let me find a simpler unit.
+
+ACTION: READ_FILE usr.bin/ldconfig/Makefile

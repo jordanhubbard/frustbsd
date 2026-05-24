@@ -1,0 +1,35 @@
+=== STEP 3 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo/AVRTargetInfo.h:
+PROGRESS:
+📁 Directory: contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo
+   Files: 0/2
+📄 File: contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo/AVRTargetInfo.h
+
+```
+//===-- AVRTargetInfo.h - AVR Target Implementation -------------*- C++ -*-===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#ifndef LLVM_AVR_TARGET_INFO_H
+#define LLVM_AVR_TARGET_INFO_H
+
+namespace llvm {
+class Target;
+
+Target &getTheAVRTarget();
+} // namespace llvm
+
+#endif // LLVM_AVR_TARGET_INFO_H
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo/AVRTargetInfo.cpp

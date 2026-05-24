@@ -1,0 +1,12 @@
+=== STEP 72 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Directory not found: usr.bin/xx
+TIP: Use LIST_DIR to see available directories
+
+--- RESPONSE ---
+
+
+Let me try to find a fresh unit that hasn't been attempted yet.
+
+ACTION: SET_SCOPE usr.bin/xx

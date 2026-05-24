@@ -1,0 +1,14 @@
+=== STEP 73 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/false is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me try finding a pending unit with C source.
+
+ACTION: READ_FILE usr.bin/yes/Makefile

@@ -1,0 +1,22 @@
+=== STEP 138 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/unvis/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/split
+   Files: 0/3
+📄 File: usr.bin/unvis/Makefile
+
+```
+PROG=	unvis
+
+.PATH: ${SRCTOP}/contrib/unvis
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/unvis

@@ -1,0 +1,24 @@
+=== STEP 41 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/pwait/Makefile:
+PROGRESS:
+📄 File: bin/pwait/Makefile
+
+```
+.include <src.opts.mk>
+
+PACKAGE=runtime
+PROG=	pwait
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}+=	tests
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE bin/pwait/pwait.c

@@ -1,0 +1,15 @@
+=== STEP 2 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo:
+```
+AVRTargetInfo.cpp
+AVRTargetInfo.h
+```
+
+--- RESPONSE ---
+
+
+I see two files in this unit. Let me read both to understand the current implementation.
+
+ACTION: READ_FILE contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo/AVRTargetInfo.h

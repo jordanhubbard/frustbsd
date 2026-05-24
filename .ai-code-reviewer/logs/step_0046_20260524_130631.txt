@@ -1,0 +1,46 @@
+=== STEP 46 ===
+
+--- REQUEST ---
+SET_SCOPE_OK: Now rewriting contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo
+
+HIERARCHY:
+  Level 1: Source tree (8132 work units)
+  Level 2: contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo ← YOU ARE HERE
+  Level 3: 2 candidate files
+  Level 4: Functions (auto-chunked for large files)
+
+WORK UNIT:
+  Kind: directory
+  Stage: unknown
+  Depends on: (none)
+  Related files:
+    - contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo/AVRTargetInfo.cpp
+    - contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo/AVRTargetInfo.h
+
+⚠ No Makefile - may be subdirectory
+
+FILES TO REWRITE:
+  - contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo/AVRTargetInfo.cpp
+  - contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo/AVRTargetInfo.h
+
+📁 Directory: contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo
+   Files: 0/2
+
+WORKFLOW:
+1. Rewrite each relevant file (READ_FILE, NEXT_CHUNK for large files)
+2. Make changes as needed (EDIT_FILE or WRITE_FILE)
+3. When ALL relevant files are rewritten: ACTION: BUILD
+4. If build succeeds: Changes committed for entire directory
+5. Move to next directory (SET_SCOPE)
+
+Attempts recorded for contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo: 3/3.
+Next attempt will auto-skip this directory.
+
+--- RESPONSE ---
+
+
+This unit is LLVM compiler infrastructure code, not FreeBSD userland. It depends on LLVM internal C++ APIs and is built via LLVM's CMake system. Per the constraint: "If the selected unit has no source relevant to the configured objective, choose another scope instead of fabricating a rewrite."
+
+I need to find a suitable FreeBSD userland unit. Let me search for one that hasn't been completed yet.
+
+ACTION: READ_FILE bin/stty/Makefile

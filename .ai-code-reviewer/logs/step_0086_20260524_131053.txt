@@ -1,0 +1,22 @@
+=== STEP 86 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/ul/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/clang/llvm-dwp
+   Files: 0/2
+📄 File: usr.bin/ul/Makefile
+
+```
+PROG=	ul
+
+LIBADD=	tinfow
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/ul

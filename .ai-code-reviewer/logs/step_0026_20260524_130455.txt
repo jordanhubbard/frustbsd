@@ -1,0 +1,9 @@
+=== STEP 26 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bin/sleep/Cargo.toml*'
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/sleep

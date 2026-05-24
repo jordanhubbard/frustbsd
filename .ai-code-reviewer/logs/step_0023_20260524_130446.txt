@@ -1,0 +1,9 @@
+=== STEP 23 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bin/echo/Cargo.toml*'
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/echo

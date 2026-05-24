@@ -1,0 +1,22 @@
+=== STEP 47 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/stty/Makefile:
+PROGRESS:
+📁 Directory: contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo
+   Files: 0/2
+📄 File: bin/stty/Makefile
+
+```
+PACKAGE=runtime
+PROG=	stty
+SRCS=	cchar.c gfmt.c key.c modes.c print.c stty.c util.c
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/stty

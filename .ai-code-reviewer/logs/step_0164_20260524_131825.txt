@@ -1,0 +1,31 @@
+=== STEP 164 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/id/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/whereis
+   Files: 0/4
+📄 File: usr.bin/id/Makefile
+
+```
+.include <src.opts.mk>
+
+PACKAGE=	runtime
+
+PROG=	id
+LINKS=	${BINDIR}/id ${BINDIR}/groups
+LINKS+=	${BINDIR}/id ${BINDIR}/whoami
+MAN=	id.1 groups.1 whoami.1
+
+.if ${MK_AUDIT} != "no"
+CFLAGS+=	-DUSE_BSM_AUDIT
+.endif
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE bin/cat/Makefile

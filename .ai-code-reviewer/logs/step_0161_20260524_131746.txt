@@ -1,0 +1,93 @@
+=== STEP 161 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whereis/whereis.c:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whereis/whereis.c
+   Total chunks: 13
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: usr.bin/whereis
+   Files: 0/4
+📄 File: usr.bin/whereis/whereis.c
+   Chunks: 1/13
+
+```
+=== CHUNK 1/13: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whereis/whereis.c === [header: file_header]
+=== Lines 1-64 (64 lines) ===
+
+/*-
+ * SPDX-License-Identifier: BSD-2-Clause
+ *
+ * Copyright © 2002, Jörg Wunsch
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR(S) ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * 4.3BSD UI-compatible whereis(1) utility.  Rewritten from scratch
+ * since the original 4.3BSD version suffers legal problems that
+ * prevent it from being redistributed, and since the 4.4BSD version
+ * was pretty inferior in functionality.
+ */
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/sysctl.h>
+
+#include <dirent.h>
+#include <err.h>
+#include <errno.h>
+#include <locale.h>
+#include <regex.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sysexits.h>
+#include <unistd.h>
+
+#include "pathnames.h"
+
+#define	NO_BIN_FOUND	1
+#define	NO_MAN_FOUND	2
+#define	NO_SRC_FOUND	4
+
+typedef const char *ccharp;
+
+static int opt_a, opt_b, opt_m, opt_q, opt_s, opt_u, opt_x;
+static ccharp *bindirs, *mandirs, *sourcedirs;
+static char **query;
+
+static const char *sourcepath = PATH_SOURCES;
+
+static char	*colonify(ccharp *);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/perror/Makefile

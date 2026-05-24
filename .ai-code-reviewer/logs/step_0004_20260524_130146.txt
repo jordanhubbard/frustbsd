@@ -1,0 +1,44 @@
+=== STEP 4 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo/AVRTargetInfo.cpp:
+PROGRESS:
+📁 Directory: contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo
+   Files: 0/2
+📄 File: contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo/AVRTargetInfo.cpp
+
+```
+//===-- AVRTargetInfo.cpp - AVR Target Implementation ---------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#include "TargetInfo/AVRTargetInfo.h"
+#include "llvm/MC/TargetRegistry.h"
+#include "llvm/Support/Compiler.h"
+namespace llvm {
+Target &getTheAVRTarget() {
+  static Target TheAVRTarget;
+  return TheAVRTarget;
+}
+} // namespace llvm
+
+extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void
+LLVMInitializeAVRTargetInfo() {
+  llvm::RegisterTarget<llvm::Triple::avr> X(llvm::getTheAVRTarget(), "avr",
+                                            "Atmel AVR Microcontroller", "AVR");
+}
+
+```
+
+--- RESPONSE ---
+
+
+This unit is LLVM compiler infrastructure (AVR target registration), not FreeBSD userland. It's deeply tied to LLVM's C++ type system (`Target`, `RegisterTarget`, `Triple`) and has already exhausted 3/3 attempts. Per the constraint "If a unit has no source relevant to the configured objective, choose another unit instead of fabricating placeholder Rust," I should skip this and find a proper userland unit.
+
+Let me look for a small, buildable userland command.
+
+ACTION: LIST_DIR bin/cat
