@@ -140,16 +140,16 @@
     "last_attempt": "2026-05-23T02:28:48.009957"
   },
   "contrib/llvm-project/llvm/lib/Frontend/Directive": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T00:22:43.395581"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T00:24:27.623828"
   },
   "contrib/llvm-project/llvm/lib/Frontend/OpenACC": {
     "attempts": 2,
     "last_attempt": "2026-05-22T21:07:43.325248"
   },
   "contrib/netbsd-tests/lib/csu/dso": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T00:21:20.336471"
+    "attempts": 3,
+    "last_attempt": "2026-05-24T00:24:56.720185"
   },
   "contrib/netbsd-tests/lib/semaphore/pthread": {
     "attempts": 3,
@@ -170,6 +170,10 @@
   "lib/libssp_nonshared": {
     "attempts": 3,
     "last_attempt": "2026-05-23T13:51:49.358239"
+  },
+  "lib/liby": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T00:31:26.880417"
   },
   "sbin/md5": {
     "attempts": 1,
@@ -264,8 +268,8 @@
     "last_attempt": "2026-05-21T23:26:14.041313"
   },
   "usr.bin/col": {
-    "attempts": 2,
-    "last_attempt": "2026-05-23T08:06:12.217183"
+    "attempts": 3,
+    "last_attempt": "2026-05-24T00:27:23.271384"
   },
   "usr.bin/colrm": {
     "attempts": 1,

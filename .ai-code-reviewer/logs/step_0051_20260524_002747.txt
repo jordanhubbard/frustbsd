@@ -1,0 +1,12 @@
+=== STEP 51 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/colrm is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/csu/dso
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/ul

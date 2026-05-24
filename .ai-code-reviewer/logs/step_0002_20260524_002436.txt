@@ -1,0 +1,42 @@
+=== STEP 2 ===
+
+--- REQUEST ---
+SET_SCOPE_OK: Now rewriting contrib/llvm-project/llvm/lib/Frontend/Directive
+
+HIERARCHY:
+  Level 1: Source tree (8132 work units)
+  Level 2: contrib/llvm-project/llvm/lib/Frontend/Directive ← YOU ARE HERE
+  Level 3: 1 candidate files
+  Level 4: Functions (auto-chunked for large files)
+
+WORK UNIT:
+  Kind: directory
+  Stage: unknown
+  Depends on: (none)
+  Related files:
+    - contrib/llvm-project/llvm/lib/Frontend/Directive/Spelling.cpp
+
+⚠ No Makefile - may be subdirectory
+
+FILES TO REWRITE:
+  - contrib/llvm-project/llvm/lib/Frontend/Directive/Spelling.cpp
+
+📁 Directory: contrib/llvm-project/llvm/lib/Frontend/Directive
+   Files: 0/1
+
+WORKFLOW:
+1. Rewrite each relevant file (READ_FILE, NEXT_CHUNK for large files)
+2. Make changes as needed (EDIT_FILE or WRITE_FILE)
+3. When ALL relevant files are rewritten: ACTION: BUILD
+4. If build succeeds: Changes committed for entire directory
+5. Move to next directory (SET_SCOPE)
+
+Attempts recorded for contrib/llvm-project/llvm/lib/Frontend/Directive: 2/3.
+1 attempt(s) remain before auto-skip.
+
+--- RESPONSE ---
+
+
+This is an LLVM frontend module, not FreeBSD userland. Let me read the source to confirm it's outside scope, then move to a relevant unit.
+
+ACTION: READ_FILE contrib/llvm-project/llvm/lib/Frontend/Directive/Spelling.cpp

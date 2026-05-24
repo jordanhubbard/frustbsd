@@ -1,0 +1,20 @@
+=== STEP 21 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/number:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+cargo-target
+number
+number.6
+number.c
+src
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/number

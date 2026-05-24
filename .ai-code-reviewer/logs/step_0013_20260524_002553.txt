@@ -1,0 +1,14 @@
+=== STEP 13 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/chio is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Frontend/Directive
+
+--- RESPONSE ---
+
+
+The current scope `contrib/llvm-project/llvm/lib/Frontend/Directive` is LLVM third-party compiler infrastructure, not FreeBSD userland. It's outside the rewrite objective. Let me find a suitable pending unit.
+
+ACTION: LIST_DIR usr.bin

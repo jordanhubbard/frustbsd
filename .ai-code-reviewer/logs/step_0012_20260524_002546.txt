@@ -1,0 +1,23 @@
+=== STEP 12 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: contrib/netbsd-tests/lib/csu/dso
+   Files: 0/1
+📄 File: bin/chio/chio.c
+   Chunks: 3/42
+
+```
+=== CHUNK 3/42: /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/chio/chio.c === [function: cleanup]
+=== Lines 56-56 (1 lines) ===
+
+static	void cleanup(void);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/chio

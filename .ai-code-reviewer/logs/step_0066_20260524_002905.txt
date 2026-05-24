@@ -1,0 +1,12 @@
+=== STEP 66 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory contrib/netbsd-tests/lib/csu/dso skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/llvm-project/llvm/lib/Frontend/Directive
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/ul
