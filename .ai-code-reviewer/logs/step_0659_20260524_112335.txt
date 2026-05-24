@@ -1,0 +1,32 @@
+=== STEP 659 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/clang/llvm-dwp/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/clang/llvm-dwp/src/main.rs
+CONTENT:
+// Rust replacement for llvm-dwp-driver.cpp
+// Thin wrapper that calls into the LLVM C++ library via FFI.
+
+extern "C" {
+    fn llvm_dwp_main(argc: i32, argv: *const *const i8, tool_name: *const i8) -> i32;
+}
+
+fn main() {
+    let args: Vec<std::ffi::CString> = std::env::args()
+        .map(|arg| std::ffi::CString::new(arg).expect("Invalid argument encoding"))
+        .collect();
+
+    let argv: Vec<*const i8> = args.iter().map(|s| s.as_ptr()).collect();
+    let tool_name = std::ffi::CString::new("llvm-dwp").expect("Invalid tool name");
+
+    let ret = unsafe {
+        llvm_dwp_main(args.len() as i32, argv.as_ptr(), tool_name.as_ptr())
+    };
+
+    std::process::exit(ret);
+}

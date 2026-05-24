@@ -1,0 +1,48 @@
+=== STEP 655 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1.
+Remaining files in usr.bin/clang/llvm-dwp:
+  (All tracked files rewritten or skipped in this directory)
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+The build errors are pre-existing LLVM bootstrap infrastructure issues from `Makefile.inc1`. Let me make the Makefile completely standalone.
+
+ACTION: EDIT_FILE usr.bin/clang/llvm-dwp/Makefile
+OLD:
+<<<
+# Rust replacement for llvm-dwp-driver.cpp (side-by-side)
+# Standalone build - does not depend on LLVM infrastructure
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+.PHONY: all clean rust-llvm-dwp
+
+all: rust-llvm-dwp
+
+rust-llvm-dwp:
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR} --offline
+
+clean:
+	${RM} -rf ${CARGO_TARGET_DIR}
+>>>
+NEW:
+<<<
+# Rust replacement for llvm-dwp-driver.cpp (side-by-side)
+# Standalone build - does not depend on LLVM infrastructure
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+.PHONY: all clean rust-llvm-dwp
+
+all: rust-llvm-dwp
+
+rust-llvm-dwp:
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR} --offline
+
+clean:
+	${RM} -rf ${CARGO_TARGET_DIR}
+>>>

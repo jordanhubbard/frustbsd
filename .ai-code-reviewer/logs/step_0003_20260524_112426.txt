@@ -1,0 +1,14 @@
+=== STEP 3 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/ARC/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me try the next suggested unit from the rewrite index.
+
+ACTION: SET_SCOPE contrib/llvm-project/llvm/lib/Target/ARC/TargetInfo

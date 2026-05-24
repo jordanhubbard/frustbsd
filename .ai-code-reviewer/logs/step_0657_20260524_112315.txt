@@ -1,0 +1,15 @@
+=== STEP 657 ===
+
+--- REQUEST ---
+BUILD_REJECTED: No pending source or build-file changes for the active scope.
+
+Do not run BUILD just to satisfy the loop. Choose a pending work unit with SET_SCOPE or make a real source/build-file change first.
+
+Only reviewer metadata is dirty: .reviewer-log/ops.jsonl, .ai-code-reviewer/logs/step_0655_20260524_112306.txt, .ai-code-reviewer/logs/step_0656_20260524_112310.txt
+
+--- RESPONSE ---
+
+
+The Makefile changes were reverted. Let me check the current state and rebuild the Rust crate files.
+
+ACTION: LIST_DIR usr.bin/clang/llvm-dwp
