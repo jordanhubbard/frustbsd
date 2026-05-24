@@ -1,0 +1,14 @@
+=== STEP 2 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory sys/contrib/libsodium/src/libsodium/crypto_auth skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/llvm-project/llvm/lib/Target/ARC/TargetInfo
+
+--- RESPONSE ---
+
+
+The instructed directory was auto-skipped. Let me try the current unit from the rewrite index instead.
+
+ACTION: SET_SCOPE contrib/file/python/file_magic
