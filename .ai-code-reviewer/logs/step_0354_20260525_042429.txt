@@ -1,0 +1,23 @@
+=== STEP 354 ===
+
+--- REQUEST ---
+EDIT_FILE_ERROR: Missing OLD or NEW block
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/ident/Cargo.toml
+OLD:
+<<<
+>>>
+NEW:
+<<<
+[package]
+name = "ident"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "ident"
+path = "src/main.rs"
+>>>

@@ -116,8 +116,8 @@
     "last_attempt": "2026-05-24T22:42:21.132011"
   },
   "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes": {
-    "attempts": 2,
-    "last_attempt": "2026-05-25T02:40:44.332821"
+    "attempts": 3,
+    "last_attempt": "2026-05-25T03:50:55.548575"
   },
   "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sdt": {
     "attempts": 1,

@@ -1,0 +1,14 @@
+=== STEP 331 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/ident/src:
+```
+main.rs
+```
+
+--- RESPONSE ---
+
+
+The scope has stale files from a previous unit. The current scope is a dtrace test directory with no Makefile - not a suitable rewrite target. Let me try to move to a proper work unit.
+
+ACTION: SET_SCOPE bin/cat/tests

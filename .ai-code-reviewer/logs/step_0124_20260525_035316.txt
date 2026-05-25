@@ -1,0 +1,11 @@
+=== STEP 124 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+Let me try building to see if the reverted Makefile passes:
+
+ACTION: BUILD

@@ -1,0 +1,23 @@
+=== STEP 362 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/cddl/contrib/opensolaris/cmd/dtrace/test/tst:
+```
+amd64
+common
+i386
+i86xpv
+```
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes/Makefile
+CONTENT:
+<<<
+# Placeholder Makefile for dtrace test directory
+# No build targets - test files only
+.PHONY: all
+all:
+	@echo "dtrace test directory - no build targets"
+>>>

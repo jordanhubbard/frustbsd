@@ -1,0 +1,113 @@
+=== STEP 294 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/bintrans/src/b64dec.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/bintrans/src/base64.rs
+CONTENT:
+<<<
+use std::fs::OpenOptions;
+use std::io::{self, BufRead, BufReader, Read, Write};
+use std::process;
+
+pub fn run(args: &[String]) {
+    let mut decode = false;
+    let mut wrap: Option<usize> = None;
+    let mut infile: Option<String> = None;
+    let mut i = 1;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-d" | "--decode" => decode = true,
+            "-i" | "--ignore-garbage" => {}
+            "-w" | "--wrap" => { i += 1; if i < args.len() { wrap = Some(args[i].parse().unwrap_or_else(|_| { eprintln!("invalid wrap"); process::exit(2); })); } else { usage(); } }
+            _ => { if !args[i].starts_with('-') { infile = Some(args[i].clone()); } else { usage(); } }
+        }
+        i += 1;
+    }
+    let input: Box<dyn Read> = if let Some(ref f) = infile {
+        Box::new(std::fs::File::open(f).unwrap_or_else(|e| { eprintln!("{}: {}", f, e); process::exit(1); }))
+    } else { Box::new(io::stdin()) };
+    let output: Box<dyn Write> = Box::new(io::stdout());
+    if decode {
+        let mut reader = BufReader::new(input);
+        decode_body(&mut reader, &mut *output);
+    } else {
+        encode_body(&mut input, &mut *output, wrap.unwrap_or(76));
+    }
+}
+
+fn encode_body(input: &mut dyn Read, output: &mut dyn Write, cols: usize) {
+    let b64 = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let mut buf = [0u8; 1023];
+    let mut carry = 0usize;
+    loop {
+        let n = match input.read(&mut buf) {
+            Ok(0) => break, Ok(n) => n, Err(_) => { eprintln!("read error"); process::exit(1); }
+        };
+        let mut out = Vec::new();
+        for ch in buf[..n].chunks(3) {
+            let (b0,b1,b2) = (ch[0] as u32, if ch.len()>1{ch[1] as u32}else{0}, if ch.len()>2{ch[2] as u32}else{0});
+            out.push(b64[((b0>>2)&0x3F) as usize]);
+            out.push(b64[((b0<<4)|(b1>>4)) as u32 & 0x3F] as u8);
+            if ch.len()>1 { out.push(b64[((b1<<2)|(b2>>6)) as u32 & 0x3F] as u8); }
+            if ch.len()>2 { out.push(b64[(b2&0x3F) as usize]); }
+        }
+        if cols == 0 { output.write_all(&out).unwrap(); }
+        else {
+            let mut i = 0;
+            while i < out.len() {
+                let tw = (cols - carry).min(out.len() - i);
+                output.write_all(&out[i..i+tw]).unwrap();
+                carry = (carry + tw) % cols;
+                i += tw;
+                if carry == 0 { writeln!(output).unwrap(); }
+            }
+        }
+    }
+    if cols == 0 || carry != 0 { writeln!(output).unwrap(); }
+}
+
+fn b64d(c: u8) -> u8 {
+    match c { b'A'..=b'Z'=>c-b'A', b'a'..=b'z'=>c-b'a'+26, b'0'..=b'9'=>c-b'0'+52, b'+'=>62, b'/'=>63, _=>0 }
+}
+
+fn decode_body(input: &mut dyn BufRead, output: &mut dyn Write) {
+    let mut carry = 0usize;
+    let mut cb = [0u8; 3];
+    loop {
+        let mut line = String::new();
+        match input.read_line(&mut line) {
+            Ok(0) => break,
+            Ok(_) => {
+                let lb = line.trim_end().as_bytes();
+                if lb.is_empty() { break; }
+                let mut i = 0usize;
+                while i < lb.len() {
+                    let c0 = if i<lb.len(){lb[i]}else{b'='};
+                    let c1 = if i+1<lb.len(){lb[i+1]}else{b'='};
+                    let c2 = if i+2<lb.len(){lb[i+2]}else{b'='};
+                    let c3 = if i+3<lb.len(){lb[i+3]}else{b'='};
+                    let (v0,v1,v2,v3) = (b64d(c0),b64d(c1),b64d(c2),b64d(c3));
+                    let (eq2,eq3) = (c2==b'=',c3==b'=');
+                    cb[carry] = (v0<<2)|(v1>>4); carry += 1;
+                    if !eq2 { cb[carry] = ((v1&0x0F)<<4)|(v2>>2); carry += 1; }
+                    if !eq3 { cb[carry] = ((v2&0x03)<<6)|v3; carry += 1; }
+                    if carry == 3 { output.write_all(&cb).unwrap(); carry = 0; }
+                    i += 4;
+                }
+            }
+            Err(_) => break,
+        }
+    }
+    if carry > 0 { output.write_all(&cb[..carry]).unwrap(); }
+}
+
+fn usage() {
+    eprintln!("usage: base64 [-d] [-i] [-w cols] [file]");
+    process::exit(1);
+}
+>>>

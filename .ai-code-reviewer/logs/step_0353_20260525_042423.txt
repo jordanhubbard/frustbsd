@@ -1,0 +1,112 @@
+=== STEP 353 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/cddl/contrib/opensolaris/cmd/dtrace/test/tst/common:
+```
+aggs
+arithmetic
+arrays
+assocs
+begin
+bitfields
+buffering
+builtinvar
+cg
+clauses
+cpc
+decls
+docsExamples
+drops
+dtraceUtil
+end
+enum
+env
+error
+exit
+fbtprovider
+funcs
+grammar
+include
+inline
+io
+ip
+java_api
+json
+kinst
+lexer
+llquantize
+mdb
+mib
+misc
+multiaggs
+nfs
+offsetof
+oformat
+operators
+pid
+plockstat
+pointers
+pragma
+predicates
+preprocessor
+print
+printa
+printf
+privs
+probes
+proc
+profile-n
+providers
+raise
+rates
+safety
+scalars
+sched
+scripting
+sdt
+sizeof
+speculation
+stability
+stack
+stackdepth
+stop
+strlen
+strtoll
+struct
+sugar
+syscall
+sysevent
+tick-n
+trace
+tracemem
+translators
+typedef
+types
+uctf
+union
+usdt
+ustack
+vars
+version
+```
+
+--- RESPONSE ---
+
+
+The current scope is a dtrace test directory with no Makefile - not a proper build unit. The build reports 0 errors but fails because there's nothing to build. Let me clean up the stale files and move to a proper work unit.
+
+ACTION: EDIT_FILE usr.bin/ident/Cargo.toml
+OLD:
+<<<
+>>>
+NEW:
+<<<
+[package]
+name = "ident"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "ident"
+path = "src/main.rs"
+>>>

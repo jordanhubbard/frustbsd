@@ -1,0 +1,37 @@
+=== STEP 366 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+Pending source/build changes: 4 files modified
+Files: usr.bin/ident/Cargo.toml, usr.bin/ident/src/main.rs, Makefile.inc1, cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes/Makefile
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: bin/cat/tests
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+I'm stuck in this scope with uncommitted changes. Let me create a proper Rust rewrite for the C file to satisfy the build system:
+
+ACTION: WRITE_FILE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "tst-probestar"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "tst.probestar"
+path = "src/main.rs"
+>>>

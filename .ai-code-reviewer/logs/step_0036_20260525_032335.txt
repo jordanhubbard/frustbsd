@@ -1,0 +1,19 @@
+=== STEP 36 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/kill/Makefile:
+PROGRESS:
+📄 File: bin/kill/Makefile
+
+```
+PACKAGE=runtime
+PROG=	kill
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE bin/kill/kill.c

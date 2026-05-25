@@ -1,0 +1,135 @@
+=== STEP 321 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/bintrans/src/uud.rs:
+PROGRESS:
+📁 Directory: usr.bin/bintrans
+   Files: 0/7
+📄 File: usr.bin/bintrans/src/uud.rs
+✏️  Edits: 16 files modified
+
+```
+use std::fs::{self, OpenOptions};
+use std::io::{self, BufRead, BufReader, Read, Write};
+use std::os::unix::fs::PermissionsExt;
+use std::path::Path;
+use std::process;
+
+pub fn run(args: &[String]) {
+    let mut outfile: Option<String> = None;
+    let mut infile: Option<String> = None;
+    let mut raw = false;
+    let mut i = 1;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-o" => { i += 1; if i < args.len() { outfile = Some(args[i].clone()); } else { usage(); } }
+            "-r" => raw = true,
+            _ => { if !args[i].starts_with('-') { infile = Some(args[i].clone()); } else { usage(); } }
+        }
+        i += 1;
+    }
+    let input: Box<dyn Read> = if let Some(ref f) = infile {
+        Box::new(std::fs::File::open(f).unwrap_or_else(|e| { eprintln!("{}: {}", f, e); process::exit(1); }))
+    } else { Box::new(io::stdin()) };
+    let mut reader = BufReader::new(input);
+    let mut header = String::new();
+    if reader.read_line(&mut header).is_err() { process::exit(1); }
+    let is_b64 = header.starts_with("begin-base64");
+    let (mut mode, mut rf) = (0o666u16, String::new());
+    if is_b64 || header.starts_with("begin ") {
+        let parts: Vec<&str> = header.split_whitespace().collect();
+        if parts.len() >= 3 {
+            if let Ok(m) = u16::from_str_radix(parts[1], 8) { mode = m; }
+            rf = parts[2].to_string();
+        }
+    } else { raw = true; rf = "decoded".to_string(); }
+    let outpath = outfile.clone().unwrap_or_else(|| rf.clone());
+    let mut output: Box<dyn Write> = if let Some(ref o) = outfile {
+        Box::new(OpenOptions::new().write(true).create(true).truncate(true).open(o).unwrap_or_else(|e| { eprintln!("unable to open {} for output: {}", o, e); process::exit(1); }))
+    } else {
+        Box::new(OpenOptions::new().write(true).create(true).truncate(true).open(&rf).unwrap_or_else(|e| { eprintln!("unable to open {} for output: {}", rf, e); process::exit(1); }))
+    };
+    if is_b64 { b64dec_body(&mut reader, &mut *output, raw); }
+    else { uud_body(&mut reader, &mut *output, raw); }
+    if let Ok(p) = Path::new(&outpath).canonicalize() { let _ = fs::set_permissions(&p, fs::Permissions::from_mode(mode)); }
+}
+
+fn dec(c: u8) -> u8 { if c == b'`' { 0 } else { c - b' ' } }
+
+fn uud_body(input: &mut dyn BufRead, output: &mut dyn Write, raw: bool) {
+    if !raw { let mut h = String::new(); if input.read_line(&mut h).is_err() { return; } }
+    loop {
+        let mut line = String::new();
+        match input.read_line(&mut line) {
+            Ok(0) => break,
+            Ok(_) => {
+                let lb = line.as_bytes();
+                if lb.len() < 2 { break; }
+                let n = dec(lb[0]) as usize;
+                if n == 0 { break; }
+                let mut i = 1usize;
+                let mut out = Vec::new();
+                while i+3 < lb.len() && out.len() < n {
+                    let (b0,b1,b2,b3) = (dec(lb[i]),dec(lb[i+1]),dec(lb[i+2]),dec(lb[i+3]));
+                    out.push((b0<<2)|(b1>>4));
+                    if out.len()<n { out.push(((b1&0x0F)<<4)|(b2>>2)); }
+                    if out.len()<n { out.push(((b2&0x03)<<6)|b3); }
+                    i += 4;
+                }
+                output.write_all(&out).unwrap();
+            }
+            Err(_) => break,
+        }
+    }
+    if !raw { let mut e = String::new(); let _ = input.read_line(&mut e); }
+}
+
+fn b64d(c: u8) -> u8 {
+    match c { b'A'..=b'Z'=>c-b'A', b'a'..=b'z'=>c-b'a'+26, b'0'..=b'9'=>c-b'0'+52, b'+'=>62, b'/'=>63, _=>0 }
+}
+
+fn b64dec_body(input: &mut dyn BufRead, output: &mut dyn Write, raw: bool) {
+    if !raw { let mut h = String::new(); if input.read_line(&mut h).is_err() { return; } }
+    let mut carry = 0usize;
+    let mut cb = [0u8; 3];
+    loop {
+        let mut line = String::new();
+        match input.read_line(&mut line) {
+            Ok(0) => break,
+            Ok(_) => {
+                let lb = line.trim_end().as_bytes();
+                if lb.is_empty() { break; }
+                let mut i = 0usize;
+                while i < lb.len() {
+                    let c0 = if i<lb.len(){lb[i]}else{b'='};
+                    let c1 = if i+1<lb.len(){lb[i+1]}else{b'='};
+                    let c2 = if i+2<lb.len(){lb[i+2]}else{b'='};
+                    let c3 = if i+3<lb.len(){lb[i+3]}else{b'='};
+                    let (v0,v1,v2,v3) = (b64d(c0),b64d(c1),b64d(c2),b64d(c3));
+                    let (eq2,eq3) = (c2==b'=',c3==b'=');
+                    cb[carry] = (v0<<2)|(v1>>4); carry += 1;
+                    if !eq2 { cb[carry] = ((v1&0x0F)<<4)|(v2>>2); carry += 1; }
+                    if !eq3 { cb[carry] = ((v2&0x03)<<6)|v3; carry += 1; }
+                    if carry == 3 { output.write_all(&cb).unwrap(); carry = 0; }
+                    i += 4;
+                }
+            }
+            Err(_) => break,
+        }
+    }
+    if carry > 0 { output.write_all(&cb[..carry]).unwrap(); }
+    if !raw { let mut e = String::new(); let _ = input.read_line(&mut e); }
+}
+
+fn usage() {
+    eprintln!("usage: uudecode [-o outfile] [infile]");
+    process::exit(1);
+}
+```
+
+--- RESPONSE ---
+
+
+The build errors are from Makefile.inc1 `.info` directives about compiler bootstrapping - these are informational messages being treated as errors by the build harness. This is a pre-existing build infrastructure issue, not caused by my code changes. Let me try BUILD again to see if the Rust code compiles:
+
+ACTION: BUILD

@@ -1,0 +1,65 @@
+=== STEP 316 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/bintrans/src/main.rs:
+PROGRESS:
+📁 Directory: usr.bin/bintrans
+   Files: 0/7
+📄 File: usr.bin/bintrans/src/main.rs
+✏️  Edits: 16 files modified
+
+```
+use std::env;
+use std::path::Path;
+use std::process;
+
+mod uuenc;
+mod uud;
+mod b64enc;
+mod b64dec;
+mod base64;
+mod qp;
+
+fn usage() {
+    eprintln!("usage: bintrans <uuencode | uudecode> ...\n\
+         bintrans <b64encode | b64decode> ...\n\
+         bintrans <base64> ...\n\
+         bintrans <qp> ...");
+    process::exit(1);
+}
+
+fn search(progname: &str) -> i32 {
+    for (i, &name) in &["uuencode","uudecode","b64encode","b64decode","base64","qp"] {
+        if progname == name { return i as i32; }
+    }
+    -1
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let progname = args.first().map(|s| {
+        Path::new(s).file_name().and_then(|f| f.to_str()).unwrap_or(s)
+    }).unwrap_or("bintrans");
+    let coder = if search(progname) == -1 && args.len() > 1 {
+        search(&args[1])
+    } else {
+        search(&progname)
+    };
+    match coder {
+        0 => uuenc::run(&args),
+        1 => uud::run(&args),
+        2 => b64enc::run(&args),
+        3 => b64dec::run(&args),
+        4 => base64::run(&args),
+        5 => qp::run(&args),
+        _ => usage(),
+    }
+}
+```
+
+--- RESPONSE ---
+
+
+The build errors at lines 371/376 in Makefile.inc1 are `.info` directives about compiler bootstrapping, not actual errors from my changes. Let me try building just the Rust crate directly to verify it compiles:
+
+ACTION: BUILD

@@ -1,0 +1,43 @@
+=== STEP 87 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+Pending source/build changes: 2 files modified
+Files: cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes/src/main.rs, cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes/Cargo.toml
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: usr.bin/ident
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+I need to add a Makefile so the build system can build this unit properly.
+
+ACTION: WRITE_FILE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes/Makefile
+CONTENT:
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+PROG=	tst.probestar
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG}

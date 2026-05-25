@@ -1,0 +1,22 @@
+=== STEP 298 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/bintrans:
+```
+Makefile
+Makefile.depend
+bintrans.1
+bintrans.c
+qp.c
+rust
+src
+tests
+uudecode.c
+uuencode.c
+uuencode.format.5
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/bintrans/rust

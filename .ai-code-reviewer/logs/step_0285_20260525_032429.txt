@@ -1,0 +1,293 @@
+=== STEP 285 ===
+
+--- REQUEST ---
+
+⚠️  INCOMPLETE RESPONSE DETECTED
+
+Problem: Mismatched <<< >>> delimiters (incomplete EDIT_FILE)
+Response length: 12035 chars
+Last 100 chars: ...     "-w" | "--wrap" => { i += 1; if i < args.len() { wrap = Some(args[i].parse().unwrap_or_else(|_|
+
+Your response appears to have been cut off before completion.
+Please provide a COMPLETE response including:
+1. Your analysis
+2. A SINGLE, COMPLETE ACTION directive
+3. For EDIT_FILE: both complete OLD and NEW blocks
+
+If you're working with a large file causing timeouts:
+- Focus on ONE specific issue at a time
+- Use smaller OLD/NEW blocks
+- Consider SKIP_FILE if the file is too complex
+
+
+--- RESPONSE ---
+
+
+The file is too large for one response. Let me write it in two parts - first the main file, then a separate module for qp.
+
+ACTION: WRITE_FILE usr.bin/bintrans/src/main.rs
+CONTENT:
+<<<
+use std::env;
+use std::fs::{self, File, OpenOptions};
+use std::io::{self, BufRead, BufReader, Read, Write};
+use std::os::unix::fs::PermissionsExt;
+use std::path::Path;
+use std::process;
+
+fn usage() {
+    eprintln!("usage: bintrans <uuencode | uudecode> ...\n\
+         bintrans <b64encode | b64decode> ...\n\
+         bintrans <base64> ...\n\
+         bintrans <qp> ...");
+    process::exit(1);
+}
+
+fn search(progname: &str) -> i32 {
+    for (i, &name) in &["uuencode","uudecode","b64encode","b64decode","base64","qp"] {
+        if progname == name { return i as i32; }
+    }
+    -1
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let progname = args.first().map(|s| {
+        Path::new(s).file_name().and_then(|f| f.to_str()).unwrap_or(s)
+    }).unwrap_or("bintrans");
+    let coder = if search(progname) == -1 && args.len() > 1 { search(&args[1]) } else { search(&progname) };
+    match coder {
+        0 => main_encode(&args, false),
+        1 => main_decode(&args),
+        2 => main_encode(&args, true),
+        3 => main_b64_decode(&args),
+        4 => main_base64(&args),
+        5 => qp_main(&args),
+        _ => usage(),
+    }
+}
+
+fn enc(c: u8) -> u8 { if c == 0 { b'`' } else { (c & 0x7F) + b' ' } }
+
+fn main_encode(args: &[String], mut base64: bool) {
+    let mut outfile: Option<String> = None;
+    let mut raw = false;
+    let mut columns: usize = 76;
+    let mut i = 1;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-m" => base64 = true,
+            "-o" => { i += 1; if i < args.len() { outfile = Some(args[i].clone()); } else { usage(); } }
+            "-r" => raw = true,
+            "-w" => { i += 1; if i < args.len() { columns = args[i].parse().unwrap_or_else(|_| { eprintln!("invalid column width"); process::exit(2); }); } else { usage(); } }
+            _ => break,
+        }
+        i += 1;
+    }
+    let rem: Vec<&String> = args[i..].iter().collect();
+    let (infile, remotefile) = match rem.len() {
+        2 => (Some(rem[0].clone()), rem[1].clone()),
+        1 => (None, rem[0].clone()),
+        _ => { eprintln!("usage: uuencode [-m] [-o outfile] [infile] remotefile"); process::exit(1); }
+    };
+    let mode = if let Some(ref inf) = infile {
+        fs::metadata(inf).map(|m| m.permissions().mode() & 0o777).unwrap_or(0o666)
+    } else { 0o666 };
+    let input: Box<dyn Read> = if let Some(ref f) = infile {
+        Box::new(File::open(f).unwrap_or_else(|e| { eprintln!("{}: {}", f, e); process::exit(1); }))
+    } else { Box::new(io::stdin()) };
+    let mut output: Box<dyn Write> = if let Some(ref o) = outfile {
+        Box::new(OpenOptions::new().write(true).create(true).truncate(true).open(o).unwrap_or_else(|e| { eprintln!("unable to open {} for output: {}", o, e); process::exit(1); }))
+    } else { Box::new(io::stdout()) };
+    if base64 { b64enc(&mut input, &mut output, mode, &remotefile, raw, columns); }
+    else { uuenc(&mut input, &mut output, mode, &remotefile, raw); }
+}
+
+fn uuenc(input: &mut dyn Read, output: &mut dyn Write, mode: u16, rf: &str, raw: bool) {
+    if !raw { writeln!(output, "begin {:o} {}", mode, rf).unwrap(); }
+    let mut buf = [0u8; 45];
+    loop {
+        let n = match input.read(&mut buf) {
+            Ok(0) => break, Ok(n) => n, Err(_) => { eprintln!("read error"); process::exit(1); }
+        };
+        write!(output, "{}", enc(n as u8)).unwrap();
+        let mut p = 0;
+        while p < n {
+            let (b0,b1,b2) = (buf[p], if p+1<n{buf[p+1]}else{0}, if p+2<n{buf[p+2]}else{0});
+            write!(output, "{}{}{}{}", enc(b0>>2), enc((b0<<4)|(b1>>4)), enc((b1<<2)|(b2>>6)), enc(b2&0x3F)).unwrap();
+            p += 3;
+        }
+        writeln!(output).unwrap();
+    }
+    if !raw { writeln!(output, "{}end", enc(0)).unwrap(); }
+}
+
+fn b64enc(input: &mut dyn Read, output: &mut dyn Write, mode: u16, rf: &str, raw: bool, cols: usize) {
+    if !raw { writeln!(output, "begin-base64 {:o} {}", mode, rf).unwrap(); }
+    let b64 = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let mut buf = [0u8; 1023];
+    let mut carry = 0usize;
+    loop {
+        let n = match input.read(&mut buf) {
+            Ok(0) => break, Ok(n) => n, Err(_) => { eprintln!("read error"); process::exit(1); }
+        };
+        let mut out = Vec::new();
+        for ch in buf[..n].chunks(3) {
+            let (b0,b1,b2) = (ch[0] as u32, if ch.len()>1{ch[1] as u32}else{0}, if ch.len()>2{ch[2] as u32}else{0});
+            out.push(b64[((b0>>2)&0x3F) as usize]);
+            out.push(b64[((b0<<4)|(b1>>4)) as u32 & 0x3F] as u8);
+            if ch.len()>1 { out.push(b64[((b1<<2)|(b2>>6)) as u32 & 0x3F] as u8); }
+            if ch.len()>2 { out.push(b64[(b2&0x3F) as usize]); }
+        }
+        if cols == 0 { output.write_all(&out).unwrap(); }
+        else {
+            let mut i = 0;
+            while i < out.len() {
+                let tw = (cols - carry).min(out.len() - i);
+                output.write_all(&out[i..i+tw]).unwrap();
+                carry = (carry + tw) % cols;
+                i += tw;
+                if carry == 0 { writeln!(output).unwrap(); }
+            }
+        }
+    }
+    if cols == 0 || carry != 0 { writeln!(output).unwrap(); }
+    if !raw { writeln!(output, "====").unwrap(); }
+}
+
+fn dec(c: u8) -> u8 { if c == b'`' { 0 } else { c - b' ' } }
+fn b64d(c: u8) -> u8 {
+    match c { b'A'..=b'Z'=>c-b'A', b'a'..=b'z'=>c-b'a'+26, b'0'..=b'9'=>c-b'0'+52, b'+'=>62, b'/'=>63, _=>0 }
+}
+
+fn main_decode(args: &[String]) {
+    let mut outfile: Option<String> = None;
+    let mut infile: Option<String> = None;
+    let mut raw = false;
+    let mut i = 1;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-o" => { i += 1; if i < args.len() { outfile = Some(args[i].clone()); } else { usage(); } }
+            "-r" => raw = true,
+            _ => { if !args[i].starts_with('-') { infile = Some(args[i].clone()); } else { usage(); } }
+        }
+        i += 1;
+    }
+    let input: Box<dyn Read> = if let Some(ref f) = infile {
+        Box::new(File::open(f).unwrap_or_else(|e| { eprintln!("{}: {}", f, e); process::exit(1); }))
+    } else { Box::new(io::stdin()) };
+    let mut reader = BufReader::new(input);
+    let mut header = String::new();
+    if reader.read_line(&mut header).is_err() { process::exit(1); }
+    let is_b64 = header.starts_with("begin-base64");
+    let (mut mode, mut rf) = (0o666u16, String::new());
+    if is_b64 || header.starts_with("begin ") {
+        let parts: Vec<&str> = header.split_whitespace().collect();
+        if parts.len() >= 3 {
+            if let Ok(m) = u16::from_str_radix(parts[1], 8) { mode = m; }
+            rf = parts[2].to_string();
+        }
+    } else { raw = true; rf = "decoded".to_string(); }
+    let outpath = outfile.clone().unwrap_or_else(|| rf.clone());
+    let mut output: Box<dyn Write> = if let Some(ref o) = outfile {
+        Box::new(OpenOptions::new().write(true).create(true).truncate(true).open(o).unwrap_or_else(|e| { eprintln!("unable to open {} for output: {}", o, e); process::exit(1); }))
+    } else {
+        Box::new(OpenOptions::new().write(true).create(true).truncate(true).open(&rf).unwrap_or_else(|e| { eprintln!("unable to open {} for output: {}", rf, e); process::exit(1); }))
+    };
+    if is_b64 { b64dec_body(&mut reader, &mut *output, mode, &outpath, raw); }
+    else { uud_body(&mut reader, &mut *output, mode, &outpath, raw); }
+    if let Ok(p) = Path::new(&outpath).canonicalize() { let _ = fs::set_permissions(&p, fs::Permissions::from_mode(mode)); }
+}
+
+fn uud_body(input: &mut dyn BufRead, output: &mut dyn Write, _: u16, _: &str, raw: bool) {
+    if !raw { let mut h = String::new(); if input.read_line(&mut h).is_err() { return; } }
+    loop {
+        let mut line = String::new();
+        match input.read_line(&mut line) {
+            Ok(0) => break,
+            Ok(_) => {
+                let lb = line.as_bytes();
+                if lb.len() < 2 { break; }
+                let n = dec(lb[0]) as usize;
+                if n == 0 { break; }
+                let mut i = 1usize;
+                let mut out = Vec::new();
+                while i+3 < lb.len() && out.len() < n {
+                    let (b0,b1,b2,b3) = (dec(lb[i]),dec(lb[i+1]),dec(lb[i+2]),dec(lb[i+3]));
+                    out.push((b0<<2)|(b1>>4));
+                    if out.len()<n { out.push(((b1&0x0F)<<4)|(b2>>2)); }
+                    if out.len()<n { out.push(((b2&0x03)<<6)|b3); }
+                    i += 4;
+                }
+                output.write_all(&out).unwrap();
+            }
+            Err(_) => break,
+        }
+    }
+    if !raw { let mut e = String::new(); let _ = input.read_line(&mut e); }
+}
+
+fn b64dec_body(input: &mut dyn BufRead, output: &mut dyn Write, _: u16, _: &str, raw: bool) {
+    if !raw { let mut h = String::new(); if input.read_line(&mut h).is_err() { return; } }
+    let mut carry = 0usize;
+    let mut cb = [0u8; 3];
+    loop {
+        let mut line = String::new();
+        match input.read_line(&mut line) {
+            Ok(0) => break,
+            Ok(_) => {
+                let lb = line.trim_end().as_bytes();
+                if lb.is_empty() { break; }
+                let mut i = 0usize;
+                while i < lb.len() {
+                    let c0 = if i<lb.len(){lb[i]}else{b'='};
+                    let c1 = if i+1<lb.len(){lb[i+1]}else{b'='};
+                    let c2 = if i+2<lb.len(){lb[i+2]}else{b'='};
+                    let c3 = if i+3<lb.len(){lb[i+3]}else{b'='};
+                    let (v0,v1,v2,v3) = (b64d(c0),b64d(c1),b64d(c2),b64d(c3));
+                    let (eq2,eq3) = (c2==b'=',c3==b'=');
+                    cb[carry] = (v0<<2)|(v1>>4); carry += 1;
+                    if !eq2 { cb[carry] = ((v1&0x0F)<<4)|(v2>>2); carry += 1; }
+                    if !eq3 { cb[carry] = ((v2&0x03)<<6)|v3; carry += 1; }
+                    if carry == 3 { output.write_all(&cb).unwrap(); carry = 0; }
+                    i += 4;
+                }
+            }
+            Err(_) => break,
+        }
+    }
+    if carry > 0 { output.write_all(&cb[..carry]).unwrap(); }
+    if !raw { let mut e = String::new(); let _ = input.read_line(&mut e); }
+}
+
+fn main_b64_decode(args: &[String]) {
+    let mut outfile: Option<String> = None;
+    let mut infile: Option<String> = None;
+    let mut i = 1;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-o" => { i += 1; if i < args.len() { outfile = Some(args[i].clone()); } }
+            _ => { if !args[i].starts_with('-') { infile = Some(args[i].clone()); } }
+        }
+        i += 1;
+    }
+    let input: Box<dyn Read> = if let Some(ref f) = infile {
+        Box::new(File::open(f).unwrap_or_else(|e| { eprintln!("{}: {}", f, e); process::exit(1); }))
+    } else { Box::new(io::stdin()) };
+    let mut reader = BufReader::new(input);
+    let mut output: Box<dyn Write> = if let Some(ref o) = outfile {
+        Box::new(OpenOptions::new().write(true).create(true).truncate(true).open(o).unwrap_or_else(|e| { eprintln!("unable to open {} for output: {}", o, e); process::exit(1); }))
+    } else { Box::new(io::stdout()) };
+    b64dec_body(&mut reader, &mut *output, 0o666, "", false);
+}
+
+fn main_base64(args: &[String]) {
+    let mut decode = false;
+    let mut wrap: Option<usize> = None;
+    let mut infile: Option<String> = None;
+    let mut i = 1;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-d" | "--decode" => decode = true,
+            "-i" | "--ignore-garbage" => {}
+            "-w" | "--wrap" => { i += 1; if i < args.len() { wrap = Some(args[i].parse().unwrap

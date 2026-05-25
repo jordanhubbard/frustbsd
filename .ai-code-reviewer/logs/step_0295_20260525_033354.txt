@@ -1,0 +1,113 @@
+=== STEP 295 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/bintrans/src/base64.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/bintrans/src/qp.rs
+CONTENT:
+<<<
+use std::fs::OpenOptions;
+use std::io::{self, BufRead, BufReader, Read, Write};
+use std::process;
+
+pub fn run(args: &[String]) {
+    let mut decode = false;
+    let mut infile: Option<String> = None;
+    let mut i = 1;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-d" | "--decode" => decode = true,
+            _ => { if !args[i].starts_with('-') { infile = Some(args[i].clone()); } else { usage(); } }
+        }
+        i += 1;
+    }
+    let input: Box<dyn Read> = if let Some(ref f) = infile {
+        Box::new(std::fs::File::open(f).unwrap_or_else(|e| { eprintln!("{}: {}", f, e); process::exit(1); }))
+    } else { Box::new(io::stdin()) };
+    let output: Box<dyn Write> = Box::new(io::stdout());
+    if decode {
+        let mut reader = BufReader::new(input);
+        qp_decode(&mut reader, &mut *output);
+    } else {
+        qp_encode(&mut input, &mut *output);
+    }
+}
+
+fn qp_encode(input: &mut dyn Read, output: &mut dyn Write) {
+    let mut buf = [0u8; 4096];
+    let mut line_buf = Vec::new();
+    loop {
+        let n = match input.read(&mut buf) {
+            Ok(0) => break, Ok(n) => n, Err(_) => { eprintln!("read error"); process::exit(1); }
+        };
+        for &b in &buf[..n] {
+            if b == b'\n' {
+                flush_line(&line_buf, output);
+                line_buf.clear();
+                writeln!(output).unwrap();
+            } else if b == b'\r' {
+                line_buf.push(b);
+            } else {
+                if line_buf.len() >= 75 {
+                    line_buf.push(b'=');
+                    flush_line(&line_buf, output);
+                    line_buf.clear();
+                }
+                if b == b'=' || b > 126 || b < 33 || b == b' ' {
+                    write!(output, "={:02X}", b).unwrap();
+                } else {
+                    write!(output, "{}", b as char).unwrap();
+                }
+            }
+        }
+    }
+    if !line_buf.is_empty() {
+        flush_line(&line_buf, output);
+        writeln!(output).unwrap();
+    }
+}
+
+fn flush_line(_buf: &[u8], _out: &mut dyn Write) {}
+
+fn qp_decode(input: &mut dyn BufRead, output: &mut dyn Write) {
+    let hex = |c: u8| -> u8 {
+        match c { b'0'..=b'9'=>c-b'0', b'A'..=b'F'=>c-b'A'+10, b'a'..=b'f'=>c-b'a'+10, _=>0 }
+    };
+    loop {
+        let mut line = String::new();
+        match input.read_line(&mut line) {
+            Ok(0) => break,
+            Ok(_) => {
+                let lb = line.trim_end().as_bytes();
+                if lb.is_empty() { writeln!(output).unwrap(); continue; }
+                let mut i = 0usize;
+                while i < lb.len() {
+                    if lb[i] == b'=' && i+2 < lb.len() {
+                        let h = (hex(lb[i+1]) << 4) | hex(lb[i+2]);
+                        if h == 0 && lb[i+1] == b'\r' && lb[i+2] == b'\n' {
+                            write!(output, "\r\n").unwrap();
+                        } else {
+                            write!(output, "{}", h as char).unwrap();
+                        }
+                        i += 3;
+                    } else {
+                        write!(output, "{}", lb[i] as char).unwrap();
+                        i += 1;
+                    }
+                }
+                writeln!(output).unwrap();
+            }
+            Err(_) => break,
+        }
+    }
+}
+
+fn usage() {
+    eprintln!("usage: qp [-d] [file]");
+    process::exit(1);
+}
+>>>

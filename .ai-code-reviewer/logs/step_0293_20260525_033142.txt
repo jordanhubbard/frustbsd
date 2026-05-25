@@ -1,0 +1,88 @@
+=== STEP 293 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: usr.bin/bintrans
+Pending source/build changes: 11 files modified
+Files: Makefile.inc1, usr.bin/bintrans/rust/Cargo.toml, usr.bin/bintrans/rust/src/main.rs, usr.bin/bintrans/rust/src/qp.rs, usr.bin/bintrans/rust/src/uuencode.rs, usr.bin/bintrans/rust/src/uudecode.rs, usr.bin/bintrans/Makefile, usr.bin/bintrans/Cargo.toml, usr.bin/bintrans/src/main.rs, usr.bin/bintrans/src/uuenc.rs, usr.bin/bintrans/src/uud.rs
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in usr.bin/bintrans
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+I need to finish the remaining module files for usr.bin/bintrans and then build. Let me write the remaining files.
+
+ACTION: WRITE_FILE usr.bin/bintrans/src/b64dec.rs
+CONTENT:
+<<<
+use std::fs::OpenOptions;
+use std::io::{self, BufRead, BufReader, Read, Write};
+use std::process;
+
+pub fn run(args: &[String]) {
+    let mut outfile: Option<String> = None;
+    let mut infile: Option<String> = None;
+    let mut i = 1;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-o" => { i += 1; if i < args.len() { outfile = Some(args[i].clone()); } }
+            _ => { if !args[i].starts_with('-') { infile = Some(args[i].clone()); } }
+        }
+        i += 1;
+    }
+    let input: Box<dyn Read> = if let Some(ref f) = infile {
+        Box::new(std::fs::File::open(f).unwrap_or_else(|e| { eprintln!("{}: {}", f, e); process::exit(1); }))
+    } else { Box::new(io::stdin()) };
+    let mut reader = BufReader::new(input);
+    let mut output: Box<dyn Write> = if let Some(ref o) = outfile {
+        Box::new(OpenOptions::new().write(true).create(true).truncate(true).open(o).unwrap_or_else(|e| { eprintln!("unable to open {} for output: {}", o, e); process::exit(1); }))
+    } else { Box::new(io::stdout()) };
+    decode(&mut reader, &mut *output);
+}
+
+fn b64d(c: u8) -> u8 {
+    match c { b'A'..=b'Z'=>c-b'A', b'a'..=b'z'=>c-b'a'+26, b'0'..=b'9'=>c-b'0'+52, b'+'=>62, b'/'=>63, _=>0 }
+}
+
+fn decode(input: &mut dyn BufRead, output: &mut dyn Write) {
+    let mut carry = 0usize;
+    let mut cb = [0u8; 3];
+    loop {
+        let mut line = String::new();
+        match input.read_line(&mut line) {
+            Ok(0) => break,
+            Ok(_) => {
+                let lb = line.trim_end().as_bytes();
+                if lb.is_empty() { break; }
+                let mut i = 0usize;
+                while i < lb.len() {
+                    let c0 = if i<lb.len(){lb[i]}else{b'='};
+                    let c1 = if i+1<lb.len(){lb[i+1]}else{b'='};
+                    let c2 = if i+2<lb.len(){lb[i+2]}else{b'='};
+                    let c3 = if i+3<lb.len(){lb[i+3]}else{b'='};
+                    let (v0,v1,v2,v3) = (b64d(c0),b64d(c1),b64d(c2),b64d(c3));
+                    let (eq2,eq3) = (c2==b'=',c3==b'=');
+                    cb[carry] = (v0<<2)|(v1>>4); carry += 1;
+                    if !eq2 { cb[carry] = ((v1&0x0F)<<4)|(v2>>2); carry += 1; }
+                    if !eq3 { cb[carry] = ((v2&0x03)<<6)|v3; carry += 1; }
+                    if carry == 3 { output.write_all(&cb).unwrap(); carry = 0; }
+                    i += 4;
+                }
+            }
+            Err(_) => break,
+        }
+    }
+    if carry > 0 { output.write_all(&cb[..carry]).unwrap(); }
+}
+>>>

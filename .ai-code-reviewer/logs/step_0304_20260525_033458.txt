@@ -1,0 +1,37 @@
+=== STEP 304 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/bintrans/src/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/bintrans/Makefile
+OLD:
+<<<
+.include <src.opts.mk>
+
+PROG=	bintrans
+SRCS=	bintrans.c uuencode.c uudecode.c qp.c
+MAN=	bintrans.1 uuencode.format.5
+>>>
+NEW:
+<<<
+.include <src.opts.mk>
+
+PROG=	bintrans
+SRCS=	bintrans.c uuencode.c uudecode.c qp.c
+MAN=	bintrans.1 uuencode.format.5
+
+RUSTPROG=	bintrans
+RUSTSRCDIR=	${SRCDIR}/src
+RUSTCARGO=	${RUSTSRCDIR}/Cargo.toml
+RUSTOBJDIR=	${OBJDIR}/rust
+
+${RUSTOBJDIR}/bintrans: ${RUSTCARGO} ${RUSTSRCDIR}/main.rs ${RUSTSRCDIR}/uuenc.rs ${RUSTSRCDIR}/uud.rs ${RUSTSRCDIR}/b64enc.rs ${RUSTSRCDIR}/b64dec.rs ${RUSTSRCDIR}/base64.rs ${RUSTSRCDIR}/qp.rs
+	@${MKDIR} ${RUSTOBJDIR}
+	@cd ${RUSTSRCDIR} && cargo build --target-dir ${RUSTOBJDIR} --manifest-path ${RUSTCARGO}
+
+all: ${RUSTOBJDIR}/bintrans
+>>>

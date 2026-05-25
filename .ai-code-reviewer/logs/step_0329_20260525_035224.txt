@@ -1,0 +1,36 @@
+=== STEP 329 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes:
+```
+err.D_PDESC_ZERO.probeqtn.d
+err.D_PDESC_ZERO.probestar.d
+err.D_PDESC_ZERO.tickstar.d
+err.D_SYNTAX.assign.d
+err.D_SYNTAX.declare.d
+err.D_SYNTAX.declarein.d
+err.D_SYNTAX.lbraces.d
+err.D_SYNTAX.probespec.d
+err.D_SYNTAX.rbraces.d
+err.D_SYNTAX.recdec.d
+tst.basic1.d
+tst.check.d
+tst.declare.d
+tst.declareafter.d
+tst.emptyprobe.d
+tst.pragma.d
+tst.pragmaaftertab.d
+tst.pragmainside.d
+tst.pragmaoutside.d
+tst.probestar.c
+tst.probestar.d
+```
+
+--- RESPONSE ---
+
+
+This is a dtrace test directory with no Makefile - the C file is a test helper, not a standalone command. Not a suitable rewrite target. The build errors are from Makefile.inc1 top-level infrastructure, not my changes.
+
+Let me check if there are stale files causing issues:
+
+ACTION: LIST_DIR usr.bin/ident
