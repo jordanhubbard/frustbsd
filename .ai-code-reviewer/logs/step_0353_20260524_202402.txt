@@ -1,0 +1,50 @@
+=== STEP 353 ===
+
+--- REQUEST ---
+SET_SCOPE_OK: Now rewriting usr.bin/posixmqcontrol
+
+HIERARCHY:
+  Level 1: Source tree (8132 work units)
+  Level 2: usr.bin/posixmqcontrol ← YOU ARE HERE
+  Level 3: 6 candidate files
+  Level 4: Functions (auto-chunked for large files)
+
+WORK UNIT:
+  Kind: directory
+  Stage: unknown
+  Depends on: (none)
+  Related files:
+    - usr.bin/posixmqcontrol/Makefile
+    - usr.bin/posixmqcontrol/posixmqcontrol.1
+    - usr.bin/posixmqcontrol/posixmqcontrol.c
+    - usr.bin/posixmqcontrol/posixmqcontroltest8qs.sh
+    - usr.bin/posixmqcontrol/posixmqcontroltest8x64.sh
+    - usr.bin/posixmqcontrol/posixmqcontroltestsane.sh
+
+✓ Directory has Makefile - valid source module
+
+FILES TO REWRITE:
+  - usr.bin/posixmqcontrol/Makefile
+  - usr.bin/posixmqcontrol/posixmqcontrol.1
+  - usr.bin/posixmqcontrol/posixmqcontrol.c
+  - usr.bin/posixmqcontrol/posixmqcontroltest8qs.sh
+  - usr.bin/posixmqcontrol/posixmqcontroltest8x64.sh
+  - usr.bin/posixmqcontrol/posixmqcontroltestsane.sh
+
+📁 Directory: usr.bin/posixmqcontrol
+   Files: 0/6
+
+WORKFLOW:
+1. Rewrite each relevant file (READ_FILE, NEXT_CHUNK for large files)
+2. Make changes as needed (EDIT_FILE or WRITE_FILE)
+3. When ALL relevant files are rewritten: ACTION: BUILD
+4. If build succeeds: Changes committed for entire directory
+5. Move to next directory (SET_SCOPE)
+
+Attempts recorded for usr.bin/posixmqcontrol: 2/3.
+1 attempt(s) remain before auto-skip.
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/posixmqcontrol/posixmqcontrol.c

@@ -1,0 +1,9 @@
+=== STEP 29 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE bin/echo/Makefile

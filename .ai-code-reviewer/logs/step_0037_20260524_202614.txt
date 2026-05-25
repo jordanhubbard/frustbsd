@@ -1,0 +1,14 @@
+=== STEP 37 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/chio is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/MSP430/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me find a valid pending work unit that isn't skipped.
+
+ACTION: LIST_DIR usr.bin/number
