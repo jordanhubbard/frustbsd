@@ -267,6 +267,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-23T13:51:49.358239"
   },
+  "lib/libthr/arch/amd64/amd64": {
+    "attempts": 1,
+    "last_attempt": "2026-05-25T05:44:44.314908"
+  },
   "lib/libutil": {
     "attempts": 3,
     "last_attempt": "2026-05-25T00:45:13.498198"
@@ -700,8 +704,8 @@
     "last_attempt": "2026-05-24T22:44:52.584506"
   },
   "usr.bin/tabs": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T22:45:03.390378"
+    "attempts": 3,
+    "last_attempt": "2026-05-25T05:46:18.503659"
   },
   "usr.bin/tail": {
     "attempts": 3,

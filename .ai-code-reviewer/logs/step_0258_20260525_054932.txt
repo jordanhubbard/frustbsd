@@ -1,0 +1,280 @@
+=== STEP 258 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tabs/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/tabs/src/main.rs
+CONTENT:
+use std::ffi::{CStr, CString};
+use std::io::{self, Write};
+use std::os::fd::AsRawFd;
+use std::ptr;
+use std::str;
+
+const NSTOPS: usize = 20;
+
+struct Format {
+    name: &'static str,
+    stops: &'static [i64],
+}
+
+static FORMATS: &[Format] = &[
+    Format { name: "a", stops: &[1, 10, 16, 36, 72] },
+    Format { name: "a2", stops: &[1, 10, 16, 40, 72] },
+    Format { name: "c", stops: &[1, 8, 12, 16, 20, 55] },
+    Format { name: "c2", stops: &[1, 6, 10, 14, 49] },
+    Format {
+        name: "c3",
+        stops: &[1, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58, 62, 67],
+    },
+    Format { name: "f", stops: &[1, 7, 11, 15, 19, 23] },
+    Format {
+        name: "p",
+        stops: &[1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61],
+    },
+    Format { name: "s", stops: &[1, 10, 55] },
+    Format { name: "u", stops: &[1, 12, 20, 44] },
+];
+
+extern "C" {
+    fn setupterm(term: *const libc::c_char, fd: libc::c_int, errret: *mut libc::c_int) -> libc::c_int;
+    fn tgetstr(cap: *const libc::c_char, area: *mut *mut libc::c_char) -> *mut libc::c_char;
+    fn tgetnum(cap: *const libc::c_char) -> libc::c_long;
+    fn putp(str: *const libc::c_char) -> libc::c_int;
+}
+
+fn usage() -> ! {
+    eprintln!(
+        "usage: tabs [-n|-a|-a2|-c|-c2|-c3|-f|-p|-s|-u] [+m[n]] [-T type]"
+    );
+    eprintln!("       tabs [-T type] [+[n]] n1,[n2,...]");
+    std::process::exit(1);
+}
+
+fn errx(code: i32, msg: &str) -> ! {
+    eprintln!("{}", msg);
+    std::process::exit(code);
+}
+
+fn warnx(msg: &str) {
+    eprintln!("{}", msg);
+}
+
+fn gettabs(arg: &str, stops: &mut Vec<i64>) {
+    let mut last: i64 = 0;
+    let mut first = true;
+    for tok in arg.split(',') {
+        if stops.len() >= NSTOPS {
+            errx(1, &format!("too many tab stops (limit {})", NSTOPS));
+        }
+        let tok_str = tok.trim();
+        let (is_relative, num_str) = if tok_str.starts_with('+') {
+            if first {
+                errx(1, &format!("{}: first tab may not be relative", tok_str));
+            }
+            (true, &tok_str[1..])
+        } else {
+            (false, tok_str)
+        };
+        let stop: i64 = num_str.parse().unwrap_or_else(|_| {
+            errx(1, &format!("{}: invalid tab stop", tok_str));
+        });
+        if stop <= 0 {
+            errx(1, &format!("{}: invalid tab stop", tok_str));
+        }
+        let stop = if is_relative { stop + last } else { stop };
+        if last > stop {
+            errx(1, "cannot go backwards");
+        }
+        last = stop;
+        stops.push(stop);
+        first = false;
+    }
+}
+
+fn ttywidth() -> i64 {
+    let stdout = io::stdout();
+    let fd = stdout.as_raw_fd();
+    let mut ws: libc::winsize = unsafe { std::mem::zeroed() };
+    if unsafe { libc::ioctl(fd, libc::TIOCGWINSZ, &mut ws as *mut _) } != -1 {
+        ws.ws_col as i64
+    } else {
+        let co = unsafe {
+            let cap = CString::new("co").unwrap();
+            tgetnum(cap.as_ptr())
+        };
+        if co != 0 {
+            co
+        } else {
+            warnx("cannot find terminal width; defaulted to 80");
+            80
+        }
+    }
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let mut inc: i64 = 8;
+    let mut margin: i64 = 0;
+    let mut nstops: Option<Vec<i64>> = None;
+    let mut custom_stops: Vec<i64> = Vec::new();
+    let mut arg_idx = 1;
+    let mut custom_arg: Option<&str> = None;
+
+    while arg_idx < args.len() {
+        let arg = &args[arg_idx];
+        if arg.starts_with('+') {
+            let rest = &arg[1..];
+            if rest.starts_with('m') {
+                let num_str = &rest[1..];
+                if num_str.is_empty() {
+                    margin = 10;
+                } else {
+                    margin = num_str.parse().unwrap_or_else(|_| {
+                        errx(1, &format!("{}: invalid margin width", rest));
+                    });
+                }
+            } else if !rest.is_empty() {
+                margin = rest.parse().unwrap_or_else(|_| {
+                    errx(1, &format!("{}: invalid margin width", rest));
+                });
+            } else {
+                margin = 10;
+            }
+        } else if arg.starts_with('-') && arg.len() > 1 && arg[1..].chars().next().unwrap().is_ascii_digit() {
+            let num_str = &arg[1..];
+            inc = num_str.parse().unwrap_or_else(|_| {
+                errx(1, &format!("{}: invalid increment", num_str));
+            });
+        } else if arg == "-T" || arg.starts_with("-T") {
+            let term_val = if arg.len() > 2 {
+                &arg[2..]
+            } else {
+                arg_idx += 1;
+                if arg_idx >= args.len() {
+                    usage();
+                }
+                &args[arg_idx]
+            };
+            std::env::set_var("TERM", term_val);
+        } else if arg.starts_with("--") {
+            arg_idx += 1;
+            if arg_idx < args.len() {
+                custom_arg = Some(&args[arg_idx]);
+            }
+            break;
+        } else if arg.starts_with('-') {
+            let name = &arg[1..];
+            let found = FORMATS.iter().find(|f| f.name == name);
+            match found {
+                Some(f) => {
+                    if nstops.is_some() {
+                        usage();
+                    }
+                    nstops = Some(f.stops.to_vec());
+                }
+                None => {
+                    usage();
+                }
+            }
+        } else {
+            custom_arg = Some(arg.as_str());
+        }
+        arg_idx += 1;
+    }
+
+    if let Some(ca) = custom_arg {
+        if nstops.is_some() {
+            usage();
+        }
+        gettabs(ca, &mut custom_stops);
+        nstops = Some(custom_stops);
+    }
+
+    // Initialize terminfo
+    let mut errret: libc::c_int = 0;
+    unsafe {
+        let result = setupterm(ptr::null(), 1, &mut errret);
+        if result != 1 {
+            errx(1, "terminal cannot be initialized");
+        }
+    }
+
+    let mut ap: *mut libc::c_char = ptr::null_mut();
+    let ct = unsafe {
+        let cap = CString::new("ct").unwrap();
+        tgetstr(cap.as_ptr(), &mut ap)
+    };
+    if ct.is_null() {
+        errx(1, "terminal cannot clear tabs");
+    }
+
+    let st = unsafe {
+        let cap = CString::new("st").unwrap();
+        tgetstr(cap.as_ptr(), &mut ap)
+    };
+    if st.is_null() {
+        errx(1, "terminal cannot set tabs");
+    }
+
+    let cr = unsafe {
+        let cap = CString::new("cr").unwrap();
+        tgetstr(cap.as_ptr(), &mut ap)
+    };
+    let cr_str = if cr.is_null() {
+        "\r"
+    } else {
+        unsafe { CStr::from_ptr(cr).to_str().unwrap_or("\r") }
+    };
+
+    let ml = unsafe {
+        let cap = CString::new("ML").unwrap();
+        tgetstr(cap.as_ptr(), &mut ap)
+    };
+
+    let cols = ttywidth();
+
+    let stdout = io::stdout();
+    let mut out = stdout.lock();
+
+    // Clear all tabs
+    write!(out, "{}", cr_str).unwrap();
+    unsafe {
+        putp(ct);
+    }
+
+    // Set soft margin
+    if !ml.is_null() {
+        let ml_str = unsafe { CStr::from_ptr(ml).to_str().unwrap_or("") };
+        write!(out, "{:width$}", "", width = margin as usize).unwrap();
+        write!(out, "{}", ml_str).unwrap();
+    } else if margin != 0 {
+        warnx("terminal cannot set left margin");
+    }
+
+    // Optionally output new tab stops
+    if let Some(ref stops) = nstops {
+        if !stops.is_empty() {
+            write!(out, "{:width$}", "", width = (stops[0] - 1) as usize).unwrap();
+            unsafe { putp(st); }
+            for i in 1..stops.len() {
+                let gap = (stops[i] - stops[i - 1]) as usize;
+                write!(out, "{:width$}", "", width = gap).unwrap();
+                unsafe { putp(st); }
+            }
+        }
+    } else if inc > 0 {
+        let count = cols / inc;
+        for _ in 0..count {
+            unsafe { putp(st); }
+            write!(out, "{:width$}", "", width = inc as usize).unwrap();
+        }
+        unsafe { putp(st); }
+    }
+
+    write!(out, "{}", cr_str).unwrap();
+}

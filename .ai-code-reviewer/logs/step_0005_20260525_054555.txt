@@ -1,0 +1,14 @@
+=== STEP 5 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+
+--- RESPONSE ---
+
+
+The LLVM directories are too large/complex and keep getting skipped. Let me find a small, manageable FreeBSD userland unit. Let me explore what's available in `bin/` and `usr.bin/`.
+
+ACTION: LIST_DIR bin

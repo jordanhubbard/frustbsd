@@ -1,0 +1,33 @@
+=== STEP 257 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tabs/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/tabs
+   Files: 0/3
+📄 File: usr.bin/tabs/Makefile
+
+```
+PROG=	tabs
+
+LIBADD=	tinfow
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+This is a good candidate - `tabs` is a small command that sets terminal tabs using terminfo. I'll create a Rust replacement with FFI to the terminfo library.
+
+ACTION: WRITE_FILE usr.bin/tabs/Cargo.toml
+CONTENT:
+[package]
+name = "tabs"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "tabs"
+path = "src/main.rs"

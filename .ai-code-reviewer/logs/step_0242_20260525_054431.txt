@@ -1,0 +1,13 @@
+=== STEP 242 ===
+
+--- REQUEST ---
+BUILD_REJECTED: No pending source or build-file changes for the active scope.
+
+Do not run BUILD just to satisfy the loop. Choose a pending work unit with SET_SCOPE or make a real source/build-file change first.
+
+Only reviewer metadata is dirty: .reviewer-log/ops.jsonl, .ai-code-reviewer/logs/step_0241_20260525_054426.txt
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/cat/tests

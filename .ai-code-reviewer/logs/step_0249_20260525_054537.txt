@@ -1,0 +1,13 @@
+=== STEP 249 ===
+
+--- REQUEST ---
+BUILD_REJECTED: No pending source or build-file changes for the active scope.
+
+Do not run BUILD just to satisfy the loop. Choose a pending work unit with SET_SCOPE or make a real source/build-file change first.
+
+Only reviewer metadata is dirty: .ai-code-reviewer/REWRITE-INDEX.md, .ai-code-reviewer/freebsd-rust-rewriter-retry-tracker.json, .reviewer-log/ops.jsonl, .ai-code-reviewer/logs/step_0001_20260525_054519.txt, .ai-code-reviewer/logs/step_0002_20260525_054530.txt, .ai-code-reviewer/logs/step_0241_20260525_054426.txt, .ai-code-reviewer/logs/step_0242_20260525_054431.txt, .ai-code-reviewer/logs/step_0243_20260525_054442.txt ...
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/asa

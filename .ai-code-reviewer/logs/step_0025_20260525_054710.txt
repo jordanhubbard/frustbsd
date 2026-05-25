@@ -1,0 +1,12 @@
+=== STEP 25 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/jot is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/expand
