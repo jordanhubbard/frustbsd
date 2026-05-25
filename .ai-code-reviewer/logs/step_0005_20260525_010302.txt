@@ -1,0 +1,11 @@
+=== STEP 5 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat/tests has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE usr.bin/clang/clang-scan-deps
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/clang/clang-scan-deps

@@ -1,0 +1,46 @@
+=== STEP 3 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo/SystemZTargetInfo.cpp:
+PROGRESS:
+📁 Directory: contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo
+   Files: 0/2
+📄 File: contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo/SystemZTargetInfo.cpp
+
+```
+//===-- SystemZTargetInfo.cpp - SystemZ target implementation -------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#include "TargetInfo/SystemZTargetInfo.h"
+#include "llvm/MC/TargetRegistry.h"
+#include "llvm/Support/Compiler.h"
+
+using namespace llvm;
+
+Target &llvm::getTheSystemZTarget() {
+  static Target TheSystemZTarget;
+  return TheSystemZTarget;
+}
+
+// NOLINTNEXTLINE(readability-identifier-naming)
+extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void
+LLVMInitializeSystemZTargetInfo() {
+  RegisterTarget<Triple::systemz, /*HasJIT=*/true> X(
+      getTheSystemZTarget(), "systemz", "SystemZ", "SystemZ");
+}
+
+```
+
+--- RESPONSE ---
+
+
+This is LLVM compiler infrastructure code, not FreeBSD userland. It's deeply tied to LLVM's C++ internals (`Target`, `RegisterTarget`, `Triple`, etc.) and is not a standalone command or library. Per the constraint "If the selected unit has no source relevant to the configured objective, choose another scope instead of fabricating a rewrite", I should skip this and move to the next unit.
+
+Let me read the header file quickly to confirm, then move on.
+
+ACTION: READ_FILE contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo/SystemZTargetInfo.h

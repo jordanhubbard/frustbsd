@@ -1,0 +1,39 @@
+=== STEP 4 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo/SystemZTargetInfo.h:
+PROGRESS:
+📁 Directory: contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo
+   Files: 0/2
+📄 File: contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo/SystemZTargetInfo.h
+
+```
+//===-- SystemZTargetInfo.h - SystemZ target implementation -----*- C++ -*-===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#ifndef LLVM_LIB_TARGET_SYSTEMZ_TARGETINFO_SYSTEMZTARGETINFO_H
+#define LLVM_LIB_TARGET_SYSTEMZ_TARGETINFO_SYSTEMZTARGETINFO_H
+
+namespace llvm {
+
+class Target;
+
+Target &getTheSystemZTarget();
+
+} // namespace llvm
+
+#endif // LLVM_LIB_TARGET_SYSTEMZ_TARGETINFO_SYSTEMZTARGETINFO_H
+
+```
+
+--- RESPONSE ---
+
+
+This unit is LLVM compiler infrastructure code, not FreeBSD userland. It's deeply tied to LLVM's C++ internals (`Target`, `RegisterTarget`, `Triple`) and cannot be meaningfully rewritten to Rust as a standalone unit. Per the constraint "If the selected unit has no source relevant to the configured objective, choose another scope instead of fabricating a rewrite", I'll skip this and move to the next unit.
+
+ACTION: SET_SCOPE bin/cat/tests

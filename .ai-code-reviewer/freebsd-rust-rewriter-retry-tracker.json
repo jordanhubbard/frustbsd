@@ -188,8 +188,8 @@
     "last_attempt": "2026-05-24T20:56:42.109153"
   },
   "contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo": {
-    "attempts": 2,
-    "last_attempt": "2026-05-25T00:48:13.554315"
+    "attempts": 3,
+    "last_attempt": "2026-05-25T01:01:37.147181"
   },
   "contrib/llvm-project/llvm/lib/Target/VE/TargetInfo": {
     "attempts": 3,
@@ -392,8 +392,8 @@
     "last_attempt": "2026-05-21T23:26:14.041313"
   },
   "usr.bin/clang/clang-scan-deps": {
-    "attempts": 2,
-    "last_attempt": "2026-05-25T00:49:05.466430"
+    "attempts": 3,
+    "last_attempt": "2026-05-25T01:03:04.088391"
   },
   "usr.bin/clang/llvm-dwp": {
     "attempts": 3,
