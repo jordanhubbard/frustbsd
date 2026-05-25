@@ -1,0 +1,34 @@
+=== STEP 141 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes:
+```
+err.D_PDESC_ZERO.probeqtn.d
+err.D_PDESC_ZERO.probestar.d
+err.D_PDESC_ZERO.tickstar.d
+err.D_SYNTAX.assign.d
+err.D_SYNTAX.declare.d
+err.D_SYNTAX.declarein.d
+err.D_SYNTAX.lbraces.d
+err.D_SYNTAX.probespec.d
+err.D_SYNTAX.rbraces.d
+err.D_SYNTAX.recdec.d
+tst.basic1.d
+tst.check.d
+tst.declare.d
+tst.declareafter.d
+tst.emptyprobe.d
+tst.pragma.d
+tst.pragmaaftertab.d
+tst.pragmainside.d
+tst.pragmaoutside.d
+tst.probestar.c
+tst.probestar.d
+```
+
+--- RESPONSE ---
+
+
+This is a simple test program for dtrace probes. It loops forever calling `sigtimedwait` waiting for SIGHUP with a 1-second timeout. Let me create a Rust replacement.
+
+ACTION: WRITE_FILE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes/Cargo.toml

@@ -1,0 +1,15 @@
+=== STEP 92 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Adding CHOP constant.
+
+ACTION: EDIT_FILE usr.bin/whois/src/main.rs
+OLD: const SP:u32=0x04;
+NEW: const SP:u32=0x04;
+const CHOP:&str=">>> Last update of WHOIS database:"

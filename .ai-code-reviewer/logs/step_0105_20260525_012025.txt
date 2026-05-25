@@ -1,0 +1,15 @@
+=== STEP 105 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/kenv:
+```
+Makefile
+Makefile.depend
+kenv.1
+kenv.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/kenv

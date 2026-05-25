@@ -1,0 +1,39 @@
+=== STEP 78 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/src/main.rs
+Scope: usr.bin/whois
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/whois/src/main.rs
+OLD:
+<<<
+use std::process;
+>>>
+NEW:
+<<<
+use std::process;
+const ANIC:&str="whois.arin.net";
+const RNIC:&str="whois.ripe.net";
+const PNIC:&str="whois.apnic.net";
+const FNIC:&str="whois.afrinic.net";
+const LNIC:&str="whois.lacnic.net";
+const IANA:&str="whois.iana.org";
+const ABUS:&str="whois.abuse.net";
+const DENI:&str="whois.denic.de";
+const DKNI:&str="whois.dk-hostmaster.dk";
+const GNIC:&str="whois.nic.gov";
+const INIC:&str="whois.internic.net";
+const KNIC:&str="whois.krnic.net";
+const MNIC:&str="whois.ra.net";
+const PDBH:&str="whois.peeringdb.com";
+const QT:&str=".whois-servers.net";
+const DP:&str="whois";
+const REC:u32=0x01;
+const QK:u32=0x02;
+const SP:u32=0x04;
+const CHOP:&str=">>> Last update of WHOIS database:"
+>>>

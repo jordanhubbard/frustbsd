@@ -1,0 +1,28 @@
+=== STEP 84 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Good, now let me add more constants and the static arrays.
+
+ACTION: EDIT_FILE usr.bin/whois/src/main.rs
+OLD:
+<<<
+const SP:u32=0x04;
+>>>
+NEW:
+<<<
+const SP:u32=0x04;
+const CHOP:&str=">>> Last update of WHOIS database:"
+struct WW { s:&'static str, v:&'static str }
+static WW:[WW;8]=[
+    WW{s:"-ARIN",v:ANIC},WW{s:"-NICAT",v:"at"QT},
+    WW{s:"-NORID",v:"no"QT},WW{s:"-RIPE",v:RNIC},
+    WW{s:".ac.uk",v:"ac.uk"QT},WW{s:".gov.uk",v:"ac.uk"QT},
+    WW{s:"",v:IANA},WW{s:"",v:""},
+];
+>>>

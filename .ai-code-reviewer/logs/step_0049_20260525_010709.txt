@@ -1,0 +1,38 @@
+=== STEP 49 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/whois
+   Files: 0/3
+📄 File: usr.bin/whois/whois.c
+   Chunks: 7/12
+
+```
+=== CHUNK 7/12: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/whois.c === [function: choose_server]
+=== Lines 255-270 (16 lines) ===
+
+static const char *
+choose_server(char *domain)
+{
+	size_t len = strlen(domain);
+	int i;
+
+	for (i = 0; whoiswhere[i].suffix != NULL; i++) {
+		size_t suffix_len = strlen(whoiswhere[i].suffix);
+		if (len > suffix_len &&
+		    strcasecmp(domain + len - suffix_len,
+			       whoiswhere[i].suffix) == 0)
+			return (whoiswhere[i].server);
+	}
+	errx(EX_SOFTWARE, "no default whois server");
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

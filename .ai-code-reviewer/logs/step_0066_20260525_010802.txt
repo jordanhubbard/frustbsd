@@ -1,0 +1,49 @@
+=== STEP 66 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/liby/Makefile
+Scope: lib/liby
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE lib/liby/Makefile
+OLD:
+<<<
+PACKAGE=toolchain
+LIB=	y
+SRCS=	main.c yyerror.c
+NO_PIC=
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+RUSTLIB=	${CARGO_TARGET_DIR}/debug/liby.a
+
+${RUSTLIB}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+
+all: ${RUSTLIB}
+
+.include <bsd.lib.mk>
+>>>
+NEW:
+<<<
+PACKAGE=toolchain
+LIB=	y
+SRCS=	main.c yyerror.c
+NO_PIC=
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+RUSTLIB=	${CARGO_TARGET_DIR}/debug/liby.a
+
+${RUSTLIB}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${CARGO_TARGET_DIR}
+
+.include <bsd.lib.mk>
+>>>

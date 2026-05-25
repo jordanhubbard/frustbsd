@@ -1,0 +1,127 @@
+=== STEP 48 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/whois
+   Files: 0/3
+📄 File: usr.bin/whois/whois.c
+   Chunks: 6/12
+
+```
+=== CHUNK 6/12: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/whois.c === [function: main]
+=== Lines 150-254 (105 lines) ===
+
+int
+main(int argc, char *argv[])
+{
+	const char *country, *host;
+	int ch, flags;
+
+#ifdef	SOCKS
+	SOCKSinit(argv[0]);
+#endif
+
+	country = host = NULL;
+	flags = 0;
+	while ((ch = getopt(argc, argv, "aAbc:fgh:iIklmp:PQrRS")) != -1) {
+		switch (ch) {
+		case 'a':
+			host = ANICHOST;
+			break;
+		case 'A':
+			host = PNICHOST;
+			break;
+		case 'b':
+			host = ABUSEHOST;
+			break;
+		case 'c':
+			country = optarg;
+			break;
+		case 'f':
+			host = FNICHOST;
+			break;
+		case 'g':
+			host = GNICHOST;
+			break;
+		case 'h':
+			host = optarg;
+			break;
+		case 'i':
+			host = INICHOST;
+			break;
+		case 'I':
+			host = IANAHOST;
+			break;
+		case 'k':
+			host = KNICHOST;
+			break;
+		case 'l':
+			host = LNICHOST;
+			break;
+		case 'm':
+			host = MNICHOST;
+			break;
+		case 'p':
+			port = optarg;
+			break;
+		case 'P':
+			host = PDBHOST;
+			break;
+		case 'Q':
+			flags |= WHOIS_QUICK;
+			break;
+		case 'r':
+			host = RNICHOST;
+			break;
+		case 'R':
+			flags |= WHOIS_RECURSE;
+			break;
+		case 'S':
+			flags |= WHOIS_SPAM_ME;
+			break;
+		case '?':
+		default:
+			usage();
+			/* NOTREACHED */
+		}
+	}
+	argc -= optind;
+	argv += optind;
+
+	if (!argc || (country != NULL && host != NULL))
+		usage();
+
+	/*
+	 * If no host or country is specified, rely on referrals from IANA.
+	 */
+	if (host == NULL && country == NULL) {
+		if ((host = getenv("WHOIS_SERVER")) == NULL &&
+		    (host = getenv("RA_SERVER")) == NULL) {
+			if (!(flags & WHOIS_QUICK))
+				flags |= WHOIS_RECURSE;
+		}
+	}
+	while (argc-- > 0) {
+		if (country != NULL) {
+			char *qnichost;
+			s_asprintf(&qnichost, "%s%s", country, QNICHOST_TAIL);
+			whois(*argv, qnichost, port, flags);
+			free(qnichost);
+		} else
+			whois(*argv, host != NULL ? host :
+			      choose_server(*argv), port, flags);
+		reset_rir();
+		argv++;
+	}
+	exit(0);
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

@@ -1,0 +1,235 @@
+=== STEP 65 ===
+
+--- REQUEST ---
+
+⚠️  INCOMPLETE RESPONSE DETECTED
+
+Problem: Mismatched <<< >>> delimiters (incomplete EDIT_FILE)
+Response length: 10308 chars
+Last 100 chars: ...port, flags, &mut visited);
+        }
+        reset_rir(&mut visited);
+    }
+    process::exit(0);
+}
+
+Your response appears to have been cut off before completion.
+Please provide a COMPLETE response including:
+1. Your analysis
+2. A SINGLE, COMPLETE ACTION directive
+3. For EDIT_FILE: both complete OLD and NEW blocks
+
+If you're working with a large file causing timeouts:
+- Focus on ONE specific issue at a time
+- Use smaller OLD/NEW blocks
+- Consider SKIP_FILE if the file is too complex
+
+
+--- RESPONSE ---
+
+
+The file is too large for a single write. Let me write a more compact version.
+
+ACTION: WRITE_FILE usr.bin/whois/src/main.rs
+CONTENT:
+/*-
+ * SPDX-License-Identifier: BSD-3-Clause
+ * Copyright (c) 1980, 1993 The Regents of the University of California.
+ */
+use std::io::{BufRead, BufReader, Write};
+use std::net::{TcpStream, ToSocketAddrs};
+use std::process;
+const ABUSEHOST: &str = "whois.abuse.net";
+const ANICHOST: &str = "whois.arin.net";
+const DENICHOST: &str = "whois.denic.de";
+const DKNICHOST: &str = "whois.dk-hostmaster.dk";
+const FNICHOST: &str = "whois.afrinic.net";
+const GNICHOST: &str = "whois.nic.gov";
+const IANAHOST: &str = "whois.iana.org";
+const INICHOST: &str = "whois.internic.net";
+const KNICHOST: &str = "whois.krnic.net";
+const LNICHOST: &str = "whois.lacnic.net";
+const MNICHOST: &str = "whois.ra.net";
+const PDBHOST: &str = "whois.peeringdb.com";
+const PNICHOST: &str = "whois.apnic.net";
+const QNICHOST_TAIL: &str = ".whois-servers.net";
+const RNICHOST: &str = "whois.ripe.net";
+const VNICHOST: &str = "whois.verisign-grs.com";
+const DEFAULT_PORT: &str = "whois";
+const RECURSE: u32 = 0x01;
+const QUICK: u32 = 0x02;
+const SPAM: u32 = 0x04;
+const CHOPSPAM: &str = ">>> Last update of WHOIS database:"
+struct WW { s: &'static str, v: &'static str }
+static WW: [WW; 8] = [
+    WW { s: "-ARIN", v: ANICHOST }, WW { s: "-NICAT", v: "at" QNICHOST_TAIL },
+    WW { s: "-NORID", v: "no" QNICHOST_TAIL }, WW { s: "-RIPE", v: RNICHOST },
+    WW { s: ".ac.uk", v: "ac.uk" QNICHOST_TAIL }, WW { s: ".gov.uk", v: "ac.uk" QNICHOST_TAIL },
+    WW { s: "", v: IANAHOST }, WW { s: "", v: "" },
+];
+static REF: [&str; 6] = ["whois:", "Whois Server:", "Registrar WHOIS Server:",
+    "ReferralServer:  whois://", "ReferralServer:  rwhois://",
+    "descr:          region. Please query"];
+static ARIN_PAT: [&str; 2] = ["netname:        ERX-NETBLOCK\n",
+    "netname:        NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK\n"];
+static RIR: [&str; 5] = [ANICHOST, RNICHOST, PNICHOST, FNICHOST, LNICHOST];
+fn usage() -> ! {
+    eprintln!("usage: whois [-aAbfghIklmPrRS] [-c country] [-h host] [-p port] name ...");
+    process::exit(1);
+}
+fn choose_server(domain: &str) -> &'static str {
+    let len = domain.len();
+    for e in &WW {
+        let sl = e.s.len();
+        if len > sl {
+            if let Some(s) = domain.get(len - sl..) {
+                if s.eq_ignore_ascii_case(e.s) { return e.v; }
+            }
+        }
+    }
+    eprintln!("whois: no default whois server");
+    process::exit(70);
+}
+fn ihc(c: char) -> bool { c.is_ascii_alphanumeric() || c == '.' || c == '-' }
+fn do_whois(q: &str, hn: &str, hp: &str, fl: u32, vis: &mut [bool]) {
+    let mut stream = None;
+    for addr in format!("{}:{}", hn, hp).to_socket_addrs().unwrap_or_else(|e| {
+        eprintln!("whois: {}: {}", hn, e); process::exit(1);
+    }) {
+        if let Ok(s) = TcpStream::connect_timeout(&addr, std::time::Duration::from_secs(180)) {
+            stream = Some(s); break;
+        }
+    }
+    let mut stream = match stream {
+        Some(s) => s,
+        None => { eprintln!("whois: connect(): Connection timed out"); process::exit(1); }
+    };
+    let mut out = &mut stream as &mut dyn Write;
+    let mut rd = BufReader::new(&stream);
+    if (fl & SPAM) == 0 && (hn.eq_ignore_ascii_case(DENICHOST) ||
+        hn.eq_ignore_ascii_case(&format!("de{}", QNICHOST_TAIL))) {
+        let idn = q.chars().any(|c| !c.is_ascii());
+        let _ = writeln!(out, "-T dn{} {}", if idn { "" } else { ",ace" }, q);
+    } else if (fl & SPAM) == 0 && (hn.eq_ignore_ascii_case(DKNICHOST) ||
+        hn.eq_ignore_ascii_case(&format!("dk{}", QNICHOST_TAIL))) {
+        let _ = writeln!(out, "--show-handles {}", q);
+    } else if (fl & SPAM) != 0 || q.contains(' ') {
+        let _ = writeln!(out, "{}", q);
+    } else if hn.eq_ignore_ascii_case(ANICHOST) {
+        if q.starts_with("AS") && q[2..].chars().all(|c| c.is_ascii_digit()) {
+            let _ = writeln!(out, "+ a {}", &q[2..]);
+        } else { let _ = writeln!(out, "+ {}", q); }
+    } else { let _ = writeln!(out, "{}", q); }
+    let _ = out.flush();
+    let mut cm: i32 = 0;
+    if (fl & SPAM) == 0 && (hn.eq_ignore_ascii_case(ANICHOST) || hn.eq_ignore_ascii_case(RNICHOST)) {
+        cm = 2;
+    }
+    let mut nh: Option<String> = None;
+    let mut np: Option<String> = None;
+    loop {
+        let mut line = String::new();
+        match rd.read_line(&mut line) { Ok(0) => break, Ok(_) => {}, Err(_) => break }
+        let len = line.len();
+        if (fl & SPAM) == 0 && len == 5 && line == "-- \r\n" { break; }
+        if cm == 1 && !line.is_empty() && line.as_bytes()[0] == b'#' { break; }
+        if cm == 2 {
+            if !line.is_empty() && "#%\r\n".contains(line.chars().next().unwrap()) { continue; }
+            cm = 1;
+        }
+        print!("{}", line);
+        if (fl & RECURSE) != 0 && nh.is_none() {
+            for pfx in &REF {
+                if let Some(pos) = line.find(pfx) {
+                    let af = line[pos + pfx.len()..].trim_start();
+                    let he = af.find(|c: char| !ihc(c)).unwrap_or(af.len());
+                    if he > 0 && !af[..he].is_empty() {
+                        nh = Some(af[..he].to_string());
+                        if af.as_bytes().get(he) == Some(&b':') {
+                            let ps = &af[he+1..];
+                            let pe = ps.find(|c: char| !c.is_ascii_digit()).unwrap_or(ps.len());
+                            if pe > 0 && pe < 6 { np = Some(ps[..pe].to_string()); }
+                            else { np = Some(hp.to_string()); }
+                        } else { np = Some(hp.to_string()); }
+                        break;
+                    }
+                }
+            }
+            if nh.is_none() {
+                for pat in &ARIN_PAT {
+                    if line.starts_with(*pat) {
+                        nh = Some(ANICHOST.to_string()); np = Some(hp.to_string()); break;
+                    }
+                }
+            }
+        }
+        if (fl & SPAM) == 0 && len >= CHOPSPAM.len() &&
+           (line[..CHOPSPAM.len()].eq_ignore_ascii_case(CHOPSPAM) ||
+            (len >= CHOPSPAM.len()-4 && line[4..CHOPSPAM.len()].eq_ignore_ascii_case(&CHOPSPAM[4..]))) {
+            println!(); break;
+        }
+    }
+    let mut f = false;
+    for (i, rh) in RIR.iter().enumerate() {
+        if !vis[i] && rh.eq_ignore_ascii_case(hn) { vis[i] = true; }
+        if vis[i] && nh.as_ref().map_or(false, |h| h.eq_ignore_ascii_case(rh)) {
+            nh = None; np = None; f = true;
+        }
+    }
+    if f {
+        for (i, rh) in RIR.iter().enumerate() {
+            if !vis[i] { nh = Some(rh.to_string()); np = Some(hp.to_string()); break; }
+        }
+    }
+    if let Some(ref nh) = nh {
+        if !nh.eq_ignore_ascii_case(hn) {
+            println!("# {}\n", nh);
+            let np2 = np.as_ref().map(|s| s.as_str()).unwrap_or(hp);
+            do_whois(q, nh, np2, fl, vis);
+        }
+    }
+}
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let mut country: Option<&str> = None;
+    let mut host: Option<&str> = None;
+    let mut port = DEFAULT_PORT;
+    let mut flags: u32 = 0;
+    let mut i = 1;
+    let mut queries: Vec<&str> = Vec::new();
+    while i < args.len() {
+        match args[i].as_str() {
+            "-a" => host = Some(ANICHOST), "-A" => host = Some(PNICHOST),
+            "-b" => host = Some(ABUSEHOST),
+            "-c" => { i += 1; if i >= args.len() { usage(); } country = Some(&args[i]); }
+            "-f" => host = Some(FNICHOST), "-g" => host = Some(GNICHOST),
+            "-h" => { i += 1; if i >= args.len() { usage(); } host = Some(&args[i]); }
+            "-i" => host = Some(INICHOST), "-I" => host = Some(IANAHOST),
+            "-k" => host = Some(KNICHOST), "-l" => host = Some(LNICHOST),
+            "-m" => host = Some(MNICHOST),
+            "-p" => { i += 1; if i >= args.len() { usage(); } port = &args[i]; }
+            "-P" => host = Some(PDBHOST), "-Q" => flags |= QUICK,
+            "-r" => host = Some(RNICHOST), "-R" => flags |= RECURSE,
+            "-S" => flags |= SPAM,
+            s if s.starts_with('-') => usage(),
+            _ => queries.push(&args[i]),
+        }
+        i += 1;
+    }
+    if queries.is_empty() || (country.is_some() && host.is_some()) { usage(); }
+    if host.is_none() && country.is_none() {
+        if std::env::var("WHOIS_SERVER").is_err() && std::env::var("RA_SERVER").is_err() {
+            if (flags & QUICK) == 0 { flags |= RECURSE; }
+        }
+    }
+    for q in &queries {
+        let mut vis = vec![false; RIR.len()];
+        if let Some(c) = country {
+            do_whois(q, &format!("{}{}", c, QNICHOST_TAIL), port, flags, &mut vis);
+        } else {
+            let h = match host { Some(h) => h, None => choose_server(q) };
+            do_whois(q, h, port, flags, &mut vis);
+        }
+    }
+    process::exit(0);
+}

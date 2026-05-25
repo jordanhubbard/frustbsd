@@ -1,0 +1,11 @@
+=== STEP 171 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I see the issue - I need to include the CONTENT block. Let me try again with proper formatting.
+
+ACTION: WRITE_FILE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes/Cargo.toml

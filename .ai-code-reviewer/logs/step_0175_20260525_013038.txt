@@ -1,0 +1,26 @@
+=== STEP 175 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+Pending source/build changes: 2 files modified
+Files: usr.bin/whois/Cargo.toml, usr.bin/whois/src/main.rs
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: usr.bin/whois
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+The build errors are from top-level `Makefile.inc1`, not from my changes. Let me try BUILD again.
+
+ACTION: BUILD

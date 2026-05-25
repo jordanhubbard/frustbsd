@@ -1,0 +1,34 @@
+=== STEP 44 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/whois
+   Files: 0/3
+📄 File: usr.bin/whois/whois.c
+   Chunks: 2/12
+
+```
+=== CHUNK 2/12: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/whois.c === [function: reset_rir]
+=== Lines 134-145 (12 lines) ===
+
+static void
+reset_rir(void) {
+	int i;
+
+	for (i = 0; try_rir[i].host != NULL; i++)
+		try_rir[i].loop = 0;
+}
+
+static const char *port = DEFAULT_PORT;
+
+static const char *choose_server(char *);
+static struct addrinfo *gethostinfo(const char *, const char *, int);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

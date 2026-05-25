@@ -1,0 +1,21 @@
+=== STEP 93 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/echo:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+cargo-target
+echo
+echo.1
+echo.c
+src
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/echo

@@ -1,0 +1,19 @@
+=== STEP 77 ===
+
+--- REQUEST ---
+EDIT_FILE_ERROR: Missing OLD or NEW block
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/whois/src/main.rs
+OLD:
+<<<
+fn main() { println!("hello"); }
+>>>
+NEW:
+<<<
+use std::io::{BufRead, BufReader, Write};
+use std::net::{TcpStream, ToSocketAddrs};
+use std::process;
+>>>

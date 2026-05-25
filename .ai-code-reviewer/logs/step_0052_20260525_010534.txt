@@ -1,0 +1,13 @@
+=== STEP 52 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: contrib/file/python/file_magic has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me try looking at some lib directories for small libraries.
+
+ACTION: LIST_DIR lib

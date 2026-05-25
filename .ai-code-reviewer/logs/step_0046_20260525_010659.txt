@@ -1,0 +1,23 @@
+=== STEP 46 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/whois
+   Files: 0/3
+📄 File: usr.bin/whois/whois.c
+   Chunks: 4/12
+
+```
+=== CHUNK 4/12: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/whois.c === [function: usage]
+=== Lines 147-147 (1 lines) ===
+
+static void usage(void) __dead2;
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

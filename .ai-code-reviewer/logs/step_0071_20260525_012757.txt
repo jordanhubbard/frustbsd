@@ -1,0 +1,52 @@
+=== STEP 71 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Good, the first chunk was written. Now I need to append the rest of the code in chunks.
+
+ACTION: EDIT_FILE usr.bin/whois/src/main.rs
+OLD:
+const REC: u32 = 0x01;
+const QK: u32 = 0x02;
+const SP: u32 = 0x04;
+NEW:
+const REC: u32 = 0x01;
+const QK: u32 = 0x02;
+const SP: u32 = 0x04;
+const CHOP: &str = ">>> Last update of WHOIS database:"
+struct WW { s: &'static str, v: &'static str }
+static WW: [WW; 8] = [
+    WW { s: "-ARIN", v: ANIC }, WW { s: "-NICAT", v: "at" QT },
+    WW { s: "-NORID", v: "no" QT }, WW { s: "-RIPE", v: RNIC },
+    WW { s: ".ac.uk", v: "ac.uk" QT }, WW { s: ".gov.uk", v: "ac.uk" QT },
+    WW { s: "", v: IANA }, WW { s: "", v: "" },
+];
+static REF: [&str; 6] = ["whois:", "Whois Server:", "Registrar WHOIS Server:",
+    "ReferralServer:  whois://", "ReferralServer:  rwhois://",
+    "descr:          region. Please query"];
+static APAT: [&str; 2] = ["netname:        ERX-NETBLOCK\n",
+    "netname:        NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK\n"];
+static RIR: [&str; 5] = [ANIC, RNIC, PNIC, FNIC, LNIC];
+fn usage() -> ! {
+    eprintln!("usage: whois [-aAbfghIklmPrRS] [-c country] [-h host] [-p port] name ...");
+    process::exit(1);
+}
+fn choose_server(domain: &str) -> &'static str {
+    let len = domain.len();
+    for e in &WW {
+        let sl = e.s.len();
+        if len > sl {
+            if let Some(s) = domain.get(len - sl..) {
+                if s.eq_ignore_ascii_case(e.s) { return e.v; }
+            }
+        }
+    }
+    eprintln!("whois: no default whois server");
+    process::exit(70);
+}
+fn ihc(c: char) -> bool { c.is_ascii_alphanumeric() || c == '.' || c == '-' }

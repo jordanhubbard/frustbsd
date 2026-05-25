@@ -1,0 +1,195 @@
+=== STEP 53 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/whois
+   Files: 0/3
+📄 File: usr.bin/whois/whois.c
+   Chunks: 11/12
+
+```
+=== CHUNK 11/12: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/whois.c === [function: whois]
+=== Lines 432-602 (171 lines) ===
+
+static void
+whois(const char *query, const char *hostname, const char *hostport, int flags)
+{
+	FILE *fp;
+	struct addrinfo *hostres;
+	char *buf, *host, *nhost, *nport, *p;
+	int comment, s, f;
+	size_t len, i;
+
+	hostres = gethostinfo(hostname, hostport, 1);
+	s = connect_to_any_host(hostres);
+	if (s == -1)
+		err(EX_OSERR, "connect()");
+
+	/* Restore default blocking behavior.  */
+	if ((f = fcntl(s, F_GETFL)) == -1)
+		err(EX_OSERR, "fcntl()");
+	f &= ~O_NONBLOCK;
+	if (fcntl(s, F_SETFL, f) == -1)
+		err(EX_OSERR, "fcntl()");
+
+	fp = fdopen(s, "r+");
+	if (fp == NULL)
+		err(EX_OSERR, "fdopen()");
+
+	if (!(flags & WHOIS_SPAM_ME) &&
+	    (strcasecmp(hostname, DENICHOST) == 0 ||
+	     strcasecmp(hostname, "de" QNICHOST_TAIL) == 0)) {
+		const char *q;
+		int idn = 0;
+		for (q = query; *q != '\0'; q++)
+			if (!isascii(*q))
+				idn = 1;
+		fprintf(fp, "-T dn%s %s\r\n", idn ? "" : ",ace", query);
+	} else if (!(flags & WHOIS_SPAM_ME) &&
+		   (strcasecmp(hostname, DKNICHOST) == 0 ||
+		    strcasecmp(hostname, "dk" QNICHOST_TAIL) == 0))
+		fprintf(fp, "--show-handles %s\r\n", query);
+	else if ((flags & WHOIS_SPAM_ME) ||
+		 strchr(query, ' ') != NULL)
+		fprintf(fp, "%s\r\n", query);
+	else if (strcasecmp(hostname, ANICHOST) == 0) {
+		if (strncasecmp(query, "AS", 2) == 0 &&
+		    strspn(query+2, "0123456789") == strlen(query+2))
+			fprintf(fp, "+ a %s\r\n", query+2);
+		else
+			fprintf(fp, "+ %s\r\n", query);
+	} else if (strcasecmp(hostres->ai_canonname, VNICHOST) == 0)
+		fprintf(fp, "domain %s\r\n", query);
+	else
+		fprintf(fp, "%s\r\n", query);
+	fflush(fp);
+
+	comment = 0;
+	if (!(flags & WHOIS_SPAM_ME) &&
+	    (strcasecmp(hostname, ANICHOST) == 0 ||
+	     strcasecmp(hostname, RNICHOST) == 0)) {
+		comment = 2;
+	}
+
+	nhost = NULL;
+	while ((buf = fgetln(fp, &len)) != NULL) {
+		/* Nominet */
+		if (!(flags & WHOIS_SPAM_ME) &&
+		    len == 5 && strncmp(buf, "-- \r\n", 5) == 0)
+			break;
+		/* RIRs */
+		if (comment == 1 && buf[0] == '#')
+			break;
+		else if (comment == 2) {
+			if (strchr("#%\r\n", buf[0]) != NULL)
+				continue;
+			else
+				comment = 1;
+		}
+
+		printf("%.*s", (int)len, buf);
+
+		if ((flags & WHOIS_RECURSE) && nhost == NULL) {
+			for (i = 0; whois_referral[i].prefix != NULL; i++) {
+				p = buf;
+				SCAN(p, buf+len, *p == ' ');
+				if (strncasecmp(p, whois_referral[i].prefix,
+					           whois_referral[i].len) != 0)
+					continue;
+				p += whois_referral[i].len;
+				SCAN(p, buf+len, *p == ' ');
+				host = p;
+				SCAN(p, buf+len, ishost(*p));
+				if (p > host) {
+					char *pstr;
+
+					s_asprintf(&nhost, "%.*s",
+						   (int)(p - host), host);
+
+					if (*p != ':') {
+						s_asprintf(&nport, "%s", port);
+						break;
+					}
+
+					pstr = ++p;
+					SCAN(p, buf+len, isdigit(*p));
+					if (p > pstr && (p - pstr) < 6) {
+						s_asprintf(&nport, "%.*s",
+						    (int)(p - pstr), pstr);
+						break;
+					}
+
+					/* Invalid port; don't recurse */
+					free(nhost);
+					nhost = NULL;
+				}
+				break;
+			}
+			for (i = 0; actually_arin[i] != NULL; i++) {
+				if (strncmp(buf, actually_arin[i], len) == 0) {
+					s_asprintf(&nhost, "%s", ANICHOST);
+					s_asprintf(&nport, "%s", port);
+					break;
+				}
+			}
+		}
+		/* Verisign etc. */
+		if (!(flags & WHOIS_SPAM_ME) &&
+		    len >= sizeof(CHOPSPAM)-1 &&
+		    (strncasecmp(buf, CHOPSPAM, sizeof(CHOPSPAM)-1) == 0 ||
+		     strncasecmp(buf, CHOPSPAM+4, sizeof(CHOPSPAM)-5) == 0)) {
+			printf("\n");
+			break;
+		}
+	}
+	fclose(fp);
+	freeaddrinfo(hostres);
+
+	f = 0;
+	for (i = 0; try_rir[i].host != NULL; i++) {
+		/* Remember visits to RIRs */
+		if (try_rir[i].loop == 0 &&
+		    strcasecmp(try_rir[i].host, hostname) == 0)
+			try_rir[i].loop = 1;
+		/* Do we need to find an alternative RIR? */
+		if (try_rir[i].loop != 0 && nhost != NULL &&
+		    strcasecmp(try_rir[i].host, nhost) == 0) {
+			free(nhost);
+			nhost = NULL;
+			free(nport);
+			nport = NULL;
+			f = 1;
+		}
+	}
+	if (f) {
+		/* Find a replacement RIR */
+		for (i = 0; try_rir[i].host != NULL; i++) {
+			if (try_rir[i].loop == 0) {
+				s_asprintf(&nhost, "%s", try_rir[i].host);
+				s_asprintf(&nport, "%s", port);
+				break;
+			}
+		}
+	}
+	if (nhost != NULL) {
+		/* Ignore self-referrals */
+		if (strcasecmp(hostname, nhost) != 0) {
+			printf("# %s\n\n", nhost);
+			whois(query, nhost, nport, flags);
+		}
+		free(nhost);
+		free(nport);
+	}
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+This is a fairly complex network program. Let me read the Makefile to understand the build structure.
+
+ACTION: READ_FILE usr.bin/whois/Makefile

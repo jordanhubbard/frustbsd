@@ -1,0 +1,25 @@
+=== STEP 82 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/src/main.rs
+Scope: usr.bin/whois
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/whois/src/main.rs
+OLD:
+<<<
+const GNIC:&str="whois.nic.gov";
+>>>
+NEW:
+<<<
+const GNIC:&str="whois.nic.gov";
+const INIC:&str="whois.internic.net";
+const KNIC:&str="whois.krnic.net";
+const MNIC:&str="whois.ra.net";
+const PDBH:&str="whois.peeringdb.com";
+const QT:&str=".whois-servers.net";
+const DP:&str="whois";
+>>>

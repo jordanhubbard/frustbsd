@@ -1,0 +1,86 @@
+=== STEP 77 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/true/Makefile:
+PROGRESS:
+📁 Directory: lib/liby
+   Files: 0/4
+📄 File: usr.bin/true/Makefile
+✏️  Edits: 3 files modified
+
+```
+PROG=	true
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE lib/liby/Makefile
+OLD:
+<<<
+PACKAGE=toolchain
+LIB=	y
+SRCS=	main.c yyerror.c
+NO_PIC=
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+RUSTLIB=	${CARGO_TARGET_DIR}/debug/liby.a
+
+${RUSTLIB}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${CARGO_TARGET_DIR}
+
+.include <bsd.lib.mk>
+>>>
+NEW:
+<<<
+LIB=	y
+LIBDIR?=	/usr/lib
+LIBOWN?=	root
+LIBGRP?=	wheel
+LIBMODE?=	444
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+${LIB}.a: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/liby.a ${.TARGET}
+
+all: ${LIB}.a
+
+install: ${LIB}.a
+	${INSTALL} -o ${LIBOWN} -g ${LIBGRP} -m ${LIBMODE} ${LIB}.a ${DESTDIR}${LIBDIR}/${LIB}.a
+
+clean:
+	${RM} ${LIB}.a
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${LIB}.a ${CARGO_TARGET_DIR}
+>>>

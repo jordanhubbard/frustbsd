@@ -1,0 +1,22 @@
+=== STEP 101 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/ls:
+```
+Makefile
+Makefile.depend
+Makefile.depend.options
+cmp.c
+extern.h
+ls.1
+ls.c
+ls.h
+print.c
+tests
+util.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/ls

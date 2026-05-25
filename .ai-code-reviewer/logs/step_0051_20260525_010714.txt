@@ -1,0 +1,35 @@
+=== STEP 51 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/whois
+   Files: 0/3
+📄 File: usr.bin/whois/whois.c
+   Chunks: 9/12
+
+```
+=== CHUNK 9/12: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/whois.c === [function: s_asprintf]
+=== Lines 291-303 (13 lines) ===
+
+static void
+s_asprintf(char **ret, const char *format, ...)
+{
+	va_list ap;
+
+	va_start(ap, format);
+	if (vasprintf(ret, format, ap) == -1) {
+		va_end(ap);
+		err(EX_OSERR, "vasprintf()");
+	}
+	va_end(ap);
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

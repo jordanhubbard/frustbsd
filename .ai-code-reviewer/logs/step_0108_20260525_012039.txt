@@ -1,0 +1,21 @@
+=== STEP 108 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/cksum:
+```
+Makefile
+Makefile.depend
+cksum.1
+cksum.c
+crc.c
+crc32.c
+extern.h
+print.c
+sum1.c
+sum2.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/ul

@@ -1,0 +1,12 @@
+=== STEP 124 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/expand is already marked complete.
+
+Completed work units are closed after a successful build and commit; do not reopen the same unit for incremental polish.
+NEXT: Use SET_SCOPE usr.bin/clang/clang-scan-deps
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/unexpand

@@ -1,0 +1,162 @@
+=== STEP 43 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/whois.c:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/whois.c
+   Total chunks: 12
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: usr.bin/whois
+   Files: 0/3
+📄 File: usr.bin/whois/whois.c
+   Chunks: 1/12
+
+```
+=== CHUNK 1/12: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/whois.c === [header: file_header]
+=== Lines 1-133 (133 lines) ===
+
+/*-
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * Copyright (c) 1980, 1993
+ *	The Regents of the University of California.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/poll.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <ctype.h>
+#include <err.h>
+#include <netdb.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sysexits.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+
+#define	ABUSEHOST	"whois.abuse.net"
+#define	ANICHOST	"whois.arin.net"
+#define	DENICHOST	"whois.denic.de"
+#define	DKNICHOST	"whois.dk-hostmaster.dk"
+#define	FNICHOST	"whois.afrinic.net"
+#define	GNICHOST	"whois.nic.gov"
+#define	IANAHOST	"whois.iana.org"
+#define	INICHOST	"whois.internic.net"
+#define	KNICHOST	"whois.krnic.net"
+#define	LNICHOST	"whois.lacnic.net"
+#define	MNICHOST	"whois.ra.net"
+#define	PDBHOST		"whois.peeringdb.com"
+#define	PNICHOST	"whois.apnic.net"
+#define	QNICHOST_TAIL	".whois-servers.net"
+#define	RNICHOST	"whois.ripe.net"
+#define	VNICHOST	"whois.verisign-grs.com"
+
+#define	DEFAULT_PORT	"whois"
+
+#define WHOIS_RECURSE	0x01
+#define WHOIS_QUICK	0x02
+#define WHOIS_SPAM_ME	0x04
+
+#define CHOPSPAM	">>> Last update of WHOIS database:"
+
+#define ishost(h) (isalnum((unsigned char)h) || h == '.' || h == '-')
+
+#define SCAN(p, end, check)					\
+	while ((p) < (end))					\
+		if (check) ++(p);				\
+		else break
+
+static struct {
+	const char *suffix, *server;
+} whoiswhere[] = {
+	/* Various handles */
+	{ "-ARIN", ANICHOST },
+	{ "-NICAT", "at" QNICHOST_TAIL },
+	{ "-NORID", "no" QNICHOST_TAIL },
+	{ "-RIPE", RNICHOST },
+	/* Nominet's whois server doesn't return referrals to JANET */
+	{ ".ac.uk", "ac.uk" QNICHOST_TAIL },
+	{ ".gov.uk", "ac.uk" QNICHOST_TAIL },
+	{ "", IANAHOST }, /* default */
+	{ NULL, NULL } /* safety belt */
+};
+
+#define WHOIS_REFERRAL(s) { s, sizeof(s) - 1 }
+static struct {
+	const char *prefix;
+	size_t len;
+} whois_referral[] = {
+	WHOIS_REFERRAL("whois:"), /* IANA */
+	WHOIS_REFERRAL("Whois Server:"),
+	WHOIS_REFERRAL("Registrar WHOIS Server:"), /* corporatedomains.com */
+	WHOIS_REFERRAL("ReferralServer:  whois://"), /* ARIN */
+	WHOIS_REFERRAL("ReferralServer:  rwhois://"), /* ARIN */
+	WHOIS_REFERRAL("descr:          region. Please query"), /* AfriNIC */
+	{ NULL, 0 }
+};
+
+/*
+ * We have a list of patterns for RIRs that assert ignorance rather than
+ * providing referrals. If that happens, we guess that ARIN will be more
+ * helpful. But, before following a referral to an RIR, we check if we have
+ * asked that RIR already, and if so we make another guess.
+ */
+static const char *actually_arin[] = {
+	"netname:        ERX-NETBLOCK\n", /* APNIC */
+	"netname:        NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK\n",
+	NULL
+};
+
+static struct {
+	int loop;
+	const char *host;
+} try_rir[] = {
+	{ 0, ANICHOST },
+	{ 0, RNICHOST },
+	{ 0, PNICHOST },
+	{ 0, FNICHOST },
+	{ 0, LNICHOST },
+	{ 0, NULL }
+};
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

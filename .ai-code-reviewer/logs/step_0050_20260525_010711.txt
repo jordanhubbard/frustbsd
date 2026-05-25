@@ -1,0 +1,42 @@
+=== STEP 50 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/whois
+   Files: 0/3
+📄 File: usr.bin/whois/whois.c
+   Chunks: 8/12
+
+```
+=== CHUNK 8/12: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/whois.c === [function: gethostinfo]
+=== Lines 271-290 (20 lines) ===
+
+static struct addrinfo *
+gethostinfo(const char *host, const char *hport, int exit_on_noname)
+{
+	struct addrinfo hints, *res;
+	int error;
+
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_flags = AI_CANONNAME;
+	hints.ai_family = AF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM;
+	res = NULL;
+	error = getaddrinfo(host, hport, &hints, &res);
+	if (error && (exit_on_noname || error != EAI_NONAME))
+		err(EX_NOHOST, "%s: %s", host, gai_strerror(error));
+	return (res);
+}
+
+/*
+ * Wrapper for asprintf(3) that exits on error.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

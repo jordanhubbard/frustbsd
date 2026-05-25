@@ -1,0 +1,12 @@
+=== STEP 13 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/kenv is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/uuidgen

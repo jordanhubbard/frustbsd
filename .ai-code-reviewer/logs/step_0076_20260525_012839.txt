@@ -1,0 +1,18 @@
+=== STEP 76 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Good, now let me build up the file incrementally. First, add the constants.
+
+ACTION: EDIT_FILE usr.bin/whois/src/main.rs
+OLD:
+fn main() { println!("hello"); }
+NEW:
+use std::io::{BufRead, BufReader, Write};
+use std::net::{TcpStream, ToSocketAddrs};
+use std::process;

@@ -1,0 +1,12 @@
+=== STEP 126 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory usr.bin/clang/clang-scan-deps skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/comm

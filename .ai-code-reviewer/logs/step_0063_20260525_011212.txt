@@ -1,0 +1,419 @@
+=== STEP 63 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now I need to create the Rust source directory and main.rs file.
+
+ACTION: WRITE_FILE usr.bin/whois/src/main.rs
+CONTENT:
+/*-
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * Copyright (c) 1980, 1993
+ *	The Regents of the University of California.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+use std::io::{self, BufRead, BufReader, Write};
+use std::net::{TcpStream, ToSocketAddrs};
+use std::process;
+
+const ABUSEHOST: &str = "whois.abuse.net";
+const ANICHOST: &str = "whois.arin.net";
+const DENICHOST: &str = "whois.denic.de";
+const DKNICHOST: &str = "whois.dk-hostmaster.dk";
+const FNICHOST: &str = "whois.afrinic.net";
+const GNICHOST: &str = "whois.nic.gov";
+const IANAHOST: &str = "whois.iana.org";
+const INICHOST: &str = "whois.internic.net";
+const KNICHOST: &str = "whois.krnic.net";
+const LNICHOST: &str = "whois.lacnic.net";
+const MNICHOST: &str = "whois.ra.net";
+const PDBHOST: &str = "whois.peeringdb.com";
+const PNICHOST: &str = "whois.apnic.net";
+const QNICHOST_TAIL: &str = ".whois-servers.net";
+const RNICHOST: &str = "whois.ripe.net";
+const VNICHOST: &str = "whois.verisign-grs.com";
+
+const DEFAULT_PORT: &str = "whois";
+
+const WHOIS_RECURSE: u32 = 0x01;
+const WHOIS_QUICK: u32 = 0x02;
+const WHOIS_SPAM_ME: u32 = 0x04;
+
+const CHOPSPAM: &str = ">>> Last update of WHOIS database:"
+
+struct WhoisWhere {
+    suffix: &'static str,
+    server: &'static str,
+}
+
+static WHOISWHERE: [WhoisWhere; 9] = [
+    WhoisWhere { suffix: "-ARIN", server: ANICHOST },
+    WhoisWhere { suffix: "-NICAT", server: "at" QNICHOST_TAIL },
+    WhoisWhere { suffix: "-NORID", server: "no" QNICHOST_TAIL },
+    WhoisWhere { suffix: "-RIPE", server: RNICHOST },
+    WhoisWhere { suffix: ".ac.uk", server: "ac.uk" QNICHOST_TAIL },
+    WhoisWhere { suffix: ".gov.uk", server: "ac.uk" QNICHOST_TAIL },
+    WhoisWhere { suffix: "", server: IANAHOST },
+    WhoisWhere { suffix: "", server: "" },
+    WhoisWhere { suffix: "", server: "" },
+];
+
+struct WhoisReferral {
+    prefix: &'static str,
+}
+
+static WHOIS_REFERRAL: [WhoisReferral; 6] = [
+    WhoisReferral { prefix: "whois:" },
+    WhoisReferral { prefix: "Whois Server:" },
+    WhoisReferral { prefix: "Registrar WHOIS Server:" },
+    WhoisReferral { prefix: "ReferralServer:  whois://" },
+    WhoisReferral { prefix: "ReferralServer:  rwhois://" },
+    WhoisReferral { prefix: "descr:          region. Please query" },
+];
+
+static ACTUALLY_ARIN: [&str; 2] = [
+    "netname:        ERX-NETBLOCK\n",
+    "netname:        NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK\n",
+];
+
+struct TryRir {
+    loop: bool,
+    host: &'static str,
+}
+
+static mut TRY_RIR: [TryRir; 6] = [
+    TryRir { loop: false, host: ANICHOST },
+    TryRir { loop: false, host: RNICHOST },
+    TryRir { loop: false, host: PNICHOST },
+    TryRir { loop: false, host: FNICHOST },
+    TryRir { loop: false, host: LNICHOST },
+    TryRir { loop: false, host: "" },
+];
+
+fn reset_rir() {
+    unsafe {
+        for entry in TRY_RIR.iter_mut() {
+            entry.loop = false;
+        }
+    }
+}
+
+fn usage() -> ! {
+    eprintln!("usage: whois [-aAbfghIklmPrRS] [-c country] [-h host] [-p port] name ...");
+    process::exit(1);
+}
+
+fn choose_server(domain: &str) -> &'static str {
+    let len = domain.len();
+    for entry in &WHOISWHERE {
+        let suffix_len = entry.suffix.len();
+        if len > suffix_len {
+            if let Some(suffix) = domain.get(len - suffix_len..) {
+                if suffix.eq_ignore_ascii_case(entry.suffix) {
+                    return entry.server;
+                }
+            }
+        }
+    }
+    eprintln!("whois: no default whois server");
+    process::exit(70);
+}
+
+fn is_host_char(c: char) -> bool {
+    c.is_ascii_alphanumeric() || c == '.' || c == '-'
+}
+
+fn whois(query: &str, hostname: &str, hostport: &str, flags: u32) {
+    let addr_str = format!("{}:{}", hostname, hostport);
+    let addrs = match addr_str.to_socket_addrs() {
+        Ok(addrs) => addrs,
+        Err(e) => {
+            eprintln!("whois: {}: {}", hostname, e);
+            process::exit(1);
+        }
+    };
+
+    let mut stream = None;
+    for addr in addrs {
+        match TcpStream::connect_timeout(&addr, std::time::Duration::from_secs(180)) {
+            Ok(s) => {
+                stream = Some(s);
+                break;
+            }
+            Err(_) => continue,
+        }
+    }
+
+    let mut stream = match stream {
+        Some(s) => s,
+        None => {
+            eprintln!("whois: connect(): Connection timed out");
+            process::exit(1);
+        }
+    };
+
+    let mut out = &mut stream as &mut dyn Write;
+    let mut reader = BufReader::new(&stream);
+
+    // Send query
+    if (flags & WHOIS_SPAM_ME) == 0 &&
+       (hostname.eq_ignore_ascii_case(DENICHOST) ||
+        hostname.eq_ignore_ascii_case(&format!("de{}", QNICHOST_TAIL))) {
+        let idn = query.chars().any(|c| !c.is_ascii());
+        if idn {
+            let _ = writeln!(out, "-T dn{} {}", query);
+        } else {
+            let _ = writeln!(out, "-T dn,ace {}", query);
+        }
+    } else if (flags & WHOIS_SPAM_ME) == 0 &&
+              (hostname.eq_ignore_ascii_case(DKNICHOST) ||
+               hostname.eq_ignore_ascii_case(&format!("dk{}", QNICHOST_TAIL))) {
+        let _ = writeln!(out, "--show-handles {}", query);
+    } else if (flags & WHOIS_SPAM_ME) != 0 || query.contains(' ') {
+        let _ = writeln!(out, "{}", query);
+    } else if hostname.eq_ignore_ascii_case(ANICHOST) {
+        if query.starts_with("AS") && query[2..].chars().all(|c| c.is_ascii_digit()) {
+            let _ = writeln!(out, "+ a {}", &query[2..]);
+        } else {
+            let _ = writeln!(out, "+ {}", query);
+        }
+    } else {
+        let _ = writeln!(out, "{}", query);
+    }
+    let _ = out.flush();
+
+    let mut comment: i32 = 0;
+    if (flags & WHOIS_SPAM_ME) == 0 &&
+       (hostname.eq_ignore_ascii_case(ANICHOST) ||
+        hostname.eq_ignore_ascii_case(RNICHOST)) {
+        comment = 2;
+    }
+
+    let mut nhost: Option<String> = None;
+    let mut nport: Option<String> = None;
+
+    loop {
+        let mut line = String::new();
+        match reader.read_line(&mut line) {
+            Ok(0) => break,
+            Ok(_) => {}
+            Err(_) => break,
+        }
+
+        let len = line.len();
+
+        // Nominet
+        if (flags & WHOIS_SPAM_ME) == 0 && len == 5 && line == "-- \r\n" {
+            break;
+        }
+
+        // RIRs
+        if comment == 1 && !line.is_empty() && line.as_bytes()[0] == b'#' {
+            break;
+        } else if comment == 2 {
+            if !line.is_empty() && "#%\r\n".contains(line.chars().next().unwrap()) {
+                continue;
+            } else {
+                comment = 1;
+            }
+        }
+
+        print!("{}", line);
+
+        if (flags & WHOIS_RECURSE) != 0 && nhost.is_none() {
+            for referral in &WHOIS_REFERRAL {
+                if let Some(pos) = line.find(referral.prefix) {
+                    let after_prefix = &line[pos + referral.prefix.len()..];
+                    let trimmed = after_prefix.trim_start();
+                    let host_end = trimmed.find(|c: char| !is_host_char(c)).unwrap_or(trimmed.len());
+                    if host_end > 0 {
+                        let host = &trimmed[..host_end];
+                        if !host.is_empty() {
+                            nhost = Some(host.to_string());
+                            if trimmed.as_bytes().get(host_end) == Some(&b':') {
+                                let port_str = &trimmed[host_end + 1..];
+                                let port_end = port_str.find(|c: char| !c.is_ascii_digit()).unwrap_or(port_str.len());
+                                if port_end > 0 && port_end < 6 {
+                                    nport = Some(port_str[..port_end].to_string());
+                                } else {
+                                    nport = Some(hostport.to_string());
+                                }
+                            } else {
+                                nport = Some(hostport.to_string());
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if nhost.is_none() {
+                for pattern in &ACTUALLY_ARIN {
+                    if line.starts_with(*pattern) {
+                        nhost = Some(ANICHOST.to_string());
+                        nport = Some(hostport.to_string());
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Verisign etc.
+        if (flags & WHOIS_SPAM_ME) == 0 &&
+           len >= CHOPSPAM.len() &&
+           (line[..CHOPSPAM.len()].eq_ignore_ascii_case(CHOPSPAM) ||
+            (len >= CHOPSPAM.len() - 4 &&
+             line[4..CHOPSPAM.len()].eq_ignore_ascii_case(&CHOPSPAM[4..]))) {
+            println!();
+            break;
+        }
+    }
+
+    // Track RIR visits
+    let mut f = false;
+    unsafe {
+        for entry in TRY_RIR.iter_mut() {
+            if !entry.loop && entry.host.eq_ignore_ascii_case(hostname) {
+                entry.loop = true;
+            }
+        }
+
+        for entry in TRY_RIR.iter() {
+            if entry.loop && nhost.as_ref().map_or(false, |h| h.eq_ignore_ascii_case(entry.host)) {
+                nhost = None;
+                nport = None;
+                f = true;
+            }
+        }
+
+        if f {
+            for entry in TRY_RIR.iter() {
+                if !entry.loop {
+                    nhost = Some(entry.host.to_string());
+                    nport = Some(hostport.to_string());
+                    break;
+                }
+            }
+        }
+    }
+
+    if let Some(ref nh) = nhost {
+        if !nh.eq_ignore_ascii_case(hostname) {
+            println!("# {}\n", nh);
+            let np = nport.as_ref().map(|s| s.as_str()).unwrap_or(hostport);
+            whois(query, nh, np, flags);
+        }
+    }
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let mut country: Option<&str> = None;
+    let mut host: Option<&str> = None;
+    let mut port = DEFAULT_PORT;
+    let mut flags: u32 = 0;
+
+    let mut i = 1;
+    let mut queries: Vec<&str> = Vec::new();
+
+    while i < args.len() {
+        if args[i] == "-a" {
+            host = Some(ANICHOST);
+        } else if args[i] == "-A" {
+            host = Some(PNICHOST);
+        } else if args[i] == "-b" {
+            host = Some(ABUSEHOST);
+        } else if args[i] == "-c" {
+            i += 1;
+            if i >= args.len() { usage(); }
+            country = Some(&args[i]);
+        } else if args[i] == "-f" {
+            host = Some(FNICHOST);
+        } else if args[i] == "-g" {
+            host = Some(GNICHOST);
+        } else if args[i] == "-h" {
+            i += 1;
+            if i >= args.len() { usage(); }
+            host = Some(&args[i]);
+        } else if args[i] == "-i" {
+            host = Some(INICHOST);
+        } else if args[i] == "-I" {
+            host = Some(IANAHOST);
+        } else if args[i] == "-k" {
+            host = Some(KNICHOST);
+        } else if args[i] == "-l" {
+            host = Some(LNICHOST);
+        } else if args[i] == "-m" {
+            host = Some(MNICHOST);
+        } else if args[i] == "-p" {
+            i += 1;
+            if i >= args.len() { usage(); }
+            port = &args[i];
+        } else if args[i] == "-P" {
+            host = Some(PDBHOST);
+        } else if args[i] == "-Q" {
+            flags |= WHOIS_QUICK;
+        } else if args[i] == "-r" {
+            host = Some(RNICHOST);
+        } else if args[i] == "-R" {
+            flags |= WHOIS_RECURSE;
+        } else if args[i] == "-S" {
+            flags |= WHOIS_SPAM_ME;
+        } else if args[i].starts_with('-') {
+            usage();
+        } else {
+            queries.push(&args[i]);
+        }
+        i += 1;
+    }
+
+    if queries.is_empty() || (country.is_some() && host.is_some()) {
+        usage();
+    }
+
+    // If no host or country is specified, rely on referrals from IANA.
+    if host.is_none() && country.is_none() {
+        if std::env::var("WHOIS_SERVER").is_err() && std::env::var("RA_SERVER").is_err() {
+            if (flags & WHOIS_QUICK) == 0 {
+                flags |= WHOIS_RECURSE;
+            }
+        }
+    }
+
+    for query in &queries {
+        if let Some(c) = country {
+            let qnichost = format!("{}{}", c, QNICHOST_TAIL);
+            whois(query, &qnichost, port, flags);
+        } else {
+            let h = match host {
+                Some(h) => h

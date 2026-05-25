@@ -1,0 +1,29 @@
+=== STEP 54 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/whois
+   Files: 0/3
+📄 File: usr.bin/whois/Makefile
+
+```
+PROG=	whois
+
+.if defined(SOCKS)
+CFLAGS+=-DSOCKS
+CFLAGS+=-Dconnect=Rconnect -Dgetsockname=Rgetsockname -Dlisten=Rlisten \
+	-Daccept=Raccept -Drcmd=Rrcmd -Dbind=Rbind -Dselect=Rselect
+LDADD+=	-lsocks
+.endif
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+This is a fairly complex network program with sockets, poll, DNS resolution, and protocol handling. Let me look for a simpler unit to rewrite. Let me check some smaller utilities.
+
+ACTION: SET_SCOPE usr.bin/cksum

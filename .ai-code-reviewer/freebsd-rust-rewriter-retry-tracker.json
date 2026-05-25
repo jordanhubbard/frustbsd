@@ -115,6 +115,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-24T22:42:21.132011"
   },
+  "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes": {
+    "attempts": 1,
+    "last_attempt": "2026-05-25T01:22:56.681289"
+  },
   "contrib/libcbor/examples/bazel/src": {
     "attempts": 2,
     "last_attempt": "2026-05-24T04:52:38.054752"
@@ -264,8 +268,8 @@
     "last_attempt": "2026-05-24T11:31:47.260371"
   },
   "lib/liby": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T00:31:26.880417"
+    "attempts": 2,
+    "last_attempt": "2026-05-25T01:05:41.746633"
   },
   "libexec/atrun": {
     "attempts": 1,

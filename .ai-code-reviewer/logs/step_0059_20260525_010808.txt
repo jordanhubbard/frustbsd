@@ -1,0 +1,23 @@
+=== STEP 59 ===
+
+--- REQUEST ---
+READ_FILE_SKIPPED: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/whois.1 is documentation (suffix .1).
+No code changes required. Marked as rewritten.
+Remaining files in usr.bin/whois you can work on:
+  (All tracked files rewritten or skipped in this directory)
+
+Please choose another source file or SET_SCOPE to a new directory.
+
+--- RESPONSE ---
+
+
+Now I have a good understanding of the whois program. It's a network client that:
+1. Connects to WHOIS servers over TCP
+2. Sends queries and reads responses
+3. Handles referrals (recursive lookups)
+4. Has various command-line flags for different servers
+5. Uses poll() for non-blocking connection attempts
+
+Let me create the Rust replacement. First, the Cargo.toml:
+
+ACTION: WRITE_FILE usr.bin/whois/Cargo.toml

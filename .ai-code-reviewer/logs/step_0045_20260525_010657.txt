@@ -1,0 +1,23 @@
+=== STEP 45 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/whois
+   Files: 0/3
+📄 File: usr.bin/whois/whois.c
+   Chunks: 3/12
+
+```
+=== CHUNK 3/12: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/whois/whois.c === [function: s_asprintf]
+=== Lines 146-146 (1 lines) ===
+
+static void s_asprintf(char **ret, const char *format, ...) __printflike(2, 3);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

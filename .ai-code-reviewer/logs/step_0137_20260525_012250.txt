@@ -1,0 +1,15 @@
+=== STEP 137 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/lock:
+```
+Makefile
+Makefile.depend
+lock.1
+lock.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/lock
