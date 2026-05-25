@@ -1,0 +1,29 @@
+=== STEP 90 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/sleep:
+```
+.depend
+.depend.sleep.pieo
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+cargo-target
+sleep
+sleep.1
+sleep.1.gz
+sleep.c
+sleep.debug
+sleep.full
+sleep.pieo
+src
+tests
+```
+
+--- RESPONSE ---
+
+
+Let me find a small unit without Rust conversion yet.
+
+ACTION: LIST_DIR bin/nproc

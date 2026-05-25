@@ -1,0 +1,12 @@
+=== STEP 172 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Marked current file as skipped.
+Remaining files in stand/libsa/x86:
+  (All tracked files rewritten or skipped in this directory)
+Please READ_FILE another source file or SET_SCOPE to continue progress.
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/strings

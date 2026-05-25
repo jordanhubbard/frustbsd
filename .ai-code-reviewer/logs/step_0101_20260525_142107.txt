@@ -1,0 +1,14 @@
+=== STEP 101 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Marked current file as skipped.
+Remaining files in contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo:
+  - contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo/DirectXTargetInfo.h
+Please READ_FILE another source file or SET_SCOPE to continue progress.
+
+--- RESPONSE ---
+
+
+This is LLVM contrib code, not FreeBSD userland. Let me skip this unit and find a suitable FreeBSD userland command.
+
+ACTION: SET_SCOPE bin/domainname

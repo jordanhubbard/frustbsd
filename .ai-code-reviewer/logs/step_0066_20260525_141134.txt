@@ -1,0 +1,11 @@
+=== STEP 66 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'bsd.rust.mk'
+
+--- RESPONSE ---
+
+
+Let me check how a recently completed unit handled Rust build integration.
+
+ACTION: READ_FILE usr.bin/basename/Makefile

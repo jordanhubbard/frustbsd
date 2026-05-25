@@ -1,0 +1,20 @@
+=== STEP 20 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE sbin/adjkerntz/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "adjkerntz"
+version = "0.0.0"
+edition = "2021"
+
+[[bin]]
+name = "adjkerntz"
+path = "src/main.rs"
+<<<

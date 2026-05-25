@@ -1,0 +1,12 @@
+=== STEP 107 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Marked current file as skipped.
+Remaining files in contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo:
+  - contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo/DirectXTargetInfo.h
+Please READ_FILE another source file or SET_SCOPE to continue progress.
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/strings

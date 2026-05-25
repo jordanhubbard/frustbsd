@@ -1,0 +1,20 @@
+=== STEP 75 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sbin/adjkerntz:
+```
+Cargo.toml
+Makefile
+Makefile.depend
+adjkerntz.8
+adjkerntz.c
+pathnames.h
+src
+```
+
+--- RESPONSE ---
+
+
+Let me check how the build is being invoked for this unit.
+
+ACTION: READ_FILE sbin/adjkerntz/Makefile

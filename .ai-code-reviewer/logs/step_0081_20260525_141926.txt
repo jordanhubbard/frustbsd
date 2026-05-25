@@ -1,0 +1,14 @@
+=== STEP 81 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: sbin/adjkerntz is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo
+
+--- RESPONSE ---
+
+
+The sbin/adjkerntz scope is marked skipped. Let me choose a different pending unit. Let me look at the next available units from the index.
+
+ACTION: SET_SCOPE bin/cat/tests

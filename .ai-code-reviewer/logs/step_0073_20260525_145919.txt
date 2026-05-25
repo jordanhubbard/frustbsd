@@ -1,0 +1,359 @@
+=== STEP 73 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sbin/adjkerntz:
+```
+Cargo.toml
+Makefile
+Makefile.depend
+adjkerntz.8
+adjkerntz.c
+pathnames.h
+```
+
+--- RESPONSE ---
+
+
+The Cargo.toml exists but src/main.rs was never created. Let me write a compact Rust implementation.
+
+ACTION: WRITE_FILE sbin/adjkerntz/src/main.rs
+CONTENT:
+<<<
+// SPDX-License-Identifier: BSD-2-Clause
+use std::ffi::CString;
+use std::os::raw::{c_char, c_int, c_long, c_void};
+use std::process;
+
+const PATH_CLOCK: &str = "/etc/wall_cmos_clock";
+const REPORT_PERIOD: u64 = 30 * 60;
+
+#[repr(C)] struct Timeval { tv_sec: c_long, tv_usec: c_long }
+#[repr(C)] struct Timezone { tz_minuteswest: c_int, tz_dsttime: c_int }
+#[repr(C)] struct Sigset_t { __val: [u64; 4] }
+
+#[repr(C)] struct Tm {
+    tm_sec: c_int, tm_min: c_int, tm_hour: c_int, tm_mday: c_int,
+    tm_mon: c_int, tm_year: c_int, tm_wday: c_int, tm_yday: c_int,
+    tm_isdst: c_int, tm_gmtoff: c_long, tm_zone: *const c_char,
+}
+
+extern "C" {
+    fn gettimeofday(tp: *mut Timeval, tz: *mut Timezone) -> c_int;
+    fn settimeofday(tp: *const Timeval, tz: *const Timezone) -> c_int;
+    fn tzset() -> c_int;
+    fn localtime(tp: *const c_long) -> *mut Tm;
+    fn mktime(tm: *mut Tm) -> c_long;
+    fn daemon(nochdir: c_int, noclose: c_int) -> c_int;
+    fn openlog(ident: *const c_char, option: c_int, facility: c_int);
+    fn syslog(priority: c_int, format: *const c_char, ...);
+    fn sigemptyset(set: *mut Sigset_t) -> c_int;
+    fn sigaddset(set: *mut Sigset_t, signum: c_int) -> c_int;
+    fn sigprocmask(how: c_int, set: *const Sigset_t, oldset: *mut Sigset_t) -> c_int;
+    fn sigsuspend(mask: *const Sigset_t) -> c_int;
+    fn signal(signum: c_int, handler: extern "C" fn(c_int)) -> extern "C" fn(c_int);
+    fn access(path: *const c_char, amode: c_int) -> c_int;
+    fn sleep(secs: u64) -> u64;
+    fn sysctlbyname(
+        name: *const c_char, oldp: *mut c_void, oldlenp: *mut usize,
+        newp: *const c_void, newlen: usize,
+    ) -> c_int;
+}
+
+const SIGTERM: c_int = 15;
+const SIGHUP: c_int = 1;
+const SIG_IGN: extern "C" fn(c_int) = unsafe { std::mem::transmute(1usize) };
+const SIG_DFL: extern "C" fn(c_int) = unsafe { std::mem::transmute(0usize) };
+const SIG_BLOCK: c_int = 1;
+const SIG_UNBLOCK: c_int = 2;
+const LOG_PID: c_int = 2;
+const LOG_PERROR: c_int = 32;
+const LOG_DAEMON: c_int = 0x18;
+const LOG_ERR: c_int = 0x18;
+const LOG_WARNING: c_int = 0x20;
+const F_OK: c_int = 0;
+
+extern "C" fn fake(_unused: c_int) {}
+
+fn usage() -> ! {
+    eprintln!(
+        "{}\n{}\n{}\n{}",
+        "usage: adjkerntz -i",
+        "\t\t(initial call from /etc/rc)",
+        "       adjkerntz -a [-s]",
+        "\t\t(adjustment call, -s for sleep/retry mode)"
+    );
+    process::exit(2);
+}
+
+fn sysctl_get(name: &str) -> Result<i32, ()> {
+    let cn = CString::new(name).unwrap();
+    let mut val: i32 = 0;
+    let mut len: usize = std::mem::size_of::<i32>();
+    if unsafe {
+        sysctlbyname(cn.as_ptr(), &mut val as *mut _ as _, &mut len, std::ptr::null(), 0)
+    } == -1
+    {
+        Err(())
+    } else {
+        Ok(val)
+    }
+}
+
+fn sysctl_set(name: &str, val: i32) -> Result<(), ()> {
+    let cn = CString::new(name).unwrap();
+    let len: usize = std::mem::size_of::<i32>();
+    if unsafe {
+        sysctlbyname(cn.as_ptr(), std::ptr::null_mut(), std::ptr::null_mut(),
+            &val as *const _ as _, len)
+    } == -1
+    {
+        Err(())
+    } else {
+        Ok(())
+    }
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let mut init: i32 = -1;
+    let mut sleep_mode = false;
+    let mut i = 1;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-i" => { if init != -1 { usage(); } init = 1; }
+            "-a" => { if init != -1 { usage(); } init = 0; }
+            "-s" => { sleep_mode = true; }
+            _ => usage(),
+        }
+        i += 1;
+    }
+    if init == -1 { usage(); }
+
+    let pc = CString::new(PATH_CLOCK).unwrap();
+    if unsafe { access(pc.as_ptr(), F_OK) } != 0 { process::exit(0); }
+    if init != 0 { sleep_mode = true; }
+
+    let mut mask: Sigset_t;
+    let mut emask: Sigset_t;
+    unsafe {
+        mask = std::mem::zeroed();
+        emask = std::mem::zeroed();
+        sigemptyset(&mut mask);
+        sigemptyset(&mut emask);
+        sigaddset(&mut mask, SIGTERM);
+    }
+
+    let ident = CString::new("adjkerntz").unwrap();
+    unsafe {
+        openlog(ident.as_ptr(), LOG_PID | LOG_PERROR, LOG_DAEMON);
+        signal(SIGHUP, SIG_IGN);
+    }
+
+    if init != 0 {
+        if unsafe { daemon(0, 0) } == -1 {
+            let m = CString::new("daemon: %m").unwrap();
+            unsafe { syslog(LOG_ERR, m.as_ptr()); }
+            process::exit(1);
+        }
+    }
+
+    'outer: loop {
+        unsafe {
+            sigprocmask(SIG_BLOCK, &mask, std::ptr::null_mut());
+            signal(SIGTERM, fake);
+        }
+
+        let mut diff: c_long = 0;
+        let mut stv: *mut Timeval = std::ptr::null_mut();
+        let mut stz: *mut Timezone = std::ptr::null_mut();
+        let mut looping = false;
+        let wall_clock = unsafe { access(pc.as_ptr(), F_OK) } == 0;
+
+        if init != 0 && !sleep_mode {
+            init = 0;
+            if !wall_clock { process::exit(0); }
+        }
+
+        unsafe { tzset(); }
+
+        let kern_offset = match sysctl_get("machdep.adjkerntz") {
+            Ok(v) => v,
+            Err(_) => {
+                let m = CString::new("sysctl(\"machdep.adjkerntz\"): %m").unwrap();
+                unsafe { syslog(LOG_ERR, m.as_ptr()); }
+                process::exit(1);
+            }
+        };
+
+        let mut tv: Timeval;
+        let mut tz: Timezone;
+        unsafe {
+            tv = std::mem::zeroed();
+            tz = std::mem::zeroed();
+            if gettimeofday(&mut tv, &mut tz) == -1 {
+                let m = CString::new("gettimeofday: %m").unwrap();
+                syslog(LOG_ERR, m.as_ptr());
+                process::exit(1);
+            }
+        }
+
+        let initial_sec = tv.tv_sec;
+        let mut initial_isdst: c_int = -1;
+
+        'recalc: loop {
+            let mut local: Tm;
+            unsafe { local = *localtime(&initial_sec); }
+            if diff == 0 { initial_isdst = local.tm_isdst; }
+            local.tm_isdst = initial_isdst;
+
+            let localsec = unsafe { mktime(&mut local) };
+            if localsec == -1 {
+                if !sleep_mode {
+                    let m1 = CString::new("Warning: nonexistent local time, try to run later.").unwrap();
+                    let m2 = CString::new("Giving up.").unwrap();
+                    unsafe { syslog(LOG_WARNING, m1.as_ptr()); syslog(LOG_WARNING, m2.as_ptr()); }
+                    process::exit(1);
+                }
+                let m1 = CString::new("Warning: nonexistent local time.").unwrap();
+                let m2 = CString::new("Will retry after %d minutes.").unwrap();
+                unsafe { syslog(LOG_WARNING, m1.as_ptr()); syslog(LOG_WARNING, m2.as_ptr()); }
+                unsafe { signal(SIGTERM, SIG_DFL); sigprocmask(SIG_UNBLOCK, &mask, std::ptr::null_mut()); }
+                sleep(REPORT_PERIOD);
+                continue 'outer;
+            }
+
+            let offset: c_long = -local.tm_gmtoff;
+            diff = offset - (tz.tz_minuteswest as c_long) * 60 - (kern_offset as c_long);
+
+            if diff != 0 {
+                let final_sec = initial_sec + diff;
+                let mut local2: Tm;
+                unsafe { local2 = *localtime(&final_sec); }
+                let final_isdst = if diff < 0 { initial_isdst } else { local2.tm_isdst };
+
+                if diff > 0 && initial_isdst != final_isdst {
+                    if looping {
+                        if !sleep_mode {
+                            let m1 = CString::new("Warning: nonexistent final local time, try to run later.").unwrap();
+                            let m2 = CString::new("Giving up.").unwrap();
+                            unsafe { syslog(LOG_WARNING, m1.as_ptr()); syslog(LOG_WARNING, m2.as_ptr()); }
+                            process::exit(1);
+                        }
+                        let m1 = CString::new("Warning: nonexistent final local time.").unwrap();
+                        let m2 = CString::new("Will retry after %d minutes.").unwrap();
+                        unsafe { syslog(LOG_WARNING, m1.as_ptr()); syslog(LOG_WARNING, m2.as_ptr()); }
+                        unsafe { signal(SIGTERM, SIG_DFL); sigprocmask(SIG_UNBLOCK, &mask, std::ptr::null_mut()); }
+                        sleep(REPORT_PERIOD);
+                        continue 'outer;
+                    }
+                    looping = true;
+                    initial_isdst = final_isdst;
+                    continue 'recalc;
+                }
+
+                local2.tm_isdst = final_isdst;
+                let localsec2 = unsafe { mktime(&mut local2) };
+                if localsec2 == -1 {
+                    if !sleep_mode {
+                        let m1 = CString::new("Warning: nonexistent final local time, try to run later.").unwrap();
+                        let m2 = CString::new("Giving up.").unwrap();
+                        unsafe { syslog(LOG_WARNING, m1.as_ptr()); syslog(LOG_WARNING, m2.as_ptr()); }
+                        process::exit(1);
+                    }
+                    let m1 = CString::new("Warning: nonexistent final local time.").unwrap();
+                    let m2 = CString::new("Will retry after %d minutes.").unwrap();
+                    unsafe { syslog(LOG_WARNING, m1.as_ptr()); syslog(LOG_WARNING, m2.as_ptr()); }
+                    unsafe { signal(SIGTERM, SIG_DFL); sigprocmask(SIG_UNBLOCK, &mask, std::ptr::null_mut()); }
+                    sleep(REPORT_PERIOD);
+                    continue 'outer;
+                }
+
+                let offset2: c_long = -local2.tm_gmtoff;
+                diff = offset2 - (tz.tz_minuteswest as c_long) * 60 - (kern_offset as c_long);
+                if diff != 0 { stv = &mut tv; }
+            }
+
+            if tz.tz_dsttime != 0 || tz.tz_minuteswest != 0 {
+                tz.tz_dsttime = 0;
+                tz.tz_minuteswest = 0;
+                stz = &mut tz;
+            }
+            if !wall_clock && stz.is_null() { stv = std::ptr::null_mut(); }
+
+            let mut need_restore = false;
+            let mut disrtcset: i32 = 0;
+
+            if (init != 0 && !stv.is_null()) || ((init != 0 || !wall_clock) && kern_offset as c_long != -local.tm_gmtoff) {
+                disrtcset = match sysctl_get("machdep.disable_rtc_set") {
+                    Ok(v) => v,
+                    Err(_) => {
+                        let m = CString::new("sysctl(get: \"machdep.disable_rtc_set\"): %m").unwrap();
+                        unsafe { syslog(LOG_ERR, m.as_ptr()); }
+                        process::exit(1);
+                    }
+                };
+                if disrtcset == 0 {
+                    disrtcset = 1;
+                    need_restore = true;
+                    if sysctl_set("machdep.disable_rtc_set", disrtcset).is_err() {
+                        let m = CString::new("sysctl(set: \"machdep.disable_rtc_set\"): %m").unwrap();
+                        unsafe { syslog(LOG_ERR, m.as_ptr()); }
+                        process::exit(1);
+                    }
+                }
+            }
+
+            if (init != 0 && (!stv.is_null() || !stz.is_null())) || (!stz.is_null() && stv.is_null()) {
+                if !stv.is_null() {
+                    unsafe {
+                        gettimeofday(&mut tv, std::ptr::null_mut());
+                        tv.tv_sec += diff;
+                        stv = &mut tv;
+                    }
+                }
+                if unsafe { settimeofday(stv as *const _, stz as *const _) } == -1 {
+                    let m = CString::new("settimeofday: %m").unwrap();
+                    unsafe { syslog(LOG_ERR, m.as_ptr()); }
+                    process::exit(1);
+                }
+            }
+
+            let offset_final: c_long = -local.tm_gmtoff;
+            if kern_offset as c_long != offset_final {
+                let new_offset = offset_final as i32;
+                if sysctl_set("machdep.adjkerntz", new_offset).is_err() {
+                    let m = CString::new("sysctl(set: \"machdep.adjkerntz\"): %m").unwrap();
+                    unsafe { syslog(LOG_ERR, m.as_ptr()); }
+                    process::exit(1);
+                }
+            }
+
+            let wc = if wall_clock { 1 } else { 0 };
+            if sysctl_set("machdep.wall_cmos_clock", wc).is_err() {
+                let m = CString::new("sysctl(set: \"machdep.wall_cmos_clock\"): %m").unwrap();
+                unsafe { syslog(LOG_ERR, m.as_ptr()); }
+                process::exit(1);
+            }
+
+            if need_restore {
+                if sysctl_set("machdep.disable_rtc_set", 0).is_err() {
+                    let m = CString::new("sysctl(set: \"machdep.disable_rtc_set\"): %m").unwrap();
+                    unsafe { syslog(LOG_ERR, m.as_ptr()); }
+                    process::exit(1);
+                }
+            }
+
+        } // end recalc loop
+
+        if init != 0 && wall_clock {
+            sleep_mode = false;
+            unsafe { sigsuspend(&emask); }
+            // fall through to outer loop
+        } else {
+            break 'outer;
+        }
+    }
+
+    process::exit(0);
+}
+>>>

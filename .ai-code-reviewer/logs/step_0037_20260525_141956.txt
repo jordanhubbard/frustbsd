@@ -1,0 +1,17 @@
+=== STEP 37 ===
+
+--- REQUEST ---
+BUILD_REJECTED: No pending source or build-file changes for the active scope.
+
+Do not run BUILD just to satisfy the loop. Choose a pending work unit with SET_SCOPE or make a real source/build-file change first.
+
+Only reviewer metadata is dirty: .ai-code-reviewer/REWRITE-INDEX.md, .ai-code-reviewer/freebsd-rust-rewriter-retry-tracker.json, .reviewer-log/ops.jsonl, .ai-code-reviewer/logs/step_0001_20260525_140308.txt, .ai-code-reviewer/logs/step_0002_20260525_140314.txt, .ai-code-reviewer/logs/step_0003_20260525_140320.txt, .ai-code-reviewer/logs/step_0004_20260525_140322.txt, .ai-code-reviewer/logs/step_0005_20260525_140325.txt ...
+
+--- RESPONSE ---
+
+
+The `sbin/adjkerntz` unit already has complete Rust source, Cargo.toml, and Makefile integration from a previous session. The build errors are from the top-level FreeBSD `Makefile.inc1` infrastructure (libclang bootstrapping), not from our unit. This unit is already done.
+
+Let me move to the next pending unit.
+
+ACTION: SET_SCOPE bin/cat/tests

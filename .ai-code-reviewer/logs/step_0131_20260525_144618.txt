@@ -1,0 +1,12 @@
+=== STEP 131 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cp is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE tools/regression/tls/ttls4
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/pwait

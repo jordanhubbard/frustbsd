@@ -1,0 +1,11 @@
+=== STEP 6 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+Let me check how previous completed units integrated Rust into the build.
+
+ACTION: READ_FILE usr.bin/basename/Makefile

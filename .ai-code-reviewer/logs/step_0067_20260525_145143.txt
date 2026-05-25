@@ -1,0 +1,9 @@
+=== STEP 67 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*sbin/adjkerntz/adjkerntz.c*'
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR sbin/adjkerntz

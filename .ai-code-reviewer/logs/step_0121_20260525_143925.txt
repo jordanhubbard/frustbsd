@@ -1,0 +1,37 @@
+=== STEP 121 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo/DirectXTargetInfo.h:
+PROGRESS:
+📁 Directory: contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo
+   Files: 0/2
+📄 File: contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo/DirectXTargetInfo.h
+
+```
+//===-- DirectXTargetInfo.h - DircetX Target Implementation -----*- C++ -*-===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#ifndef LLVM_DIRECTX_TARGETINFO_DIRECTXTARGETINFO_H
+#define LLVM_DIRECTX_TARGETINFO_DIRECTXTARGETINFO_H
+
+namespace llvm {
+class Target;
+
+Target &getTheDirectXTarget();
+} // namespace llvm
+
+#endif // LLVM_DIRECTX_TARGETINFO_DIRECTXTARGETINFO_H
+
+```
+
+--- RESPONSE ---
+
+
+This is LLVM contrib code, not FreeBSD userland. Let me skip this file and try to move on.
+
+ACTION: SKIP_FILE

@@ -1,0 +1,21 @@
+=== STEP 75 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sbin/adjkerntz/Makefile:
+PROGRESS:
+📄 File: sbin/adjkerntz/Makefile
+✏️  Edits: 2 files modified
+
+```
+PACKAGE=runtime
+PROG=   adjkerntz
+MAN=	adjkerntz.8
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE share/mk/bsd.rust.mk

@@ -1,0 +1,11 @@
+=== STEP 87 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'bin/*/Makefile'
+
+--- RESPONSE ---
+
+
+Let me look for available work units with C source files.
+
+ACTION: LIST_DIR bin

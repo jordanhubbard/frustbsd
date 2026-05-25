@@ -1,0 +1,13 @@
+=== STEP 65 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat/tests has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo
+
+--- RESPONSE ---
+
+
+The test directories don't have C/C++ source files to rewrite. Let me find a small unit with actual C source files.
+
+ACTION: FIND_FILE sbin/*/adjkerntz.c

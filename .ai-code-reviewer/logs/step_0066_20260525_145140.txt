@@ -1,0 +1,11 @@
+=== STEP 66 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'sbin/*/adjkerntz.c'
+
+--- RESPONSE ---
+
+
+Let me find a small unit with C source files to rewrite.
+
+ACTION: FIND_FILE sbin/adjkerntz/adjkerntz.c

@@ -1,0 +1,11 @@
+=== STEP 13 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*libc/Cargo.toml*'
+
+--- RESPONSE ---
+
+
+Let me check how more complex units handle libc dependencies.
+
+ACTION: READ_FILE usr.bin/asa/Cargo.toml
