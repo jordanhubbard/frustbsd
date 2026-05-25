@@ -1,0 +1,11 @@
+=== STEP 34 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+Let me check how previously completed units integrated Rust into the build.
+
+ACTION: LIST_DIR usr.bin/asa

@@ -264,8 +264,8 @@
     "last_attempt": "2026-05-24T00:31:26.880417"
   },
   "libexec/atrun": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T21:42:59.823401"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T22:53:28.180895"
   },
   "libexec/getty": {
     "attempts": 1,
@@ -448,8 +448,8 @@
     "last_attempt": "2026-05-24T20:33:48.198194"
   },
   "usr.bin/elfdump": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T19:58:50.229122"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T22:55:56.249960"
   },
   "usr.bin/enigma": {
     "attempts": 3,
@@ -500,8 +500,8 @@
     "last_attempt": "2026-05-24T20:38:30.539520"
   },
   "usr.bin/join": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T13:12:22.998342"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T22:56:16.208487"
   },
   "usr.bin/jot": {
     "attempts": 1,
@@ -640,8 +640,8 @@
     "last_attempt": "2026-05-22T09:14:54.939410"
   },
   "usr.bin/random": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T18:20:46.788804"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T22:58:17.631854"
   },
   "usr.bin/rwall": {
     "attempts": 1,
@@ -746,6 +746,10 @@
   "usr.bin/xargs": {
     "attempts": 1,
     "last_attempt": "2026-05-24T12:51:15.364348"
+  },
+  "usr.bin/xstr": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T22:52:15.154067"
   },
   "usr.bin/yes": {
     "attempts": 3,
