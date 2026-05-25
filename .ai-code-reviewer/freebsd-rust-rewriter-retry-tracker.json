@@ -180,8 +180,8 @@
     "last_attempt": "2026-05-24T06:36:22.530138"
   },
   "contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo": {
-    "attempts": 1,
-    "last_attempt": "2026-05-25T09:02:51.212219"
+    "attempts": 2,
+    "last_attempt": "2026-05-25T13:49:08.540199"
   },
   "contrib/llvm-project/llvm/lib/Target/Hexagon/TargetInfo": {
     "attempts": 3,
@@ -400,8 +400,8 @@
     "last_attempt": "2026-05-25T08:31:45.569498"
   },
   "tools/regression/tls/ttls4": {
-    "attempts": 1,
-    "last_attempt": "2026-05-25T10:01:18.694854"
+    "attempts": 2,
+    "last_attempt": "2026-05-25T13:55:27.078546"
   },
   "usr.bin/apply": {
     "attempts": 3,

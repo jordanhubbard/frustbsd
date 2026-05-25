@@ -1,0 +1,14 @@
+=== STEP 45 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory sbin/adjkerntz skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE crypto/krb5/src/lib/krb5/error_tables
+
+--- RESPONSE ---
+
+
+The `sbin/adjkerntz` unit has been auto-skipped after 3 failed attempts. Let me find a fresh small unit to work on instead.
+
+ACTION: LIST_DIR sbin

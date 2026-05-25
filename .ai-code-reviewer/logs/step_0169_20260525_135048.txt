@@ -1,0 +1,12 @@
+=== STEP 169 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: sbin/adjkerntz is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE tools/regression/tls/ttls4
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

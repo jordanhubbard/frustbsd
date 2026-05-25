@@ -1,0 +1,280 @@
+=== STEP 15 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sbin/adjkerntz/src/main.rs:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/sbin/adjkerntz/src/main.rs
+   Total chunks: 2
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: sbin/adjkerntz
+   Files: 1/4
+📄 File: sbin/adjkerntz/src/main.rs
+   Chunks: 1/2
+✏️  Edits: 2 files modified
+
+```
+=== CHUNK 1/2: /usr/home/jkh/Src/freebsd-src-on-angry-AI/sbin/adjkerntz/src/main.rs === [line_chunk: chunk_1]
+=== Lines 1-250 (250 lines) ===
+
+```rust
+// SPDX-License-Identifier: BSD-2-Clause
+//
+// Copyright (C) 1993-1998 by Andrey A. Chernov, Moscow, Russia.
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+// OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+// OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+
+use std::ffi::CString;
+use std::os::raw::{c_char, c_int};
+use std::ptr;
+
+type Bool = i32;
+const TRUE: Bool = 1;
+const FALSE: Bool = 0;
+const UNKNOWN: Bool = -1;
+
+const REPORT_PERIOD: u64 = 30 * 60;
+
+const PATH_CLOCK: &str = "/etc/wall_cmos_clock";
+
+extern "C" {
+    fn sysctlbyname(
+        name: *const c_char,
+        oldp: *mut std::os::raw::c_void,
+        oldlenp: *mut usize,
+        newp: *mut std::os::raw::c_void,
+        newlen: usize,
+    ) -> c_int;
+    fn gettimeofday(tp: *mut libc::timeval, tz: *mut libc::timezone) -> c_int;
+    fn settimeofday(tp: *const libc::timeval, tz: *const libc::timezone) -> c_int;
+    fn localtime(tp: *const std::os::raw::c_time_t) -> *mut libc::tm;
+    fn mktime(tm: *mut libc::tm) -> std::os::raw::c_time_t;
+    fn tzset();
+    fn access(path: *const c_char, amode: c_int) -> c_int;
+    fn openlog(ident: *const c_char, logopt: c_int, facility: c_int);
+    fn syslog(priority: c_int, format: *const c_char, ...) -> c_int;
+    fn signal(signum: c_int, handler: extern "C" fn(c_int)) -> extern "C" fn(c_int);
+    fn daemon(nochdir: c_int, noclose: c_int) -> c_int;
+    fn sigemptyset(set: *mut libc::sigset_t) -> c_int;
+    fn sigaddset(set: *mut libc::sigset_t, signum: c_int) -> c_int;
+    fn sigprocmask(how: c_int, set: *const libc::sigset_t, oldset: *mut libc::sigset_t) -> c_int;
+    fn sigsuspend(mask: *const libc::sigset_t) -> c_int;
+    fn sleep(secs: u64) -> u64;
+}
+
+use libc::{F_OK, SIG_IGN, SIG_DFL, SIGTERM, SIGHUP, SIG_BLOCK, SIG_UNBLOCK};
+use libc::{LOG_PID, LOG_PERROR, LOG_DAEMON, LOG_ERR, LOG_WARNING};
+
+extern "C" fn fake(_unused: c_int) {
+    /* Do nothing. */
+}
+
+fn usage() -> ! {
+    eprintln!(
+        "{}\n{}\n{}\n{}",
+        "usage: adjkerntz -i",
+        "\t\t(initial call from /etc/rc)",
+        "       adjkerntz -a [-s]",
+        "\t\t(adjustment call, -s for sleep/retry mode)"
+    );
+    std::process::exit(2);
+}
+
+fn main() {
+    let argc = std::env::args_os().count();
+    let mut argv: Vec<*mut c_char> = Vec::with_capacity(argc + 1);
+    for arg in std::env::args_os() {
+        let c_str = CString::new(arg.to_string_lossy().to_string()).unwrap();
+        argv.push(c_str.into_raw());
+    }
+    argv.push(ptr::null_mut());
+
+    let mut init = UNKNOWN;
+    let mut sleep_mode = FALSE;
+    let mut optind: c_int = 1;
+
+    loop {
+        let ch = unsafe { libc::getopt(argc, argv.as_mut_ptr(), b"ais\0".as_ptr() as *const c_char) };
+        if ch == -1 {
+            break;
+        }
+        match ch as u8 {
+            b'i' => {
+                if init != UNKNOWN {
+                    usage();
+                }
+                init = TRUE;
+            }
+            b'a' => {
+                if init != UNKNOWN {
+                    usage();
+                }
+                init = FALSE;
+            }
+            b's' => {
+                sleep_mode = TRUE;
+            }
+            _ => {
+                usage();
+            }
+        }
+    }
+
+    if init == UNKNOWN {
+        usage();
+    }
+
+    let clock_path = CString::new(PATH_CLOCK).unwrap();
+    if unsafe { access(clock_path.as_ptr(), F_OK) } != 0 {
+        std::process::exit(0);
+    }
+
+    if init == TRUE {
+        sleep_mode = TRUE;
+    }
+
+    let mut mask: libc::sigset_t = unsafe { std::mem::zeroed() };
+    let mut emask: libc::sigset_t = unsafe { std::mem::zeroed() };
+
+    unsafe {
+        sigemptyset(&mut mask);
+        sigemptyset(&mut emask);
+        sigaddset(&mut mask, SIGTERM);
+    }
+
+    let ident = CString::new("adjkerntz").unwrap();
+    unsafe {
+        openlog(ident.as_ptr(), LOG_PID | LOG_PERROR, LOG_DAEMON);
+        signal(SIGHUP, SIG_IGN);
+    }
+
+    if init == TRUE {
+        let ret = unsafe { daemon(0, 0) };
+        if ret == -1 {
+            let msg = CString::new("daemon: %m").unwrap();
+            unsafe { syslog(LOG_ERR, msg.as_ptr()) };
+            std::process::exit(1);
+        }
+    }
+
+    let mut diff: i64 = 0;
+    let mut stv: Option<libc::timeval> = None;
+    let mut stz: Option<libc::timezone> = None;
+    let mut looping = FALSE;
+
+    loop {
+        unsafe {
+            sigprocmask(SIG_BLOCK, &mask, ptr::null_mut());
+            signal(SIGTERM, fake);
+        }
+
+        diff = 0;
+        stv = None;
+        stz = None;
+        looping = FALSE;
+
+        let wall_clock = unsafe { access(clock_path.as_ptr(), F_OK) } == 0;
+
+        if init == TRUE && sleep_mode != TRUE {
+            init = FALSE;
+            if !wall_clock {
+                std::process::exit(0);
+            }
+        }
+
+        unsafe { tzset() };
+
+        let mut kern_offset: i64 = 0;
+        let mut len: usize = std::mem::size_of::<i64>();
+        let name = CString::new("machdep.adjkerntz").unwrap();
+        if unsafe {
+            sysctlbyname(
+                name.as_ptr(),
+                &mut kern_offset as *mut _ as *mut _,
+                &mut len,
+                ptr::null_mut(),
+                0,
+            )
+        } == -1
+        {
+            let msg = CString::new("sysctl(\"machdep.adjkerntz\"): %m").unwrap();
+            unsafe { syslog(LOG_ERR, msg.as_ptr()) };
+            std::process::exit(1);
+        }
+
+        /* Critical section */
+        let mut tv: libc::timeval = unsafe { std::mem::zeroed() };
+        let mut tz: libc::timezone = unsafe { std::mem::zeroed() };
+
+        if unsafe { gettimeofday(&mut tv, &mut tz) } == -1 {
+            let msg = CString::new("gettimeofday: %m").unwrap();
+            unsafe { syslog(LOG_ERR, msg.as_ptr()) };
+            std::process::exit(1);
+        }
+
+        let initial_sec = tv.tv_sec;
+        let mut initial_isdst: c_int = -1;
+
+        let mut local_tm;
+        let mut localsec;
+        let mut offset;
+
+        loop {
+            local_tm = unsafe { *localtime(&initial_sec) };
+            if diff == 0 {
+                initial_isdst = local_tm.tm_isdst;
+            }
+            local_tm.tm_isdst = initial_isdst;
+
+            localsec = unsafe { mktime(&mut local_tm) };
+            if localsec == -1 {
+                if sleep_mode != TRUE {
+                    let msg1 = CString::new("Warning: nonexistent local time, try to run later.").unwrap();
+                    let msg2 = CString::new("Giving up.").unwrap();
+                    unsafe {
+                        syslog(LOG_WARNING, msg1.as_ptr());
+                        syslog(LOG_WARNING, msg2.as_ptr());
+                    }
+                    std::process::exit(1);
+                }
+                let msg1 = CString::new("Warning: nonexistent local time.").unwrap();
+                let msg2 = format!("Will retry after {} minutes.", REPORT_PERIOD / 60);
+                let msg2_c = CString::new(msg2).unwrap();
+                unsafe {
+                    syslog(LOG_WARNING, msg1.as_ptr());
+                    syslog(LOG_WARNING, msg2_c.as_ptr());
+                    signal(SIGTERM, SIG_DFL);
+                    sigprocmask(SIG_UNBLOCK, &mask, ptr::null_mut());
+                    sleep(REPORT_PERIOD);
+                }
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

@@ -1,0 +1,29 @@
+=== STEP 23 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sbin/adjkerntz:
+```
+Makefile
+Makefile.depend
+adjkerntz.8
+adjkerntz.c
+pathnames.h
+```
+
+--- RESPONSE ---
+
+
+The files were reverted by the failed build. I need to recreate everything. Let me also check how the build system works for this unit.
+
+ACTION: WRITE_FILE sbin/adjkerntz/Cargo.toml
+CONTENT:
+```toml
+[package]
+name = "adjkerntz"
+version = "0.0.0"
+edition = "2021"
+
+[[bin]]
+name = "adjkerntz"
+path = "src/main.rs"
+```

@@ -1,0 +1,13 @@
+=== STEP 26 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/sbin/adjkerntz/Makefile
+Scope: sbin/adjkerntz
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+I need to re-apply the Makefile edit since the failed build reverted it.
+
+ACTION: READ_FILE sbin/adjkerntz/Makefile

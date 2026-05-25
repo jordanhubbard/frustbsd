@@ -1,0 +1,9 @@
+=== STEP 188 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE tools/regression/tls/ttls4/Cargo.toml

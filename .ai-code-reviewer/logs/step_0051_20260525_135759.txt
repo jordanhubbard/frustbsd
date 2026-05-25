@@ -1,0 +1,14 @@
+=== STEP 51 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/sbin/ffsinfo/ffsinfo.c.
+Remaining files in sbin/adjkerntz:
+  (All tracked files rewritten or skipped in this directory)
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+Let me find a simpler sbin command to rewrite.
+
+ACTION: READ_FILE sbin/conscontrol/conscontrol.c

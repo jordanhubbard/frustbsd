@@ -1,0 +1,68 @@
+=== STEP 44 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/domainname/src/main.rs:
+PROGRESS:
+📁 Directory: sbin/adjkerntz
+   Files: 1/4
+📄 File: bin/domainname/src/main.rs
+✏️  Edits: 3 files modified
+
+```
+use std::env;
+use std::ffi::CString;
+use std::io::{self, Write};
+use std::os::raw::c_char;
+use std::process;
+
+const MAXHOSTNAMELEN: usize = 64;
+
+extern "C" {
+    fn getdomainname(name: *mut c_char, len: usize) -> i32;
+    fn setdomainname(name: *const c_char, len: usize) -> i32;
+}
+
+fn usage() -> ! {
+    let _ = io::stderr().write_all(b"usage: domainname [ypdomain]\n");
+    process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = env::args().skip(1).collect();
+
+    if !args.is_empty() {
+        if args.len() > 1 {
+            usage();
+        }
+        let domain = match CString::new(args[0].as_bytes()) {
+            Ok(c) => c,
+            Err(_) => usage(),
+        };
+        let len = domain.as_bytes().len();
+        unsafe {
+            if setdomainname(domain.as_ptr(), len) < 0 {
+                eprintln!("domainname: setdomainname: {}", std::io::Error::last_os_error());
+                process::exit(1);
+            }
+        }
+    } else {
+        let mut buf = vec![0u8; MAXHOSTNAMELEN];
+        unsafe {
+            if getdomainname(buf.as_mut_ptr() as *mut c_char, MAXHOSTNAMELEN) < 0 {
+                eprintln!("domainname: getdomainname: {}", std::io::Error::last_os_error());
+                process::exit(1);
+            }
+        }
+        let len = buf.iter().position(|&b| b == 0).unwrap_or(MAXHOSTNAMELEN);
+        let domain = String::from_utf8_lossy(&buf[..len]);
+        println!("{}", domain);
+    }
+}
+```
+
+--- RESPONSE ---
+
+
+Now I understand the pattern. Let me set scope and examine the current unit.
+
+ACTION: SET_SCOPE sbin/adjkerntz
