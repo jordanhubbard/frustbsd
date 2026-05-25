@@ -1,0 +1,12 @@
+=== STEP 41 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/look is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sdt
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/units

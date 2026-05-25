@@ -1,0 +1,9 @@
+=== STEP 162 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'SYSTEM_COMPILER'
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/ident/ident.1
