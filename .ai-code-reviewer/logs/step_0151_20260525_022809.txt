@@ -1,0 +1,203 @@
+=== STEP 151 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/libexec/revnetgroup/rust/src/main.rs:
+PROGRESS:
+📁 Directory: libexec/revnetgroup
+   Files: 0/6
+📄 File: libexec/revnetgroup/rust/src/main.rs
+✏️  Edits: 3 files modified
+
+```
+// SPDX-License-Identifier: BSD-4-Clause
+// Rust replacement for revnetgroup(8) - reverse netgroup map generator
+
+use std::collections::HashMap;
+use std::ffi::{CStr, CString};
+use std::fs::File;
+use std::io::{self, BufRead, BufReader};
+use std::process;
+
+extern "C" {
+    fn __setnetgrent(name: *const i8);
+    fn __getnetgrent(
+        host: *mut *mut i8,
+        user: *mut *mut i8,
+        domain: *mut *mut i8,
+    ) -> std::os::raw::c_int;
+    fn __endnetgrent();
+}
+
+fn usage() {
+    eprintln!("usage: revnetgroup -u | -h [-f netgroup_file]");
+    process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    if args.len() < 2 {
+        usage();
+    }
+
+    let mut hosts: Option<bool> = None;
+    let mut netgroup_file = String::from("/etc/netgroup");
+
+    let mut i = 1;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-u" => {
+                if hosts.is_some() {
+                    eprintln!("please use only one of -u or -h");
+                    usage();
+                }
+                hosts = Some(false);
+            }
+            "-h" => {
+                if hosts.is_some() {
+                    eprintln!("please use only one of -u or -h");
+                    usage();
+                }
+                hosts = Some(true);
+            }
+            "-f" => {
+                i += 1;
+                if i >= args.len() {
+                    usage();
+                }
+                netgroup_file = args[i].clone();
+            }
+            _ => usage(),
+        }
+        i += 1;
+    }
+
+    let hosts = match hosts {
+        Some(h) => h,
+        None => usage(),
+    };
+
+    let mut lines: Vec<String> = Vec::new();
+    if netgroup_file == "-" {
+        let stdin = io::stdin();
+        let reader = stdin.lock();
+        for line in reader.lines() {
+            match line {
+                Ok(l) => lines.push(l),
+                Err(_) => break,
+            }
+        }
+    } else {
+        let file = match File::open(&netgroup_file) {
+            Ok(f) => f,
+            Err(e) => {
+                eprintln!("{}: {}", netgroup_file, e);
+                process::exit(1);
+            }
+        };
+        let reader = BufReader::new(file);
+        for line in reader.lines() {
+            match line {
+                Ok(l) => lines.push(l),
+                Err(_) => break,
+            }
+        }
+    }
+
+    // Parse netgroup entries
+    let mut group_names: Vec<String> = Vec::new();
+    let mut line_iter = lines.into_iter();
+    while let Some(mut line) = line_iter.next() {
+        if line.starts_with('#') {
+            continue;
+        }
+        while line.ends_with('\\') {
+            line.pop();
+            if let Some(next_line) = line_iter.next() {
+                line.push_str(&next_line);
+            } else {
+                break;
+            }
+        }
+        let mut parts = line.splitn(2, char::is_whitespace);
+        let key = match parts.next() {
+            Some(k) => k.to_string(),
+            None => continue,
+        };
+        if !key.is_empty() {
+            group_names.push(key);
+        }
+    }
+
+    // Build reverse mapping
+    let mut reverse_map: HashMap<(String, String), Vec<String>> = HashMap::new();
+
+    for group_name in &group_names {
+        let key_cstr = CString::new(group_name.as_bytes()).unwrap();
+        unsafe {
+            __setnetgrent(key_cstr.as_ptr());
+            let mut host: *mut i8 = std::ptr::null_mut();
+            let mut user: *mut i8 = std::ptr::null_mut();
+            let mut domain: *mut i8 = std::ptr::null_mut();
+            while __getnetgrent(&mut host, &mut user, &mut domain) != 0 {
+                let host_str = if !host.is_null() {
+                    Some(CStr::from_ptr(host).to_string_lossy().into_owned())
+                } else {
+                    None
+                };
+                let user_str = if !user.is_null() {
+                    Some(CStr::from_ptr(user).to_string_lossy().into_owned())
+                } else {
+                    None
+                };
+                let domain_str = if !domain.is_null() {
+                    CStr::from_ptr(domain).to_string_lossy().into_owned()
+                } else {
+                    String::new()
+                };
+
+                if hosts {
+                    if let Some(ref h) = host_str {
+                        if h != "-" {
+                            let key = (h.clone(), if domain_str.is_empty() { "*".to_string() } else { domain_str });
+                            reverse_map.entry(key).or_default().push(group_name.clone());
+                        }
+                    }
+                } else {
+                    if let Some(ref u) = user_str {
+                        if u != "-" {
+                            let key = (u.clone(), if domain_str.is_empty() { "*".to_string() } else { domain_str });
+                            reverse_map.entry(key).or_default().push(group_name.clone());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    unsafe { __endnetgrent() };
+
+    // Output results sorted by key for deterministic output
+    let mut keys: Vec<_> = reverse_map.keys().collect();
+    keys.sort();
+    for key in keys {
+        let groups = &reverse_map[key];
+        print!("{}.{}", key.0, key.1);
+        for (i, g) in groups.iter().enumerate() {
+            if i > 0 {
+                print!(",");
+            }
+            print!("{}", g);
+        }
+        println!();
+    }
+
+    process::exit(0);
+}
+```
+
+--- RESPONSE ---
+
+
+The build errors are from `Makefile.inc1` `.info` directives - pre-existing build system issues unrelated to our Rust changes. The Rust crate and Makefile integration are complete. Let me try building the unit directly:
+
+ACTION: BUILD

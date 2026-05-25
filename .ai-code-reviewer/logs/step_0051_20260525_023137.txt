@@ -1,0 +1,11 @@
+=== STEP 51 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'usr.bin/*/Makefile'
+
+--- RESPONSE ---
+
+
+Let me look at the rewrite index for pending units that have C source.
+
+ACTION: LIST_DIR usr.bin/ul

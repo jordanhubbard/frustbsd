@@ -1,0 +1,38 @@
+=== STEP 171 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/libexec/revnetgroup/Makefile
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE libexec/revnetgroup/Makefile
+CONTENT:
+PROG=	revnetgroup
+SRCS=	revnetgroup.c hash.c parse_netgroup.c
+
+MAN= revnetgroup.8
+
+WARNS?=	2
+
+# Rust replacement build
+CARGO?=	cargo
+RUST_CRATE=	${.CURDIR}/rust
+RUST_TARGET=	${.OBJDIR}/rust-target
+
+.PHONY: revnetgroup-rust clean-rust
+
+revnetgroup-rust:
+	@echo "Building Rust replacement for revnetgroup..."
+	${CARGO} build --release --manifest-path ${RUST_CRATE}/Cargo.toml \
+	    --target-dir ${RUST_TARGET}
+
+clean-rust:
+	${RM} -rf ${RUST_TARGET}
+
+.include <bsd.prog.mk>
+
+all:	revnetgroup-rust
+
+clean:	clean-rust

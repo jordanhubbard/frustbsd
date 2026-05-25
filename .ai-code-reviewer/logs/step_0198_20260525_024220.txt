@@ -1,0 +1,14 @@
+=== STEP 198 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+
+--- RESPONSE ---
+
+
+Let me try other bin/ units:
+
+ACTION: SET_SCOPE bin/chio

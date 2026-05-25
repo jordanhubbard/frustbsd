@@ -1,0 +1,53 @@
+=== STEP 147 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/libexec/revnetgroup/Makefile:
+PROGRESS:
+📁 Directory: libexec/revnetgroup
+   Files: 0/6
+📄 File: libexec/revnetgroup/Makefile
+✏️  Edits: 3 files modified
+
+```
+PROG=	revnetgroup
+SRCS=	revnetgroup.c hash.c parse_netgroup.c
+
+MAN= revnetgroup.8
+
+WARNS?=	2
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+The Makefile was overwritten. Let me restore it with proper Rust build integration:
+
+ACTION: WRITE_FILE libexec/revnetgroup/Makefile
+CONTENT:
+PROG=	revnetgroup
+SRCS=	revnetgroup.c hash.c parse_netgroup.c
+
+MAN= revnetgroup.8
+
+WARNS?=	2
+
+# Rust replacement build
+CARGO?=	cargo
+RUST_CRATE=	${.CURDIR}/rust
+RUST_TARGET=	${.OBJDIR}/rust-target
+
+all:	revnetgroup revnetgroup-rust
+
+revnetgroup-rust:
+	${CARGO} build --release --manifest-path ${RUST_CRATE}/Cargo.toml \
+	    --target-dir ${RUST_TARGET}
+
+clean:	clean-rust
+
+clean-rust:
+	${RM} -rf ${RUST_TARGET}
+
+.include <bsd.prog.mk>

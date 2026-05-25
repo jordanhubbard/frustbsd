@@ -1,0 +1,9 @@
+=== STEP 194 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'bin/*'
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE bin/*/

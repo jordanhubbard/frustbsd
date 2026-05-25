@@ -1,0 +1,20 @@
+=== STEP 37 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/true:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+src
+true.1
+true.c
+```
+
+--- RESPONSE ---
+
+
+Let me find a simple command without Rust yet.
+
+ACTION: LIST_DIR usr.bin/false

@@ -1,0 +1,20 @@
+=== STEP 20 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE bin/kill/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "kill"
+version = "0.0.1"
+edition = "2021"
+
+[[bin]]
+name = "kill"
+path = "src/main.rs"
+<<<

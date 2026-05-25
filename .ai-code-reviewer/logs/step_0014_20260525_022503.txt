@@ -1,0 +1,11 @@
+=== STEP 14 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'CARGO'
+
+--- RESPONSE ---
+
+
+Let me find a simple command that doesn't already have Rust infrastructure.
+
+ACTION: FIND_FILE bin/*/Cargo.toml

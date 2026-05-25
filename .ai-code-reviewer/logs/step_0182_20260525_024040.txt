@@ -1,0 +1,17 @@
+=== STEP 182 ===
+
+--- REQUEST ---
+TIMEOUT: You have spent too many iterations on libexec/revnetgroup. This directory is being skipped.
+
+SCOPE_ABANDONED: libexec/revnetgroup was marked skipped.
+
+Reason: Exceeded 120 iterations without completing the scope
+Any tracked edits were reverted and untracked files created under the scope were removed.
+NEXT: Use SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+
+--- RESPONSE ---
+
+
+The `libexec/revnetgroup` scope was abandoned due to iteration timeout. Let me move to the next work unit.
+
+ACTION: SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes

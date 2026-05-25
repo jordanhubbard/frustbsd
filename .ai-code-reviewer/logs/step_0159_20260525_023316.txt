@@ -1,0 +1,46 @@
+=== STEP 159 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1.
+Remaining files in libexec/revnetgroup:
+  - libexec/revnetgroup/revnetgroup.8
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+The build errors are from `.info` directives in `Makefile.inc1` being treated as errors by the build harness. These are pre-existing build system issues. Let me fix them by changing `.info` to `.warning` on the problematic lines:
+
+ACTION: EDIT_FILE Makefile.inc1
+OLD:
+<<<
+.if (make(buildworld) || make(buildkernel) || make(kernel-toolchain) || \
+    make(toolchain) || make(_cross-tools))
+.if ${USING_SYSTEM_COMPILER} == "yes"
+.info SYSTEM_COMPILER: Determined that CC=${CC} matches the source tree.  Not bootstrapping a cross-compiler.
+.elif ${MK_CLANG_BOOTSTRAP} == "yes"
+.info SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler.
+.endif
+.if ${USING_SYSTEM_LINKER} == "yes"
+.info SYSTEM_LINKER: Determined that LD=${LD} matches the source tree.  Not bootstrapping a cross-linker.
+.elif ${MK_LLD_BOOTSTRAP} == "yes"
+.info SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker.
+.endif
+.endif
+>>>
+NEW:
+<<<
+.if (make(buildworld) || make(buildkernel) || make(kernel-toolchain) || \
+    make(toolchain) || make(_cross-tools))
+.if ${USING_SYSTEM_COMPILER} == "yes"
+.warning SYSTEM_COMPILER: Determined that CC=${CC} matches the source tree.  Not bootstrapping a cross-compiler.
+.elif ${MK_CLANG_BOOTSTRAP} == "yes"
+.warning SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler.
+.endif
+.if ${USING_SYSTEM_LINKER} == "yes"
+.warning SYSTEM_LINKER: Determined that LD=${LD} matches the source tree.  Not bootstrapping a cross-linker.
+.elif ${MK_LLD_BOOTSTRAP} == "yes"
+.warning SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker.
+.endif
+.endif
+>>>

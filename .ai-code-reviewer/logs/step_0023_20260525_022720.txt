@@ -1,0 +1,162 @@
+=== STEP 23 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/kill/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now I need to create the Rust source file. Let me write the main.rs implementation.
+
+ACTION: WRITE_FILE bin/kill/src/main.rs
+CONTENT:
+use std::env;
+use std::io::{self, Write};
+use std::process;
+use std::str::FromStr;
+
+extern "C" {
+    fn kill(pid: i32, sig: i32) -> i32;
+    fn sys_nsig() -> i32;
+    static sys_signame: [*const u8; 64];
+}
+
+fn main() {
+    let args: Vec<String> = env::args().skip(1).collect();
+
+    if args.is_empty() {
+        usage();
+    }
+
+    let mut numsig: i32 = 15; // SIGTERM
+    let mut args = args.as_slice();
+
+    if !args.is_empty() && args[0] == "-l" {
+        args = &args[1..];
+        if args.len() > 1 {
+            usage();
+        }
+        if args.len() == 1 {
+            if !args[0].chars().next().unwrap().is_ascii_digit() {
+                usage();
+            }
+            let numsig_val = match i32::from_str(&args[0]) {
+                Ok(v) => v,
+                Err(_) => {
+                    eprintln!("kill: invalid signal number: {}", args[0]);
+                    process::exit(2);
+                }
+            };
+            let adjusted = if numsig_val >= 128 { numsig_val - 128 } else { numsig_val };
+            let name = unsafe {
+                if adjusted >= 0 && adjusted < 64 {
+                    std::ffi::CStr::from_ptr(sys_signame[adjusted as usize])
+                } else {
+                    nosig(&args[0]);
+                    return;
+                }
+            };
+            println!("{}", name.to_string_lossy());
+            process::exit(0);
+        }
+        print_signals(&mut io::stdout().lock());
+        process::exit(0);
+    }
+
+    if !args.is_empty() && args[0] == "-s" {
+        args = &args[1..];
+        if args.is_empty() {
+            eprintln!("kill: option requires an argument -- s");
+            usage();
+        }
+        if args[0] == "0" {
+            numsig = 0;
+        } else {
+            numsig = parse_signal_name(&args[0]);
+        }
+        args = &args[1..];
+    } else if !args.is_empty() && args[0].starts_with('-') && !args[0].starts_with("--") {
+        let sig_str = &args[0][1..];
+        if sig_str == "0" {
+            numsig = 0;
+        } else {
+            numsig = parse_signal_name(sig_str);
+        }
+        args = &args[1..];
+    }
+
+    if !args.is_empty() && args[0].starts_with("--") {
+        args = &args[1..];
+    }
+
+    if args.is_empty() {
+        usage();
+    }
+
+    let mut errors = false;
+    for arg in args {
+        let pid = match i32::from_str(arg) {
+            Ok(p) => p,
+            Err(_) => {
+                eprintln!("kill: illegal process id: {}", arg);
+                process::exit(2);
+            }
+        };
+        let ret = unsafe { kill(pid, numsig) };
+        if ret == -1 {
+            eprintln!("kill: {}: Unknown error", arg);
+            errors = true;
+        }
+    }
+
+    if errors {
+        process::exit(1);
+    }
+}
+
+fn parse_signal_name(name: &str) -> i32 {
+    unsafe {
+        let nsig = sys_nsig();
+        for i in 1..nsig {
+            let sig_name = std::ffi::CStr::from_ptr(sys_signame[i as usize]);
+            if sig_name.to_string_lossy() == name {
+                return i;
+            }
+        }
+    }
+    nosig(name);
+    0
+}
+
+fn nosig(name: &str) {
+    eprintln!("kill: unknown signal {}; valid signals:", name);
+    print_signals(&mut io::stderr().lock());
+    process::exit(2);
+}
+
+fn print_signals<W: Write>(fp: &mut W) {
+    unsafe {
+        let nsig = sys_nsig();
+        for n in 1..nsig {
+            let name = std::ffi::CStr::from_ptr(sys_signame[n as usize]);
+            let _ = write!(fp, "{}", name.to_string_lossy());
+            if n == (nsig / 2) || n == (nsig - 1) {
+                let _ = writeln!(fp);
+            } else {
+                let _ = write!(fp, " ");
+            }
+        }
+    }
+}
+
+fn usage() {
+    let _ = writeln!(
+        io::stderr(),
+        "usage: kill [-s signal_name] pid ...\n\
+         kill -l [exit_status]\n\
+         kill -signal_name pid ...\n\
+         kill -signal_number pid ..."
+    );
+    process::exit(2);
+}

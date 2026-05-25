@@ -1,0 +1,13 @@
+=== STEP 188 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat/tests has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+
+--- RESPONSE ---
+
+
+The dtrace test directories are test helpers without Makefiles, not standalone commands. Let me find a better unit with actual buildable C source:
+
+ACTION: SET_SCOPE bin/cat

@@ -1,0 +1,12 @@
+=== STEP 179 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1.
+Remaining files in libexec/revnetgroup:
+  - libexec/revnetgroup/revnetgroup.8
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

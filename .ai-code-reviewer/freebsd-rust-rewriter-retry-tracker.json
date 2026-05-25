@@ -116,8 +116,12 @@
     "last_attempt": "2026-05-24T22:42:21.132011"
   },
   "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes": {
+    "attempts": 2,
+    "last_attempt": "2026-05-25T02:40:44.332821"
+  },
+  "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sdt": {
     "attempts": 1,
-    "last_attempt": "2026-05-25T01:22:56.681289"
+    "last_attempt": "2026-05-25T02:41:19.637451"
   },
   "contrib/libcbor/examples/bazel/src": {
     "attempts": 2,
@@ -280,8 +284,8 @@
     "last_attempt": "2026-05-24T21:44:38.599133"
   },
   "libexec/revnetgroup": {
-    "attempts": 1,
-    "last_attempt": "2026-05-25T01:42:07.491829"
+    "attempts": 2,
+    "last_attempt": "2026-05-25T01:54:43.152171"
   },
   "libexec/ypxfr": {
     "attempts": 1,
@@ -376,8 +380,8 @@
     "last_attempt": "2026-05-23T15:42:22.227998"
   },
   "usr.bin/bintrans": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T22:22:49.783111"
+    "attempts": 2,
+    "last_attempt": "2026-05-25T02:43:09.382535"
   },
   "usr.bin/bluetooth/bthost": {
     "attempts": 3,
@@ -520,8 +524,8 @@
     "last_attempt": "2026-05-25T00:51:58.500606"
   },
   "usr.bin/join": {
-    "attempts": 3,
-    "last_attempt": "2026-05-25T01:55:25.142072"
+    "attempts": 1,
+    "last_attempt": "2026-05-24T13:12:22.998342"
   },
   "usr.bin/jot": {
     "attempts": 1,

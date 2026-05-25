@@ -1,0 +1,9 @@
+=== STEP 15 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'bin/*/Cargo.toml'
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR bin/kill
