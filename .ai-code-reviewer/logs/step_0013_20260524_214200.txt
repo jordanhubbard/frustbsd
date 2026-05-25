@@ -1,0 +1,14 @@
+=== STEP 13 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cp is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/VE/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me try more bin/ directories to find a pending one.
+
+ACTION: SET_SCOPE bin/csh

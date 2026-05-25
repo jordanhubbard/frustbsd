@@ -1,0 +1,14 @@
+=== STEP 25 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/tty is already marked complete.
+
+Completed work units are closed after a successful build and commit; do not reopen the same unit for incremental polish.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/VE/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me try more usr.bin/ units to find a pending one.
+
+ACTION: SET_SCOPE usr.bin/unvis

@@ -1,0 +1,12 @@
+=== STEP 63 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory contrib/llvm-project/llvm/lib/Target/VE/TargetInfo skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/llvm-project/llvm/lib/Target/Xtensa/TargetInfo
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/renice

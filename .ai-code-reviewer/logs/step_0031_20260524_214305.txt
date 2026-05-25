@@ -1,0 +1,120 @@
+=== STEP 31 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/libexec/atrun/atrun.c:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/libexec/atrun/atrun.c
+   Total chunks: 11
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: libexec/atrun
+   Files: 0/4
+📄 File: libexec/atrun/atrun.c
+   Chunks: 1/11
+
+```
+=== CHUNK 1/11: /usr/home/jkh/Src/freebsd-src-on-angry-AI/libexec/atrun/atrun.c === [header: file_header]
+=== Lines 1-91 (91 lines) ===
+
+/*-
+ *  atrun.c - run jobs queued by at; run with root privileges.
+ *
+ * SPDX-License-Identifier: BSD-2-Clause
+ *
+ *  Copyright (C) 1993, 1994 Thomas Koenig
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. The name of the author(s) may not be used to endorse or promote
+ *    products derived from this software without specific prior written
+ *    permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR(S) ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/* System Headers */
+
+#include <sys/fcntl.h>
+#include <sys/file.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#ifdef __FreeBSD__
+#include <sys/sysctl.h>
+#endif
+#include <sys/wait.h>
+#include <sys/param.h>
+#include <ctype.h>
+#include <dirent.h>
+#include <err.h>
+#include <grp.h>
+#include <pwd.h>
+#include <signal.h>
+#include <stdarg.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <syslog.h>
+#include <time.h>
+#include <unistd.h>
+#ifdef __FreeBSD__
+#include <paths.h>
+#else
+#include <getopt.h>
+#endif
+#ifdef LOGIN_CAP
+#include <login_cap.h>
+#endif
+#ifdef PAM
+#include <security/pam_appl.h>
+#include <security/openpam.h>
+#endif
+
+/* Local headers */
+
+#include "gloadavg.h"
+#define MAIN
+#include "privs.h"
+
+/* Macros */
+
+#ifndef ATJOB_DIR
+#define ATJOB_DIR "/usr/spool/atjobs/"
+#endif
+
+#ifndef ATSPOOL_DIR
+#define ATSPOOL_DIR "/usr/spool/atspool/"
+#endif
+
+#ifndef LOADAVG_MX
+#define LOADAVG_MX 1.5
+#endif
+
+/* File scope variables */
+
+static const char * const atrun = "atrun"; /* service name for syslog etc. */
+static int debug = 0;
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

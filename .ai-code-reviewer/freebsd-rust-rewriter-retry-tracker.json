@@ -183,6 +183,10 @@
     "attempts": 1,
     "last_attempt": "2026-05-24T21:00:04.532730"
   },
+  "contrib/llvm-project/llvm/lib/Target/Xtensa/TargetInfo": {
+    "attempts": 2,
+    "last_attempt": "2026-05-24T21:40:05.924950"
+  },
   "contrib/llvm-project/llvm/lib/Telemetry": {
     "attempts": 3,
     "last_attempt": "2026-05-24T15:46:59.847502"
@@ -242,6 +246,18 @@
   "lib/liby": {
     "attempts": 1,
     "last_attempt": "2026-05-24T00:31:26.880417"
+  },
+  "libexec/atrun": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T21:42:59.823401"
+  },
+  "libexec/getty": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T21:44:38.599133"
+  },
+  "libexec/ypxfr": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T21:44:49.304915"
   },
   "sbin/md5": {
     "attempts": 1,
@@ -495,6 +511,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-22T20:48:16.361435"
   },
+  "usr.bin/m4": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T21:45:13.733184"
+  },
   "usr.bin/mesg": {
     "attempts": 1,
     "last_attempt": "2026-05-22T02:55:02.145593"
@@ -502,6 +522,10 @@
   "usr.bin/mkfifo": {
     "attempts": 1,
     "last_attempt": "2026-05-22T02:36:41.175781"
+  },
+  "usr.bin/mkimg": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T21:44:03.845727"
   },
   "usr.bin/mkstr": {
     "attempts": 3,

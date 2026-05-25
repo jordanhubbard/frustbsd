@@ -1,0 +1,25 @@
+=== STEP 19 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: contrib/llvm-project/llvm/lib/Target/Xtensa/TargetInfo
+   Files: 0/2
+📄 File: bin/chio/chio.c
+   Chunks: 3/42
+
+```
+=== CHUNK 3/42: /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/chio/chio.c === [function: cleanup]
+=== Lines 56-56 (1 lines) ===
+
+static	void cleanup(void);
+
+```
+
+--- RESPONSE ---
+
+
+`bin/chio` is 42 chunks — too large for a small first unit. Let me find a simpler command.
+
+ACTION: SKIP_FILE

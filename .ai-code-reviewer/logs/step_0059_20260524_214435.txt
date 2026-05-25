@@ -1,0 +1,13 @@
+=== STEP 59 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: libexec/rc has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/VE/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me try some other libexec/ units that might be simpler.
+
+ACTION: SET_SCOPE libexec/getty

@@ -1,0 +1,13 @@
+=== STEP 67 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/lorder has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/VE/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me try some less common usr.bin/ units.
+
+ACTION: SET_SCOPE usr.bin/lsvfs

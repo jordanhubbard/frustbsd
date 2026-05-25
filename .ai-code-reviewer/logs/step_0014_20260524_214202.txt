@@ -1,0 +1,14 @@
+=== STEP 14 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/csh is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/VE/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me try more bin/ directories.
+
+ACTION: SET_SCOPE bin/date

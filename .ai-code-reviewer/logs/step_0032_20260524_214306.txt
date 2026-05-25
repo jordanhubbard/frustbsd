@@ -1,0 +1,23 @@
+=== STEP 32 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: libexec/atrun
+   Files: 0/4
+📄 File: libexec/atrun/atrun.c
+   Chunks: 2/11
+
+```
+=== CHUNK 2/11: /usr/home/jkh/Src/freebsd-src-on-angry-AI/libexec/atrun/atrun.c === [function: perr]
+=== Lines 92-92 (1 lines) ===
+
+void perr(const char *fmt, ...);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK
