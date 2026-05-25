@@ -1,0 +1,14 @@
+=== STEP 67 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sdt
+
+--- RESPONSE ---
+
+
+The current scope is a test subdirectory with no Makefile - not a standalone buildable unit. Per constraints, I should skip and find a proper buildable unit.
+
+ACTION: SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sdt

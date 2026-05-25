@@ -1,0 +1,300 @@
+=== STEP 40 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/time/src/main.rs:
+PROGRESS:
+📁 Directory: usr.bin/time
+   Files: 0/3
+📄 File: usr.bin/time/src/main.rs
+
+```
+mod ffi;
+
+use std::ffi::CString;
+use std::io::{self, Write};
+use std::os::raw::{c_int, c_long, c_uint};
+use std::process;
+
+static mut SIGINFO_RECVD: i32 = 0;
+static mut DECIMAL_POINT: u8 = b'.';
+
+fn main() {
+    unsafe {
+        let loc = libc::localeconv();
+        if !(*loc).decimal_point.is_null() {
+            DECIMAL_POINT = *(*loc).decimal_point;
+        }
+    }
+
+    let args: Vec<String> = std::env::args().collect();
+    let mut aflag = false;
+    let mut hflag = false;
+    let mut lflag = false;
+    let mut pflag = false;
+    let mut ofn: Option<String> = None;
+    let mut cmd_args: Vec<String> = Vec::new();
+
+    let mut i = 1;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-a" => aflag = true,
+            "-h" => hflag = true,
+            "-l" => lflag = true,
+            "-p" => pflag = true,
+            "-o" => {
+                i += 1;
+                if i >= args.len() {
+                    eprintln!("usage: time [-al] [-h | -p] [-o file] utility [argument ...]");
+                    process::exit(1);
+                }
+                ofn = Some(args[i].clone());
+            }
+            _ => {
+                cmd_args = args[i..].to_vec();
+                break;
+            }
+        }
+        i += 1;
+    }
+
+    if cmd_args.is_empty() {
+        process::exit(0);
+    }
+
+    let mut out: Box<dyn Write> = if let Some(ref path) = ofn {
+        let mode = if aflag { "a" } else { "w" };
+        match std::fs::OpenOptions::new()
+            .create(true)
+            .write(true)
+            .append(aflag)
+            .truncate(!aflag)
+            .open(path)
+        {
+            Ok(f) => Box::new(f),
+            Err(e) => {
+                eprintln!("{}: {}", path, e);
+                process::exit(1);
+            }
+        }
+    } else {
+        Box::new(io::stderr())
+    };
+
+    let before_ts = match clock_gettime(ffi::CLOCK_MONOTONIC) {
+        Ok(t) => t,
+        Err(e) => {
+            eprintln!("clock_gettime: {}", e);
+            process::exit(1);
+        }
+    };
+
+    let child = match unsafe { fork() } {
+        Err(e) => {
+            eprintln!("time: {}", e);
+            process::exit(1);
+        }
+        Ok(0) => {
+            // child
+            let cmd = &cmd_args[0];
+            let argv: Vec<CString> = cmd_args.iter().map(|s| CString::new(s.clone()).unwrap()).collect();
+            let env: Vec<CString> = std::env::vars().map(|(k,v)| CString::new(format!("{}={}",k,v)).unwrap()).collect();
+            unsafe {
+                libc::execvp(cmd.as_ptr(), argv.as_ptr() as *const *const i8);
+            }
+            let errno = std::io::Error::last_os_error().raw_os_error().unwrap_or(126);
+            if errno == libc::ENOENT {
+                eprintln!("time: {}: No such file or directory", cmd);
+                process::exit(127);
+            } else {
+                eprintln!("time: {}: {}", cmd, std::io::Error::from_raw_os_error(errno));
+                process::exit(126);
+            }
+        }
+        Ok(pid) => pid,
+    };
+
+    // parent
+    unsafe {
+        libc::signal(ffi::SIGINT, ffi::SIG_IGN as _);
+        libc::signal(ffi::SIGQUIT, ffi::SIG_IGN as _);
+        SIGINFO_RECVD = 0;
+        libc::signal(ffi::SIGINFO, Some(siginfo_handler));
+        libc::siginterrupt(ffi::SIGINFO, 1);
+    }
+
+    let mut status: c_int = 0;
+    let mut ru: libc::rusage = unsafe { std::mem::zeroed() };
+    loop {
+        let ret = unsafe { libc::wait4(child as _, &mut status, 0, &mut ru) };
+        if ret == child as _ {
+            break;
+        }
+        if unsafe { SIGINFO_RECVD != 0 } {
+            unsafe { SIGINFO_RECVD = 0; }
+            let after = match clock_gettime(ffi::CLOCK_MONOTONIC) {
+                Ok(t) => t,
+                Err(_) => process::exit(1),
+            };
+            let mut ru_now: libc::rusage = unsafe { std::mem::zeroed() };
+            unsafe { libc::getrusage(libc::RUSAGE_CHILDREN, &mut ru_now); }
+            showtime(&mut io::stdout(), &before_ts, &after, &ru_now, false, false, false);
+        }
+    }
+
+    let after = match clock_gettime(ffi::CLOCK_MONOTONIC) {
+        Ok(t) => t,
+        Err(e) => {
+            eprintln!("clock_gettime: {}", e);
+            process::exit(1);
+        }
+    };
+
+    let wifsignaled = unsafe { libc::WIFSIGNALED(status) != 0 };
+    let wifexited = unsafe { libc::WIFEXITED(status) != 0 };
+    let wtermsig = if wifsignaled { unsafe { libc::WTERMSIG(status) } } else { 0 };
+    let wexitstatus = if wifexited { unsafe { libc::WEXITSTATUS(status) } } else { 1 };
+
+    if !wifexited {
+        writeln!(out, "command terminated abnormally").ok();
+    }
+
+    showtime(&mut out, &before_ts, &after, &ru, hflag, pflag, lflag);
+
+    if lflag {
+        let hz = match getstathz() {
+            Ok(h) => h,
+            Err(_) => 100,
+        };
+        let ticks = hz as i64 * (ru.ru_utime.tv_sec + ru.ru_stime.tv_sec) as i64
+            + hz as i64 * (ru.ru_utime.tv_usec + ru.ru_stime.tv_usec) as i64 / 1000000;
+        let ticks = if ticks == 0 { 1 } else { ticks };
+
+        writeln!(out, "{:>10}  maximum resident set size", ru.ru_maxrss).ok();
+        writeln!(out, "{:>10}  average shared memory size", ru.ru_ixrss / ticks as i64).ok();
+        writeln!(out, "{:>10}  average unshared data size", ru.ru_idrss / ticks as i64).ok();
+        writeln!(out, "{:>10}  average unshared stack size", ru.ru_isrss / ticks as i64).ok();
+        writeln!(out, "{:>10}  page reclaims", ru.ru_minflt).ok();
+        writeln!(out, "{:>10}  page faults", ru.ru_majflt).ok();
+        writeln!(out, "{:>10}  swaps", ru.ru_nswap).ok();
+        writeln!(out, "{:>10}  block input operations", ru.ru_inblock).ok();
+        writeln!(out, "{:>10}  block output operations", ru.ru_oublock).ok();
+        writeln!(out, "{:>10}  messages sent", ru.ru_msgsnd).ok();
+        writeln!(out, "{:>10}  messages received", ru.ru_msgrcv).ok();
+        writeln!(out, "{:>10}  signals received", ru.ru_nsignals).ok();
+        writeln!(out, "{:>10}  voluntary context switches", ru.ru_nvcsw).ok();
+        writeln!(out, "{:>10}  involuntary context switches", ru.ru_nivcsw).ok();
+    }
+
+    if wifsignaled && wtermsig != 0 {
+        unsafe {
+            libc::signal(wtermsig, ffi::SIG_DFL as _);
+            let mut rl: libc::rlimit = std::mem::zeroed();
+            libc::setrlimit(libc::RLIMIT_CORE, &rl);
+            libc::kill(libc::getpid(), wtermsig);
+        }
+    }
+
+    process::exit(if wifexited { wexitstatus } else { 1 });
+}
+
+extern "C" fn siginfo_handler(_sig: c_int) {
+    unsafe {
+        SIGINFO_RECVD = 1;
+    }
+}
+
+fn clock_gettime(id: c_int) -> Result<libc::timespec, std::io::Error> {
+    let mut ts: libc::timespec = unsafe { std::mem::zeroed() };
+    let ret = unsafe { libc::clock_gettime(id, &mut ts) };
+    if ret != 0 {
+        Err(std::io::Error::last_os_error())
+    } else {
+        Ok(ts)
+    }
+}
+
+fn getstathz() -> Result<i32, std::io::Error> {
+    let mib = [ffi::CTL_KERN, ffi::KERN_CLOCKRATE];
+    let mut clockrate: libc::clockinfo = unsafe { std::mem::zeroed() };
+    let mut size: usize = std::mem::size_of::<libc::clockinfo>();
+    let ret = unsafe {
+        libc::sysctl(
+            mib.as_ptr(),
+            2,
+            &mut clockrate as *mut _ as *mut _,
+            &mut size,
+            std::ptr::null(),
+            0,
+        )
+    };
+    if ret == -1 {
+        Err(std::io::Error::last_os_error())
+    } else {
+        Ok(clockrate.stathz)
+    }
+}
+
+fn showtime(out: &mut dyn Write, before: &libc::timespec, after: &libc::timespec,
+    ru: &libc::rusage, hflag: bool, pflag: bool, lflag: bool) {
+    let mut elapsed = *after;
+    elapsed.tv_sec -= before.tv_sec;
+    elapsed.tv_nsec -= before.tv_nsec;
+    if elapsed.tv_nsec < 0 {
+        elapsed.tv_sec -= 1;
+        elapsed.tv_nsec += 1_000_000_000;
+    }
+
+    let dp = unsafe { DECIMAL_POINT as char };
+
+    if pflag {
+        writeln!(out, "real {}{}{:02}", elapsed.tv_sec, dp, elapsed.tv_nsec / 10_000_000).ok();
+        writeln!(out, "user {}{}{:02}", ru.ru_utime.tv_sec, dp, ru.ru_utime.tv_usec / 10_000).ok();
+        writeln!(out, "sys {}{}{:02}", ru.ru_stime.tv_sec, dp, ru.ru_stime.tv_usec / 10_000).ok();
+    } else if hflag {
+        humantime(out, elapsed.tv_sec, elapsed.tv_nsec / 10_000_000);
+        write!(out, " real\t").ok();
+        humantime(out, ru.ru_utime.tv_sec, ru.ru_utime.tv_usec / 10_000);
+        write!(out, " user\t").ok();
+        humantime(out, ru.ru_stime.tv_sec, ru.ru_stime.tv_usec / 10_000);
+        writeln!(out, " sys").ok();
+    } else {
+        write!(out, "{:>9}{}{:02} real ", elapsed.tv_sec, dp, elapsed.tv_nsec / 10_000_000).ok();
+        write!(out, "{:>9}{}{:02} user ", ru.ru_utime.tv_sec, dp, ru.ru_utime.tv_usec / 10_000).ok();
+        writeln!(out, "{:>9}{}{:02} sys", ru.ru_stime.tv_sec, dp, ru.ru_stime.tv_usec / 10_000).ok();
+    }
+    let _ = lflag;
+}
+
+fn humantime(out: &mut dyn Write, sec: i64, centisec: i64) {
+    let dp = unsafe { DECIMAL_POINT as char };
+    let mut s = sec;
+    let days = s / (60 * 60 * 24);
+    s %= 60 * 60 * 24;
+    let hrs = s / (60 * 60);
+    s %= 60 * 60;
+    let mins = s / 60;
+    s %= 60;
+
+    write!(out, "\t").ok();
+    if days != 0 { write!(out, "{}d", days).ok(); }
+    if hrs != 0 { write!(out, "{}h", hrs).ok(); }
+    if mins != 0 { write!(out, "{}m", mins).ok(); }
+    write!(out, "{}{}{:02}s", s, dp, centisec).ok();
+}
+
+unsafe fn fork() -> Result<i32, std::io::Error> {
+    let pid = libc::fork();
+    if pid == -1 {
+        Err(std::io::Error::last_os_error())
+    } else {
+        Ok(pid)
+    }
+}
+```
+
+--- RESPONSE ---
+
+
+Let me check the ffi.rs file and understand the build integration needed.
+
+ACTION: READ_FILE usr.bin/time/src/ffi.rs

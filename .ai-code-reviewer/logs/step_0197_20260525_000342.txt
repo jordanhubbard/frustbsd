@@ -1,0 +1,14 @@
+=== STEP 197 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/mkfifo is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo
+
+--- RESPONSE ---
+
+
+The scope is already set to `usr.bin/sort`. This is a complex unit but I need to work on it. Let me read the remaining key files to understand the full behavior.
+
+ACTION: READ_FILE usr.bin/sort/file.c

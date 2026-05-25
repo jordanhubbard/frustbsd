@@ -1,0 +1,138 @@
+=== STEP 198 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/sort/file.c:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/sort/file.c
+   Total chunks: 49
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: usr.bin/sort
+   Files: 0/15
+📄 File: usr.bin/sort/file.c
+   Chunks: 1/49
+
+```
+=== CHUNK 1/49: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/sort/file.c === [header: file_header]
+=== Lines 1-109 (109 lines) ===
+
+/*-
+ * SPDX-License-Identifier: BSD-2-Clause
+ *
+ * Copyright (C) 2009 Gabor Kovesdan <gabor@FreeBSD.org>
+ * Copyright (C) 2012 Oleg Moskalenko <mom040267@gmail.com>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+#include <sys/cdefs.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/queue.h>
+
+#include <err.h>
+#include <fcntl.h>
+#if defined(SORT_THREADS)
+#include <pthread.h>
+#endif
+#include <semaphore.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <wchar.h>
+#include <wctype.h>
+
+#include "coll.h"
+#include "file.h"
+#include "radixsort.h"
+
+unsigned long long free_memory = 1000000;
+unsigned long long available_free_memory = 1000000;
+
+bool use_mmap;
+
+const char *tmpdir = "/var/tmp";
+const char *compress_program;
+
+size_t max_open_files = 16;
+
+/*
+ * File reader structure
+ */
+struct file_reader
+{
+	FILE			*file;
+	char			*fname;
+	char			*buffer;
+	unsigned char		*mmapaddr;
+	unsigned char		*mmapptr;
+	size_t			 bsz;
+	size_t			 mmapsize;
+	int			 fd;
+	char			 elsymb;
+};
+
+/*
+ * Structure to be used in file merge process.
+ */
+struct file_header
+{
+	struct file_reader		*fr;
+	struct sort_list_item		*si; /* current top line */
+	size_t				 file_pos;
+};
+
+/*
+ * List elements of "cleanable" files list.
+ */
+struct CLEANABLE_FILE
+{
+	char				*fn;
+	LIST_ENTRY(CLEANABLE_FILE)	 files;
+};
+
+/*
+ * List header of "cleanable" files list.
+ */
+static LIST_HEAD(CLEANABLE_FILES,CLEANABLE_FILE) tmp_files;
+
+/*
+ * Semaphore to protect the tmp file list.
+ * We use semaphore here because it is signal-safe, according to POSIX.
+ * And semaphore does not require pthread library.
+ */
+static sem_t tmp_files_sem;
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SKIP_FILE

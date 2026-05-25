@@ -1,0 +1,23 @@
+=== STEP 6 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/echo:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+cargo-target
+echo
+echo.1
+echo.c
+src
+tests
+```
+
+--- RESPONSE ---
+
+
+`bin/echo` already has Rust files. Let me find a unit that hasn't been rewritten yet.
+
+ACTION: LIST_DIR bin/sleep

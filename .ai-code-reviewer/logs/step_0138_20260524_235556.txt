@@ -1,0 +1,12 @@
+=== STEP 138 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: cddl/contrib/opensolaris/cmd/dtrace/test/tst/amd64/arrays is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/M68k/TargetInfo
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/llvm-project/llvm/lib/Target/M68k/TargetInfo

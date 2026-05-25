@@ -1,0 +1,36 @@
+=== STEP 119 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/time/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/time
+   Files: 0/3
+📄 File: usr.bin/time/Makefile
+
+```
+PROG=	time
+
+RUSTPROG=	time
+RUSTSRC=	src/main.rs src/ffi.rs
+
+time-rust:
+	@${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${.OBJDIR}/cargo-target --release
+	@cp ${.OBJDIR}/cargo-target/release/time ${.OBJDIR}/time-rust
+
+CLEANFILES+=	time-rust
+
+.if defined(RUST_BUILD)
+PROG=	time-rust
+SRCS=
+.PATH.src=
+all: time-rust
+.endif
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/time

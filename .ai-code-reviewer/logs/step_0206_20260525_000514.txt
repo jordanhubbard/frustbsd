@@ -1,0 +1,100 @@
+=== STEP 206 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/posixmqcontrol/posixmqcontrol.c:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/posixmqcontrol/posixmqcontrol.c
+   Total chunks: 25
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: usr.bin/posixmqcontrol
+   Files: 0/6
+📄 File: usr.bin/posixmqcontrol/posixmqcontrol.c
+   Chunks: 1/25
+
+```
+=== CHUNK 1/25: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/posixmqcontrol/posixmqcontrol.c === [header: file_header]
+=== Lines 1-71 (71 lines) ===
+
+/*-
+ * SPDX-License-Identifier: BSD-2-Clause
+ *
+ * Copyright (c) 2024 Rick Parrish <unitrunker@unitrunker.net>.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *	notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *	notice, this list of conditions and the following disclaimer in the
+ *	documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+#include <sys/queue.h>
+#include <sys/stat.h>
+#include <err.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <grp.h>
+#include <limits.h>
+#include <mqueue.h>
+#include <pwd.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sysexits.h>
+#include <unistd.h>
+
+struct Creation {
+	/* true if the queue exists. */
+	bool exists;
+	/* true if a mode value was specified. */
+	bool set_mode;
+	/* access mode with rwx permission bits. */
+	mode_t mode;
+	/* maximum queue depth. default to an invalid depth. */
+	long depth;
+	/* maximum message size. default to an invalid size. */
+	long size;
+	/* true for blocking I/O and false for non-blocking I/O. */
+	bool block;
+	/* true if a group ID was specified. */
+	bool set_group;
+	/* group ID. */
+	gid_t group;
+	/* true if a user ID was specified. */
+	bool set_user;
+	/* user ID. */
+	uid_t user;
+};
+
+struct element {
+	STAILQ_ENTRY(element) links;
+	const char *text;
+};
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

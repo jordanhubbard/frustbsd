@@ -187,10 +187,6 @@
     "attempts": 3,
     "last_attempt": "2026-05-24T20:56:42.109153"
   },
-  "contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T23:21:17.700456"
-  },
   "contrib/llvm-project/llvm/lib/Target/VE/TargetInfo": {
     "attempts": 3,
     "last_attempt": "2026-05-24T21:37:29.427066"
@@ -268,8 +264,8 @@
     "last_attempt": "2026-05-24T00:31:26.880417"
   },
   "libexec/atrun": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T22:53:28.180895"
+    "attempts": 1,
+    "last_attempt": "2026-05-24T21:42:59.823401"
   },
   "libexec/getty": {
     "attempts": 1,
@@ -391,14 +387,6 @@
     "attempts": 1,
     "last_attempt": "2026-05-21T23:26:14.041313"
   },
-  "usr.bin/clang/clang": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T23:22:38.292546"
-  },
-  "usr.bin/clang/clang-scan-deps": {
-    "attempts": 3,
-    "last_attempt": "2026-05-24T23:22:02.179184"
-  },
   "usr.bin/clang/llvm-dwp": {
     "attempts": 3,
     "last_attempt": "2026-05-24T13:06:51.569115"
@@ -461,7 +449,7 @@
   },
   "usr.bin/elfdump": {
     "attempts": 2,
-    "last_attempt": "2026-05-24T22:55:56.249960"
+    "last_attempt": "2026-05-25T00:14:59.785278"
   },
   "usr.bin/enigma": {
     "attempts": 3,
@@ -512,8 +500,8 @@
     "last_attempt": "2026-05-24T20:38:30.539520"
   },
   "usr.bin/join": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T22:56:16.208487"
+    "attempts": 1,
+    "last_attempt": "2026-05-24T13:12:22.998342"
   },
   "usr.bin/jot": {
     "attempts": 1,
@@ -568,8 +556,8 @@
     "last_attempt": "2026-05-22T02:36:41.175781"
   },
   "usr.bin/mkimg": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T21:44:03.845727"
+    "attempts": 2,
+    "last_attempt": "2026-05-25T00:17:12.844360"
   },
   "usr.bin/mkstr": {
     "attempts": 3,
@@ -592,12 +580,12 @@
     "last_attempt": "2026-05-24T21:50:43.044942"
   },
   "usr.bin/mt": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T22:40:32.050090"
+    "attempts": 3,
+    "last_attempt": "2026-05-25T00:06:18.936553"
   },
   "usr.bin/ncal": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T18:19:23.385284"
+    "attempts": 3,
+    "last_attempt": "2026-05-25T00:08:22.074214"
   },
   "usr.bin/nice": {
     "attempts": 3,
@@ -620,20 +608,20 @@
     "last_attempt": "2026-05-22T20:52:37.876664"
   },
   "usr.bin/posixmqcontrol": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T20:31:37.357488"
+    "attempts": 3,
+    "last_attempt": "2026-05-25T00:05:09.327430"
   },
   "usr.bin/posixshmcontrol": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T20:32:01.291901"
+    "attempts": 3,
+    "last_attempt": "2026-05-25T00:05:20.251964"
   },
   "usr.bin/pr": {
     "attempts": 3,
     "last_attempt": "2026-05-24T19:34:25.304115"
   },
   "usr.bin/primes": {
-    "attempts": 3,
-    "last_attempt": "2026-05-24T23:13:18.267797"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T13:30:09.117228"
   },
   "usr.bin/printf": {
     "attempts": 3,
@@ -652,8 +640,8 @@
     "last_attempt": "2026-05-22T09:14:54.939410"
   },
   "usr.bin/random": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T22:58:17.631854"
+    "attempts": 1,
+    "last_attempt": "2026-05-24T18:20:46.788804"
   },
   "usr.bin/rwall": {
     "attempts": 1,
@@ -668,8 +656,8 @@
     "last_attempt": "2026-05-22T22:24:06.261005"
   },
   "usr.bin/sort": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T21:28:42.830170"
+    "attempts": 3,
+    "last_attempt": "2026-05-25T00:00:03.852959"
   },
   "usr.bin/split": {
     "attempts": 3,
@@ -690,6 +678,10 @@
   "usr.bin/tcopy": {
     "attempts": 3,
     "last_attempt": "2026-05-24T17:16:18.748401"
+  },
+  "usr.bin/time": {
+    "attempts": 3,
+    "last_attempt": "2026-05-24T23:44:08.646581"
   },
   "usr.bin/touch": {
     "attempts": 3,
@@ -758,10 +750,6 @@
   "usr.bin/xargs": {
     "attempts": 1,
     "last_attempt": "2026-05-24T12:51:15.364348"
-  },
-  "usr.bin/xstr": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T22:52:15.154067"
   },
   "usr.bin/yes": {
     "attempts": 3,

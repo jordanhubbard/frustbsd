@@ -1,0 +1,178 @@
+=== STEP 130 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/time/src/ffi.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The ffi.rs I wrote has wrong types for string pointers. Let me fix it properly using `c_char` for strings.
+
+ACTION: WRITE_FILE usr.bin/time/src/ffi.rs
+CONTENT:
+<<<
+use std::os::raw::{c_char, c_int, c_long};
+
+// Signal numbers
+pub const SIGINT: c_int = 2;
+pub const SIGQUIT: c_int = 3;
+pub const SIGINFO: c_int = 29;
+pub const SIG_IGN: c_int = 1;
+pub const SIG_DFL: c_int = 0;
+pub const SIG_ERR: c_int = -1;
+
+// Clock IDs
+pub const CLOCK_MONOTONIC: c_int = 4;
+
+// getrusage
+pub const RUSAGE_CHILDREN: c_int = -1;
+
+// setrlimit
+pub const RLIMIT_CORE: c_int = 4;
+
+// sysctl
+pub const CTL_KERN: c_int = 1;
+pub const KERN_CLOCKRATE: c_int = 12;
+
+// errno
+pub const ENOENT: c_int = 2;
+
+// locale
+pub const LC_NUMERIC: c_int = 1;
+
+// setvbuf
+pub const _IONBF: c_int = 2;
+
+// Wait macros (match FreeBSD libc)
+#[inline]
+pub fn WIFEXITED(status: c_int) -> bool {
+    status & 0xff == 0
+}
+
+#[inline]
+pub fn WIFSIGNALED(status: c_int) -> bool {
+    (status & 0x7f) != 0 && (status & 0x7f) != 0x7f
+}
+
+#[inline]
+pub fn WTERMSIG(status: c_int) -> c_int {
+    status & 0x7f
+}
+
+#[inline]
+pub fn WEXITSTATUS(status: c_int) -> c_int {
+    (status >> 8) & 0xff
+}
+
+// Structures matching FreeBSD libc
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct timeval {
+    pub tv_sec: c_long,
+    pub tv_usec: c_long,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct timespec {
+    pub tv_sec: c_long,
+    pub tv_nsec: c_long,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct rusage {
+    pub ru_utime: timeval,
+    pub ru_stime: timeval,
+    pub ru_maxrss: c_long,
+    pub ru_ixrss: c_long,
+    pub ru_idrss: c_long,
+    pub ru_isrss: c_long,
+    pub ru_minflt: c_long,
+    pub ru_majflt: c_long,
+    pub ru_nswap: c_long,
+    pub ru_inblock: c_long,
+    pub ru_oublock: c_long,
+    pub ru_msgsnd: c_long,
+    pub ru_msgrcv: c_long,
+    pub ru_nsignals: c_long,
+    pub ru_nvcsw: c_long,
+    pub ru_nivcsw: c_long,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct rlimit {
+    pub rlim_cur: u64,
+    pub rlim_max: u64,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct clockinfo {
+    pub hz: c_int,
+    pub tick: c_int,
+    pub freq: c_int,
+    pub stathz: c_int,
+    pub profhz: c_int,
+}
+
+#[repr(C)]
+pub struct lconv {
+    pub decimal_point: *mut c_char,
+    pub thousands_sep: *mut c_char,
+    pub grouping: *mut c_char,
+    pub int_curr_symbol: [c_char; 16],
+    pub currency_symbol: [c_char; 16],
+    pub mon_decimal_point: *mut c_char,
+    pub mon_thousands_sep: *mut c_char,
+    pub mon_grouping: *mut c_char,
+    pub positive_sign: *mut c_char,
+    pub negative_sign: *mut c_char,
+    pub int_frac_digits: c_char,
+    pub frac_digits: c_char,
+    pub p_cs_precedes: c_char,
+    pub p_sep_by_space: c_char,
+    pub n_cs_precedes: c_char,
+    pub n_sep_by_space: c_char,
+    pub p_sign_posn: c_char,
+    pub n_sign_posn: c_char,
+    pub int_p_cs_precedes: c_char,
+    pub int_p_sep_by_space: c_char,
+    pub int_n_cs_precedes: c_char,
+    pub int_n_sep_by_space: c_char,
+    pub int_p_sign_posn: c_char,
+    pub int_n_sign_posn: c_char,
+}
+
+extern "C" {
+    pub fn clock_gettime(id: c_int, tp: *mut timespec) -> c_int;
+    pub fn fork() -> c_int;
+    pub fn execvp(file: *const c_char, argv: *const *const c_char) -> c_int;
+    pub fn signal(signum: c_int, handler: extern "C" fn(c_int)) -> c_int;
+    pub fn siginterrupt(signum: c_int, flag: c_int) -> c_int;
+    pub fn wait4(pid: c_int, status: *mut c_int, options: c_int, ru: *mut rusage) -> c_int;
+    pub fn getrusage(who: c_int, ru: *mut rusage) -> c_int;
+    pub fn sysctl(name: *const c_int, namelen: c_int, oldp: *mut c_char, oldlenp: *mut usize, newp: *const c_char, newlen: usize) -> c_int;
+    pub fn setrlimit(resource: c_int, rlim: *const rlimit) -> c_int;
+    pub fn kill(pid: c_int, signum: c_int) -> c_int;
+    pub fn getpid() -> c_int;
+    pub fn localeconv() -> *mut lconv;
+    pub fn setlocale(category: c_int, locale: *const c_char) -> *mut c_char;
+    pub fn getopt(ac: c_int, av: *const *const c_char, opst: *const c_char) -> c_int;
+    pub fn fopen(filename: *const c_char, mode: *const c_char) -> *mut FILE;
+    pub fn setvbuf(stream: *mut FILE, buffer: *mut c_char, mode: c_int, size: usize) -> c_int;
+    pub fn fclose(stream: *mut FILE) -> c_int;
+    pub fn fwrite(ptr: *const c_char, size: usize, nobj: usize, stream: *mut FILE) -> usize;
+    pub fn fprintf(stream: *mut FILE, format: *const c_char, ...) -> c_int;
+    pub fn perror(s: *const c_char);
+}
+
+// Opaque FILE type for FFI
+#[repr(C)]
+pub struct FILE {
+    _private: [u8; 0],
+    _address: u8,
+}
+>>>

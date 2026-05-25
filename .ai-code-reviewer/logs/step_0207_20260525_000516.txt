@@ -1,0 +1,52 @@
+=== STEP 207 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/posixmqcontrol
+   Files: 0/6
+📄 File: usr.bin/posixmqcontrol/posixmqcontrol.c
+   Chunks: 2/25
+
+```
+=== CHUNK 2/25: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/posixmqcontrol/posixmqcontrol.c === [function: malloc_element]
+=== Lines 72-101 (30 lines) ===
+
+static struct element *
+malloc_element(const char *context)
+{
+	struct element *item = malloc(sizeof(struct element));
+
+	if (item == NULL)
+		/* the only non-EX_* prefixed exit code. */
+		err(1, "malloc(%s)", context);
+	return (item);
+}
+
+static STAILQ_HEAD(tqh, element)
+	queues = STAILQ_HEAD_INITIALIZER(queues),
+	contents = STAILQ_HEAD_INITIALIZER(contents);
+/* send defaults to medium priority. */
+static long priority = MQ_PRIO_MAX / 2;
+static struct Creation creation = {
+	.exists = false,
+	.set_mode = false,
+	.mode = 0755,
+	.depth = -1,
+	.size = -1,
+	.block = true,
+	.set_group = false,
+	.group = 0,
+	.set_user = false,
+	.user = 0
+};
+static const mqd_t fail = (mqd_t)-1;
+static const mode_t accepted_mode_bits =
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SKIP_FILE

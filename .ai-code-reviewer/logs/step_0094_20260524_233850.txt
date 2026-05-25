@@ -1,0 +1,39 @@
+=== STEP 94 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+No bsd.rust.mk exists. I need to add explicit Makefile rules for the Rust build.
+
+ACTION: EDIT_FILE usr.bin/time/Makefile
+OLD:
+<<<
+PROG=	time
+
+.include <bsd.prog.mk>
+>>>
+NEW:
+<<<
+PROG=	time
+
+RUSTPROG=	time
+RUSTSRC=	src/main.rs src/ffi.rs
+
+time-rust:
+	@${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${.OBJDIR}/cargo-target --release
+	@cp ${.OBJDIR}/cargo-target/release/time ${.OBJDIR}/time-rust
+
+CLEANFILES+=	time-rust
+
+.if defined(RUST_BUILD)
+PROG=	time-rust
+SRCS=
+.PATH.src=
+all: time-rust
+.endif
+
+.include <bsd.prog.mk>
+>>>

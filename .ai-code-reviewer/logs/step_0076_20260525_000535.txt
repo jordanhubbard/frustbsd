@@ -1,0 +1,14 @@
+=== STEP 76 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/time is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+
+--- RESPONSE ---
+
+
+I need to find a proper buildable unit. Let me check which bin units are available.
+
+ACTION: LIST_DIR bin

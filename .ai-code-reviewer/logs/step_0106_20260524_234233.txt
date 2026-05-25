@@ -1,0 +1,17 @@
+=== STEP 106 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*.cirrus*':
+```
+./contrib/atf/.cirrus.yml
+./contrib/libder/.cirrus.yml
+./contrib/libcbor/.cirrus.yml
+./contrib/kyua/.cirrus.yml
+./contrib/elftoolchain/.cirrus.yml
+./.cirrus.yml
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE .cirrus.yml

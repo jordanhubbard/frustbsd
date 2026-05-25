@@ -1,0 +1,16 @@
+=== STEP 208 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/posixmqcontrol/posixmqcontrol.c.
+Remaining files in usr.bin/posixmqcontrol:
+  - usr.bin/posixmqcontrol/Makefile
+  - usr.bin/posixmqcontrol/posixmqcontrol.1
+  - usr.bin/posixmqcontrol/posixmqcontroltest8qs.sh
+  - usr.bin/posixmqcontrol/posixmqcontroltest8x64.sh
+  - usr.bin/posixmqcontrol/posixmqcontroltestsane.sh
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/posixshmcontrol

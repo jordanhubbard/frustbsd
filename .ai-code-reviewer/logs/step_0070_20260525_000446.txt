@@ -1,0 +1,14 @@
+=== STEP 70 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+
+--- RESPONSE ---
+
+
+The test directories are not standalone buildable units. Let me find a proper buildable unit from the tree.
+
+ACTION: LIST_DIR bin

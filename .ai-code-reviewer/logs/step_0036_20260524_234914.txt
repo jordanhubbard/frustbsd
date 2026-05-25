@@ -1,0 +1,17 @@
+=== STEP 36 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/time:
+```
+Cargo.toml
+Makefile
+Makefile.depend
+src
+time.1
+time.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/time/Cargo.toml

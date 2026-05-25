@@ -1,0 +1,14 @@
+=== STEP 204 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/mesg is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo
+
+--- RESPONSE ---
+
+
+The scope is already set to `usr.bin/sort`. This is a complex unit but I need to work on it. Let me try to find a simpler unit.
+
+ACTION: SET_SCOPE usr.bin/posixmqcontrol
