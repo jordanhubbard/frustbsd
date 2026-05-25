@@ -1,0 +1,45 @@
+=== STEP 15 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📄 File: bin/cat/cat.c
+   Chunks: 8/17
+
+```
+=== CHUNK 8/17: /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/cat/cat.c === [function: init_casper_net]
+=== Lines 110-132 (23 lines) ===
+
+static void
+init_casper_net(cap_channel_t *casper)
+{
+	cap_net_limit_t *limit;
+	int familylimit;
+
+	capnet = cap_service_open(casper, "system.net");
+	if (capnet == NULL)
+		err(EXIT_FAILURE, "unable to create network service");
+
+	limit = cap_net_limit_init(capnet, CAPNET_NAME2ADDR |
+	    CAPNET_CONNECTDNS);
+	if (limit == NULL)
+		err(EXIT_FAILURE, "unable to create limits");
+
+	familylimit = AF_LOCAL;
+	cap_net_limit_name2addr_family(limit, &familylimit, 1);
+
+	if (cap_net_limit(limit) != 0)
+		err(EXIT_FAILURE, "unable to apply limits");
+}
+#endif
+
+
+```
+
+--- RESPONSE ---
+
+
+Let me continue reading to understand the full scope of cat.c.
+
+ACTION: NEXT_CHUNK

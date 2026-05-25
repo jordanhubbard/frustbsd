@@ -1,0 +1,11 @@
+=== STEP 258 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for '^CARGO'
+
+--- RESPONSE ---
+
+
+The build is failing with 0 errors but the contract isn't passing. Let me check if cargo/rustc are available on the system:
+
+ACTION: GREP rust

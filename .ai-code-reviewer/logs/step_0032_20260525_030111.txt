@@ -1,0 +1,116 @@
+=== STEP 32 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/hostname/src/main.rs:
+PROGRESS:
+📄 File: bin/hostname/src/main.rs
+
+```
+use std::env;
+use std::ffi::CString;
+use std::io::{self, Write};
+use std::os::raw::c_char;
+use std::process;
+
+const MAXHOSTNAMELEN: usize = 256;
+
+extern "C" {
+    fn gethostname(name: *mut c_char, len: usize) -> i32;
+    fn sethostname(name: *const c_char, len: usize) -> i32;
+}
+
+fn usage() -> ! {
+    let _ = io::stderr().write_all(b"usage: hostname [-f] [-s | -d] [name-of-host]\n");
+    process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = env::args().skip(1).collect();
+
+    let mut sflag = false;
+    let mut dflag = false;
+
+    let mut i = 0;
+    let mut name_arg: Option<String> = None;
+
+    while i < args.len() {
+        match args[i].as_str() {
+            "-f" => {
+                // Accepted but ignored on BSD
+                i += 1;
+            }
+            "-s" => {
+                if dflag {
+                    usage();
+                }
+                sflag = true;
+                i += 1;
+            }
+            "-d" => {
+                if sflag {
+                    usage();
+                }
+                dflag = true;
+                i += 1;
+            }
+            other => {
+                if other.starts_with('-') {
+                    usage();
+                }
+                if name_arg.is_some() {
+                    usage();
+                }
+                name_arg = Some(other.to_string());
+                i += 1;
+            }
+        }
+    }
+
+    if let Some(name) = name_arg {
+        let c_name = match CString::new(name.as_bytes()) {
+            Ok(c) => c,
+            Err(_) => usage(),
+        };
+        let len = c_name.as_bytes().len();
+        unsafe {
+            if sethostname(c_name.as_ptr(), len) < 0 {
+                eprintln!("hostname: sethostname: {}", std::io::Error::last_os_error());
+                process::exit(1);
+            }
+        }
+    } else {
+        let mut buf = vec![0u8; MAXHOSTNAMELEN];
+        unsafe {
+            if gethostname(buf.as_mut_ptr() as *mut c_char, MAXHOSTNAMELEN) < 0 {
+                eprintln!("hostname: gethostname: {}", std::io::Error::last_os_error());
+                process::exit(1);
+            }
+        }
+        let len = buf.iter().position(|&b| b == 0).unwrap_or(MAXHOSTNAMELEN);
+        let hostname = String::from_utf8_lossy(&buf[..len]);
+
+        let output = if sflag {
+            match hostname.find('.') {
+                Some(pos) => &hostname[..pos],
+                None => &hostname,
+            }
+        } else if dflag {
+            match hostname.find('.') {
+                Some(pos) => &hostname[pos + 1..],
+                None => &hostname,
+            }
+        } else {
+            &hostname
+        };
+
+        println!("{}", output);
+    }
+}
+```
+
+--- RESPONSE ---
+
+
+Let me check the hostname Makefile pattern too.
+
+ACTION: READ_FILE bin/hostname/Makefile

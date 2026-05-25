@@ -1,0 +1,38 @@
+=== STEP 282 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/basename/Cargo.toml:
+PROGRESS:
+📁 Directory: usr.bin/bintrans
+   Files: 0/7
+📄 File: usr.bin/basename/Cargo.toml
+✏️  Edits: 7 files modified
+
+```
+[package]
+name = "basename"
+version = "0.0.0"
+edition = "2021"
+
+[[bin]]
+name = "basename"
+path = "src/main.rs"
+```
+
+--- RESPONSE ---
+
+
+The Cargo.toml should be at the unit root level, not in `rust/`. Let me create the proper structure:
+
+ACTION: WRITE_FILE usr.bin/bintrans/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "bintrans"
+version = "0.0.0"
+edition = "2021"
+
+[[bin]]
+name = "bintrans"
+path = "src/main.rs"
+>>>

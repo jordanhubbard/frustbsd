@@ -1,0 +1,33 @@
+=== STEP 269 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*cargo*':
+```
+./bin/sleep/cargo-target/debug/.cargo-lock
+./bin/uuidgen/cargo-target/debug/.cargo-lock
+./bin/echo/cargo-target/debug/.cargo-lock
+./bin/pwd/cargo-target/debug/.cargo-lock
+./bin/mkdir/cargo-target/debug/.cargo-lock
+./usr.bin/locate/code/cargo-target/debug/.cargo-lock
+./usr.bin/locate/bigram/cargo-target/debug/.cargo-lock
+./usr.bin/leave/cargo-target/debug/.cargo-lock
+./usr.bin/tee/cargo-target/debug/.cargo-lock
+./usr.bin/logname/cargo-target/debug/.cargo-lock
+./usr.bin/asa/cargo-target/debug/.cargo-lock
+./usr.bin/basename/cargo-target/debug/.cargo-lock
+./usr.bin/number/cargo-target/debug/.cargo-lock
+./usr.bin/enigma/cargo-target/debug/.cargo-lock
+./usr.bin/unexpand/cargo-target/debug/.cargo-lock
+./usr.bin/users/cargo-target/debug/.cargo-lock
+./usr.bin/what/cargo-target/debug/.cargo-lock
+./usr.bin/which/cargo-target/debug/.cargo-lock
+./usr.bin/hesinfo/cargo-target/debug/.cargo-lock
+./usr.bin/resizewin/cargo-target/debug/.cargo-lock
+```
+
+--- RESPONSE ---
+
+
+I can see other units have successfully built Rust with `cargo-target` directories. Let me check how a recently completed unit integrated Rust:
+
+ACTION: READ_FILE usr.bin/basename/Makefile

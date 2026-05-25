@@ -1,0 +1,439 @@
+=== STEP 283 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/bintrans/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now I need to create the main.rs. Let me create a comprehensive Rust implementation:
+
+ACTION: WRITE_FILE usr.bin/bintrans/src/main.rs
+CONTENT:
+<<<
+/*-
+ * SPDX-License-Identifier: BSD-2-Clause
+ *
+ * Copyright (c) 2024 The FreeBSD Foundation
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+use std::env;
+use std::fs::{self, File, OpenOptions};
+use std::io::{self, BufRead, BufReader, Read, Write};
+use std::os::unix::fs::PermissionsExt;
+use std::path::Path;
+use std::process;
+
+fn usage() {
+    eprintln!(
+        "usage: bintrans <uuencode | uudecode> ...\n\
+         bintrans <b64encode | b64decode> ...\n\
+         bintrans <base64> ...\n\
+         bintrans <qp> ..."
+    );
+    process::exit(1);
+}
+
+fn search(progname: &str) -> i32 {
+    const KNOWN: &[(&str, i32)] = &[
+        ("uuencode", 0),
+        ("uudecode", 1),
+        ("b64encode", 2),
+        ("b64decode", 3),
+        ("base64", 4),
+        ("qp", 5),
+    ];
+    for &(name, idx) in KNOWN {
+        if progname == name {
+            return idx;
+        }
+    }
+    -1
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let progname = args.first().map(|s| {
+        let p = Path::new(s);
+        p.file_name()
+            .and_then(|f| f.to_str())
+            .unwrap_or(s)
+    }).unwrap_or("bintrans");
+
+    let coder = if search(progname) == -1 && args.len() > 1 {
+        search(&args[1])
+    } else {
+        search(&progname)
+    };
+
+    match coder {
+        0 => main_encode(&args, false),
+        1 => main_decode(&args),
+        2 => main_encode(&args, true),
+        3 => main_b64_decode(&args),
+        4 => main_base64(&args),
+        5 => main_quotedprintable(&args),
+        _ => usage(),
+    }
+}
+
+/* ---- UUENCODE / B64ENCODE ---- */
+
+fn enc(c: u8) -> u8 {
+    if c == 0 { '`' } else { (c & 0x7F) + b' ' }
+}
+
+fn main_encode(args: &[String], base64: bool) {
+    let mut outfile: Option<String> = None;
+    let mut raw = false;
+    let mut columns: usize = 76;
+    let mut i = 1;
+
+    while i < args.len() {
+        match args[i].as_str() {
+            "-m" => base64 = true,
+            "-o" => {
+                i += 1;
+                if i < args.len() {
+                    outfile = Some(args[i].clone());
+                } else {
+                    eprintln!("usage: uuencode [-m] [-o outfile] [infile] remotefile");
+                    process::exit(1);
+                }
+            }
+            "-r" => raw = true,
+            "-w" => {
+                i += 1;
+                if i < args.len() {
+                    columns = args[i].parse().unwrap_or_else(|_| {
+                        eprintln!("invalid column width");
+                        process::exit(2);
+                    });
+                } else {
+                    eprintln!("usage: uuencode [-m] [-o outfile] [infile] remotefile");
+                    process::exit(1);
+                }
+            }
+            _ => break,
+        }
+        i += 1;
+    }
+
+    let remaining: Vec<&String> = args[i..].iter().collect();
+    let (infile, remotefile) = match remaining.len() {
+        2 => (Some(remaining[0].clone()), remaining[1].clone()),
+        1 => (None, remaining[0].clone()),
+        _ => {
+            eprintln!("usage: uuencode [-m] [-o outfile] [infile] remotefile");
+            process::exit(1);
+        }
+    };
+
+    let mode = if let Some(ref inf) = infile {
+        if let Ok(meta) = fs::metadata(inf) {
+            meta.permissions().mode() & 0o777
+        } else {
+            0o666
+        }
+    } else {
+        0o666
+    };
+
+    let input: Box<dyn Read> = if let Some(ref f) = infile {
+        match File::open(f) {
+            Ok(file) => Box::new(file),
+            Err(e) => {
+                eprintln!("{}: {}", f, e);
+                process::exit(1);
+            }
+        }
+    } else {
+        Box::new(io::stdin())
+    };
+
+    let mut output: Box<dyn Write> = if let Some(ref o) = outfile {
+        Box::new(
+            OpenOptions::new()
+                .write(true)
+                .create(true)
+                .truncate(true)
+                .open(o)
+                .unwrap_or_else(|e| {
+                    eprintln!("unable to open {} for output: {}", o, e);
+                    process::exit(1);
+                }),
+        )
+    } else {
+        Box::new(io::stdout())
+    };
+
+    if base64 {
+        base64_encode(&mut input, &mut output, mode, remotefile, raw, columns);
+    } else {
+        uuencode(&mut input, &mut output, mode, remotefile, raw);
+    }
+}
+
+fn uuencode(input: &mut dyn Read, output: &mut dyn Write, mode: u16, remotefile: String, raw: bool) {
+    if !raw {
+        writeln!(output, "begin {:o} {}", mode, remotefile).unwrap();
+    }
+
+    let mut buf = [0u8; 45];
+    loop {
+        let n = match input.read(&mut buf) {
+            Ok(0) => break,
+            Ok(n) => n,
+            Err(_) => {
+                eprintln!("read error");
+                process::exit(1);
+            }
+        };
+
+        write!(output, "{}", enc(n as u8 as u8)).unwrap();
+        let mut p = 0;
+        while p < n {
+            let b0 = buf[p];
+            let b1 = if p + 1 < n { buf[p + 1] } else { 0 };
+            let b2 = if p + 2 < n { buf[p + 2] } else { 0 };
+
+            write!(output, "{}", enc((b0 >> 2) as u8)).unwrap();
+            write!(output, "{}", enc(((b0 << 4) | (b1 >> 4)) as u8)).unwrap();
+            write!(output, "{}", enc(((b1 << 2) | (b2 >> 6)) as u8)).unwrap();
+            write!(output, "{}", enc(b2 & 0x3F)).unwrap();
+            p += 3;
+        }
+        writeln!(output).unwrap();
+    }
+
+    if !raw {
+        writeln!(output, "{}end", enc(0)).unwrap();
+    }
+}
+
+fn base64_encode(input: &mut dyn Read, output: &mut dyn Write, mode: u16, remotefile: String, raw: bool, columns: usize) {
+    if !raw {
+        writeln!(output, "begin-base64 {:o} {}", mode, remotefile).unwrap();
+    }
+
+    let b64chars = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let mut buf = [0u8; 1023];
+    let mut carry = 0usize;
+
+    loop {
+        let n = match input.read(&mut buf) {
+            Ok(0) => break,
+            Ok(n) => n,
+            Err(_) => {
+                eprintln!("read error");
+                process::exit(1);
+            }
+        };
+
+        let mut out = Vec::new();
+        for chunk in buf[..n].chunks(3) {
+            let b0 = chunk[0] as u32;
+            let b1 = if chunk.len() > 1 { chunk[1] as u32 } else { 0 };
+            let b2 = if chunk.len() > 2 { chunk[2] as u32 } else { 0 };
+
+            out.push(b64chars[((b0 >> 2) & 0x3F) as usize]);
+            out.push(b64chars[((b0 << 4) | (b1 >> 4)) as u32 & 0x3F] as u8);
+            if chunk.len() > 1 {
+                out.push(b64chars[((b1 << 2) | (b2 >> 6)) as u32 & 0x3F] as u8);
+            }
+            if chunk.len() > 2 {
+                out.push(b64chars[(b2 & 0x3F) as usize]);
+            }
+        }
+
+        if columns == 0 {
+            output.write_all(&out).unwrap();
+        } else {
+            let mut i = 0;
+            while i < out.len() {
+                let remaining = out.len() - i;
+                let to_write = (columns - carry).min(remaining);
+                output.write_all(&out[i..i + to_write]).unwrap();
+                carry = (carry + to_write) % columns;
+                i += to_write;
+                if carry == 0 {
+                    writeln!(output).unwrap();
+                }
+            }
+        }
+    }
+
+    if columns == 0 || carry != 0 {
+        writeln!(output).unwrap();
+    }
+    if !raw {
+        writeln!(output, "====").unwrap();
+    }
+}
+
+/* ---- UUDECODE / B64DECODE ---- */
+
+fn dec(c: u8) -> u8 {
+    if c == b'`' { 0 } else { c - b' ' }
+}
+
+fn base64_decode_char(c: u8) -> u8 {
+    match c {
+        b'A'..=b'Z' => c - b'A',
+        b'a'..=b'z' => c - b'a' + 26,
+        b'0'..=b'9' => c - b'0' + 52,
+        b'+' => 62,
+        b'/' => 63,
+        _ => 0,
+    }
+}
+
+fn main_decode(args: &[String]) {
+    let mut outfile: Option<String> = None;
+    let mut infile: Option<String> = None;
+    let mut raw = false;
+
+    let mut i = 1;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-o" => {
+                i += 1;
+                if i < args.len() {
+                    outfile = Some(args[i].clone());
+                } else {
+                    eprintln!("usage: uudecode [-o outfile] [infile]");
+                    process::exit(1);
+                }
+            }
+            "-r" => raw = true,
+            _ => {
+                if !args[i].starts_with('-') {
+                    infile = Some(args[i].clone());
+                } else {
+                    eprintln!("usage: uudecode [-o outfile] [infile]");
+                    process::exit(1);
+                }
+            }
+        }
+        i += 1;
+    }
+
+    let input: Box<dyn Read> = if let Some(ref f) = infile {
+        match File::open(f) {
+            Ok(file) => Box::new(file),
+            Err(e) => {
+                eprintln!("{}: {}", f, e);
+                process::exit(1);
+            }
+        }
+    } else {
+        Box::new(io::stdin())
+    };
+
+    let mut reader = BufReader::new(input);
+
+    // Peek at header
+    let mut header = String::new();
+    if reader.read_line(&mut header).is_err() {
+        process::exit(1);
+    }
+
+    let is_base64 = header.starts_with("begin-base64");
+    let mut mode: u16 = 0o666;
+    let mut remotefile = String::new();
+
+    if is_base64 {
+        let parts: Vec<&str> = header.split_whitespace().collect();
+        if parts.len() >= 3 {
+            if let Ok(m) = u16::from_str_radix(parts[1], 8) {
+                mode = m;
+            }
+            remotefile = parts[2].to_string();
+        }
+    } else if header.starts_with("begin ") {
+        let parts: Vec<&str> = header.split_whitespace().collect();
+        if parts.len() >= 3 {
+            if let Ok(m) = u16::from_str_radix(parts[1], 8) {
+                mode = m;
+            }
+            remotefile = parts[2].to_string();
+        }
+    } else {
+        raw = true;
+        remotefile = "decoded".to_string();
+    }
+
+    let outpath = outfile.clone().unwrap_or_else(|| remotefile.clone());
+
+    let mut output: Box<dyn Write> = if let Some(ref o) = outfile {
+        Box::new(
+            OpenOptions::new()
+                .write(true)
+                .create(true)
+                .truncate(true)
+                .open(o)
+                .unwrap_or_else(|e| {
+                    eprintln!("unable to open {} for output: {}", o, e);
+                    process::exit(1);
+                }),
+        )
+    } else {
+        Box::new(
+            OpenOptions::new()
+                .write(true)
+                .create(true)
+                .truncate(true)
+                .open(&remotefile)
+                .unwrap_or_else(|e| {
+                    eprintln!("unable to open {} for output: {}", remotefile, e);
+                    process::exit(1);
+                }),
+        )
+    };
+
+    if is_base64 {
+        base64_decode_body(&mut reader, &mut *output, mode, &outpath, raw);
+    } else {
+        decode_body(&mut reader, &mut *output, mode, &outpath, raw);
+    }
+
+    // Set permissions
+    if let Ok(p) = Path::new(&outpath).canonicalize() {
+        let _ = fs::set_permissions(&p, fs::Permissions::from_mode(mode));
+    }
+}
+
+fn decode_body(input: &mut dyn BufRead, output: &mut dyn Write, _mode: u16, _remotefile: &str, raw: bool) {
+    if !raw {
+        let mut header = String::new();
+        if input.read_line(&mut header).is_err() {
+            return;
+        }
+    }
+
+    loop {
+        let mut line = String::new();
+        match input.read_line(&mut line) {
+            Ok(

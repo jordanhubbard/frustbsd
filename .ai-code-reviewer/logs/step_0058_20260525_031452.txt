@@ -1,0 +1,17 @@
+=== STEP 58 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/freebsd-version:
+```
+Makefile
+Makefile.depend
+freebsd-version.1
+freebsd-version.sh.in
+```
+
+--- RESPONSE ---
+
+
+The scope was abandoned. Let me pick a fresh, simple unit with C source that hasn't been rewritten yet.
+
+ACTION: SET_SCOPE bin/kenv

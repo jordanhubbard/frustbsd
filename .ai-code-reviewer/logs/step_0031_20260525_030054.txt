@@ -1,0 +1,115 @@
+=== STEP 31 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/sleep/src/main.rs:
+PROGRESS:
+📄 File: bin/sleep/src/main.rs
+
+```
+// SPDX-License-Identifier: BSD-3-Clause
+//
+// Copyright (c) 1988, 1993, 1994
+//	The Regents of the University of California.  All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+// 3. Neither the name of the University nor the names of its contributors
+//    may be used to endorse or promote products derived from this software
+//    without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+// OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+// OUT OF THE USE OF THIS SOFTWARE, EVEN WITH THE POSSIBILITY OF
+// SUCH DAMAGE.
+
+use std::io::{self, Write};
+use std::process;
+use std::thread;
+use std::time::Duration;
+
+fn usage() -> ! {
+    let msg = "usage: sleep number[unit] [...]\n\
+        Unit can be 's' (seconds, the default), \
+        m (minutes), h (hours), or d (days).\n";
+    let _ = io::stderr().write_all(msg.as_bytes());
+    process::exit(1);
+}
+
+fn parse_interval(arg: &str) -> Option<f64> {
+    let mut chars = arg.chars();
+    let unit_char = chars.next_back();
+    let num_str: String = chars.collect();
+
+    let num: f64 = match num_str.parse() {
+        Ok(n) => n,
+        Err(_) => {
+            eprintln!("sleep: invalid time interval: {}", arg);
+            return None;
+        }
+    };
+
+    if num.is_nan() {
+        eprintln!("sleep: invalid time interval: {}", arg);
+        return None;
+    }
+
+    match unit_char {
+        Some('d') => Some(num * 24.0 * 60.0 * 60.0),
+        Some('h') => Some(num * 60.0 * 60.0),
+        Some('m') => Some(num * 60.0),
+        Some('s') | None => Some(num),
+        Some(_) => {
+            eprintln!("sleep: invalid time interval: {}", arg);
+            None
+        }
+    }
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().skip(1).collect();
+
+    if args.is_empty() {
+        usage();
+    }
+
+    let mut total_seconds: f64 = 0.0;
+    for arg in &args {
+        match parse_interval(arg) {
+            Some(seconds) => total_seconds += seconds,
+            None => usage(),
+        }
+    }
+
+    if total_seconds > i64::MAX as f64 {
+        usage();
+    }
+
+    if total_seconds < 1e-9 {
+        process::exit(0);
+    }
+
+    let duration = Duration::from_secs_f64(total_seconds);
+    thread::sleep(duration);
+    process::exit(0);
+}
+```
+
+--- RESPONSE ---
+
+
+Let me check how `bin/hostname` handles syscalls without external crates.
+
+ACTION: READ_FILE bin/hostname/src/main.rs

@@ -1,0 +1,388 @@
+=== STEP 276 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/bintrans/rust/src/uudecode.rs:
+PROGRESS:
+📁 Directory: usr.bin/bintrans
+   Files: 0/7
+📄 File: usr.bin/bintrans/rust/src/uudecode.rs
+✏️  Edits: 7 files modified
+
+```
+/*-
+ * SPDX-License-Identifier: BSD-2-Clause
+ *
+ * Copyright (c) 2024 The FreeBSD Foundation
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+use std::fs::{self, File, OpenOptions};
+use std::io::{self, BufRead, BufReader, Read, Write};
+use std::os::unix::fs::PermissionsExt;
+use std::path::Path;
+use std::process;
+
+fn dec(c: u8) -> u8 {
+    if c == b'`' {
+        0
+    } else {
+        c - b' '
+    }
+}
+
+fn base64_decode_char(c: u8) -> u8 {
+    match c {
+        b'A'..=b'Z' => c - b'A',
+        b'a'..=b'z' => c - b'a' + 26,
+        b'0'..=b'9' => c - b'0' + 52,
+        b'+' => 62,
+        b'/' => 63,
+        _ => 0,
+    }
+}
+
+fn decode_body(input: &mut dyn BufRead, output: &mut dyn Write, mode: u16, remotefile: &str, raw: bool) {
+    if !raw {
+        // Skip the "begin ..." header line
+        let mut header = String::new();
+        if input.read_line(&mut header).is_err() {
+            return;
+        }
+    }
+
+    let mut buf = [0u8; 45];
+    loop {
+        let mut line = String::new();
+        match input.read_line(&mut line) {
+            Ok(0) => break,
+            Ok(_) => {
+                let line_bytes = line.as_bytes();
+                if line_bytes.len() < 2 {
+                    break;
+                }
+                let n = dec(line_bytes[0]) as usize;
+                if n == 0 {
+                    break;
+                }
+                let mut i = 1;
+                let mut out_idx = 0;
+                while i + 3 < line_bytes.len() && out_idx < n {
+                    let b0 = dec(line_bytes[i]);
+                    let b1 = dec(line_bytes[i + 1]);
+                    let b2 = dec(line_bytes[i + 2]);
+                    let b3 = dec(line_bytes[i + 3]);
+
+                    buf[out_idx] = (b0 << 2) | (b1 >> 4);
+                    out_idx += 1;
+                    if out_idx < n {
+                        buf[out_idx] = ((b1 & 0x0F) << 4) | (b2 >> 2);
+                        out_idx += 1;
+                    }
+                    if out_idx < n {
+                        buf[out_idx] = ((b2 & 0x03) << 6) | b3;
+                        out_idx += 1;
+                    }
+                    i += 4;
+                }
+                output.write_all(&buf[..out_idx]).unwrap();
+            }
+            Err(_) => break,
+        }
+    }
+
+    if !raw {
+        // Skip "end" line
+        let mut endline = String::new();
+        let _ = input.read_line(&mut endline);
+    }
+
+    // Set permissions on output file
+    if let Some(path) = remotefile {
+        if let Ok(p) = Path::new(path).canonicalize() {
+            let _ = fs::set_permissions(&p, fs::Permissions::from_mode(mode));
+        }
+    }
+}
+
+fn base64_decode_body(input: &mut dyn BufRead, output: &mut dyn Write, mode: u16, remotefile: &str, raw: bool) {
+    if !raw {
+        let mut header = String::new();
+        if input.read_line(&mut header).is_err() {
+            return;
+        }
+    }
+
+    let mut buf = [0u8; 3];
+    let mut carry = 0usize;
+    let mut carry_buf = [0u8; 3];
+
+    loop {
+        let mut line = String::new();
+        match input.read_line(&mut line) {
+            Ok(0) => break,
+            Ok(_) => {
+                let line_bytes = line.trim_end().as_bytes();
+                if line_bytes.is_empty() {
+                    break;
+                }
+                let mut i = 0;
+                while i < line_bytes.len() {
+                    let c0 = if i < line_bytes.len() { line_bytes[i] } else { b'=' };
+                    let c1 = if i + 1 < line_bytes.len() { line_bytes[i + 1] } else { b'=' };
+                    let c2 = if i + 2 < line_bytes.len() { line_bytes[i + 2] } else { b'=' };
+                    let c3 = if i + 3 < line_bytes.len() { line_bytes[i + 3] } else { b'=' };
+
+                    let v0 = base64_decode_char(c0);
+                    let v1 = base64_decode_char(c1);
+                    let v2 = base64_decode_char(c2);
+                    let v3 = base64_decode_char(c3);
+
+                    let eq2 = c2 == b'=';
+                    let eq3 = c3 == b'=';
+
+                    carry_buf[carry] = (v0 << 2) | (v1 >> 4);
+                    carry += 1;
+                    if !eq2 {
+                        carry_buf[carry] = ((v1 & 0x0F) << 4) | (v2 >> 2);
+                        carry += 1;
+                    }
+                    if !eq3 {
+                        carry_buf[carry] = ((v2 & 0x03) << 6) | v3;
+                        carry += 1;
+                    }
+
+                    if carry == 3 {
+                        output.write_all(&carry_buf).unwrap();
+                        carry = 0;
+                    }
+                    i += 4;
+                }
+            }
+            Err(_) => break,
+        }
+    }
+
+    if carry > 0 {
+        output.write_all(&carry_buf[..carry]).unwrap();
+    }
+
+    if !raw {
+        let mut endline = String::new();
+        let _ = input.read_line(&mut endline);
+    }
+
+    if let Some(path) = remotefile {
+        if let Ok(p) = Path::new(path).canonicalize() {
+            let _ = fs::set_permissions(&p, fs::Permissions::from_mode(mode));
+        }
+    }
+}
+
+fn usage() {
+    eprintln!(
+        "usage: uudecode [-o outfile] [infile]\n\
+         b64decode [-o outfile] [infile]"
+    );
+}
+
+pub fn main_decode(args: &[String]) {
+    let mut outfile: Option<String> = None;
+    let mut infile: Option<String> = None;
+    let mut raw = false;
+
+    let mut i = 0;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-o" => {
+                i += 1;
+                if i < args.len() {
+                    outfile = Some(args[i].clone());
+                } else {
+                    usage();
+                    process::exit(1);
+                }
+            }
+            "-r" => raw = true,
+            _ => {
+                if !args[i].starts_with('-') {
+                    infile = Some(args[i].clone());
+                } else {
+                    usage();
+                    process::exit(1);
+                }
+            }
+        }
+        i += 1;
+    }
+
+    let input: Box<dyn Read> = if let Some(ref f) = infile {
+        match File::open(f) {
+            Ok(file) => Box::new(file),
+            Err(e) => {
+                eprintln!("{}: {}", f, e);
+                process::exit(1);
+            }
+        }
+    } else {
+        Box::new(io::stdin())
+    };
+
+    let reader = BufReader::new(input);
+
+    // Parse header to get mode and remotefile
+    let mut header = String::new();
+    let mut mode = 0o666 & !0o022;
+    let mut remotefile = String::new();
+    let mut is_base64 = false;
+
+    {
+        let mut reader_ref = BufReader::new(reader);
+        if reader_ref.read_line(&mut header).is_err() {
+            process::exit(1);
+        }
+    }
+
+    // Re-read header from the original reader
+    let mut header = String::new();
+    let mut reader = BufReader::new(input);
+    if reader.read_line(&mut header).is_err() {
+        process::exit(1);
+    }
+
+    if header.starts_with("begin-base64") {
+        is_base64 = true;
+        let parts: Vec<&str> = header.split_whitespace().collect();
+        if parts.len() >= 3 {
+            if let Ok(m) = u16::from_str_radix(parts[1], 8) {
+                mode = m;
+            }
+            remotefile = parts[2].to_string();
+        }
+    } else if header.starts_with("begin ") {
+        let parts: Vec<&str> = header.split_whitespace().collect();
+        if parts.len() >= 3 {
+            if let Ok(m) = u16::from_str_radix(parts[1], 8) {
+                mode = m;
+            }
+            remotefile = parts[2].to_string();
+        }
+    } else {
+        // No header, treat as raw
+        raw = true;
+        remotefile = "decoded".to_string();
+    }
+
+    let outpath = outfile.clone().unwrap_or_else(|| remotefile.clone());
+
+    let mut output: Box<dyn Write> = if let Some(ref o) = outfile {
+        Box::new(
+            OpenOptions::new()
+                .write(true)
+                .create(true)
+                .truncate(true)
+                .open(o)
+                .unwrap_or_else(|e| {
+                    eprintln!("unable to open {} for output: {}", o, e);
+                    process::exit(1);
+                }),
+        )
+    } else {
+        Box::new(
+            OpenOptions::new()
+                .write(true)
+                .create(true)
+                .truncate(true)
+                .open(&remotefile)
+                .unwrap_or_else(|e| {
+                    eprintln!("unable to open {} for output: {}", remotefile, e);
+                    process::exit(1);
+                }),
+        )
+    };
+
+    if is_base64 {
+        base64_decode_body(&mut reader, &mut *output, mode, &outpath, raw);
+    } else {
+        decode_body(&mut reader, &mut *output, mode, &outpath, raw);
+    }
+}
+
+pub fn main_base64_decode(args: &[String]) {
+    let mut outfile: Option<String> = None;
+    let mut infile: Option<String> = None;
+
+    let mut i = 0;
+    while i < args.len() {
+        match args[i].as_str() {
+            "-o" => {
+                i += 1;
+                if i < args.len() {
+                    outfile = Some(args[i].clone());
+                }
+            }
+            _ => {
+                if !args[i].starts_with('-') {
+                    infile = Some(args[i].clone());
+                }
+            }
+        }
+        i += 1;
+    }
+
+    let input: Box<dyn Read> = if let Some(ref f) = infile {
+        match File::open(f) {
+            Ok(file) => Box::new(file),
+            Err(e) => {
+                eprintln!("{}: {}", f, e);
+                process::exit(1);
+            }
+        }
+    } else {
+        Box::new(io::stdin())
+    };
+
+    let mut reader = BufReader::new(input);
+    let mut output: Box<dyn Write> = if let Some(ref o) = outfile {
+        Box::new(
+            OpenOptions::new()
+                .write(true)
+                .create(true)
+                .truncate(true)
+                .open(o)
+                .unwrap_or_else(|e| {
+                    eprintln!("unable to open {} for output: {}", o, e);
+                    process::exit(1);
+                }),
+        )
+    } else {
+        Box::new(io::stdout())
+    };
+
+    base64_decode_body(&mut reader, &mut *output, 0o666, "", false);
+}
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/bintrans/bintrans.c

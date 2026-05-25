@@ -1,0 +1,11 @@
+=== STEP 267 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for '^CARG'
+
+--- RESPONSE ---
+
+
+Let me check if cargo is available on the system:
+
+ACTION: GREP CARG

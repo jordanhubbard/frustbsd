@@ -1,0 +1,64 @@
+=== STEP 259 ===
+
+--- REQUEST ---
+GREP_RESULT for 'rust':
+```
+./tests/sys/kern/tty/test_sti.c:285:	 * Canonicalization actually doesn't matter for this one, we'll trust
+./stand/efi/loader/main.c:1472:	 * Initialize the trusted/forbidden certificates from UEFI.
+./stand/i386/libi386/biospnp.c:144:	/* The BIOS says there is no ISA bus (should we trust that this works?) */
+./stand/fdt/fdt_loader_cmd.c:979:	 * above, so we can no longer trust it.
+./stand/libsa/environment.c:229:	 * We impose restrictions if input is not verified/trusted
+./stand/libsa/environment.c:290:/* called from subr_boot with not quite trusted input */
+./stand/libsa/zfs/zfsimpl.c:825:	 * First one which is the one we are replacing and we can trust
+./stand/libsa/zfs/zfsimpl.c:828:	 * healthy, but we can't trust it has needed data, so we won't use it.
+./sys/compat/linuxkpi/common/src/linux_acpi.c:312:	 * XXX johalun: acpi_{sleep,wakeup}_event can't be trusted, use
+./sys/arm64/nvidia/tegra210/tegra210_pmc.c:502:	 * If PMC is coverd by secure trust zone, all reads returns 0,
+./sys/geom/part/g_part_ldm.c:514:				 * We can not trust this metadata.
+./sys/geom/part/g_part_gpt.c:1361:	 * commit the operation). For these operations, we have to trust the
+./sys/geom/raid/tr_raid1.c:863:		 * the verge of total failure anyway.  Better to stop trusting
+./sys/geom/raid/tr_raid1e.c:1102:		 * the verge of total failure anyway.  Better to stop trusting
+./sys/geom/virstor/g_virstor.c:1318:	 * verify map data is sane. We could trust metadata on this, but
+./sys/cddl/contrib/opensolaris/uts/common/sys/cred.h:155: * Private interfaces for Rampart Trusted Solaris.
+./sys/cddl/contrib/opensolaris/uts/common/dtrace/fasttrap.c:96: * limitation that we can't trust user space so don't want to rely on much
+./sys/sys/kernel.h:118:	SI_SUB_MAC		= 0x2180000,	/* TrustedBSD MAC subsystem */
+./sys/sys/kernel.h:119:	SI_SUB_MAC_POLICY	= 0x21C0000,	/* TrustedBSD MAC policies */
+./sys/sys/kernel.h:120:	SI_SUB_MAC_LATE		= 0x21D0000,	/* TrustedBSD MAC subsystem */
+./sys/sys/acl.h:8: * This software was developed by Robert Watson for the TrustedBSD Project.
+./sys/sys/acl.h:32: * Developed by the TrustedBSD Project.
+./sys/sys/mac.h:9: * This software was developed by Robert Watson for the TrustedBSD Project.
+./sys/sys/mac.h:44: * http://www.TrustedBSD.org/
+./sys/sys/ata.h:69:/*048*/ u_int16_t       tcg;                    /* Trusted Computing Group */
+./sys/sys/priv.h:7: * This software was developed by Robert N. M. Watson for the TrustedBSD
+./sys/sys/mount.h:367:	{ MNT_UNTRUSTED,	"untrusted" },				\
+./sys/sys/mount.h:400:#define	MNT_UNTRUSTED	0x0000000800000000ULL /* filesys metadata untrusted */
+./sys/sys/extattr.h:7: * This software was developed by Robert Watson for the TrustedBSD Project.
+./sys/sys/extattr.h:31: * Developed by the TrustedBSD Project.
+./sys/security/mac_biba/mac_biba.h:6: * This software was developed by Robert Watson for the TrustedBSD Project.
+./sys/security/mac_biba/mac_biba.h:35: * Definitions for the TrustedBSD Biba integrity policy module.
+./sys/security/mac_biba/mac_biba.c:7: * This software was developed by Robert Watson for the TrustedBSD Project.
+./sys/security/mac_biba/mac_biba.c:43: * Developed by the TrustedBSD Project.
+./sys/security/mac_biba/mac_biba.c:93:    "TrustedBSD mac_biba policy controls");
+./sys/security/mac_seeotheruids/mac_seeotheruids.c:7: * This software was developed by Robert Watson for the TrustedBSD Project.
+./sys/security/mac_seeotheruids/mac_seeotheruids.c:40: * Developed by the TrustedBSD Project.
+./sys/security/mac_seeotheruids/mac_seeotheruids.c:70:    "TrustedBSD mac_seeotheruids policy controls");
+./sys/security/mac_stub/mac_stub.c:8: * This software was developed by Robert Watson for the TrustedBSD Project.
+./sys/security/mac_stub/mac_stub.c:44: * Developed by the TrustedBSD Project.
+./sys/security/mac_stub/mac_stub.c:94:    "TrustedBSD mac_stub policy controls");
+./sys/security/mac_test/mac_test.c:8: * This software was developed by Robert Watson for the TrustedBSD Project.
+./sys/security/mac_test/mac_test.c:44: * Developed by the TrustedBSD Project.
+./sys/security/mac_test/mac_test.c:84:    "TrustedBSD mac_test policy controls");
+./sys/security/mac_partition/mac_partition.h:6: * This software was developed by Robert Watson for the TrustedBSD Project.
+./sys/security/mac_partition/mac_partition.h:36: * Definitions for the TrustedBSD partition policy module.
+./sys/security/mac_partition/mac_partition.c:8: * This software was developed by Robert Watson for the TrustedBSD Project.
+./sys/security/mac_partition/mac_partition.c:41: * Developed by the TrustedBSD Project.
+./sys/security/mac_partition/mac_partition.c:66:    "TrustedBSD mac_partition policy controls");
+./sys/security/mac_mls/mac_mls.h:6: * This software was developed by Robert Watson for the TrustedBSD Project.
+... [1417 more matches]
+```
+
+--- RESPONSE ---
+
+
+The build reports 0 errors but fails the contract. The issue is likely that cargo isn't being invoked during the normal build. Let me check if cargo exists on the system:
+
+ACTION: READ_FILE share/mk/bsd.prog.mk

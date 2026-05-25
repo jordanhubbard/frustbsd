@@ -1,0 +1,93 @@
+=== STEP 270 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/basename/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/bintrans
+   Files: 0/7
+📄 File: usr.bin/basename/Makefile
+✏️  Edits: 7 files modified
+
+```
+.include <src.opts.mk>
+
+PROG=	basename
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+MLINKS=	basename.1 dirname.1
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}+= tests
+
+```
+
+--- RESPONSE ---
+
+
+I see the pattern now. The basename Makefile doesn't use `bsd.prog.mk` - it directly defines the `${PROG}` target to build from Rust. Let me follow this pattern:
+
+ACTION: WRITE_FILE usr.bin/bintrans/Makefile
+CONTENT:
+<<<
+.include <src.opts.mk>
+
+PROG=	bintrans
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+LINKS+=	${BINDIR}/bintrans ${BINDIR}/uuencode
+LINKS+=	${BINDIR}/bintrans ${BINDIR}/b64encode
+LINKS+=	${BINDIR}/bintrans ${BINDIR}/uudecode
+LINKS+=	${BINDIR}/bintrans ${BINDIR}/b64decode
+LINKS+=	${BINDIR}/bintrans ${BINDIR}/base64
+MLINKS=	bintrans.1 uudecode.1 \
+	bintrans.1 uuencode.1 \
+	uuencode.format.5 uuencode.5 \
+	bintrans.1 b64encode.1 \
+	b64encode.1 b64decode.1 \
+	b64encode.1 base64.1
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}+= tests
+
+.include <bsd.links.mk>
+>>>

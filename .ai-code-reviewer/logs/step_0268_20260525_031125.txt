@@ -1,0 +1,48 @@
+=== STEP 268 ===
+
+--- REQUEST ---
+GREP_RESULT for 'CARG':
+```
+./sys/cddl/contrib/opensolaris/uts/common/sys/dtrace.h:266:#define	DIF_VAR_EXECARGS	0x0121	/* process arguments */
+./sys/cddl/contrib/opensolaris/uts/common/dtrace/dtrace.c:3633:	case DIF_VAR_EXECARGS: {
+./sys/cddl/contrib/opensolaris/uts/common/dtrace/dtrace.c:10362:			    v == DIF_VAR_EXECARGS ||
+./sys/cddl/contrib/opensolaris/uts/common/dtrace/dtrace.c:10448:		case DIF_VAR_EXECARGS:
+./sys/sys/bus_dma.h:223:	BD_PARAM_LOCKFUNCARG	= 11,
+./sys/sys/bus_dma.h:247:#define BD_LOCKFUNCARG(val)	{ BD_PARAM_LOCKFUNCARG, .ptr = val }
+./sys/sys/param.h:133:#define	NCARGS		ARG_MAX		/* max bytes for an exec function */
+./sys/kern/subr_bus_dma.c:670:		case BD_PARAM_LOCKFUNCARG:
+./sys/dev/mpr/mpr.c:1568:	    BD_LOCKFUNCARG(&sc->mpr_mtx),
+./sys/dev/mps/mps.c:1498:	    BD_LOCKFUNCARG(&sc->mps_mtx),
+./sys/fs/nfs/nfs_var.h:83:struct NFSSVCARGS;
+./sys/fs/nfs/nfsport.h:126:#define	NFSSVCARGS	nfssvc_args
+./crypto/openssl/include/openssl/lhash.h:44:typedef void (*OPENSSL_LH_DOALL_FUNCARG)(void *, void *);
+./crypto/openssl/include/openssl/lhash.h:45:typedef void (*OPENSSL_LH_DOALL_FUNCARG_THUNK)(void *, void *, OPENSSL_LH_DOALL_FUNCARG doall);
+./crypto/openssl/include/openssl/lhash.h:100:    OPENSSL_LH_DOALL_FUNCARG_THUNK daaw);
+./crypto/openssl/crypto/lhash/lhash_local.h:26:    OPENSSL_LH_DOALL_FUNCARG_THUNK daaw;
+./crypto/openssl/crypto/lhash/lhash.c:51:    OPENSSL_LH_DOALL_FUNCARG_THUNK daaw)
+./crypto/openssl/crypto/lhash/lhash.c:188:    OPENSSL_LH_DOALL_FUNCARG func_arg,
+./crypto/openssl/crypto/lhash/lhash.c:189:    OPENSSL_LH_DOALL_FUNCARG_THUNK wfunc_arg,
+./contrib/ncurses/ncurses/tty/tty_update.c:224:PutAttrChar(NCURSES_SP_DCLx CARG_CH_T ch)
+./contrib/ncurses/ncurses/curses.priv.h:1494:#define CARG_CH_T	const NCURSES_CH_T *
+./contrib/ncurses/ncurses/curses.priv.h:1570:#define CARG_CH_T	NCURSES_CH_T
+./contrib/ncurses/ncurses/curses.priv.h:1967:extern NCURSES_EXPORT(void) NCURSES_SP_NAME(_nc_UpdateAttrs) (NCURSES_SP_DCLx CARG_CH_T _c);
+./contrib/ncurses/ncurses/base/lib_screen.c:702:encode_cell(char *target, ARG_SLIMIT(limit) CARG_CH_T source, CARG_CH_T previous)
+./contrib/ncurses/ncurses/base/lib_screen.c:874:			    (CARG_CH_T) dp, CHREF(last_cell));
+./contrib/tcsh/ed.screen.c:656:		stderror(ERR_NAME | ERR_TCARGS, cv, arg_need);
+./contrib/tcsh/ed.screen.c:671:		stderror(ERR_NAME | ERR_TCARGS, cv, arg_need);
+./contrib/tcsh/ed.screen.c:678:	    stderror(ERR_NAME | ERR_TCARGS, cv, arg_need);
+./contrib/tcsh/sh.err.c:171:#define ERR_TCARGS	117
+./contrib/tcsh/sh.err.c:337:    elst[ERR_TCARGS] = CSAVS(1, 119, "Too many arguments for `%s' (%d)");
+./contrib/sqlite3/sqlite3.c:175331:#define YYMALLOCARGTYPE  u64
+./contrib/sqlite3/sqlite3.c:177624:#ifndef YYMALLOCARGTYPE
+./contrib/sqlite3/sqlite3.c:177625:# define YYMALLOCARGTYPE size_t
+./cddl/contrib/opensolaris/tools/ctf/cvt/ctftools.h:96:#define	FUNCARG_DEF	5
+./cddl/contrib/opensolaris/lib/libdtrace/common/dt_open.c:269:{ "execargs", DT_IDENT_SCALAR, 0, DIF_VAR_EXECARGS,
+```
+
+--- RESPONSE ---
+
+
+The build keeps failing with 0 errors. The issue is likely that cargo isn't available or the Makefile integration isn't working. Let me check if cargo exists on the system:
+
+ACTION: FIND_FILE cargo

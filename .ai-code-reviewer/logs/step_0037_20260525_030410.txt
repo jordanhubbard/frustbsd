@@ -1,0 +1,303 @@
+=== STEP 37 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/kenv/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now I need to create the Rust source directory and main.rs file.
+
+ACTION: WRITE_FILE bin/kenv/src/main.rs
+CONTENT:
+<<<
+// SPDX-License-Identifier: BSD-2-Clause
+//
+// Copyright (c) 2000  Peter Wemm <peter@freebsd.org>
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS'' AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+// OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+// OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+
+use std::ffi::CString;
+use std::io::{self, Write};
+use std::os::raw::{c_char, c_int};
+use std::process;
+
+// Constants from sys/sys/kenv.h
+const KENV_GET: c_int = 0;
+const KENV_SET: c_int = 1;
+const KENV_UNSET: c_int = 2;
+const KENV_DUMP: c_int = 3;
+const KENV_DUMP_LOADER: c_int = 4;
+const KENV_DUMP_STATIC: c_int = 5;
+
+extern "C" {
+    fn kenv(
+        typ: c_int,
+        name: *const c_char,
+        val: *mut c_char,
+        len: c_int,
+    ) -> c_int;
+}
+
+fn usage() -> ! {
+    let _ = io::stderr().write_all(
+        b"usage: kenv [-l|-s] [-hNq]\n\
+         \tkenv [-qv] variable[=value]\n\
+         \tkenv [-q] -u variable\n",
+    );
+    process::exit(1);
+}
+
+fn kdumpenv(dump_type: c_int, hflag: bool, Nflag: bool, qflag: bool) -> i32 {
+    // First call to get required buffer size
+    let envlen = unsafe { kenv(dump_type, std::ptr::null(), std::ptr::null_mut(), 0) };
+    if envlen < 0 {
+        return -1;
+    }
+
+    // Allocate with 20% headroom and retry if needed
+    let mut buflen = envlen * 120 / 100;
+    let mut buf: Vec<u8> = vec![0u8; buflen as usize + 1];
+
+    loop {
+        let ret = unsafe {
+            kenv(
+                dump_type,
+                std::ptr::null(),
+                buf.as_mut_ptr() as *mut c_char,
+                buflen as c_int,
+            )
+        };
+        if ret < 0 {
+            return -1;
+        }
+        if ret as usize > buflen {
+            buflen = ret as usize * 120 / 100;
+            buf = vec![0u8; buflen + 1];
+        } else {
+            break;
+        }
+    }
+
+    // Parse the null-delimited key=value pairs
+    let mut pos = 0;
+    while pos < buf.len() && buf[pos] != 0 {
+        let start = pos;
+        while pos < buf.len() && buf[pos] != 0 {
+            pos += 1;
+        }
+        // Skip the null terminator
+        pos += 1;
+
+        let entry = &buf[start..pos - 1];
+        let entry_str = std::str::from_utf8(entry).unwrap_or("");
+
+        if hflag && !entry_str.starts_with("hint.") {
+            continue;
+        }
+
+        if let Some(eq_pos) = entry_str.find('=') {
+            let key = &entry_str[..eq_pos];
+            let value = &entry_str[eq_pos + 1..];
+
+            if Nflag {
+                println!("{}", key);
+            } else {
+                println!("\"{}\"=\"{}\"", key, value);
+            }
+        }
+    }
+
+    0
+}
+
+fn kgetenv(env: &str, vflag: bool) -> i32 {
+    let c_env = match CString::new(env) {
+        Ok(c) => c,
+        Err(_) => return -1,
+    };
+
+    let mut buf = vec![0u8; 1024];
+    let ret = unsafe {
+        kenv(
+            KENV_GET,
+            c_env.as_ptr(),
+            buf.as_mut_ptr() as *mut c_char,
+            buf.len() as c_int,
+        )
+    };
+    if ret < 0 {
+        return ret;
+    }
+
+    let len = buf.iter().position(|&b| b == 0).unwrap_or(buf.len());
+    let value = std::str::from_utf8(&buf[..len]).unwrap_or("");
+
+    if vflag {
+        println!("\"{}\"=\"{}\"", env, value);
+    } else {
+        println!("{}", value);
+    }
+
+    0
+}
+
+fn ksetenv(env: &str, val: &str) -> i32 {
+    let c_env = match CString::new(env) {
+        Ok(c) => c,
+        Err(_) => return -1,
+    };
+    let c_val = match CString::new(val) {
+        Ok(c) => c,
+        Err(_) => return -1,
+    };
+
+    let ret = unsafe {
+        kenv(
+            KENV_SET,
+            c_env.as_ptr(),
+            c_val.as_ptr() as *mut c_char,
+            (val.len() + 1) as c_int,
+        )
+    };
+    if ret == 0 {
+        println!("\"{}\"=\"{}\"", env, val);
+    }
+    ret
+}
+
+fn kunsetenv(env: &str) -> i32 {
+    let c_env = match CString::new(env) {
+        Ok(c) => c,
+        Err(_) => return -1,
+    };
+
+    unsafe { kenv(KENV_UNSET, c_env.as_ptr(), std::ptr::null_mut(), 0) }
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().skip(1).collect();
+
+    let mut hflag = false;
+    let mut lflag = false;
+    let mut Nflag = false;
+    let mut qflag = false;
+    let mut sflag = false;
+    let mut uflag = false;
+    let mut vflag = false;
+
+    let mut i = 0;
+    let mut remaining: Vec<String> = Vec::new();
+
+    // Parse flags
+    while i < args.len() {
+        let arg = &args[i];
+        if arg.starts_with('-') && arg.len() > 1 {
+            // Check for combined flags like -hlNq
+            for ch in arg[1..].chars() {
+                match ch {
+                    'h' => hflag = true,
+                    'l' => lflag = true,
+                    'N' => Nflag = true,
+                    'q' => qflag = true,
+                    's' => sflag = true,
+                    'u' => uflag = true,
+                    'v' => vflag = true,
+                    _ => usage(),
+                }
+            }
+            i += 1;
+        } else {
+            remaining.push(arg.clone());
+            i += 1;
+        }
+    }
+
+    // Validate flag combinations
+    if (hflag || Nflag) && !remaining.is_empty() {
+        usage();
+    }
+    if lflag && sflag {
+        usage();
+    }
+
+    let mut env: Option<String> = None;
+    let mut val: Option<String> = None;
+
+    if !remaining.is_empty() {
+        env = Some(remaining[0].clone());
+        if let Some(eq_pos) = remaining[0].find('=') {
+            let key = remaining[0][..eq_pos].to_string();
+            let value = remaining[0][eq_pos + 1..].to_string();
+            env = Some(key);
+            val = Some(value);
+        }
+        if remaining.len() > 1 {
+            usage();
+        }
+    }
+
+    if (uflag || vflag) && env.is_none() {
+        usage();
+    }
+
+    let mut error: i32 = 0;
+
+    if let Some(ref env_name) = env {
+        if let Some(ref value) = val {
+            // Set
+            error = ksetenv(env_name, value);
+            if error != 0 && !qflag {
+                eprintln!("kenv: unable to set {} to {}", env_name, value);
+            }
+        } else if uflag {
+            // Unset
+            error = kunsetenv(env_name);
+            if error != 0 && !qflag {
+                eprintln!("kenv: unable to unset {}", env_name);
+            }
+        } else {
+            // Get
+            error = kgetenv(env_name, vflag);
+            if error != 0 && !qflag {
+                eprintln!("kenv: unable to get {}", env_name);
+            }
+        }
+    } else {
+        // Dump
+        let dump_type = if lflag {
+            KENV_DUMP_LOADER
+        } else if sflag {
+            KENV_DUMP_STATIC
+        } else {
+            KENV_DUMP
+        };
+        error = kdumpenv(dump_type, hflag, Nflag, qflag);
+        if error != 0 && !qflag {
+            eprintln!("kenv: kdumpenv failed");
+        }
+    }
+
+    process::exit(error);
+}
+>>>
