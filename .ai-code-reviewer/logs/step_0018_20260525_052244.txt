@@ -1,0 +1,10 @@
+=== STEP 18 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Directory not found: usr.bin/bsnmp
+TIP: Use LIST_DIR to see available directories
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin

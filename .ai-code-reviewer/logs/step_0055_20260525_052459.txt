@@ -1,0 +1,15 @@
+=== STEP 55 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tabs:
+```
+Makefile
+Makefile.depend
+tabs.1
+tabs.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/tabs/Makefile

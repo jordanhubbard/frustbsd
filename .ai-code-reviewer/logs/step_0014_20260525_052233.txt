@@ -1,0 +1,12 @@
+=== STEP 14 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cp is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/asa

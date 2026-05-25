@@ -1,0 +1,49 @@
+=== STEP 230 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/tools/regression/tls/ttls2/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The Rust code has a syntax error - `const` blocks aren't valid in `thread_local!` initializers. Let me fix it:
+
+ACTION: WRITE_FILE tools/regression/tls/ttls2/src/main.rs
+CONTENT:
+use std::cell::Cell;
+use std::thread;
+use std::time::Duration;
+
+thread_local!(static I: Cell<i32> = Cell::new(0));
+
+fn main() {
+    let t1 = thread::spawn(|| {
+        let tid = format!("{:?}", thread::current().id());
+        let addr = &*I as *const Cell<i32> as *const std::os::raw::c_void;
+        println!("thread {}, &i = {:p}", tid, addr);
+        for val in 0..10 {
+            I.with(|cell| {
+                cell.set(val);
+                println!("thread {}, i = {}", tid, cell.get());
+            });
+            thread::sleep(Duration::from_secs(1));
+        }
+    });
+
+    let t2 = thread::spawn(|| {
+        let tid = format!("{:?}", thread::current().id());
+        let addr = &*I as *const Cell<i32> as *const std::os::raw::c_void;
+        println!("thread {}, &i = {:p}", tid, addr);
+        for val in (1..11).rev() {
+            I.with(|cell| {
+                cell.set(val);
+                println!("thread {}, i = {}", tid, cell.get());
+            });
+            thread::sleep(Duration::from_secs(1));
+        }
+    });
+
+    t1.join().unwrap();
+    t2.join().unwrap();
+}

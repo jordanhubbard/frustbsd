@@ -1,0 +1,280 @@
+=== STEP 59 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tabs/rust/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now I need to create the Rust source file. This is a complex program using termcap FFI. Let me write it:
+
+ACTION: WRITE_FILE usr.bin/tabs/rust/src/main.rs
+CONTENT:
+<<<
+/*-
+ * SPDX-License-Identifier: BSD-2-Clause
+ *
+ * Copyright (c) 2002 Tim J. Robbins.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+use std::ffi::{CStr, CString};
+use std::io::{self, Write};
+use std::os::unix::io::AsRawFd;
+use std::ptr;
+use std::str;
+
+const NSTOPS: usize = 20;
+
+// Predefined formats, taken from IEEE Std 1003.1-2001.
+static FORMATS: &[(&str, [i64; NSTOPS])] = &[
+    ("a",  [1, 10, 16, 36, 72, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    ("a2", [1, 10, 16, 40, 72, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    ("c",  [1, 8, 12, 16, 20, 55, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    ("c2", [1, 6, 10, 14, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    ("c3", [1, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58, 62, 67, 0, 0, 0]),
+    ("f",  [1, 7, 11, 15, 19, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    ("p",  [1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61, 0, 0, 0, 0]),
+    ("s",  [1, 10, 55, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    ("u",  [1, 12, 20, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+];
+
+extern "C" {
+    fn setupterm(term: *const libc::c_char, fd: libc::c_int, errret: *mut libc::c_int) -> libc::c_int;
+    fn tgetstr(cap: *const libc::c_char, area: *mut *mut libc::c_char) -> *mut libc::c_char;
+    fn tgetnum(cap: *const libc::c_char) -> libc::c_int;
+    fn putp(str: *const libc::c_char) -> libc::c_int;
+    fn ioctl(fd: libc::c_int, request: libc::c_ulong, ...) -> libc::c_int;
+}
+
+#[repr(C)]
+struct Winsize {
+    ws_row: libc::c_ushort,
+    ws_col: libc::c_ushort,
+    ws_xpixel: libc::c_ushort,
+    ws_ypixel: libc::c_ushort,
+}
+
+const TIOCGWINSZ: libc::c_ulong = 0x40087468;
+
+fn errx(code: i32, msg: &str) -> ! {
+    eprintln!("{}", msg);
+    std::process::exit(code);
+}
+
+fn warnx(msg: &str) {
+    eprintln!("tabs: {}", msg);
+}
+
+fn usage() -> ! {
+    eprintln!("usage: tabs [-n|-a|-a2|-c|-c2|-c3|-f|-p|-s|-u] [+m[n]] [-T type]");
+    eprintln!("       tabs [-T type] [+[n]] n1,[n2,...]");
+    std::process::exit(1);
+}
+
+fn gettabs(arg: &str, stops: &mut Vec<i64>) {
+    let mut last: i64 = 0;
+    let mut nstops: usize = 0;
+    let mut first = true;
+
+    for tok in arg.split(',') {
+        if nstops >= NSTOPS {
+            errx(1, &format!("too many tab stops (limit {})", NSTOPS));
+        }
+        let tok_trimmed = tok.trim();
+        if tok_trimmed.is_empty() {
+            continue;
+        }
+        let stop: i64 = match tok_trimmed.parse() {
+            Ok(v) => v,
+            Err(_) => errx(1, &format!("{}: invalid tab stop", tok_trimmed)),
+        };
+        if stop <= 0 {
+            errx(1, &format!("{}: invalid tab stop", tok_trimmed));
+        }
+        let final_stop = if tok_trimmed.starts_with('+') {
+            if first {
+                errx(1, &format!("{}: first tab may not be relative", tok_trimmed));
+            }
+            stop + last
+        } else {
+            stop
+        };
+        if last > final_stop {
+            errx(1, "cannot go backwards");
+        }
+        last = final_stop;
+        stops.push(final_stop);
+        nstops += 1;
+        first = false;
+    }
+}
+
+fn ttywidth() -> i64 {
+    let stdout = io::stdout();
+    let fd = stdout.as_raw_fd();
+    let mut ws: Winsize = unsafe { std::mem::zeroed() };
+    if unsafe { ioctl(fd, TIOCGWINSZ, &mut ws as *mut Winsize) } != -1 {
+        return ws.ws_col as i64;
+    }
+    let width = unsafe { tgetnum(c"co") } as i64;
+    if width != 0 {
+        return width;
+    }
+    warnx("cannot find terminal width; defaulted to 80");
+    80
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let mut inc: i64 = 8;
+    let mut margin: i64 = 0;
+    let mut nstops: i64 = -1;
+    let mut stops: Vec<i64> = Vec::new();
+    let mut arg_idx: usize = 1;
+    let mut custom_stops = false;
+
+    while arg_idx < args.len() {
+        let arg = &args[arg_idx];
+        if arg.starts_with('-') || arg.starts_with('+') {
+            if arg.starts_with('+') {
+                let rest = &arg[1..];
+                let margin_str = if rest.starts_with('m') { &rest[1..] } else { rest };
+                if !margin_str.is_empty() {
+                    margin = match margin_str.parse::<i64>() {
+                        Ok(v) if v >= 0 => v,
+                        _ => errx(1, &format!("{}: invalid margin width", margin_str)),
+                    };
+                } else {
+                    margin = 10;
+                }
+            } else if arg.len() > 1 && arg.as_bytes()[1].is_ascii_digit() {
+                let num_str = &arg[1..];
+                inc = match num_str.parse::<i64>() {
+                    Ok(v) if v >= 0 => v,
+                    _ => errx(1, &format!("{}: invalid increment", num_str)),
+                };
+            } else if arg == "-T" || arg.starts_with("-T") {
+                let term_val = if arg.len() > 2 { &arg[2..] } else {
+                    arg_idx += 1;
+                    if arg_idx >= args.len() {
+                        usage();
+                    }
+                    &args[arg_idx]
+                };
+                std::env::set_var("TERM", term_val);
+            } else if arg == "--" {
+                arg_idx += 1;
+                break;
+            } else {
+                // Predefined format
+                let fmt_name = &arg[1..];
+                let found = FORMATS.iter().position(|(name, _)| *name == fmt_name);
+                if found.is_none() {
+                    usage();
+                }
+                let (_, &stops_arr) = FORMATS[found.unwrap()];
+                for &s in stops_arr.iter() {
+                    if s == 0 { break; }
+                    stops.push(s);
+                }
+                nstops = stops.len() as i64;
+                custom_stops = true;
+            }
+            arg_idx += 1;
+        } else {
+            break;
+        }
+    }
+
+    // Check for remaining positional argument
+    let mut remaining_args: Vec<&str> = args[arg_idx..].iter().map(|s| s.as_str()).collect();
+    if !remaining_args.is_empty() {
+        if custom_stops {
+            usage();
+        }
+        let combined = remaining_args.join(",");
+        gettabs(&combined, &mut stops);
+        nstops = stops.len() as i64;
+    }
+
+    // Initialise terminal
+    let mut errret: libc::c_int = 0;
+    unsafe {
+        setupterm(ptr::null(), 1, &mut errret);
+    }
+
+    let mut ap: *mut libc::c_char = ptr::null_mut();
+    let ct = unsafe { tgetstr(c"ct", &mut ap) };
+    if ct.is_null() {
+        errx(1, "terminal cannot clear tabs");
+    }
+    let st = unsafe { tgetstr(c"st", &mut ap) };
+    if st.is_null() {
+        errx(1, "terminal cannot set tabs");
+    }
+    let cr = unsafe { tgetstr(c"cr", &mut ap) };
+    let cr_str = if cr.is_null() { "\r" } else {
+        unsafe { CStr::from_ptr(cr).to_str().unwrap_or("\r") }
+    };
+    let ml = unsafe { tgetstr(c"ML", &mut ap) };
+
+    let cols = ttywidth();
+
+    // Clear all tabs
+    print!("{}", cr_str);
+    unsafe { putp(ct) };
+
+    // Set soft margin
+    if !ml.is_null() {
+        let ml_str = unsafe { CStr::from_ptr(ml).to_str().unwrap_or("") };
+        print!("{:width$}", "", width = margin as usize);
+        print!("{}", ml_str);
+    } else if margin != 0 {
+        warnx("terminal cannot set left margin");
+    }
+
+    // Optionally output new tab stops
+    let stdout = io::stdout();
+    let mut out = stdout.lock();
+    if nstops >= 0 && !stops.is_empty() {
+        let _ = out.write_all(format!("{:width$}", "", width = (stops[0] - 1) as usize).as_bytes());
+        unsafe { putp(st) };
+        for i in 1..stops.len() {
+            let gap = (stops[i] - stops[i - 1]) as usize;
+            let _ = out.write_all(format!("{:width$}", "", width = gap).as_bytes());
+            unsafe { putp(st) };
+        }
+    } else if inc > 0 {
+        let count = cols / inc;
+        for _ in 0..count {
+            unsafe { putp(st) };
+            let _ = out.write_all(format!("{:width$}", "", width = inc as usize).as_bytes());
+        }
+        unsafe { putp(st) };
+    }
+    print!("{}", cr_str);
+}
+>>>

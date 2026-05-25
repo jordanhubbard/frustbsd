@@ -243,6 +243,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-24T05:19:11.095157"
   },
+  "crypto/krb5/src/lib/krb5/error_tables": {
+    "attempts": 1,
+    "last_attempt": "2026-05-25T05:32:19.468081"
+  },
   "crypto/krb5/src/plugins/kdb/db2/libdb2/test/hash2.tests/passwd": {
     "attempts": 3,
     "last_attempt": "2026-05-23T13:46:27.200382"
@@ -362,6 +366,10 @@
   "tools/regression/tls/ttls1": {
     "attempts": 3,
     "last_attempt": "2026-05-23T08:16:37.282405"
+  },
+  "tools/regression/tls/ttls2": {
+    "attempts": 1,
+    "last_attempt": "2026-05-25T05:30:01.729652"
   },
   "usr.bin/apply": {
     "attempts": 3,
