@@ -1,0 +1,17 @@
+=== STEP 5 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/VE/TargetInfo:
+```
+VETargetInfo.cpp
+VETargetInfo.h
+```
+
+--- RESPONSE ---
+
+
+This work unit is part of the LLVM project's VE target backend — it's deeply embedded in LLVM's C++ infrastructure (`Target`, `RegisterTarget`, `Triple::ve`, etc.), has no standalone Makefile, and is not FreeBSD userland code. The rewrite objective is "Translate FreeBSD userland C/C++ libraries and commands to Rust", and the constraints explicitly state: "If the selected unit has no source relevant to the configured objective, choose another scope instead of fabricating a rewrite."
+
+This unit has already used 3/3 attempts and the next attempt will auto-skip. I should move to the next pending unit.
+
+ACTION: SET_SCOPE bin/cat/tests
