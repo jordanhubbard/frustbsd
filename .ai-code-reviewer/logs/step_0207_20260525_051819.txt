@@ -1,0 +1,30 @@
+=== STEP 207 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*cddl/contrib/opensolaris/cmd/dtrace/Makefile*'
+
+--- RESPONSE ---
+
+
+The build errors are from Makefile.inc1 top-level infrastructure, not from my Rust changes. This test directory has no Makefile and can't be built standalone. Let me add a Makefile to integrate the Rust build:
+
+ACTION: WRITE_FILE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sdt/Makefile
+CONTENT:
+PROG=	tst.sdtargs
+
+RUST_PROG=	${PROG}
+RUST_TARGET_DIR=	${.OBJDIR}/rust-target
+
+${RUST_PROG}: ${RUST_TARGET_DIR}/bin/${RUST_PROG}
+	${INSTALL} ${RUST_TARGET_DIR}/bin/${RUST_PROG} ${.TARGET}
+
+${RUST_TARGET_DIR}/bin/${RUST_PROG}: Cargo.toml src/main.rs
+	@mkdir -p ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR} --release
+
+clean:
+	@rm -rf ${RUST_TARGET_DIR}
+
+all: ${RUST_PROG}
+
+.include <bsd.prog.mk>

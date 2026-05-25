@@ -1,0 +1,46 @@
+=== STEP 197 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sdt/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sdt/src/main.rs
+CONTENT:
+use std::ffi::CString;
+use std::os::raw::c_int;
+use std::time::Duration;
+
+extern "C" {
+    fn sysctlbyname(
+        name: *const i8,
+        oldp: *mut std::os::raw::c_void,
+        oldlenp: *mut usize,
+        newp: *mut std::os::raw::c_void,
+        newlen: usize,
+    ) -> c_int;
+}
+
+fn main() {
+    let name = CString::new("debug.dtracetest.sdttest").unwrap();
+    let mut val: i32 = 1;
+
+    loop {
+        unsafe {
+            if sysctlbyname(
+                name.as_ptr(),
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+                &mut val as *mut i32 as *mut std::os::raw::c_void,
+                std::mem::size_of::<i32>(),
+            ) != 0
+            {
+                eprintln!("sysctlbyname: {}", std::io::Error::last_os_error());
+                std::process::exit(1);
+            }
+        }
+        std::thread::sleep(Duration::from_secs(1));
+    }
+}

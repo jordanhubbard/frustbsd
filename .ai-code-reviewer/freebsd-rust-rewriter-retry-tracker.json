@@ -117,11 +117,11 @@
   },
   "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes": {
     "attempts": 3,
-    "last_attempt": "2026-05-25T03:50:55.548575"
+    "last_attempt": "2026-05-25T03:25:26.071124"
   },
   "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sdt": {
-    "attempts": 1,
-    "last_attempt": "2026-05-25T02:41:19.637451"
+    "attempts": 2,
+    "last_attempt": "2026-05-25T05:13:45.293481"
   },
   "contrib/libcbor/examples/bazel/src": {
     "attempts": 2,
@@ -520,8 +520,8 @@
     "last_attempt": "2026-05-22T20:48:02.583318"
   },
   "usr.bin/ident": {
-    "attempts": 2,
-    "last_attempt": "2026-05-25T00:51:58.500606"
+    "attempts": 3,
+    "last_attempt": "2026-05-25T03:40:14.004062"
   },
   "usr.bin/join": {
     "attempts": 1,

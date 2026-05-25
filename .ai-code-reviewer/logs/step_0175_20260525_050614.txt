@@ -1,0 +1,17 @@
+=== STEP 175 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/ident:
+```
+Makefile
+Makefile.depend
+ident.1
+ident.c
+src
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/ident/ident.c

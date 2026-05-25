@@ -1,0 +1,63 @@
+=== STEP 210 ===
+
+--- REQUEST ---
+
+⚠️  INCOMPLETE RESPONSE DETECTED
+
+Problem: Mismatched <<< >>> delimiters (incomplete EDIT_FILE)
+Response length: 1114 chars
+Last 100 chars: ...CURDIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR} --release
+
+clean:
+	@rm -rf ${RUST_TARGET_DIR}
+>>>
+
+Your response appears to have been cut off before completion.
+Please provide a COMPLETE response including:
+1. Your analysis
+2. A SINGLE, COMPLETE ACTION directive
+3. For EDIT_FILE: both complete OLD and NEW blocks
+
+If you're working with a large file causing timeouts:
+- Focus on ONE specific issue at a time
+- Use smaller OLD/NEW blocks
+- Consider SKIP_FILE if the file is too complex
+
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sdt/Makefile
+OLD:
+PROG=	tst.sdtargs
+
+RUST_PROG=	${PROG}
+RUST_TARGET_DIR=	${.OBJDIR}/rust-target
+
+${RUST_PROG}: ${RUST_TARGET_DIR}/bin/${RUST_PROG}
+	${INSTALL} ${RUST_TARGET_DIR}/bin/${RUST_PROG} ${.TARGET}
+
+${RUST_TARGET_DIR}/bin/${RUST_PROG}: Cargo.toml src/main.rs
+	@mkdir -p ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR} --release
+
+clean:
+	@rm -rf ${RUST_TARGET_DIR}
+
+all: ${RUST_PROG}
+
+.include <bsd.prog.mk>
+>>>
+NEW:
+PROG=	tst.sdtargs
+RUST_TARGET_DIR=	${.OBJDIR}/rust-target
+
+all: ${RUST_TARGET_DIR}/bin/${PROG}
+
+${RUST_TARGET_DIR}/bin/${PROG}: Cargo.toml src/main.rs
+	@mkdir -p ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR} --release
+
+clean:
+	@rm -rf ${RUST_TARGET_DIR}
+>>>

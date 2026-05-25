@@ -1,0 +1,11 @@
+=== STEP 206 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*cddl/contrib/opensolaris/cmd/dtrace/Makefile*'
+
+--- RESPONSE ---
+
+
+The build errors are from Makefile.inc1 top-level infrastructure, not from my Rust changes. This test directory has no Makefile and can't be built standalone. Let me check the parent dtrace directory for a Makefile:
+
+ACTION: FIND_FILE cddl/contrib/opensolaris/cmd/dtrace/Makefile

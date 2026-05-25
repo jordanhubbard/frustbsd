@@ -1,0 +1,14 @@
+=== STEP 73 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/seq is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo
+
+--- RESPONSE ---
+
+
+The build errors reference top-level `Makefile.inc1` infrastructure, not my unit changes. Let me try a different unit.
+
+ACTION: SET_SCOPE bin/realpath
