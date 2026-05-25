@@ -1,0 +1,85 @@
+=== STEP 29 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/tsort
+   Files: 0/3
+📄 File: usr.bin/tsort/tsort.c
+   Chunks: 12/15
+
+```
+=== CHUNK 12/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tsort/tsort.c === [function: tsort]
+=== Lines 288-350 (63 lines) ===
+
+static void
+tsort(void)
+{
+	NODE *n, *next;
+	int cnt, i;
+
+	while (graph != NULL) {
+		/*
+		 * Keep getting rid of simple cases until there are none left,
+		 * if there are any nodes still in the graph, then there is
+		 * a cycle in it.
+		 */
+		do {
+			for (cnt = 0, n = graph; n != NULL; n = next) {
+				next = n->n_next;
+				if (n->n_refcnt == 0) {
+					remove_node(n);
+					++cnt;
+				}
+			}
+		} while (graph != NULL && cnt);
+
+		if (graph == NULL)
+			break;
+
+		if (!cycle_buf) {
+			/*
+			 * Allocate space for two cycle logs - one to be used
+			 * as scratch space, the other to save the longest
+			 * cycle.
+			 */
+			for (cnt = 0, n = graph; n != NULL; n = n->n_next)
+				++cnt;
+			cycle_buf = malloc(sizeof(NODE *) * cnt);
+			longest_cycle = malloc(sizeof(NODE *) * cnt);
+			if (cycle_buf == NULL || longest_cycle == NULL)
+				err(1, NULL);
+		}
+		for (n = graph; n != NULL; n = n->n_next)
+			if (!(n->n_flags & NF_ACYCLIC)) {
+				if ((cnt = find_cycle(n, n, 0, 0))) {
+					if (!quiet) {
+						warnx("cycle in data");
+						for (i = 0; i < cnt; i++)
+							warnx("%s",
+							    longest_cycle[i]->n_name);
+					}
+					remove_node(n);
+					clear_cycle();
+					break;
+				} else {
+					/* to avoid further checks */
+					n->n_flags  |= NF_ACYCLIC;
+					clear_cycle();
+				}
+			}
+
+		if (n == NULL)
+			errx(1, "internal error -- could not find cycle");
+	}
+}
+
+/* print node and remove from graph (does not actually free node) */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

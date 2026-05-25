@@ -1,0 +1,10 @@
+=== STEP 255 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Directory not found: usr.bin/hostname
+TIP: Use LIST_DIR to see available directories
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/hostname

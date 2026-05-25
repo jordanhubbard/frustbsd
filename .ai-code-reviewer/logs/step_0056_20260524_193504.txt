@@ -1,0 +1,57 @@
+=== STEP 56 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/pr
+   Files: 0/6
+📄 File: usr.bin/pr/pr.c
+   Chunks: 12/19
+
+```
+=== CHUNK 12/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/pr/pr.c === [function: prhead]
+=== Lines 1439-1473 (35 lines) ===
+
+int
+prhead(char *buf, const char *fname, int pagcnt)
+{
+	int ips = 0;
+	int ops = 0;
+
+	if ((putchar('\n') == EOF) || (putchar('\n') == EOF)) {
+		pfail();
+		return(1);
+	}
+	/*
+	 * posix is not clear if the header is subject to line length
+	 * restrictions. The specification for header line format
+	 * in the spec clearly does not limit length. No pr currently
+	 * restricts header length. However if we need to truncate in
+	 * a reasonable way, adjust the length of the printf by
+	 * changing HDFMT to allow a length max as an argument to printf.
+	 * buf (which contains the offset spaces and time field could
+	 * also be trimmed
+	 *
+	 * note only the offset (if any) is processed for tab expansion
+	 */
+	if (offst && otln(buf, offst, &ips, &ops, -1))
+		return(1);
+	(void)printf(HDFMT,buf+offst, fname, pagcnt);
+	return(0);
+}
+
+/*
+ * prtail():	pad page with empty lines (if required) and print page trailer
+ *		if requested
+ *
+ *	cnt	number of lines of padding needed
+ *	incomp	was a '\n' missing from last line output
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

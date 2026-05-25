@@ -1,0 +1,43 @@
+=== STEP 47 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/pr
+   Files: 0/6
+📄 File: usr.bin/pr/pr.c
+   Chunks: 3/19
+
+```
+=== CHUNK 3/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/pr/pr.c === [function: ttypause]
+=== Lines 138-158 (21 lines) ===
+
+static void
+ttypause(int pagecnt)
+{
+	int pch;
+	FILE *ttyfp;
+
+	if ((pauseall || (pausefst && pagecnt == 1)) &&
+	    isatty(STDOUT_FILENO)) {
+		if ((ttyfp = fopen("/dev/tty", "r")) != NULL) {
+			(void)putc('\a', stderr);
+			while ((pch = getc(ttyfp)) != '\n' && pch != EOF)
+				;
+			(void)fclose(ttyfp);
+		}
+	}
+}
+
+/*
+ * onecol:	print files with only one column of output.
+ *		Line length is unlimited.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

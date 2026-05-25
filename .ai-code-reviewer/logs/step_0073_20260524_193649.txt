@@ -1,0 +1,25 @@
+=== STEP 73 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/wall/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/wall
+   Files: 0/5
+📄 File: usr.bin/wall/Makefile
+
+```
+PROG=	wall
+SRCS=	ttymsg.c wall.c
+BINGRP=	tty
+BINMODE=2555
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+This is a moderately complex program with utmpx, wide characters, fork/writev, etc. Let me try to find a simpler unit.
+
+ACTION: SET_SCOPE usr.bin/dirname

@@ -1,0 +1,24 @@
+=== STEP 24 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/tsort
+   Files: 0/3
+📄 File: usr.bin/tsort/tsort.c
+   Chunks: 7/15
+
+```
+=== CHUNK 7/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tsort/tsort.c === [function: usage]
+=== Lines 99-100 (2 lines) ===
+
+static void	 usage(void);
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

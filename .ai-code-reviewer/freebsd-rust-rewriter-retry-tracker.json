@@ -372,8 +372,8 @@
     "last_attempt": "2026-05-24T15:00:12.231595"
   },
   "usr.bin/ctlstat": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T18:15:00.959777"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T20:08:15.535794"
   },
   "usr.bin/cut": {
     "attempts": 3,
@@ -387,6 +387,14 @@
     "attempts": 3,
     "last_attempt": "2026-05-24T18:16:09.117546"
   },
+  "usr.bin/elfctl": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T19:58:21.284804"
+  },
+  "usr.bin/elfdump": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T19:58:50.229122"
+  },
   "usr.bin/enigma": {
     "attempts": 3,
     "last_attempt": "2026-05-22T10:22:16.739825"
@@ -394,6 +402,10 @@
   "usr.bin/env": {
     "attempts": 3,
     "last_attempt": "2026-05-22T22:22:19.823290"
+  },
+  "usr.bin/etdump": {
+    "attempts": 3,
+    "last_attempt": "2026-05-24T20:08:54.754258"
   },
   "usr.bin/factor": {
     "attempts": 1,
@@ -410,6 +422,10 @@
   "usr.bin/fold": {
     "attempts": 3,
     "last_attempt": "2026-05-24T04:27:11.328042"
+  },
+  "usr.bin/getconf": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T19:44:22.714408"
   },
   "usr.bin/head": {
     "attempts": 3,
@@ -432,8 +448,8 @@
     "last_attempt": "2026-05-24T13:18:59.845697"
   },
   "usr.bin/lastcomm": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T18:17:10.143294"
+    "attempts": 3,
+    "last_attempt": "2026-05-24T19:45:58.480134"
   },
   "usr.bin/limits": {
     "attempts": 3,
@@ -488,8 +504,12 @@
     "last_attempt": "2026-05-24T18:18:34.302035"
   },
   "usr.bin/msgs": {
+    "attempts": 2,
+    "last_attempt": "2026-05-24T19:46:27.275643"
+  },
+  "usr.bin/mt": {
     "attempts": 1,
-    "last_attempt": "2026-05-24T18:19:14.033100"
+    "last_attempt": "2026-05-24T19:46:56.766871"
   },
   "usr.bin/ncal": {
     "attempts": 1,
@@ -515,9 +535,17 @@
     "attempts": 1,
     "last_attempt": "2026-05-22T20:52:37.876664"
   },
+  "usr.bin/posixmqcontrol": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T20:14:15.527266"
+  },
+  "usr.bin/posixshmcontrol": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T20:14:56.774353"
+  },
   "usr.bin/pr": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T07:16:06.719728"
+    "attempts": 3,
+    "last_attempt": "2026-05-24T19:34:25.304115"
   },
   "usr.bin/primes": {
     "attempts": 2,
@@ -526,6 +554,14 @@
   "usr.bin/printf": {
     "attempts": 3,
     "last_attempt": "2026-05-22T22:23:07.340580"
+  },
+  "usr.bin/proccontrol": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T20:15:16.965468"
+  },
+  "usr.bin/procstat": {
+    "attempts": 2,
+    "last_attempt": "2026-05-24T20:07:26.471958"
   },
   "usr.bin/protect": {
     "attempts": 1,
@@ -608,8 +644,8 @@
     "last_attempt": "2026-05-24T06:37:04.734047"
   },
   "usr.bin/wall": {
-    "attempts": 2,
-    "last_attempt": "2026-05-24T00:45:11.579423"
+    "attempts": 3,
+    "last_attempt": "2026-05-24T19:35:57.344040"
   },
   "usr.bin/wc": {
     "attempts": 2,

@@ -1,0 +1,11 @@
+=== STEP 95 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I'll edit the Makefile first since I know its contents:
+
+ACTION: EDIT_FILE usr.bin/tsort/Makefile

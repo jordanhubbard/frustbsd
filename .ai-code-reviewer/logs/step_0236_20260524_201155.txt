@@ -1,0 +1,12 @@
+=== STEP 236 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/whereis is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/MSP430/TargetInfo
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/xxd

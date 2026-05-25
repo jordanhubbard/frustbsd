@@ -1,0 +1,82 @@
+=== STEP 57 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/pr
+   Files: 0/6
+📄 File: usr.bin/pr/pr.c
+   Chunks: 13/19
+
+```
+=== CHUNK 13/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/pr/pr.c === [function: prtail]
+=== Lines 1474-1533 (60 lines) ===
+
+int
+prtail(int cnt, int incomp)
+{
+	if (nohead) {
+		/*
+		 * only pad with no headers when incomplete last line
+		 */
+		if (incomp &&
+		    ((dspace && (putchar('\n') == EOF)) ||
+		     (putchar('\n') == EOF))) {
+			pfail();
+			return(1);
+		}
+		/*
+		 * but honor the formfeed request
+		 */
+		if (formfeed) {
+			if (putchar('\f') == EOF) {
+				pfail();
+				return(1);
+			}
+		}
+		return(0);
+	}
+	/*
+	 * if double space output two \n
+	 */
+	if (dspace)
+		cnt *= 2;
+
+	/*
+	 * if an odd number of lines per page, add an extra \n
+	 */
+	if (addone)
+		++cnt;
+
+	/*
+	 * pad page
+	 */
+	if (formfeed) {
+		if ((incomp && (putchar('\n') == EOF)) ||
+		    (putchar('\f') == EOF)) {
+			pfail();
+			return(1);
+		}
+		return(0);
+	}
+	cnt += TAILLEN;
+	while (--cnt >= 0) {
+		if (putchar('\n') == EOF) {
+			pfail();
+			return(1);
+		}
+	}
+	return(0);
+}
+
+/*
+ * terminate():	when a SIGINT is recvd
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

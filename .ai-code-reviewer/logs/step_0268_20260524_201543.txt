@@ -1,0 +1,50 @@
+=== STEP 268 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/proccontrol
+   Files: 0/3
+📄 File: usr.bin/proccontrol/proccontrol.c
+   Chunks: 2/3
+
+```
+=== CHUNK 2/3: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/proccontrol/proccontrol.c === [function: str2pid]
+=== Lines 78-105 (28 lines) ===
+
+static pid_t
+str2pid(const char *str)
+{
+	pid_t res;
+	char *tail;
+
+	res = strtol(str, &tail, 0);
+	if (*tail != '\0') {
+		warnx("non-numeric pid");
+		return (-1);
+	}
+	return (res);
+}
+
+static void __dead2
+usage(void)
+{
+	fprintf(stderr, "Usage:\n");
+	fprintf(stderr, "    proccontrol -m mode -s (enable|disable) "
+	    "(-p pid | command)\n");
+	fprintf(stderr, "    proccontrol -m mode -q [-p pid]\n");
+	fprintf(stderr, "Modes: ");
+	for (size_t i = 0; i < nitems(modes); i++)
+		fprintf(stderr, "%s%s", i == 0 ? "" : "|", modes[i].name);
+	fprintf(stderr, "\n");
+	exit(1);
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

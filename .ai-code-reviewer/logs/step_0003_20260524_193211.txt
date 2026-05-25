@@ -1,0 +1,14 @@
+=== STEP 3 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory contrib/llvm-project/llvm/lib/Target/Hexagon/TargetInfo skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/llvm-project/llvm/lib/Target/MSP430/TargetInfo
+
+--- RESPONSE ---
+
+
+The LLVM contrib directories are vendor code and being auto-skipped. The test directories also have no C/C++ source. Let me find an actual command source directory to rewrite.
+
+ACTION: SET_SCOPE bin/cat

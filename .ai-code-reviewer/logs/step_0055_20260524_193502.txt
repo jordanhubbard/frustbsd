@@ -1,0 +1,47 @@
+=== STEP 55 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/pr
+   Files: 0/6
+📄 File: usr.bin/pr/pr.c
+   Chunks: 11/19
+
+```
+=== CHUNK 11/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/pr/pr.c === [function: addnum]
+=== Lines 1414-1438 (25 lines) ===
+
+void
+addnum(char *buf, int wdth, int line)
+{
+	char *pt = buf + wdth;
+
+	do {
+		*--pt = digs[line % 10];
+		line /= 10;
+	} while (line && (pt > buf));
+
+	/*
+	 * pad with space as required
+	 */
+	while (pt > buf)
+		*--pt = ' ';
+}
+
+/*
+ * prhead():	prints the top of page header
+ *
+ *	buf	buffer with time field (and offset)
+ *	cnt	number of chars in buf
+ *	fname	fname field for header
+ *	pagcnt	page number
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

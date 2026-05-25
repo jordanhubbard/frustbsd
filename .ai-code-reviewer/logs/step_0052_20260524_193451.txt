@@ -1,0 +1,127 @@
+=== STEP 52 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/pr
+   Files: 0/6
+📄 File: usr.bin/pr/pr.c
+   Chunks: 8/19
+
+```
+=== CHUNK 8/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/pr/pr.c === [function: inln]
+=== Lines 1012-1116 (105 lines) ===
+
+int
+inln(FILE *inf, char *buf, int lim, int *cps, int trnc, int *mor)
+{
+	int col;
+	int gap = ingap;
+	int ch = EOF;
+	char *ptbuf;
+	int chk = (int)inchar;
+
+	ptbuf = buf;
+
+	if (gap) {
+		/*
+		 * expanding input option
+		 */
+		while ((--lim >= 0) && ((ch = getc(inf)) != EOF)) {
+			/*
+			 * is this the input "tab" char
+			 */
+			if (ch == chk) {
+				/*
+				 * expand to number of spaces
+				 */
+				col = (ptbuf - buf) + *cps;
+				col = gap - (col % gap);
+
+				/*
+				 * if more than this line, push back
+				 */
+				if ((col > lim) && (ungetc(ch, inf) == EOF))
+					return(1);
+
+				/*
+				 * expand to spaces
+				 */
+				while ((--col >= 0) && (--lim >= 0))
+					*ptbuf++ = ' ';
+				continue;
+			}
+			if (ch == '\n')
+				break;
+			*ptbuf++ = ch;
+		}
+	} else {
+		/*
+		 * no expansion
+		 */
+		while ((--lim >= 0) && ((ch = getc(inf)) != EOF)) {
+			if (ch == '\n')
+				break;
+			*ptbuf++ = ch;
+		}
+	}
+	col = ptbuf - buf;
+	if (ch == EOF) {
+		*mor = 0;
+		*cps = 0;
+		if (!col)
+			return(-1);
+		return(col);
+	}
+	if (ch == '\n') {
+		/*
+		 * entire line processed
+		 */
+		*mor = 0;
+		*cps = 0;
+		return(col);
+	}
+
+	/*
+	 * line was larger than limit
+	 */
+	if (trnc) {
+		/*
+		 * throw away rest of line
+		 */
+		while ((ch = getc(inf)) != EOF) {
+			if (ch == '\n')
+				break;
+		}
+		*cps = 0;
+		*mor = 0;
+	} else {
+		/*
+		 * save column offset if not truncated
+		 */
+		*cps += col;
+		*mor = 1;
+	}
+
+	return(col);
+}
+
+/*
+ * otln():	output a line of data. (Supports unlimited length lines)
+ *		output is optionally contracted to tabs
+ *
+ *	buf:	output buffer with data
+ *	cnt:	number of chars of valid data in buf
+ *	svips:	buffer input column position (for large lines)
+ *	svops:	buffer output column position (for large lines)
+ *	mor:	output line not complete in this buf; more data to come.
+ *		1 is more, 0 is complete, -1 is no \n's
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

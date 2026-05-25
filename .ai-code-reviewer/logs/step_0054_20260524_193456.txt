@@ -1,0 +1,62 @@
+=== STEP 54 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/pr
+   Files: 0/6
+📄 File: usr.bin/pr/pr.c
+   Chunks: 10/19
+
+```
+=== CHUNK 10/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/pr/pr.c === [function: inskip]
+=== Lines 1254-1293 (40 lines) ===
+
+int
+inskip(FILE *inf, int pgcnt, int lncnt)
+{
+	int c;
+	int cnt;
+
+	while(--pgcnt > 0) {
+		cnt = lncnt;
+		while ((c = getc(inf)) != EOF) {
+			if ((c == '\n') && (--cnt == 0))
+				break;
+		}
+		if (c == EOF) {
+			if (inf != stdin)
+				(void)fclose(inf);
+			return(1);
+		}
+	}
+	return(0);
+}
+
+/*
+ * nxtfile:	returns a FILE * to next file in arg list and sets the
+ *		time field for this file (or current date).
+ *
+ *	buf	array to store proper date for the header.
+ *	dt	if set skips the date processing (used with -m)
+ */
+FILE *
+nxtfile(int argc, char **argv, const char **fname, char *buf, int dt)
+{
+	FILE *inf = NULL;
+	time_t tv_sec;
+	struct tm *timeptr = NULL;
+	struct stat statbuf;
+	static int twice = -1;
+
+	++twice;
+	if (eoptind >= argc) {
+		/*
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

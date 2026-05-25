@@ -1,0 +1,355 @@
+=== STEP 49 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/pr
+   Files: 0/6
+📄 File: usr.bin/pr/pr.c
+   Chunks: 5/19
+
+```
+=== CHUNK 5/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/pr/pr.c === [function: vertcol]
+=== Lines 311-641 (331 lines) ===
+
+int
+vertcol(int argc, char *argv[])
+{
+	char *ptbf;
+	char **lstdat = NULL;
+	int i;
+	int j;
+	int cnt = -1;
+	int pln;
+	int *indy = NULL;
+	int cvc;
+	int *lindy = NULL;
+	int lncnt;
+	int stp;
+	int pagecnt;
+	int col = colwd + 1;
+	int mxlen = pgwd + offst + 1;
+	int mclcnt = clcnt - 1;
+	struct vcol *vc = NULL;
+	int mvc;
+	int tvc;
+	int cw = nmwd + 1;
+	int fullcol;
+	char *buf = NULL;
+	char *hbuf = NULL;
+	char *ohbuf;
+	const char *fname;
+	FILE *inf;
+	int ips = 0;
+	int cps = 0;
+	int ops = 0;
+	int mor = 0;
+	int retval = 1;
+
+	/*
+	 * allocate page buffer
+	 */
+	if ((buf = malloc((unsigned)lines*mxlen*sizeof(char))) == NULL) {
+		mfail();
+		return(1);
+	}
+
+	/*
+	 * allocate page header
+	 */
+	if ((hbuf = malloc((unsigned)(HDBUF + offst)*sizeof(char))) == NULL) {
+		mfail();
+		goto out;
+	}
+	ohbuf = hbuf + offst;
+	if (offst)
+		(void)memset(hbuf, (int)' ', offst);
+
+	/*
+	 * col pointers when no headers
+	 */
+	mvc = lines * clcnt;
+	if ((vc =
+	    (struct vcol *)malloc((unsigned)mvc*sizeof(struct vcol))) == NULL) {
+		mfail();
+		goto out;
+	}
+
+	/*
+	 * pointer into page where last data per line is located
+	 */
+	if ((lstdat = (char **)malloc((unsigned)lines*sizeof(char *))) == NULL){
+		mfail();
+		goto out;
+	}
+
+	/*
+	 * fast index lookups to locate start of lines
+	 */
+	if ((indy = (int *)malloc((unsigned)lines*sizeof(int))) == NULL) {
+		mfail();
+		goto out;
+	}
+	if ((lindy = (int *)malloc((unsigned)lines*sizeof(int))) == NULL) {
+		mfail();
+		goto out;
+	}
+
+	if (nmwd)
+		fullcol = col + cw;
+	else
+		fullcol = col;
+
+	/*
+	 * initialize buffer lookup indexes and offset area
+	 */
+	for (j = 0; j < lines; ++j) {
+		lindy[j] = j * mxlen;
+		indy[j] = lindy[j] + offst;
+		if (offst) {
+			ptbf = buf + lindy[j];
+			(void)memset(ptbf, (int)' ', offst);
+			ptbf += offst;
+		} else
+			ptbf = buf + indy[j];
+		lstdat[j] = ptbf;
+	}
+
+	/*
+	 * loop by file
+	 */
+	while ((inf = nxtfile(argc, argv, &fname, ohbuf, 0)) != NULL) {
+		if (pgnm) {
+			/*
+			 * skip to requested page
+			 */
+			if (inskip(inf, pgnm, lines))
+				continue;
+			pagecnt = pgnm;
+		} else
+			pagecnt = 1;
+		lncnt = 0;
+
+		/*
+		 * loop by page
+		 */
+		for(;;) {
+			ttypause(pagecnt);
+
+			/*
+			 * loop by column
+			 */
+			cvc = 0;
+			for (i = 0; i < clcnt; ++i) {
+				j = 0;
+				/*
+				 * if last column, do not pad
+				 */
+				if (i == mclcnt)
+					stp = 1;
+				else
+					stp = 0;
+				/*
+				 * loop by line
+				 */
+				for(;;) {
+					/*
+					 * is this first column
+					 */
+					if (!i) {
+						ptbf = buf + indy[j];
+						lstdat[j] = ptbf;
+					} else
+						ptbf = lstdat[j];
+					vc[cvc].pt = ptbf;
+
+					/*
+					 * add number
+					 */
+					if (nmwd) {
+						addnum(ptbf, nmwd, ++lncnt);
+						ptbf += nmwd;
+						*ptbf++ = nmchar;
+					}
+
+					/*
+					 * input next line
+					 */
+					cnt = inln(inf,ptbf,colwd,&cps,1,&mor);
+					vc[cvc++].cnt = cnt;
+					if (cnt < 0)
+						break;
+					ptbf += cnt;
+
+					/*
+					 * pad all but last column on page
+					 */
+					if (!stp) {
+						/*
+						 * pad to end of column
+						 */
+						if (sflag)
+							*ptbf++ = schar;
+						else if ((pln = col-cnt) > 0) {
+							(void)memset(ptbf,
+								(int)' ',pln);
+							ptbf += pln;
+						}
+					}
+					/*
+					 * remember last char in line
+					 */
+					lstdat[j] = ptbf;
+					if (++j >= lines)
+						break;
+				}
+				if (cnt < 0)
+					break;
+			}
+
+			/*
+			 * when -t (no header) is specified the spec requires
+			 * the min number of lines. The last page may not have
+			 * balanced length columns. To fix this we must reorder
+			 * the columns. This is a very slow technique so it is
+			 * only used under limited conditions. Without -t, the
+			 * balancing of text columns is unspecified. To NOT
+			 * balance the last page, add the global variable
+			 * nohead to the if statement below e.g.
+			 *
+			 * if ((cnt < 0) && nohead && cvc ......
+			 */
+			--cvc;
+
+			/*
+			 * check to see if last page needs to be reordered
+			 */
+			if ((cnt < 0) && cvc && ((mvc-cvc) >= clcnt)){
+				pln = cvc/clcnt;
+				if (cvc % clcnt)
+					++pln;
+
+				/*
+				 * print header
+				 */
+				if (!nohead && prhead(hbuf, fname, pagecnt))
+					goto out;
+				for (i = 0; i < pln; ++i) {
+					ips = 0;
+					ops = 0;
+					if (offst &&
+					    otln(buf,offst,&ips,&ops,1))
+						goto out;
+					tvc = i;
+
+					for (j = 0; j < clcnt; ++j) {
+						/*
+						 * determine column length
+						 */
+						if (j == mclcnt) {
+							/*
+							 * last column
+							 */
+							cnt = vc[tvc].cnt;
+							if (nmwd)
+								cnt += cw;
+						} else if (sflag) {
+							/*
+							 * single ch between
+							 */
+							cnt = vc[tvc].cnt + 1;
+							if (nmwd)
+								cnt += cw;
+						} else
+							cnt = fullcol;
+						if (otln(vc[tvc].pt, cnt, &ips,
+								&ops, 1))
+							goto out;
+						tvc += pln;
+						if (tvc >= cvc)
+							break;
+					}
+					/*
+					 * terminate line
+					 */
+					if (otln(buf, 0, &ips, &ops, 0))
+						goto out;
+				}
+				/*
+				 * pad to end of page
+				 */
+				if (prtail((lines - pln), 0))
+					goto out;
+				/*
+				 * done with output, go to next file
+				 */
+				break;
+			}
+
+			/*
+			 * determine how many lines to output
+			 */
+			if (i > 0)
+				pln = lines;
+			else
+				pln = j;
+
+			/*
+			 * print header
+			 */
+			if (pln && !nohead && prhead(hbuf, fname, pagecnt))
+				goto out;
+
+			/*
+			 * output each line
+			 */
+			for (i = 0; i < pln; ++i) {
+				ptbf = buf + lindy[i];
+				if ((j = lstdat[i] - ptbf) <= offst)
+					break;
+				if (otln(ptbf, j, &ips, &ops, 0))
+					goto out;
+			}
+
+			/*
+			 * pad to end of page
+			 */
+			if (pln && prtail((lines - pln), 0))
+				goto out;
+
+			/*
+			 * if EOF go to next file
+			 */
+			if (cnt < 0)
+				break;
+			++pagecnt;
+		}
+		if (inf != stdin)
+			(void)fclose(inf);
+	}
+	if (eoptind < argc)
+		goto out;
+	retval = 0;
+out:
+	free(lindy);
+	free(indy);
+	free(lstdat);
+	free(vc);
+	free(hbuf);
+	free(buf);
+	return(retval);
+}
+
+/*
+ * horzcol:	print files with more than one column of output across a page
+ */
+
+```
+
+--- RESPONSE ---
+
+
+This is a fairly large and complex program. Let me continue reading to understand the full scope.
+
+ACTION: NEXT_CHUNK

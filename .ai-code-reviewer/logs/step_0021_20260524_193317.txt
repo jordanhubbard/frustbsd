@@ -1,0 +1,23 @@
+=== STEP 21 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/tsort
+   Files: 0/3
+📄 File: usr.bin/tsort/tsort.c
+   Chunks: 4/15
+
+```
+=== CHUNK 4/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tsort/tsort.c === [function: remove_node]
+=== Lines 96-96 (1 lines) ===
+
+static void	 remove_node(NODE *);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

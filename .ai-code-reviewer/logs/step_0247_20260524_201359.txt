@@ -1,0 +1,25 @@
+=== STEP 247 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tsort/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/tsort
+   Files: 0/3
+📄 File: usr.bin/tsort/Makefile
+
+```
+.include <src.opts.mk>
+
+PROG=	tsort
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}=	tests
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/tsort/tsort.c

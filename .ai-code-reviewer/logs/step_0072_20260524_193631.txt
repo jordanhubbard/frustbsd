@@ -1,0 +1,21 @@
+=== STEP 72 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/wall/ttymsg.h:
+PROGRESS:
+📁 Directory: usr.bin/wall
+   Files: 0/5
+📄 File: usr.bin/wall/ttymsg.h
+
+```
+
+#define	TTYMSG_IOV_MAX	32
+
+const char	*ttymsg(struct iovec *, int, const char *, int);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/wall/Makefile

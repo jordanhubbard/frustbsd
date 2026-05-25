@@ -1,0 +1,30 @@
+=== STEP 104 ===
+
+--- REQUEST ---
+
+⚠️  INCOMPLETE RESPONSE DETECTED
+
+Problem: EDIT_FILE action without OLD block
+Response length: 140 chars
+Last 100 chars: ... action with OLD and NEW blocks. Let me edit the Makefile:
+
+ACTION: EDIT_FILE usr.bin/tsort/Makefile
+
+Your response appears to have been cut off before completion.
+Please provide a COMPLETE response including:
+1. Your analysis
+2. A SINGLE, COMPLETE ACTION directive
+3. For EDIT_FILE: both complete OLD and NEW blocks
+
+If you're working with a large file causing timeouts:
+- Focus on ONE specific issue at a time
+- Use smaller OLD/NEW blocks
+- Consider SKIP_FILE if the file is too complex
+
+
+--- RESPONSE ---
+
+
+I need to provide a complete action with all required blocks. Let me edit the Makefile:
+
+ACTION: EDIT_FILE usr.bin/tsort/Makefile
