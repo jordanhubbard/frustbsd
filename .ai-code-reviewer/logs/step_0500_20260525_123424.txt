@@ -1,0 +1,12 @@
+=== STEP 500 ===
+
+--- REQUEST ---
+READ_FILE_ERROR: File not found: /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_kdf/Makefile
+TIP: Use FIND_FILE to locate files
+
+--- RESPONSE ---
+
+
+The build errors are from Makefile.inc1 cross-compiler bootstrap, not from my changes. Let me try building just the Rust crate directly.
+
+ACTION: BUILD

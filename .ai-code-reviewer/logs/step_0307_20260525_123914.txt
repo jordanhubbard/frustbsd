@@ -1,0 +1,35 @@
+=== STEP 307 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/tools/regression/tls/ttls4/Makefile:
+PROGRESS:
+📁 Directory: tools/regression/tls/ttls4
+   Files: 0/2
+📄 File: tools/regression/tls/ttls4/Makefile
+✏️  Edits: 4 files modified
+
+```
+PROG=	ttls4
+LIBADD=	pthread
+MAN=
+DEBUG_FLAGS= -g
+
+RUST_TARGET_DIR=	${.OBJDIR}/rust-target
+
+.include <bsd.prog.mk>
+
+# Rust build integration
+${RUST_TARGET_DIR}/bin/ttls4:
+	@mkdir -p ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR}
+
+ttls4-rust: ${RUST_TARGET_DIR}/bin/ttls4
+
+all: ttls4-rust
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

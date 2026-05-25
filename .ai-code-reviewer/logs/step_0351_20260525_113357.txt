@@ -1,0 +1,26 @@
+=== STEP 351 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: stand/libsa/x86
+Pending source/build changes: 5 files modified
+Files: stand/libsa/x86/Cargo.toml, stand/libsa/x86/src/lib.rs, stand/libsa/Makefile, Makefile.inc1, stand/libsa/x86/Makefile
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in stand/libsa/x86
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: bin/cat/tests
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+I have uncommitted changes in `stand/libsa/x86`. Let me try building to see the current state.
+
+ACTION: BUILD

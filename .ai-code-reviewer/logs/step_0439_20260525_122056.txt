@@ -1,0 +1,10 @@
+=== STEP 439 ===
+
+--- REQUEST ---
+READ_FILE_ERROR: /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/include/sodium is a directory, not a file
+TIP: Use LIST_FILES to see directory contents
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR sys/contrib/libsodium/src/libsodium/include/sodium

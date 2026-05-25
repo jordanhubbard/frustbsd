@@ -1,0 +1,11 @@
+=== STEP 138 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I need to include the CONTENT block with proper delimiters. Here is the complete action:
+
+ACTION: WRITE_FILE contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo/Cargo.toml

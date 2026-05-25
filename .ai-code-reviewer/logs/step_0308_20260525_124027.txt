@@ -1,0 +1,68 @@
+=== STEP 308 ===
+
+--- REQUEST ---
+BUILD_FAILED: Build errors detected
+
+No changes were committed. Rewrite units are atomic: source changes, build glue, and configured contract checks must pass together before the unit can be marked complete.
+
+BUILD ERROR REPORT:
+BUILD FAILED: 0 errors, 0 warnings
+Duration: 30.0 seconds
+
+============================================================
+ERRORS (fix these first):
+============================================================
+
+
+NEXT STEPS:
+1. Keep the active scope.
+2. Fix the source/build integration that caused this failure.
+3. BUILD again when the complete rewrite unit is ready.
+
+
+--- RESPONSE ---
+
+
+The build reports 0 errors but still fails. This likely means the build command is exiting with a non-zero status without producing make errors. Let me fix the Makefile to use a more robust approach.
+
+ACTION: EDIT_FILE tools/regression/tls/ttls4/Makefile
+OLD:
+<<<
+PROG=	ttls4
+LIBADD=	pthread
+MAN=
+DEBUG_FLAGS= -g
+
+RUST_TARGET_DIR=	${.OBJDIR}/rust-target
+
+.include <bsd.prog.mk>
+
+# Rust build integration
+${RUST_TARGET_DIR}/bin/ttls4:
+	@mkdir -p ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR}
+
+ttls4-rust: ${RUST_TARGET_DIR}/bin/ttls4
+
+all: ttls4-rust
+>>>
+NEW:
+<<<
+PROG=	ttls4
+LIBADD=	pthread
+MAN=
+DEBUG_FLAGS= -g
+
+RUST_TARGET_DIR=	${.CURDIR}/target
+
+.include <bsd.prog.mk>
+
+# Rust build integration
+${RUST_TARGET_DIR}/bin/ttls4:
+	@mkdir -p ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR}
+
+ttls4-rust: ${RUST_TARGET_DIR}/bin/ttls4
+
+all: ttls4-rust
+>>>

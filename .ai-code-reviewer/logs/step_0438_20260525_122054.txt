@@ -1,0 +1,16 @@
+=== STEP 438 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/include:
+```
+Makefile.am
+sodium
+sodium.h
+```
+
+--- RESPONSE ---
+
+
+This is a crypto library subdirectory with no standalone Makefile. It's part of the libsodium autoconf build. Let me create a Rust crate that provides equivalent C-ABI compatible functionality.
+
+ACTION: READ_FILE sys/contrib/libsodium/src/libsodium/include/sodium

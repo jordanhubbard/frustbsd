@@ -1,0 +1,63 @@
+=== STEP 347 ===
+
+--- REQUEST ---
+EDIT_FILE_ERROR: OLD text not found in /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1
+Closest match found in file (copy this EXACT block for OLD):
+<<<
+.if (make(buildworld) || make(buildkernel) || make(kernel-toolchain) || \
+    make(toolchain) || make(_cross-tools))
+.if ${USING_SYSTEM_COMPILER} == "yes"
+.message SYSTEM_COMPILER: Determined that CC=${CC} matches the source tree.  Not bootstrapping a cross-compiler.
+.elif ${MK_CLANG_BOOTSTRAP} == "yes"
+.message SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler.
+.endif
+.if ${USING_SYSTEM_LINKER} == "yes"
+.message SYSTEM_LINKER: Determined that LD=${LD} matches the source tree.  Not bootstrapping a cross-linker.
+.elif ${MK_LLD_BOOTSTRAP} == "yes"
+.message SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker.
+.endif
+.endif
+>>>
+
+HINT: The OLD block must be EXACTLY copied from the file.
+Re-read the file and copy the exact text you want to replace,
+including all whitespace and indentation. Do not paraphrase.
+
+--- RESPONSE ---
+
+
+I see the file now has `.message` directives. Let me change them to `.warning` which is a standard make directive that won't be treated as errors.
+
+ACTION: EDIT_FILE Makefile.inc1
+OLD:
+<<<
+.if (make(buildworld) || make(buildkernel) || make(kernel-toolchain) || \
+    make(toolchain) || make(_cross-tools))
+.if ${USING_SYSTEM_COMPILER} == "yes"
+.message SYSTEM_COMPILER: Determined that CC=${CC} matches the source tree.  Not bootstrapping a cross-compiler.
+.elif ${MK_CLANG_BOOTSTRAP} == "yes"
+.message SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler.
+.endif
+.if ${USING_SYSTEM_LINKER} == "yes"
+.message SYSTEM_LINKER: Determined that LD=${LD} matches the source tree.  Not bootstrapping a cross-linker.
+.elif ${MK_LLD_BOOTSTRAP} == "yes"
+.message SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker.
+.endif
+.endif
+>>>
+NEW:
+<<<
+.if (make(buildworld) || make(buildkernel) || make(kernel-toolchain) || \
+    make(toolchain) || make(_cross-tools))
+.if ${USING_SYSTEM_COMPILER} == "yes"
+.warning SYSTEM_COMPILER: Determined that CC=${CC} matches the source tree.  Not bootstrapping a cross-compiler.
+.elif ${MK_CLANG_BOOTSTRAP} == "yes"
+.warning SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler.
+.endif
+.if ${USING_SYSTEM_LINKER} == "yes"
+.warning SYSTEM_LINKER: Determined that LD=${LD} matches the source tree.  Not bootstrapping a cross-linker.
+.elif ${MK_LLD_BOOTSTRAP} == "yes"
+.warning SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker.
+.endif
+.endif
+>>>

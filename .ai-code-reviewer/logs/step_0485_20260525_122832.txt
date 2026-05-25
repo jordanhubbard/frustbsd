@@ -1,0 +1,28 @@
+=== STEP 485 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_kdf/src/lib.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now I need to create a Makefile to integrate the Rust crate into the FreeBSD build system.
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_kdf/Makefile
+CONTENT:
+<<<
+# Rust replacement for crypto_kdf
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+all:
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} --release
+
+clean:
+	@${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} 2>/dev/null || true
+
+.PHONY: all clean
+>>>

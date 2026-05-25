@@ -1,0 +1,86 @@
+=== STEP 323 ===
+
+--- REQUEST ---
+GREP_RESULT for 'build':
+```
+./tests/sys/kern/ktls_test.c:545:build_tls_enable(const atf_tc_t *tc, int cipher_alg, size_t cipher_key_len,
+./tests/sys/kern/ktls_test.c:1987:	build_tls_enable(tc, cipher_alg, key_size, auth_alg, minor,	\
+./tests/sys/kern/ktls_test.c:2007:	build_tls_enable(tc, cipher_alg, key_size, auth_alg, minor,	\
+./tests/sys/kern/inotify_test.c:148:	build_iovec(&iov, &iovlen, "fstype", "nullfs", (size_t)-1);
+./tests/sys/kern/inotify_test.c:149:	build_iovec(&iov, &iovlen, "fspath", dir, (size_t)-1);
+./tests/sys/kern/inotify_test.c:150:	build_iovec(&iov, &iovlen, "target", src, (size_t)-1);
+./tests/sys/kern/jail_lookup_root.c:42:	build_iovec(&iov, &iovlen, __DECONST(char *, "fstype"),
+./tests/sys/kern/jail_lookup_root.c:44:	build_iovec(&iov, &iovlen, __DECONST(char *, "fspath"),
+./tests/sys/kern/jail_lookup_root.c:46:	build_iovec(&iov, &iovlen, __DECONST(char *, "from"),
+./stand/efi/libefi/efipart.c:113: * efipart_inithandles() is used to build up the pdinfo list from
+./stand/efi/loader/copy.c:346:	 * because the kernel builds a page table based on where it has
+./stand/efi/loader/bootinfo.c:394:	addr = build_font_module(addr);
+./stand/efi/loader/bootinfo.c:399:	addr = build_splash_module(addr, SPLASH_STARTUP);
+./stand/efi/loader/bootinfo.c:404:	addr = build_splash_module(addr, SPLASH_SHUTDOWN);
+./stand/efi/loader/efi_main.c:142:	 * Use a quick and dirty algorithm to build the argv vector. We
+./stand/efi/loader/efi_main.c:176:	/* Part 3: build vector. */
+./stand/efi/loader/arch/amd64/multiboot2.c:360:	 * Scratch space to build the multiboot2 header. Reserve the start of
+./stand/ficl/ficl.h:98:**   ROM implementation because it builds its system dictionary in 
+./stand/ficl/ficl.h:121:** testmain.c in your build.
+./stand/ficl/words.c:62:** Control structure building words use these
+./stand/ficl/tools.c:297:** known word-builder code, and tries to do 
+./stand/ficl/ficl.c:70:** Each FICL_SYSTEM builds a global dictionary during its start
+./stand/ficl/math64.c:142:** Mixed precision multiply and accumulate primitive for number building.
+./stand/ficl/testmain.c:291:void buildTestInterface(FICL_SYSTEM *pSys)
+./stand/ficl/testmain.c:315:    buildTestInterface(pSys);
+./stand/common/gfx_fb.c:864:	 * We assume Blt() does work, if not, we will need to build exception
+./stand/common/gfx_fb.c:3016:build_font_module(vm_offset_t addr)
+./stand/common/gfx_fb.c:3101:build_splash_module(vm_offset_t addr, int type)
+./stand/common/bootstrap.h:284:vm_offset_t build_font_module(vm_offset_t);
+./stand/common/bootstrap.h:287:vm_offset_t build_splash_module(vm_offset_t, int);
+./stand/common/module.c:71:static void			moduledir_rebuild(void);
+./stand/common/module.c:1156:	moduledir_rebuild();
+./stand/common/module.c:1525:	moduledir_rebuild();
+./stand/i386/loader/gfx_bios.c:8: * This file provides all the gfx glue, or stubs, so that we can build, if we
+./stand/i386/loader/gfx_bios.c:33:vm_offset_t build_font_module(vm_offset_t addr);
+./stand/i386/loader/gfx_bios.c:36:build_font_module(vm_offset_t addr)
+./stand/i386/libi386/bootinfo32.c:123:    addr = build_font_module(addr);
+./stand/i386/libi386/biospci.c:302:    /* build the description */
+./stand/i386/libi386/bootinfo64.c:141:    addr = build_font_module(addr);
+./stand/liblua/float.h:27: * Empty file to keep lua build happy. Lua expects to have to include float.h
+./stand/libsa/ip.c:308:	 * fragments, build the packet.
+./krb5/include/autoconf.h:262:/* Define if building with libedit. */
+./krb5/include/autoconf.h:343:/* Define if building with GNU Readline. */
+./krb5/include/autoconf.h:713:/* Define to build macOS CCAPI client */
+./sys/compat/linuxkpi/common/include/acpi/acpi.h:39: * to update all needed branches without breaking builds.
+./sys/compat/linuxkpi/common/include/linux/container_of.h:35:#include <linux/build_bug.h>
+./sys/compat/linuxkpi/common/include/linux/minmax.h:37:#include <linux/build_bug.h>
+./sys/compat/linuxkpi/common/include/linux/kernel.h:45:#include <linux/build_bug.h>
+./sys/compat/linuxkpi/common/include/linux/skbuff.h:207:struct sk_buff *linuxkpi_build_skb(void *, size_t);
+./sys/compat/linuxkpi/common/include/linux/skbuff.h:283:build_skb(void *data, unsigned int fragsz)
+... [5042 more matches]
+```
+
+--- RESPONSE ---
+
+
+The build keeps failing with 0 errors. Let me try a completely different approach - use a simple Makefile without bsd.prog.mk:
+
+ACTION: EDIT_FILE tools/regression/tls/ttls4/Makefile
+OLD:
+<<<
+PROG=	ttls4
+LIBADD=	pthread
+MAN=
+DEBUG_FLAGS= -g
+
+.include <bsd.prog.mk>
+>>>
+NEW:
+<<<
+RUST_TARGET_DIR=	${.CURDIR}/target
+
+all: ${RUST_TARGET_DIR}/bin/ttls4
+
+${RUST_TARGET_DIR}/bin/ttls4:
+	@mkdir -p ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR}
+
+clean:
+	rm -rf ${RUST_TARGET_DIR}
+>>>

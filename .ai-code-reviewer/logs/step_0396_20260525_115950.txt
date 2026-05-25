@@ -1,0 +1,64 @@
+=== STEP 396 ===
+
+--- REQUEST ---
+GREP_RESULT for '\.info':
+```
+./sys/compat/linuxkpi/common/src/linux_80211.c:8647:	status.info = IEEE80211_SKB_CB(skb);
+./sys/arm64/spe/arm_spe_backend.c:152:		info->buf_info[0].info = info;
+./sys/arm64/spe/arm_spe_backend.c:154:		info->buf_info[1].info = info;
+./sys/arm64/spe/arm_spe_backend.c:744:	info->buf_info[0].info = info;
+./sys/cddl/compat/opensolaris/sys/objfs.h:26: * Private data structure found in '.info' section
+./sys/kern/kern_umtx.c:4366:		if (reg->ushm_key.info.shared.object ==
+./sys/kern/kern_umtx.c:4368:		    reg->ushm_key.info.shared.offset ==
+./sys/netinet/sctputil.c:374:	sctp_clog.x.lock.info_lock = rw_wowned(&SCTP_BASE_INFO(ipi_ep_mtx));
+./sys/dev/ice/ice_common.c:5438:	buf->txqs[0].info.valid_sections =
+./sys/dev/ice/ice_common.c:5441:	buf->txqs[0].info.generic = 0;
+./sys/dev/ice/ice_common.c:5442:	buf->txqs[0].info.cir_bw.bw_profile_idx =
+./sys/dev/ice/ice_lib.c:760:	ctx.info.sw_id = hw->port_info->sw_id;
+./sys/dev/ice/ice_lib.c:780:	vsi->info = ctx.info;
+./sys/dev/ice/ice_lib.c:820:	ctx.info = vsi->info;
+./sys/dev/pms/freebsd/driver/ini/src/agtiapi.c:1861:      switch (devInfo.info.devType_S_Rate & 0xF)
+./sys/dev/pms/RefTisa/sallsdk/spc/sampirsp.c:7079:    agEvent.info = 0;
+./sys/dev/pms/RefTisa/sallsdk/spc/sampirsp.c:7095:      agEvent.info = 0;
+./sys/dev/pms/RefTisa/sallsdk/spc/sampirsp.c:7110:      agEvent.info = 0;
+./sys/dev/hyperv/input/hv_kbdc.c:278:			info = keystroke->ks.info;
+./sys/dev/hyperv/input/hv_kbd.c:292:	if ((ks.info & IS_E0) || (ks.info & IS_E1)) {
+./sys/dev/hyperv/input/hv_kbd.c:297:		if (ks.info & IS_E0) {
+./sys/dev/hyperv/input/hv_kbd.c:299:			ks.info &= ~IS_E0;
+./sys/dev/ocs_fc/ocs_unsol.c:1250:	hdr.info = info;
+./sys/dev/ocs_fc/ocs_hw_queues.c:2231:		buf->hdr.info = FC_RCTL_INFO_SOL_DATA;
+./sys/dev/ocs_fc/ocs_hw_queues.c:2480:	buf->hdr.info = FC_RCTL_INFO_SOL_DATA;
+./sys/dev/iwn/if_iwn_devid.h:2: * Copyright (c) 2013 Cedric GROSS <cg@cgross.info>
+./sys/dev/iwn/if_iwnvar.h:4: * Copyright (c) 2013 Cedric GROSS <cg@cgross.info>
+./sys/dev/iwn/if_iwn_chip_cfg.h:2: * Copyright (c) 2013 Cedric GROSS <cg@cgross.info>
+./sys/dev/bnxt/bnxt_en/if_bnxt.c:5108:		cmp[i].info3_v = !cpr->v_bit;
+./sys/dev/atkbdc/psm.c:256:    ((synhw).infoMajor > (major) ||					\
+./sys/dev/atkbdc/psm.c:257:     ((synhw).infoMajor == (major) && (synhw).infoMinor >= (minor)))
+./sys/dev/atkbdc/psm.c:1817:		    sc->synhw.maximumXCoord, sc->synhw.infoXupmm },
+./sys/dev/usb/usb_device.c:1526:		uaa.info.bInterfaceClass =
+./sys/dev/usb/usb_device.c:1528:		uaa.info.bInterfaceSubClass =
+./sys/dev/usb/usb_device.c:1530:		uaa.info.bInterfaceProtocol =
+./sys/dev/mxge/if_mxge.c:3060:		if (ss->rx_big.info[i].m == NULL)
+./sys/dev/mxge/if_mxge.c:3063:				  ss->rx_big.info[i].map);
+./sys/dev/mxge/if_mxge.c:3064:		m_freem(ss->rx_big.info[i].m);
+./sys/dev/qlnx/qlnxe/ecore_dbg_fw_funcs.c:4200:	info_regs = &regs[rule->num_cond_regs].info_reg;
+./sys/dev/qlnx/qlnxe/ecore_dbg_values.h:3913:	0x0a0ba400, 0x00000140, 	/* ccfc.info_state, group=CONN_CFC_MEM, size=320 regs */
+./sys/dev/qlnx/qlnxe/ecore_dbg_values.h:3914:	0x0a0ba600, 0x00000140, 	/* ccfc.info_reg, group=CONN_CFC_MEM, size=320 regs */
+./sys/dev/qlnx/qlnxe/ecore_dbg_values.h:3918:	0x0b0b6400, 0x00000140, 	/* tcfc.info_state, group=TASK_CFC_MEM, size=320 regs */
+./sys/dev/firewire/fwcrom.c:510:	len = 1 + src->hdr.info_len;
+./sys/dev/firewire/fwcrom.c:565:	src.hdr.info_len = 4;
+./sys/dev/firewire/firewire.c:651:	src->hdr.info_len = 4;
+./sys/dev/ixl/ixl_pf_iflib.c:466:	    ctxt.info.stat_counter_idx, ctxt.info.up_enable_bits);
+./sys/dev/ixl/ixl_pf_iflib.c:472:	ctxt.info.valid_sections = I40E_AQ_VSI_PROP_QUEUE_MAP_VALID;
+./sys/dev/ixl/ixl_pf_iflib.c:473:	ctxt.info.mapping_flags |= I40E_AQ_VSI_QUE_MAP_CONTIG;
+./sys/dev/ixl/ixl_iw.c:173:		pf_info->qs_handle[i] = le16_to_cpu(pf->vsi.info.qs_handle[0]);
+./sys/dev/ixl/ixl_pf_iov.c:141:	bzero(&vsi_ctx.info, sizeof(vsi_ctx.info));
+... [264 more matches]
+```
+
+--- RESPONSE ---
+
+
+The build errors reference lines 371 and 376 in Makefile.inc1. Let me find those lines.
+
+ACTION: NEXT_CHUNK

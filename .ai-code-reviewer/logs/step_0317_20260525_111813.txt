@@ -1,0 +1,75 @@
+=== STEP 317 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/stand/libsa/x86/src/lib.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+I need to fix the Rust source to use `core::arch::asm` instead of `std::arch::asm` since this is a constrained environment.
+
+ACTION: WRITE_FILE stand/libsa/x86/src/lib.rs
+CONTENT:
+<<<
+//! Rust replacement for stand/libsa/x86/hypervisor.c
+//!
+//! Provides `x86_hypervisor()` which detects the hypervisor vendor string
+//! via CPUID, matching the C ABI of the original implementation.
+
+/// CPUID leaf 1 ECX hypervisor bit
+const CPUID2_HV: u32 = 1 << 31;
+
+/// Perform CPUID instruction with the given leaf.
+/// Returns [eax, ebx, ecx, edx].
+fn cpuid(leaf: u32) -> [u32; 4] {
+    let mut eax: u32;
+    let mut ebx: u32;
+    let mut ecx: u32;
+    let mut edx: u32;
+    unsafe {
+        core::arch::asm!(
+            "cpuid",
+            in("eax") leaf,
+            out("eax") eax,
+            out("ebx") ebx,
+            out("ecx") ecx,
+            out("edx") edx,
+        );
+    }
+    [eax, ebx, ecx, edx]
+}
+
+/// Detect the hypervisor vendor string via CPUID.
+///
+/// Returns a pointer to a static C string containing the 12-byte vendor
+/// identifier, or NULL if no hypervisor is present.
+///
+/// This matches the C ABI of the original `x86_hypervisor()` from hypervisor.c.
+#[no_mangle]
+pub unsafe extern "C" fn x86_hypervisor() -> *const u8 {
+    // Check if hypervisor bit is set in CPUID leaf 1 ECX
+    let regs = cpuid(1);
+    if (regs[2] & CPUID2_HV) == 0 {
+        return core::ptr::null();
+    }
+
+    // Get hypervisor vendor ID from CPUID leaf 0x40000000
+    // EBX, EDX, ECX contain the 12-byte vendor string
+    let regs = cpuid(0x40000000);
+
+    // Store the vendor string in a static buffer
+    // regs[0]=eax, regs[1]=ebx, regs[2]=ecx, regs[3]=edx
+    // Vendor string is ebx(4) + edx(4) + ecx(4) = 12 bytes
+    static mut VENDOR: [u8; 13] = [0u8; 13];
+    let ebx_bytes = regs[1].to_le_bytes();
+    let edx_bytes = regs[3].to_le_bytes();
+    let ecx_bytes = regs[2].to_le_bytes();
+    VENDOR[0..4].copy_from_slice(&ebx_bytes);
+    VENDOR[4..8].copy_from_slice(&edx_bytes);
+    VENDOR[8..12].copy_from_slice(&ecx_bytes);
+    VENDOR[12] = 0; // null terminator
+
+    VENDOR.as_ptr()
+}
+>>>

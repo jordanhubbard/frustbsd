@@ -1,0 +1,11 @@
+=== STEP 449 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+This unit has no Makefile and is a subdirectory of the libsodium autoconf build. It's not a standalone buildable unit. Let me skip it and move to the next unit.
+
+ACTION: SET_SCOPE bin/cat/tests

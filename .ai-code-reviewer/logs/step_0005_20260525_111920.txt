@@ -1,0 +1,12 @@
+=== STEP 5 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE lib/libthr/arch/amd64/amd64
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE lib/libthr/arch/amd64/amd64

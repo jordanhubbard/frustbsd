@@ -1,0 +1,45 @@
+=== STEP 269 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1.
+Remaining files in tools/regression/tls/ttls4:
+  (All tracked files rewritten or skipped in this directory)
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+I need to update the Makefile to integrate the Rust build. Let me modify it to add cargo build rules.
+
+ACTION: EDIT_FILE tools/regression/tls/ttls4/Makefile
+OLD:
+<<<
+PROG=	ttls4
+LIBADD=	pthread
+MAN=
+DEBUG_FLAGS= -g
+
+.include <bsd.prog.mk>
+>>>
+NEW:
+<<<
+PROG=	ttls4
+LIBADD=	pthread
+MAN=
+DEBUG_FLAGS= -g
+
+RUST_PROG=	ttls4
+RUST_CARGO_DIR=	${.CURDIR}
+RUST_TARGET_DIR=	${OBJDIR}/rust-target
+
+.include <bsd.prog.mk>
+
+# Rust build integration
+${RUST_TARGET_DIR}/bin/ttls4:
+	@mkdir -p ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${RUST_CARGO_DIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR}
+
+ttls4-rust: ${RUST_TARGET_DIR}/bin/ttls4
+
+all: ttls4-rust
+>>>

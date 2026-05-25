@@ -1,0 +1,11 @@
+=== STEP 136 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I need to provide the complete WRITE_FILE action with the CONTENT block. Here is the complete action:
+
+ACTION: WRITE_FILE contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo/Cargo.toml

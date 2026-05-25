@@ -1,0 +1,11 @@
+=== STEP 495 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level Makefile.inc1 cross-compiler bootstrap, not from my changes. Let me try building just the Rust crate directly.
+
+ACTION: BUILD

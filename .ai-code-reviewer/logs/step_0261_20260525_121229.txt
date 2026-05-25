@@ -1,0 +1,11 @@
+=== STEP 261 ===
+
+--- REQUEST ---
+NEXT_CHUNK_ERROR: No chunked file in progress. Use READ_FILE first.
+
+--- RESPONSE ---
+
+
+Let me read the specific section of Makefile.inc1 where the errors occur:
+
+ACTION: READ_FILE Makefile.inc1

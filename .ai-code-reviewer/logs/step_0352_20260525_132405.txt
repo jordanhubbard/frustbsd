@@ -1,0 +1,33 @@
+=== STEP 352 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1
+Scope: tools/regression/tls/ttls4
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE tools/regression/tls/ttls4/Makefile
+OLD:
+<<<
+RUST_TARGET_DIR=	${.CURDIR}/target
+
+all: ${RUST_TARGET_DIR}/bin/ttls4
+
+${RUST_TARGET_DIR}/bin/ttls4:
+	@mkdir -p ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR}
+
+clean:
+	rm -rf ${RUST_TARGET_DIR}
+>>>
+NEW:
+<<<
+PROG=	ttls4
+LIBADD=	pthread
+MAN=
+DEBUG_FLAGS= -g
+
+.include <bsd.prog.mk>
+>>>

@@ -1,0 +1,40 @@
+=== STEP 383 ===
+
+--- REQUEST ---
+EDIT_FILE_ERROR: OLD text not found in /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1
+Closest match found in file (copy this EXACT block for OLD):
+<<<
+
+.for _t in compiler linker
+test-system-${_t}: .PHONY
+.for v in ${TEST_SYSTEM_${_t:tu}_VARS}
+	${_+_}@printf "%-35s= %s\n" "${v}" "${${v}}"
+.endfor
+.endfor
+.if (make(buildworld) || make(buildkernel) || make(kernel-toolchain) || \
+    make(toolchain) || make(_cross-tools))
+.if ${USING_SYSTEM_COMPILER} == "yes"
+.info SYSTEM_COMPILER: Determined that CC=${CC} matches the source tree.  Not bootstrapping a cross-compiler.
+.elif ${MK_CLANG_BOOTSTRAP} == "yes"
+.info SYSTEM_COMPILER: libclang will be built for bootstrapping a cross-compiler.
+.endif
+.if ${USING_SYSTEM_LINKER} == "yes"
+.info SYSTEM_LINKER: Determined that LD=${LD} matches the source tree.  Not bootstrapping a cross-linker.
+.elif ${MK_LLD_BOOTSTRAP} == "yes"
+.info SYSTEM_LINKER: libclang will be built for bootstrapping a cross-linker.
+.endif
+.endif
+
+# End WITH_SYSTEM_COMPILER / WITH_SYSTEM_LD
+>>>
+
+HINT: The OLD block must be EXACTLY copied from the file.
+Re-read the file and copy the exact text you want to replace,
+including all whitespace and indentation. Do not paraphrase.
+
+--- RESPONSE ---
+
+
+Let me check the current state of the modified files.
+
+ACTION: READ_FILE stand/libsa/x86/Makefile

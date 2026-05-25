@@ -1,0 +1,69 @@
+=== STEP 289 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/tools/regression/tls/ttls4/Cargo.toml:
+PROGRESS:
+📁 Directory: tools/regression/tls/ttls4
+   Files: 0/2
+📄 File: tools/regression/tls/ttls4/Cargo.toml
+✏️  Edits: 3 files modified
+
+```
+[package]
+name = "ttls4"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "ttls4"
+path = "src/main.rs"
+```
+
+--- RESPONSE ---
+
+
+The build errors are from Makefile.inc1 which is outside my scope. These are pre-existing build system issues. Let me modify the Makefile to use a simpler build approach that doesn't require the top-level build system.
+
+ACTION: EDIT_FILE tools/regression/tls/ttls4/Makefile
+OLD:
+<<<
+PROG=	ttls4
+LIBADD=	pthread
+MAN=
+DEBUG_FLAGS= -g
+
+RUST_PROG=	ttls4
+RUST_CARGO_DIR=	${.CURDIR}
+RUST_TARGET_DIR=	${OBJDIR}/rust-target
+
+.include <bsd.prog.mk>
+
+# Rust build integration
+${RUST_TARGET_DIR}/bin/ttls4:
+	@mkdir -p ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${RUST_CARGO_DIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR}
+
+ttls4-rust: ${RUST_TARGET_DIR}/bin/ttls4
+
+all: ttls4-rust
+>>>
+NEW:
+<<<
+PROG=	ttls4
+LIBADD=	pthread
+MAN=
+DEBUG_FLAGS= -g
+
+RUST_TARGET_DIR=	${.OBJDIR}/rust-target
+
+.include <bsd.prog.mk>
+
+# Rust build integration
+${RUST_TARGET_DIR}/bin/ttls4:
+	@mkdir -p ${RUST_TARGET_DIR}
+	cargo build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR}
+
+ttls4-rust: ${RUST_TARGET_DIR}/bin/ttls4
+
+all: ttls4-rust
+>>>

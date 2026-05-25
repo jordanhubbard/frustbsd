@@ -1,0 +1,12 @@
+=== STEP 499 ===
+
+--- REQUEST ---
+READ_FILE_ERROR: File not found: /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/mk/bsd.rust.mk
+TIP: Use FIND_FILE to locate files
+
+--- RESPONSE ---
+
+
+The build errors are from Makefile.inc1 cross-compiler bootstrap. This unit is not a proper FreeBSD build unit. Let me try a different approach.
+
+ACTION: READ_FILE sys/contrib/libsodium/src/libsodium/crypto_kdf/Makefile

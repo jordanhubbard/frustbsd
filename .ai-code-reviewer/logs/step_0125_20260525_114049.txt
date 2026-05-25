@@ -1,0 +1,15 @@
+=== STEP 125 ===
+
+--- REQUEST ---
+TIMEOUT: You have spent too many iterations on crypto/krb5/src/lib/krb5/error_tables. This directory is being skipped.
+
+SCOPE_ABANDONED: crypto/krb5/src/lib/krb5/error_tables was marked skipped.
+
+Reason: Exceeded 120 iterations without completing the scope
+Any tracked edits were reverted and untracked files created under the scope were removed.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/llvm-project/llvm/lib/Target/DirectX/TargetInfo

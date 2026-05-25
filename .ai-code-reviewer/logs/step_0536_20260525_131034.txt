@@ -1,0 +1,44 @@
+=== STEP 536 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.
+Remaining files in sys/contrib/libsodium/src/libsodium/crypto_kdf:
+  (All tracked files rewritten or skipped in this directory)
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE sys/contrib/libsodium/src/libsodium/crypto_kdf/Makefile
+OLD:
+<<<
+# Rust replacement for crypto_kdf
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+all:
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} --release
+
+clean:
+	@${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} 2>/dev/null || true
+
+.PHONY: all clean
+>>>
+NEW:
+<<<
+# Rust replacement for crypto_kdf
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+all:
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} --release
+
+clean:
+	@${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} 2>/dev/null || true
+
+.PHONY: all clean
+>>>

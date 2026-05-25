@@ -1,0 +1,36 @@
+=== STEP 250 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/tools/regression/tls/ttls4/Makefile:
+PROGRESS:
+📁 Directory: tools/regression/tls/ttls4
+   Files: 0/2
+📄 File: tools/regression/tls/ttls4/Makefile
+
+```
+PROG=	ttls4
+LIBADD=	pthread
+MAN=
+DEBUG_FLAGS= -g
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+I now understand the unit. This is a TLS test program that verifies new threads get clean thread-local storage. I'll create a Rust replacement that preserves the same behavior.
+
+ACTION: WRITE_FILE tools/regression/tls/ttls4/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "ttls4"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "ttls4"
+path = "src/main.rs"
+>>>

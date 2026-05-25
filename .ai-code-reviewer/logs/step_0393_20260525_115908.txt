@@ -1,0 +1,9 @@
+=== STEP 393 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for '^\.info'
+
+--- RESPONSE ---
+
+
+ACTION: GREP \.info

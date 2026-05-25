@@ -1,0 +1,47 @@
+=== STEP 253 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/tools/regression/tls/ttls4/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+I need to fix the Rust code - the `const { }` block syntax may not be available in older Rust versions. Let me simplify:
+
+ACTION: WRITE_FILE tools/regression/tls/ttls4/src/main.rs
+CONTENT:
+<<<
+use std::cell::Cell;
+use std::process;
+use std::thread;
+use std::time::Duration;
+
+thread_local! {
+    static N: Cell<i32> = Cell::new(0);
+}
+
+fn f1() {
+    if N.with(|n| n.get()) != 0 {
+        eprintln!("bug, n == {}", N.with(|n| n.get()));
+        process::exit(1);
+    }
+    N.with(|n| n.set(1));
+}
+
+fn main() {
+    for _ in 0..1000 {
+        let handle = thread::spawn(|| {
+            f1();
+        });
+        let _ = handle.join();
+    }
+    thread::sleep(Duration::from_secs(2));
+    for _ in 0..1000 {
+        let handle = thread::spawn(|| {
+            f1();
+        });
+        let _ = handle.join();
+    }
+}
+>>>

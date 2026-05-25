@@ -1,0 +1,9 @@
+=== STEP 395 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for '\.info Makefile.inc1'
+
+--- RESPONSE ---
+
+
+ACTION: GREP \.info

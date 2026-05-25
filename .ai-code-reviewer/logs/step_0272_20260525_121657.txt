@@ -1,0 +1,9 @@
+=== STEP 272 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'SYSTEM_COMPILER.*libclang will be built for bootstrapping'
+
+--- RESPONSE ---
+
+
+ACTION: GREP SYSTEM_COMPILER

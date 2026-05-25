@@ -1,0 +1,56 @@
+=== STEP 563 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: sys/contrib/libsodium/src/libsodium/crypto_stream
+Pending source/build changes: 3 files modified
+Files: sys/contrib/libsodium/src/libsodium/crypto_stream/Makefile, sys/contrib/libsodium/src/libsodium/crypto_stream/Cargo.toml, sys/contrib/libsodium/src/libsodium/crypto_stream/src/lib.rs
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in sys/contrib/libsodium/src/libsodium/crypto_stream
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: contrib/netbsd-tests/lib/libc/arch/alpha
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE sys/contrib/libsodium/src/libsodium/crypto_stream/Makefile
+OLD:
+<<<
+# Rust replacement for crypto_stream
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+all:
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} --release
+
+clean:
+	@${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} 2>/dev/null || true
+
+.PHONY: all clean
+>>>
+NEW:
+<<<
+# Rust replacement for crypto_stream
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+all:
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} --release
+
+clean:
+	@${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} 2>/dev/null || true
+
+.PHONY: all clean
+>>>

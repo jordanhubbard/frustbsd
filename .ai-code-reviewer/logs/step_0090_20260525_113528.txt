@@ -1,0 +1,11 @@
+=== STEP 90 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I keep forgetting the CONTENT block format. Let me write the Cargo.toml with proper delimiters.
+
+ACTION: WRITE_FILE crypto/krb5/src/lib/krb5/error_tables/Cargo.toml

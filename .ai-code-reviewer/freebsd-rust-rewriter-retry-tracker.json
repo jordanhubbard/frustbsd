@@ -347,6 +347,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-22T20:01:23.115564"
   },
+  "sys/contrib/libsodium/src/libsodium/crypto_kdf": {
+    "attempts": 1,
+    "last_attempt": "2026-05-25T12:18:49.850229"
+  },
   "sys/contrib/libsodium/src/libsodium/crypto_scalarmult": {
     "attempts": 2,
     "last_attempt": "2026-05-23T22:52:22.060999"
@@ -358,6 +362,10 @@
   "sys/contrib/libsodium/src/libsodium/crypto_shorthash/siphash24": {
     "attempts": 3,
     "last_attempt": "2026-05-23T10:01:32.971754"
+  },
+  "sys/contrib/libsodium/src/libsodium/crypto_stream": {
+    "attempts": 1,
+    "last_attempt": "2026-05-25T13:17:52.770879"
   },
   "sys/contrib/libsodium/src/libsodium/crypto_stream/salsa2012": {
     "attempts": 3,

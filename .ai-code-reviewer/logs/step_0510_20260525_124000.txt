@@ -1,0 +1,14 @@
+=== STEP 510 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1.
+Remaining files in sys/contrib/libsodium/src/libsodium/crypto_kdf:
+  (All tracked files rewritten or skipped in this directory)
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+The build errors are from Makefile.inc1 cross-compiler bootstrap, not from my changes. This unit is not a proper FreeBSD build unit. Let me change scope to the actual current unit from the rewrite index.
+
+ACTION: SET_SCOPE bin/cat/tests

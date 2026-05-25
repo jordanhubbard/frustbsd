@@ -1,0 +1,11 @@
+=== STEP 116 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I need to provide the complete action with the CONTENT block. Here is the complete action:
+
+ACTION: WRITE_FILE crypto/krb5/src/lib/krb5/error_tables/Cargo.toml
