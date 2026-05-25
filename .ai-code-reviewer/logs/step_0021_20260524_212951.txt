@@ -1,0 +1,14 @@
+=== STEP 21 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/chflags is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/VE/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me try more bin/ units to find one that's not skipped.
+
+ACTION: LIST_DIR bin/chmod

@@ -1,0 +1,14 @@
+=== STEP 25 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cp is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/VE/TargetInfo
+
+--- RESPONSE ---
+
+
+The current scope is LLVM target backend code, not FreeBSD userland. Let me try to find a pending unit that is actual FreeBSD userland code.
+
+ACTION: LIST_DIR bin/date

@@ -1,0 +1,15 @@
+=== STEP 50 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/uname:
+```
+Makefile
+Makefile.depend
+uname.1
+uname.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/uname

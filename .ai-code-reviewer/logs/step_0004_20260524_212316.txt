@@ -1,0 +1,39 @@
+=== STEP 4 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/VE/TargetInfo/VETargetInfo.h:
+PROGRESS:
+📄 File: contrib/llvm-project/llvm/lib/Target/VE/TargetInfo/VETargetInfo.h
+
+```
+//===-- VETargetInfo.h - VE Target Implementation ---------------*- C++ -*-===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#ifndef LLVM_LIB_TARGET_VE_TARGETINFO_VETARGETINFO_H
+#define LLVM_LIB_TARGET_VE_TARGETINFO_VETARGETINFO_H
+
+namespace llvm {
+
+class Target;
+
+Target &getTheVETarget();
+
+} // namespace llvm
+
+#endif // LLVM_LIB_TARGET_VE_TARGETINFO_VETARGETINFO_H
+
+```
+
+--- RESPONSE ---
+
+
+This is an LLVM target backend registration unit, not FreeBSD userland code. It's deeply integrated with LLVM's C++ infrastructure (`TargetRegistry`, `RegisterTarget`, `Triple::ve`, etc.) and cannot be meaningfully rewritten to Rust without rewriting the entire LLVM infrastructure. This falls outside the configured objective of "FreeBSD userland C/C++ libraries and commands."
+
+Let me check the next pending unit to see if it has relevant C/C++ source.
+
+ACTION: LIST_DIR bin/cat/tests

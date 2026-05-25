@@ -1,0 +1,9 @@
+=== STEP 182 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'bin/*/Makefile'
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE bin/*/

@@ -1,0 +1,44 @@
+=== STEP 11 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/XCore/TargetInfo/XCoreTargetInfo.cpp:
+PROGRESS:
+📁 Directory: contrib/llvm-project/llvm/lib/Target/XCore/TargetInfo
+   Files: 0/2
+📄 File: contrib/llvm-project/llvm/lib/Target/XCore/TargetInfo/XCoreTargetInfo.cpp
+
+```
+//===-- XCoreTargetInfo.cpp - XCore Target Implementation -----------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#include "TargetInfo/XCoreTargetInfo.h"
+#include "llvm/MC/TargetRegistry.h"
+#include "llvm/Support/Compiler.h"
+using namespace llvm;
+
+Target &llvm::getTheXCoreTarget() {
+  static Target TheXCoreTarget;
+  return TheXCoreTarget;
+}
+
+extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void
+LLVMInitializeXCoreTargetInfo() {
+  RegisterTarget<Triple::xcore> X(getTheXCoreTarget(), "xcore", "XCore",
+                                  "XCore");
+}
+
+```
+
+--- RESPONSE ---
+
+
+This is LLVM target backend code, not FreeBSD userland. It's deeply integrated with LLVM's C++ infrastructure (`TargetRegistry`, `RegisterTarget`, `Triple::xcore`) and cannot be meaningfully rewritten to Rust without rewriting the entire LLVM infrastructure. This falls outside the configured objective of "FreeBSD userland C/C++ libraries and commands."
+
+I need to find a proper FreeBSD userland unit. Let me look for pending usr.bin or bin units with actual C source.
+
+ACTION: LIST_DIR usr.bin

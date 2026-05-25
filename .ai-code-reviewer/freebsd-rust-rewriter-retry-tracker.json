@@ -432,12 +432,12 @@
     "last_attempt": "2026-05-24T04:27:11.328042"
   },
   "usr.bin/fstat": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T20:30:16.772565"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T21:24:19.520160"
   },
   "usr.bin/getconf": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T19:44:22.714408"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T21:27:34.178652"
   },
   "usr.bin/head": {
     "attempts": 3,
@@ -484,8 +484,8 @@
     "last_attempt": "2026-05-24T06:38:33.426702"
   },
   "usr.bin/logger": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T06:39:41.669379"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T21:25:34.474839"
   },
   "usr.bin/login": {
     "attempts": 1,
@@ -600,12 +600,16 @@
     "last_attempt": "2026-05-22T22:24:06.261005"
   },
   "usr.bin/sort": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T06:46:29.573429"
+    "attempts": 2,
+    "last_attempt": "2026-05-24T21:28:42.830170"
   },
   "usr.bin/split": {
     "attempts": 3,
     "last_attempt": "2026-05-24T13:14:21.810481"
+  },
+  "usr.bin/tabs": {
+    "attempts": 1,
+    "last_attempt": "2026-05-24T21:28:54.646456"
   },
   "usr.bin/tail": {
     "attempts": 3,

@@ -1,0 +1,14 @@
+=== STEP 19 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/yes is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/VE/TargetInfo
+
+--- RESPONSE ---
+
+
+The rewrite index keeps suggesting LLVM target backend units which are not FreeBSD userland. Let me check some `bin/` units for actual userland commands.
+
+ACTION: LIST_DIR bin/chflags

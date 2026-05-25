@@ -1,0 +1,16 @@
+=== STEP 20 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/chflags:
+```
+Makefile
+Makefile.depend
+chflags.1
+chflags.c
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/chflags

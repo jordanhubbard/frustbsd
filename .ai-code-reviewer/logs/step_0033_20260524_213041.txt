@@ -1,0 +1,17 @@
+=== STEP 33 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/ln:
+```
+Makefile
+Makefile.depend
+ln.1
+ln.c
+symlink.7
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/ln

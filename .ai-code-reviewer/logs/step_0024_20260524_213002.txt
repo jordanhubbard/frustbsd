@@ -1,0 +1,20 @@
+=== STEP 24 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/cp:
+```
+Makefile
+Makefile.depend
+cp.1
+cp.c
+extern.h
+tests
+utils.c
+```
+
+--- RESPONSE ---
+
+
+The rewrite index keeps suggesting LLVM target backend units which are not FreeBSD userland. Let me try to find a pending unit that is actual FreeBSD userland code.
+
+ACTION: SET_SCOPE bin/cp

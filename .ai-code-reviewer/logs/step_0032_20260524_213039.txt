@@ -1,0 +1,9 @@
+=== STEP 32 ===
+
+--- REQUEST ---
+LIST_DIR_ERROR: Directory not found: /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/link
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR bin/ln

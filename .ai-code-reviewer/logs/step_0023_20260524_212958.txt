@@ -1,0 +1,14 @@
+=== STEP 23 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/chmod is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/VE/TargetInfo
+
+--- RESPONSE ---
+
+
+The rewrite index keeps suggesting LLVM target backend units. Let me try finding a pending unit that's actual FreeBSD userland code.
+
+ACTION: LIST_DIR bin/cp

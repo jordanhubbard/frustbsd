@@ -1,0 +1,12 @@
+=== STEP 236 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory usr.bin/pr skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/llvm-project/llvm/lib/Target/VE/TargetInfo
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/df

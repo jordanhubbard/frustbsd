@@ -1,0 +1,13 @@
+=== STEP 45 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/unvis:
+```
+Makefile
+Makefile.depend
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/vis

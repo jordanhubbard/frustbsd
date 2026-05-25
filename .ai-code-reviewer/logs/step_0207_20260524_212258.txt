@@ -1,0 +1,11 @@
+=== STEP 207 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/unvis has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/XCore/TargetInfo
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/units

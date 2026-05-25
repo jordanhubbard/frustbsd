@@ -1,0 +1,55 @@
+=== STEP 7 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/VE:
+```
+AsmParser
+Disassembler
+LVLGen.cpp
+MCTargetDesc
+TargetInfo
+VE.h
+VE.td
+VEAsmPrinter.cpp
+VECallingConv.td
+VECustomDAG.cpp
+VECustomDAG.h
+VEFrameLowering.cpp
+VEFrameLowering.h
+VEISelDAGToDAG.cpp
+VEISelLowering.cpp
+VEISelLowering.h
+VEInstrBuilder.h
+VEInstrFormats.td
+VEInstrInfo.cpp
+VEInstrInfo.h
+VEInstrInfo.td
+VEInstrIntrinsicVL.gen.td
+VEInstrIntrinsicVL.td
+VEInstrPatternsVec.td
+VEInstrVec.td
+VEMCInstLower.cpp
+VEMachineFunctionInfo.cpp
+VEMachineFunctionInfo.h
+VERegisterInfo.cpp
+VERegisterInfo.h
+VERegisterInfo.td
+VESubtarget.cpp
+VESubtarget.h
+VETargetMachine.cpp
+VETargetMachine.h
+VETargetTransformInfo.h
+VVPISelLowering.cpp
+VVPInstrInfo.td
+VVPInstrPatternsVec.td
+VVPNodes.def
+```
+
+--- RESPONSE ---
+
+
+This unit is LLVM target backend code, not FreeBSD userland. It's deeply integrated with LLVM's C++ infrastructure (`TargetRegistry`, `RegisterTarget`, `Triple::ve`) and cannot be meaningfully rewritten to Rust without rewriting the entire LLVM infrastructure. This falls outside the configured objective of "FreeBSD userland C/C++ libraries and commands."
+
+Let me check the next pending unit.
+
+ACTION: SET_SCOPE bin/cat/tests
