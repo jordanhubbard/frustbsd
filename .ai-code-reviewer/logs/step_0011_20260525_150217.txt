@@ -1,0 +1,14 @@
+=== STEP 11 ===
+
+--- REQUEST ---
+GREP_RESULT for 'crypto_kdf_PRIMITIVE':
+```
+./sys/contrib/libsodium/src/libsodium/include/sodium/crypto_kdf.h:33:#define crypto_kdf_PRIMITIVE "blake2b"
+./sys/contrib/libsodium/src/libsodium/crypto_kdf/crypto_kdf.c:8:    return crypto_kdf_PRIMITIVE;
+./sys/contrib/libsodium/test/default/kdf.c:48:    assert(strcmp(crypto_kdf_primitive(), crypto_kdf_PRIMITIVE) == 0);
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE sys/contrib/libsodium/src/libsodium/include/sodium/crypto_kdf.h

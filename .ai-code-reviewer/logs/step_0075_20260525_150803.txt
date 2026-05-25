@@ -1,0 +1,15 @@
+=== STEP 75 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/protect:
+```
+Makefile
+Makefile.depend
+protect.1
+protect.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/protect

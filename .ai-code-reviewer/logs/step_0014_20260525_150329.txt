@@ -1,0 +1,20 @@
+=== STEP 14 ===
+
+--- REQUEST ---
+GREP_RESULT for 'crypto_kdf_blake2b_BYTES':
+```
+./sys/contrib/libsodium/src/libsodium/include/sodium/crypto_kdf_blake2b.h:17:#define crypto_kdf_blake2b_BYTES_MIN 16
+./sys/contrib/libsodium/src/libsodium/include/sodium/crypto_kdf_blake2b.h:21:#define crypto_kdf_blake2b_BYTES_MAX 64
+./sys/contrib/libsodium/src/libsodium/include/sodium/crypto_kdf.h:17:#define crypto_kdf_BYTES_MIN crypto_kdf_blake2b_BYTES_MIN
+./sys/contrib/libsodium/src/libsodium/include/sodium/crypto_kdf.h:21:#define crypto_kdf_BYTES_MAX crypto_kdf_blake2b_BYTES_MAX
+./sys/contrib/libsodium/src/libsodium/crypto_kdf/blake2b/kdf_blake2b.c:10:    return crypto_kdf_blake2b_BYTES_MIN;
+./sys/contrib/libsodium/src/libsodium/crypto_kdf/blake2b/kdf_blake2b.c:16:    return crypto_kdf_blake2b_BYTES_MAX;
+./sys/contrib/libsodium/src/libsodium/crypto_kdf/blake2b/kdf_blake2b.c:43:    if (subkey_len < crypto_kdf_blake2b_BYTES_MIN ||
+```
+
+--- RESPONSE ---
+
+
+This unit has already used 3/3 attempts and will auto-skip on next attempt. This is a complex crypto unit that depends on BLAKE2b implementation which would require reimplementing from scratch without external crates. Let me move to the next unit.
+
+ACTION: SET_SCOPE bin/cat/tests

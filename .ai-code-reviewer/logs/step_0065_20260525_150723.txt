@@ -1,0 +1,28 @@
+=== STEP 65 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/soelim:
+```
+.depend
+.depend.soelim.pieo
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+cargo-target
+soelim
+soelim.1
+soelim.1.gz
+soelim.c
+soelim.debug
+soelim.full
+soelim.pieo
+src
+target
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/units

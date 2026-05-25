@@ -1,0 +1,20 @@
+=== STEP 37 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/nproc:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+nproc.1
+nproc.c
+src
+```
+
+--- RESPONSE ---
+
+
+I need to find a fresh userland unit without Rust. Let me check `bin/freebsd-version`.
+
+ACTION: LIST_DIR bin/freebsd-version

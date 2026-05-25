@@ -1,0 +1,27 @@
+=== STEP 49 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/rmdir/Makefile:
+PROGRESS:
+📁 Directory: stand/libsa/x86
+   Files: 0/1
+📄 File: bin/rmdir/Makefile
+
+```
+.include <src.opts.mk>
+
+PACKAGE=runtime
+PROG=	rmdir
+HAS_TESTS=
+SUBDIR.${MK_TESTS}+= tests
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+`bin/rmdir` is a small, clean command. Let me set scope and create the Rust replacement.
+
+ACTION: SET_SCOPE bin/rmdir

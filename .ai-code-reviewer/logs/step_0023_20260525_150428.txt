@@ -1,0 +1,20 @@
+=== STEP 23 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/realpath:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+realpath.1
+realpath.c
+src
+```
+
+--- RESPONSE ---
+
+
+Already has Rust. Let me find a unit without Rust yet.
+
+ACTION: LIST_DIR bin/ln

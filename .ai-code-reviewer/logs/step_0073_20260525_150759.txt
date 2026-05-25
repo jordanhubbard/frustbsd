@@ -1,0 +1,14 @@
+=== STEP 73 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/posixshmcontrol:
+```
+Makefile
+posixshmcontrol.1
+posixshmcontrol.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/posixshmcontrol

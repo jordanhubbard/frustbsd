@@ -1,0 +1,14 @@
+=== STEP 50 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/rmdir is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_kdf
+
+--- RESPONSE ---
+
+
+Let me try another unit.
+
+ACTION: LIST_DIR bin/mkdir

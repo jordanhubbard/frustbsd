@@ -1,0 +1,15 @@
+=== STEP 35 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*kenv.h*':
+```
+./sys/sys/kenv.h
+./include/kenv.h
+```
+
+--- RESPONSE ---
+
+
+Let me check the kenv header to understand the API.
+
+ACTION: READ_FILE include/kenv.h

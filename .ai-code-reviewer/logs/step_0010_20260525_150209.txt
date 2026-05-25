@@ -1,0 +1,11 @@
+=== STEP 10 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'sys/contrib/libsodium/src/libsodium/**/crypto_kdf*.h'
+
+--- RESPONSE ---
+
+
+Let me search for the header files more broadly.
+
+ACTION: GREP crypto_kdf_PRIMITIVE
