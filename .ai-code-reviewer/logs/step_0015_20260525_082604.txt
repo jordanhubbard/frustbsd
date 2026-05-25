@@ -1,0 +1,9 @@
+=== STEP 15 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'bin/rmdir/*.c'
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE bin/rmdir/*

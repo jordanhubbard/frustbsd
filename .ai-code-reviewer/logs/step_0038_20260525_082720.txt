@@ -1,0 +1,12 @@
+=== STEP 38 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/sdt skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE tools/regression/tls/ttls2
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/strings

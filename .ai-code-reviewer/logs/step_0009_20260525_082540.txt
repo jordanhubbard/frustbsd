@@ -1,0 +1,17 @@
+=== STEP 9 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/freebsd-version:
+```
+Makefile
+Makefile.depend
+freebsd-version.1
+freebsd-version.sh.in
+```
+
+--- RESPONSE ---
+
+
+That's a shell script. Let me look for a small C command.
+
+ACTION: LIST_DIR bin/echo

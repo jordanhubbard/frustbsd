@@ -1,0 +1,14 @@
+=== STEP 3 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory contrib/llvm-project/llvm/lib/Target/SystemZ/TargetInfo skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes
+
+--- RESPONSE ---
+
+
+The `contrib/llvm-project` directory is vendor/third-party code and not appropriate for the FreeBSD userland rewrite objective. The test directories in the queue also lack C/C++ source. Let me find a suitable unit with actual C/C++ source files.
+
+ACTION: LIST_DIR bin
