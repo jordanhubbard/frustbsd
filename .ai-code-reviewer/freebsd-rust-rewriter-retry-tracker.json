@@ -276,8 +276,8 @@
     "last_attempt": "2026-05-25T18:01:05.075456"
   },
   "contrib/netbsd-tests/lib/libc/arch/riscv": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T02:50:41.577257"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T03:09:48.387919"
   },
   "contrib/netbsd-tests/lib/libc/arch/sh3": {
     "attempts": 3,
