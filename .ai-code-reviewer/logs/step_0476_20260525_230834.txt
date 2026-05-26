@@ -1,0 +1,114 @@
+=== STEP 476 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/sbin/clri/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The offset-based approach is fragile. Let me create a proper C wrapper instead.
+
+ACTION: WRITE_FILE sbin/clri/src/clri_glue.c
+CONTENT:
+<<<
+/* SPDX-License-Identifier: BSD-3-Clause */
+/*
+ * C glue layer for clri Rust rewrite.
+ * Provides a clean FFI interface over libufs.
+ */
+
+#include <sys/types.h>
+#include <sys/param.h>
+#include <ufs/ufs/inode.h>
+#include <ufs/ufs/ufs_extern.h>
+#include <ufs/ffs/fs.h>
+#include <ufs/ffs/ffs_extern.h>
+#include <libufs.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+/*
+ * Allocate and zero a uufsd struct.
+ * Returns pointer or NULL on failure.
+ */
+struct uufsd *
+clri_alloc_disk(void)
+{
+	struct uufsd *disk;
+
+	disk = calloc(1, sizeof(*disk));
+	return (disk);
+}
+
+/*
+ * Free a uufsd struct.
+ */
+void
+clri_free_disk(struct uufsd *disk)
+{
+
+	free(disk);
+}
+
+/*
+ * Get fs_magic from a uufsd.
+ */
+uint32_t
+clri_fs_magic(const struct uufsd *disk)
+{
+
+	return (disk->d_fs.fs_magic);
+}
+
+/*
+ * Get the file descriptor from a uufsd.
+ */
+int
+clri_disk_fd(const struct uufsd *disk)
+{
+
+	return (disk->d_fd);
+}
+
+/*
+ * Get the error string from a uufsd.
+ */
+const char *
+clri_disk_error(const struct uufsd *disk)
+{
+
+	return (disk->d_error);
+}
+
+/*
+ * Clear a dinode, preserving the generation number + 1.
+ * Returns 0 on success, -1 on error.
+ */
+int
+clri_clear_inode(struct uufsd *disk, union dinodep *dp)
+{
+	uint32_t magic;
+
+	magic = disk->d_fs.fs_magic;
+	if (magic == FS_UFS1_MAGIC) {
+		uint32_t gen;
+
+		gen = dp->dp1->di_gen + 1;
+		memset(dp->dp1, 0, sizeof(*dp->dp1));
+		dp->dp1->di_gen = gen;
+	} else {
+		uint64_t gen;
+
+		gen = dp->dp2->di_gen + 1;
+		memset(dp->dp2, 0, sizeof(*dp->dp2));
+		dp->dp2->di_gen = gen;
+	}
+	if (putinode(disk) == -1)
+		return (-1);
+	if (fsync(disk->d_fd) == -1)
+		return (-1);
+	return (0);
+}
+>>>

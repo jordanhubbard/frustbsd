@@ -1,0 +1,9 @@
+=== STEP 16 ===
+
+--- REQUEST ---
+GREP_ERROR: 'utf-8' codec can't decode byte 0xa9 in position 1736320: invalid start byte
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE usr.bin

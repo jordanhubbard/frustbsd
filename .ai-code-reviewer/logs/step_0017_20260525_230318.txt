@@ -1,0 +1,9 @@
+=== STEP 17 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*usr.bin*'
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin

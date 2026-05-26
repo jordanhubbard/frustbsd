@@ -1,0 +1,229 @@
+=== STEP 471 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/sbin/clri/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The Rust code has issues with the FFI - `uufsd` should be opaque and I can't access `disk.d_fs.fs_magic` directly. Let me rewrite with proper opaque FFI and use the libufs API correctly.
+
+ACTION: WRITE_FILE sbin/clri/src/main.rs
+CONTENT:
+<<<
+// SPDX-License-Identifier: BSD-3-Clause
+//
+// Copyright (c) 1990, 1993
+//     The Regents of the University of California.  All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+// 3. Neither the name of the University nor the names of its contributors
+//    may be used to endorse or promote products derived from this software
+//    without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+// OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+// OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+
+use std::env;
+use std::ffi::{CStr, CString};
+use std::os::raw::{c_char, c_int};
+use std::process;
+
+const UFS_ROOTINO: c_int = 2;
+const FS_UFS1_MAGIC: u32 = 0x19540119;
+
+// Opaque handle from libufs
+#[repr(C)]
+struct uufsd {
+    _private: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
+
+#[repr(C)]
+pub union union_dinodep {
+    pub dp1: *mut ufs1_dinode,
+    pub dp2: *mut ufs2_dinode,
+}
+
+#[repr(C)]
+pub struct ufs1_dinode {
+    pub di_mode: u16,
+    pub di_uid: u16,
+    pub di_size: u32,
+    pub di_addr: [u32; 8],
+    pub di_flag: u32,
+    pub di_gen: u32,
+    pub di_unchg: u32,
+    pub di_spare: [u32; 4],
+    pub di_blocks: u16,
+    pub di_xsize: u16,
+    pub di_atime: u32,
+    pub di_atimensec: u32,
+    pub di_mtime: u32,
+    pub di_mtimensec: u32,
+    pub di_ctime: u32,
+    pub di_ctimensec: u32,
+    pub di_gtid: u16,
+    pub di_pad: u16,
+}
+
+#[repr(C)]
+pub struct ufs2_dinode {
+    pub di_mode: u16,
+    pub di_uid: u32,
+    pub di_size: u64,
+    pub di_addr: [u64; 8],
+    pub di_flag: u32,
+    pub di_gen: u64,
+    pub di_unchg: u32,
+    pub di_spare: [u32; 4],
+    pub di_blocks: u64,
+    pub di_xsize: u64,
+    pub di_atime: u64,
+    pub di_mtime: u64,
+    pub di_nlink: u32,
+    pub di_fflags: u32,
+    pub di_gtid: u32,
+    pub di_pad: u32,
+    pub di_spare2: [u64; 4],
+}
+
+extern "C" {
+    fn ufs_disk_fillout(disk: *mut uufsd, fsname: *const c_char) -> c_int;
+    fn ufs_disk_close(disk: *mut uufsd) -> c_int;
+    fn getinode(disk: *mut uufsd, dp: *mut union_dinodep, ino: c_int) -> c_int;
+    fn putinode(disk: *mut uufsd) -> c_int;
+    fn ufs_disk_fd(disk: *const uufsd) -> c_int;
+    fn ufs_disk_error(disk: *const uufsd) -> *const c_char;
+    fn ufs_disk_fs(disk: *const uufsd) -> *const c_void;
+    fn fsync(fd: c_int) -> c_int;
+}
+
+#[repr(C)]
+struct c_void {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
+
+// We need to read fs_magic from the superblock pointer libufs gives us.
+// The superblock struct starts with fs_magic at offset 0.
+unsafe fn get_fs_magic(fs_ptr: *const c_void) -> u32 {
+    (fs_ptr as *const u32).read()
+}
+
+fn usage() -> ! {
+    eprintln!("usage: clri special_device inode_number ...");
+    process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    if args.len() < 3 {
+        usage();
+    }
+
+    let fsname = &args[1];
+    let inodes = &args[2..];
+
+    let c_fsname = match CString::new(fsname.as_bytes()) {
+        Ok(s) => s,
+        Err(_) => {
+            eprintln!("Invalid filesystem path");
+            process::exit(1);
+        }
+    };
+
+    // libufs uses malloc internally for uufsd, so we must use a raw pointer
+    let mut disk: *mut uufsd = std::ptr::null_mut();
+
+    if unsafe { ufs_disk_fillout(&mut disk, c_fsname.as_ptr()) } == -1 {
+        let err = unsafe {
+            if !disk.is_null() {
+                let eptr = ufs_disk_error(disk);
+                if !eptr.is_null() {
+                    CStr::from_ptr(eptr).to_string_lossy().into_owned()
+                } else {
+                    "unknown error".to_string()
+                }
+            } else {
+                "unknown error".to_string()
+            }
+        };
+        eprintln!("loading superblock: {}", err);
+        process::exit(1);
+    }
+
+    let mut exitval: i32 = 0;
+
+    for inode_str in inodes {
+        let inonum: i32 = match inode_str.parse() {
+            Ok(n) => n,
+            Err(_) => {
+                eprintln!("{} is not a valid inode number", inode_str);
+                exitval = 1;
+                continue;
+            }
+        };
+
+        if inonum < UFS_ROOTINO {
+            eprintln!("{} is not a valid inode number", inode_str);
+            exitval = 1;
+            continue;
+        }
+
+        println!("clearing {}", inonum);
+
+        let mut dp: union_dinodep = unsafe { std::mem::zeroed() };
+
+        if unsafe { getinode(disk, &mut dp, inonum) } == -1 {
+            let err = unsafe {
+                let eptr = ufs_disk_error(disk);
+                if !eptr.is_null() {
+                    CStr::from_ptr(eptr).to_string_lossy().into_owned()
+                } else {
+                    "unknown error".to_string()
+                }
+            };
+            eprintln!("getinode: {}", err);
+            exitval = 1;
+            continue;
+        }
+
+        unsafe {
+            let fs_ptr = ufs_disk_fs(disk);
+            let fs_magic = get_fs_magic(fs_ptr);
+            if fs_magic == FS_UFS1_MAGIC {
+                let gen = (*dp.dp1).di_gen + 1;
+                std::ptr::write_bytes(dp.dp1, 0, 1);
+                (*dp.dp1).di_gen = gen;
+            } else {
+                let gen = (*dp.dp2).di_gen + 1;
+                std::ptr::write_bytes(dp.dp2, 0, 1);
+                (*dp.dp2).di_gen = gen;
+            }
+            putinode(disk);
+            fsync(ufs_disk_fd(disk));
+        }
+    }
+
+    unsafe { ufs_disk_close(disk); }
+    process::exit(exitval);
+}
+>>>

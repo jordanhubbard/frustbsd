@@ -1,0 +1,14 @@
+=== STEP 3 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/X86/TargetInfo
+
+--- RESPONSE ---
+
+
+The NVPTX/TargetInfo was auto-skipped and bin/cat is skipped. Let me try the current unit from the queue.
+
+ACTION: SET_SCOPE bin/cat/tests

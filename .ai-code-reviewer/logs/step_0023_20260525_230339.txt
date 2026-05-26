@@ -1,0 +1,9 @@
+=== STEP 23 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*usr.bin*'
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/Makefile

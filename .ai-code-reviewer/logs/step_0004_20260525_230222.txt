@@ -1,0 +1,13 @@
+=== STEP 4 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat/tests has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/X86/TargetInfo
+
+--- RESPONSE ---
+
+
+The test directories have no C/C++ source, and LLVM vendor code is not appropriate for this objective. Let me find a small userland command with actual C source to rewrite.
+
+ACTION: FIND_FILE bin/cat/cat.c

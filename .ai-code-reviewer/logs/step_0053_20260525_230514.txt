@@ -1,0 +1,14 @@
+=== STEP 53 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/cksum is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/X86/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me try a different approach and explore sbin subdirectories.
+
+ACTION: SET_SCOPE sbin/adjkerntz
