@@ -1,0 +1,14 @@
+=== STEP 126 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1.
+Remaining files in sys/contrib/libsodium/src/libsodium/randombytes/nativeclient:
+  (All tracked files rewritten or skipped in this directory)
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+This unit is vendor code (libsodium) specific to Native Client, not FreeBSD userland. I need to move to the next pending unit.
+
+ACTION: SET_SCOPE bin/cat/tests

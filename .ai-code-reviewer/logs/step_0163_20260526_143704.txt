@@ -1,0 +1,12 @@
+=== STEP 163 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Marked current file as skipped.
+Remaining files in contrib/netbsd-tests/rump/rumpkern/h_server:
+  - contrib/netbsd-tests/rump/rumpkern/h_server/h_simpleserver.c
+Please READ_FILE another source file or SET_SCOPE to continue progress.
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/file/python/file_magic

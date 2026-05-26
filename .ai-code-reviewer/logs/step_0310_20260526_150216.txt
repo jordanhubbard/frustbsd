@@ -1,0 +1,15 @@
+=== STEP 310 ===
+
+--- REQUEST ---
+TIMEOUT: You have spent too many iterations on sys/crypto/libsodium. This directory is being skipped.
+
+SCOPE_ABANDONED: sys/crypto/libsodium was marked skipped.
+
+Reason: Exceeded 120 iterations without completing the scope
+Any tracked edits were reverted and untracked files created under the scope were removed.
+NEXT: Use SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/json
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/libxo

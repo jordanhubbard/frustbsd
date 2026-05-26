@@ -1,0 +1,12 @@
+=== STEP 250 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/colrm is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/json
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/comm

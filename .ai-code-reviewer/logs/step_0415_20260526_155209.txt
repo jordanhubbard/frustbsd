@@ -1,0 +1,12 @@
+=== STEP 415 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/kenv is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE tools/test/stress2/testcases/sysctl
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR bin/kenv

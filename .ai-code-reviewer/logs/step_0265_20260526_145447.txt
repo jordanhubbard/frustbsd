@@ -1,0 +1,16 @@
+=== STEP 265 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/fold:
+```
+Makefile
+Makefile.depend
+fold.1
+fold.c
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/fold

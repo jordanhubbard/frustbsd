@@ -1,0 +1,21 @@
+=== STEP 54 ===
+
+--- REQUEST ---
+No valid ACTION found in your response.
+
+
+Correct format:
+ACTION: EDIT_FILE src/example.c
+OLD:
+<<<
+exact text
+>>>
+NEW:
+<<<
+new text
+>>>
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE Makefile.inc1

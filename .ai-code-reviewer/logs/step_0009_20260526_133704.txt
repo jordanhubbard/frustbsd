@@ -1,0 +1,24 @@
+=== STEP 9 ===
+
+--- REQUEST ---
+GREP_RESULT for 'cargo':
+```
+./sys/dev/iwm/if_iwm.c:5790:	 * We cargo-cult like it's going out of fashion.
+./contrib/pam_modules/pam_passwdqc/wordset_4k.c:788:	"cargo",
+./contrib/libevent/arc4random.c:392:	 * We add another sect to the cargo cult, and choose 12*256.
+./contrib/libevent/buffer.c:3247:			memset(&si, 0, sizeof(si)); /* cargo cult */
+./contrib/libevent/bufferevent_openssl.c:210:	 * of cargo-cultism.  I should come up with a better reason. */
+./contrib/libevent/event_iocp.c:130:   wine.h.   Perhaps if we copy them exactly, the cargo will come again.
+./contrib/ntp/sntp/libevent/arc4random.c:392:	 * We add another sect to the cargo cult, and choose 12*256.
+./contrib/ntp/sntp/libevent/buffer.c:3247:			memset(&si, 0, sizeof(si)); /* cargo cult */
+./contrib/ntp/sntp/libevent/event_iocp.c:130:   wine.h.   Perhaps if we copy them exactly, the cargo will come again.
+./contrib/ntp/sntp/libevent/bufferevent_openssl.c:210:	 * of cargo-cultism.  I should come up with a better reason. */
+./contrib/bmake/filemon/filemon_dev.c:76:	/* Try opening /dev/filemon, up to six times (cargo cult!).  */
+```
+
+--- RESPONSE ---
+
+
+No Rust build infrastructure exists in the tree. Let me check how the recently completed units handled Rust integration.
+
+ACTION: LIST_DIR usr.bin/basename

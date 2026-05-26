@@ -1,0 +1,39 @@
+=== STEP 18 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/kld/syscall/test/Makefile
+Scope: share/examples/kld/syscall/test
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+I need to fix the Rust source - it uses `libc::c_void` which requires an external crate. Let me fix that.
+
+ACTION: EDIT_FILE share/examples/kld/syscall/test/src/main.rs
+OLD:
+<<<
+#[repr(C)]
+struct module_stat {
+    version: u32,
+    modidx: c_int,
+    flags: u32,
+    name: *const i8,
+    _data: *mut libc::c_void,
+    _size: c_int,
+    intval: c_int,
+}
+>>>
+NEW:
+<<<
+#[repr(C)]
+struct module_stat {
+    version: u32,
+    modidx: c_int,
+    flags: u32,
+    name: *const i8,
+    _data: *mut std::ffi::c_void,
+    _size: c_int,
+    intval: c_int,
+}
+>>>

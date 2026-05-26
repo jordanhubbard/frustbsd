@@ -1,0 +1,37 @@
+=== STEP 292 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libmd:
+```
+Makefile
+Makefile.depend
+Symbol.map
+aarch64
+amd64
+i386
+md4.copyright
+md4.h
+md5.copyright
+md5.h
+mdX.3
+mdXhl.c
+ripemd.3
+ripemd.h
+rmd160c.c
+rmd_locl.h
+rmdconst.h
+sha.3
+sha.h
+sha0c.c
+sha1c.c
+sha256.3
+sha512.3
+sha_locl.h
+skein.3
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/libxo

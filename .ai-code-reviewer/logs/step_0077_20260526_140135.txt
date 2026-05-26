@@ -1,0 +1,26 @@
+=== STEP 77 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/uuidgen:
+```
+.depend
+.depend.uuidgen.pieo
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+cargo-target
+src
+uuidgen
+uuidgen.1
+uuidgen.1.gz
+uuidgen.c
+uuidgen.debug
+uuidgen.full
+uuidgen.pieo
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR bin/kenv

@@ -1,0 +1,32 @@
+=== STEP 362 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/libxo:
+```
+.gitignore
+.travis.yml
+Copyright
+INSTALL.md
+LICENSE
+Makefile.am
+README.md
+configure.ac
+doc
+encoder
+libxo
+libxo-config.in
+packaging
+tests
+warnings.mk
+xo
+xohtml
+xolint
+xopo
+```
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level Makefile.inc1, not from my changes. Let me check what build command is being used.
+
+ACTION: LIST_DIR contrib/libxo

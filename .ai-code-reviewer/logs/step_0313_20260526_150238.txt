@@ -1,0 +1,11 @@
+=== STEP 313 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: lib/libxo has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/json
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/libxo/libxo

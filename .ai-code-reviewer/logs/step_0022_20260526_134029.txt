@@ -1,0 +1,43 @@
+=== STEP 22 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/kld/syscall/test/src/main.rs
+Scope: share/examples/kld/syscall/test
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now I need to update the main function to use the correct field access (`stat.data.intval` instead of `stat.intval`).
+
+ACTION: EDIT_FILE share/examples/kld/syscall/test/src/main.rs
+OLD:
+<<<
+    let mut stat: module_stat = unsafe { std::mem::zeroed() };
+    stat.version = std::mem::size_of::<module_stat>() as u32;
+
+    if unsafe { modstat(modid, &mut stat) } != 0 {
+        eprintln!("modstat: failed");
+        process::exit(1);
+    }
+
+    let syscall_num = stat.intval;
+    let result = unsafe { syscall(syscall_num) };
+    process::exit(result as i32);
+}
+>>>
+NEW:
+<<<
+    let mut stat: module_stat = unsafe { std::mem::zeroed() };
+    stat.version = std::mem::size_of::<module_stat>() as c_int;
+
+    if unsafe { modstat(modid, &mut stat) } != 0 {
+        eprintln!("modstat: failed");
+        process::exit(1);
+    }
+
+    let syscall_num = unsafe { stat.data.intval };
+    let result = unsafe { syscall(syscall_num) };
+    process::exit(result as i32);
+}
+>>>

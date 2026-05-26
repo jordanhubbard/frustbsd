@@ -1,0 +1,12 @@
+=== STEP 158 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Marked current file as skipped.
+Remaining files in lib/libc/csu/powerpc64:
+  - lib/libc/csu/powerpc64/Makefile.inc
+Please READ_FILE another source file or SET_SCOPE to continue progress.
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/file/python/file_magic

@@ -1,0 +1,13 @@
+=== STEP 410 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Marked current file as skipped.
+Remaining files in contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo:
+  - contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo/ARMTargetInfo.cpp
+  - contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo/ARMTargetInfo.h
+Please READ_FILE another source file or SET_SCOPE to continue progress.
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/cat

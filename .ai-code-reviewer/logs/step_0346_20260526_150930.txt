@@ -1,0 +1,68 @@
+=== STEP 346 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/libxo/libxo/xo_encoder.c:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/libxo/libxo/xo_encoder.c
+   Total chunks: 19
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: contrib/libxo/libxo
+   Files: 0/39
+📄 File: contrib/libxo/libxo/xo_encoder.c
+   Chunks: 1/19
+
+```
+=== CHUNK 1/19: /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/libxo/libxo/xo_encoder.c === [header: file_header]
+=== Lines 1-39 (39 lines) ===
+
+/*
+ * Copyright (c) 2015, Juniper Networks, Inc.
+ * All rights reserved.
+ * This SOFTWARE is licensed under the LICENSE provided in the
+ * ../Copyright file. By downloading, installing, copying, or otherwise
+ * using the SOFTWARE, you agree to be bound by the terms of that
+ * LICENSE.
+ * Phil Shafer, August 2015
+ */
+
+/**
+ * libxo includes a number of fixed encoding styles.  But other
+ * external encoders are need to deal with new encoders.  Rather
+ * than expose a swarm of libxo internals, we create a distinct
+ * API, with a simpler API than we use internally.
+ */
+
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/queue.h>
+#include <sys/param.h>
+#include <dlfcn.h>
+
+#include "xo_config.h"
+#include "xo.h"
+#include "xo_encoder.h"
+
+#ifdef HAVE_DLFCN_H
+#include <dlfcn.h>
+#if !defined(HAVE_DLFUNC)
+#define dlfunc(_p, _n)		dlsym(_p, _n)
+#endif
+#else /* HAVE_DLFCN_H */
+#define dlopen(_n, _f)		NULL /* Fail */
+#define dlsym(_p, _n)		NULL /* Fail */
+#define dlfunc(_p, _n)		NULL /* Fail */
+#endif /* HAVE_DLFCN_H */
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SKIP_FILE

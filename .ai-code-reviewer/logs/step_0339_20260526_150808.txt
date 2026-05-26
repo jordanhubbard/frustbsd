@@ -1,0 +1,17 @@
+=== STEP 339 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Marked current file as skipped.
+Remaining files in contrib/libxo/libxo:
+  - contrib/libxo/libxo/gen-wide.sh
+  - contrib/libxo/libxo/libxo-csv.7
+  - contrib/libxo/libxo/libxo.3
+  - contrib/libxo/libxo/xo.h
+  - contrib/libxo/libxo/xo_attr.3
+  ... plus 33 more
+Please READ_FILE another source file or SET_SCOPE to continue progress.
+
+--- RESPONSE ---
+
+
+ACTION: SKIP_FILE

@@ -1,0 +1,435 @@
+=== STEP 336 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/libxo/libxo/libxo.c:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/libxo/libxo/libxo.c
+   Total chunks: 245
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: contrib/libxo/libxo
+   Files: 0/39
+📄 File: contrib/libxo/libxo/libxo.c
+   Chunks: 1/245
+
+```
+=== CHUNK 1/245: /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/libxo/libxo/libxo.c === [header: file_header]
+=== Lines 1-404 (404 lines) ===
+
+/*
+ * Copyright (c) 2014-2019, Juniper Networks, Inc.
+ * All rights reserved.
+ * This SOFTWARE is licensed under the LICENSE provided in the
+ * ../Copyright file. By downloading, installing, copying, or otherwise
+ * using the SOFTWARE, you agree to be bound by the terms of that
+ * LICENSE.
+ * Phil Shafer, July 2014
+ *
+ * This is the implementation of libxo, the formatting library that
+ * generates multiple styles of output from a single code path.
+ * Command line utilities can have their normal text output while
+ * automation tools can see XML or JSON output, and web tools can use
+ * HTML output that encodes the text output annotated with additional
+ * information.  Specialized encoders can be built that allow custom
+ * encoding including binary ones like CBOR, thrift, protobufs, etc.
+ *
+ * Full documentation is available in ./doc/libxo.txt or online at:
+ *   http://juniper.github.io/libxo/libxo-manual.html
+ *
+ * For first time readers, the core bits of code to start looking at are:
+ * - xo_do_emit() -- parse and emit a set of fields
+ * - xo_do_emit_fields -- the central function of the library
+ * - xo_do_format_field() -- handles formatting a single field
+ * - xo_transiton() -- the state machine that keeps things sane
+ * and of course the "xo_handle_t" data structure, which carries all
+ * configuration and state.
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <unistd.h>
+#include <stddef.h>
+#include <wchar.h>
+#include <locale.h>
+#include <sys/types.h>
+#include <stdarg.h>
+#include <string.h>
+#include <errno.h>
+#include <limits.h>
+#include <ctype.h>
+#include <wctype.h>
+#include <getopt.h>
+
+#include "xo_config.h"
+#include "xo.h"
+#include "xo_encoder.h"
+#include "xo_buf.h"
+#include "xo_explicit.h"
+
+/*
+ * We ask wcwidth() to do an impossible job, really.  It's supposed to
+ * need to tell us the number of columns consumed to display a unicode
+ * character.  It returns that number without any sort of context, but
+ * we know they are characters whose glyph differs based on placement
+ * (end of word, middle of word, etc) and many that affect characters
+ * previously emitted.  Without content, it can't hope to tell us.
+ * But it's the only standard tool we've got, so we use it.  We would
+ * use wcswidth() but it typically just loops through adding the results
+ * of wcwidth() calls in an entirely unhelpful way.
+ *
+ * Even then, there are many poor implementations (macosx), so we have
+ * to carry our own.  We could have configure.ac test this (with
+ * something like 'assert(wcwidth(0x200d) == 0)'), but it would have
+ * to run a binary, which breaks cross-compilation.  Hmm... I could
+ * run this test at init time and make a warning for our dear user.
+ *
+ * Anyhow, it remains a best-effort sort of thing.  And it's all made
+ * more hopeless because we assume the display code doing the rendering is
+ * playing by the same rules we are.  If it display 0x200d as a square
+ * box or a funky question mark, the output will be hosed.
+ */
+#ifdef LIBXO_WCWIDTH
+#include "xo_wcwidth.h"
+#else /* LIBXO_WCWIDTH */
+#define xo_wcwidth(_x) wcwidth(_x)
+#endif /* LIBXO_WCWIDTH */
+
+#ifdef HAVE_STDIO_EXT_H
+#include <stdio_ext.h>
+#endif /* HAVE_STDIO_EXT_H */
+
+/*
+ * humanize_number is a great function, unless you don't have it.  So
+ * we carry one in our pocket.
+ */
+#ifdef HAVE_HUMANIZE_NUMBER
+#include <libutil.h>
+#define xo_humanize_number humanize_number 
+#else /* HAVE_HUMANIZE_NUMBER */
+#include "xo_humanize.h"
+#endif /* HAVE_HUMANIZE_NUMBER */
+
+#ifdef HAVE_GETTEXT
+#include <libintl.h>
+#endif /* HAVE_GETTEXT */
+
+/* Rather lame that we can't count on these... */
+#ifndef FALSE
+#define FALSE 0
+#endif
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+/*
+ * Three styles of specifying thread-local variables are supported.
+ * configure.ac has the brains to run each possibility through the
+ * compiler and see what works; we are left to define the THREAD_LOCAL
+ * macro to the right value.  Most toolchains (clang, gcc) use
+ * "before", but some (borland) use "after" and I've heard of some
+ * (ms) that use __declspec.  Any others out there?
+ */
+#define THREAD_LOCAL_before 1
+#define THREAD_LOCAL_after 2
+#define THREAD_LOCAL_declspec 3
+
+#ifndef HAVE_THREAD_LOCAL
+#define THREAD_LOCAL(_x) _x
+#elif HAVE_THREAD_LOCAL == THREAD_LOCAL_before
+#define THREAD_LOCAL(_x) __thread _x
+#elif HAVE_THREAD_LOCAL == THREAD_LOCAL_after
+#define THREAD_LOCAL(_x) _x __thread
+#elif HAVE_THREAD_LOCAL == THREAD_LOCAL_declspec
+#define THREAD_LOCAL(_x) __declspec(_x)
+#else
+#error unknown thread-local setting
+#endif /* HAVE_THREADS_H */
+
+const char xo_version[] = LIBXO_VERSION;
+const char xo_version_extra[] = LIBXO_VERSION_EXTRA;
+static const char xo_default_format[] = "%s";
+
+#ifndef UNUSED
+#define UNUSED __attribute__ ((__unused__))
+#endif /* UNUSED */
+
+#define XO_INDENT_BY 2	/* Amount to indent when pretty printing */
+#define XO_DEPTH	128	 /* Default stack depth */
+#define XO_MAX_ANCHOR_WIDTH (8*1024) /* Anything wider is just silly */
+
+#define XO_FAILURE_NAME	"failure"
+
+/* Flags for the stack frame */
+typedef unsigned xo_xsf_flags_t; /* XSF_* flags */
+#define XSF_NOT_FIRST	(1<<0)	/* Not the first element */
+#define XSF_LIST	(1<<1)	/* Frame is a list */
+#define XSF_INSTANCE	(1<<2)	/* Frame is an instance */
+#define XSF_DTRT	(1<<3)	/* Save the name for DTRT mode */
+
+#define XSF_CONTENT	(1<<4)	/* Some content has been emitted */
+#define XSF_EMIT	(1<<5)	/* Some field has been emitted */
+#define XSF_EMIT_KEY	(1<<6)	/* A key has been emitted */
+#define XSF_EMIT_LEAF_LIST (1<<7) /* A leaf-list field has been emitted */
+
+/* These are the flags we propagate between markers and their parents */
+#define XSF_MARKER_FLAGS \
+ (XSF_NOT_FIRST | XSF_CONTENT | XSF_EMIT | XSF_EMIT_KEY | XSF_EMIT_LEAF_LIST )
+
+/*
+ * Turn the transition between two states into a number suitable for
+ * a "switch" statement.
+ */
+#define XSS_TRANSITION(_old, _new) ((_old) << 8 | (_new))
+
+/*
+ * xo_stack_t: As we open and close containers and levels, we
+ * create a stack of frames to track them.  This is needed for
+ * XOF_WARN and XOF_XPATH.
+ */
+typedef struct xo_stack_s {
+    xo_xsf_flags_t xs_flags;	/* Flags for this frame */
+    xo_state_t xs_state;	/* State for this stack frame */
+    char *xs_name;		/* Name (for XPath value) */
+    char *xs_keys;		/* XPath predicate for any key fields */
+} xo_stack_t;
+
+/*
+ * libxo supports colors and effects, for those who like them.
+ * XO_COL_* ("colors") refers to fancy ansi codes, while X__EFF_*
+ * ("effects") are bits since we need to maintain state.
+ */
+typedef uint8_t xo_color_t;
+#define XO_COL_DEFAULT		0
+#define XO_COL_BLACK		1
+#define XO_COL_RED		2
+#define XO_COL_GREEN		3
+#define XO_COL_YELLOW		4
+#define XO_COL_BLUE		5
+#define XO_COL_MAGENTA		6
+#define XO_COL_CYAN		7
+#define XO_COL_WHITE		8
+
+#define XO_NUM_COLORS		9
+
+/*
+ * Yes, there's no blink.  We're civilized.  We like users.  Blink
+ * isn't something one does to someone you like.  Friends don't let
+ * friends use blink.  On friends.  You know what I mean.  Blink is
+ * like, well, it's like bursting into show tunes at a funeral.  It's
+ * just not done.  Not something anyone wants.  And on those rare
+ * instances where it might actually be appropriate, it's still wrong,
+ * since it's likely done by the wrong person for the wrong reason.
+ * Just like blink.  And if I implemented blink, I'd be like a funeral
+ * director who adds "Would you like us to burst into show tunes?" on
+ * the list of questions asked while making funeral arrangements.
+ * It's formalizing wrongness in the wrong way.  And we're just too
+ * civilized to do that.  Hhhmph!
+ */
+#define XO_EFF_RESET		(1<<0)
+#define XO_EFF_NORMAL		(1<<1)
+#define XO_EFF_BOLD		(1<<2)
+#define XO_EFF_UNDERLINE	(1<<3)
+#define XO_EFF_INVERSE		(1<<4)
+
+#define XO_EFF_CLEAR_BITS XO_EFF_RESET /* Reset gets reset, surprisingly */
+
+typedef uint8_t xo_effect_t;
+typedef struct xo_colors_s {
+    xo_effect_t xoc_effects;	/* Current effect set */
+    xo_color_t xoc_col_fg;	/* Foreground color */
+    xo_color_t xoc_col_bg;	/* Background color */
+} xo_colors_t;
+
+/*
+ * xo_handle_t: this is the principle data structure for libxo.
+ * It's used as a store for state, options, content, and all manor
+ * of other information.
+ */
+struct xo_handle_s {
+    xo_xof_flags_t xo_flags;	/* Flags (XOF_*) from the user*/
+    xo_xof_flags_t xo_iflags;	/* Internal flags (XOIF_*) */
+    xo_style_t xo_style;	/* XO_STYLE_* value */
+    unsigned short xo_indent;	/* Indent level (if pretty) */
+    unsigned short xo_indent_by; /* Indent amount (tab stop) */
+    xo_write_func_t xo_write;	/* Write callback */
+    xo_close_func_t xo_close;	/* Close callback */
+    xo_flush_func_t xo_flush;	/* Flush callback */
+    xo_formatter_t xo_formatter; /* Custom formating function */
+    xo_checkpointer_t xo_checkpointer; /* Custom formating support function */
+    void *xo_opaque;		/* Opaque data for write function */
+    xo_buffer_t xo_data;	/* Output data */
+    xo_buffer_t xo_fmt;	   	/* Work area for building format strings */
+    xo_buffer_t xo_attrs;	/* Work area for building XML attributes */
+    xo_buffer_t xo_predicate;	/* Work area for building XPath predicates */
+    xo_stack_t *xo_stack;	/* Stack pointer */
+    int xo_depth;		/* Depth of stack */
+    int xo_stack_size;		/* Size of the stack */
+    xo_info_t *xo_info;		/* Info fields for all elements */
+    int xo_info_count;		/* Number of info entries */
+    va_list xo_vap;		/* Variable arguments (stdargs) */
+    char *xo_leading_xpath;	/* A leading XPath expression */
+    mbstate_t xo_mbstate;	/* Multi-byte character conversion state */
+    ssize_t xo_anchor_offset;	/* Start of anchored text */
+    ssize_t xo_anchor_columns;	/* Number of columns since the start anchor */
+    ssize_t xo_anchor_min_width; /* Desired width of anchored text */
+    ssize_t xo_units_offset;	/* Start of units insertion point */
+    ssize_t xo_columns;	/* Columns emitted during this xo_emit call */
+#ifndef LIBXO_TEXT_ONLY
+    xo_color_t xo_color_map_fg[XO_NUM_COLORS]; /* Foreground color mappings */
+    xo_color_t xo_color_map_bg[XO_NUM_COLORS]; /* Background color mappings */
+#endif /* LIBXO_TEXT_ONLY */
+    xo_colors_t xo_colors;	/* Current color and effect values */
+    xo_buffer_t xo_color_buf;	/* HTML: buffer of colors and effects */
+    char *xo_version;		/* Version string */
+    int xo_errno;		/* Saved errno for "%m" */
+    char *xo_gt_domain;		/* Gettext domain, suitable for dgettext(3) */
+    xo_encoder_func_t xo_encoder; /* Encoding function */
+    void *xo_private;		/* Private data for external encoders */
+};
+
+/* Flag operations */
+#define XOF_BIT_ISSET(_flag, _bit)	(((_flag) & (_bit)) ? 1 : 0)
+#define XOF_BIT_SET(_flag, _bit)	do { (_flag) |= (_bit); } while (0)
+#define XOF_BIT_CLEAR(_flag, _bit)	do { (_flag) &= ~(_bit); } while (0)
+
+#define XOF_ISSET(_xop, _bit) XOF_BIT_ISSET(_xop->xo_flags, _bit)
+#define XOF_SET(_xop, _bit) XOF_BIT_SET(_xop->xo_flags, _bit)
+#define XOF_CLEAR(_xop, _bit) XOF_BIT_CLEAR(_xop->xo_flags, _bit)
+
+#define XOIF_ISSET(_xop, _bit) XOF_BIT_ISSET(_xop->xo_iflags, _bit)
+#define XOIF_SET(_xop, _bit) XOF_BIT_SET(_xop->xo_iflags, _bit)
+#define XOIF_CLEAR(_xop, _bit) XOF_BIT_CLEAR(_xop->xo_iflags, _bit)
+
+/* Internal flags */
+#define XOIF_REORDER	XOF_BIT(0) /* Reordering fields; record field info */
+#define XOIF_DIV_OPEN	XOF_BIT(1) /* A <div> is open */
+#define XOIF_TOP_EMITTED XOF_BIT(2) /* The top JSON braces have been emitted */
+#define XOIF_ANCHOR	XOF_BIT(3) /* An anchor is in place  */
+
+#define XOIF_UNITS_PENDING XOF_BIT(4) /* We have a units-insertion pending */
+#define XOIF_INIT_IN_PROGRESS XOF_BIT(5) /* Init of handle is in progress */
+#define XOIF_MADE_OUTPUT XOF_BIT(6)	 /* Have already made output */
+
+/*
+ * Normal printf has width and precision, which for strings operate as
+ * min and max number of columns.  But this depends on the idea that
+ * one byte means one column, which UTF-8 and multi-byte characters
+ * pitches on its ear.  It may take 40 bytes of data to populate 14
+ * columns, but we can't go off looking at 40 bytes of data without the
+ * caller's permission for fear/knowledge that we'll generate core files.
+ * 
+ * So we make three values, distinguishing between "max column" and
+ * "number of bytes that we will inspect inspect safely" We call the
+ * later "size", and make the format "%[[<min>].[[<size>].<max>]]s".
+ *
+ * Under the "first do no harm" theory, we default "max" to "size".
+ * This is a reasonable assumption for folks that don't grok the
+ * MBS/WCS/UTF-8 world, and while it will be annoying, it will never
+ * be evil.
+ *
+ * For example, xo_emit("{:tag/%-14.14s}", buf) will make 14
+ * columns of output, but will never look at more than 14 bytes of the
+ * input buffer.  This is mostly compatible with printf and caller's
+ * expectations.
+ *
+ * In contrast xo_emit("{:tag/%-14..14s}", buf) will look at however
+ * many bytes (or until a NUL is seen) are needed to fill 14 columns
+ * of output.  xo_emit("{:tag/%-14.*.14s}", xx, buf) will look at up
+ * to xx bytes (or until a NUL is seen) in order to fill 14 columns
+ * of output.
+ *
+ * It's fairly amazing how a good idea (handle all languages of the
+ * world) blows such a big hole in the bottom of the fairly weak boat
+ * that is C string handling.  The simplicity and completenesss are
+ * sunk in ways we haven't even begun to understand.
+ */
+#define XF_WIDTH_MIN	0	/* Minimal width */
+#define XF_WIDTH_SIZE	1	/* Maximum number of bytes to examine */
+#define XF_WIDTH_MAX	2	/* Maximum width */
+#define XF_WIDTH_NUM	3	/* Numeric fields in printf (min.size.max) */
+
+/* Input and output string encodings */
+#define XF_ENC_WIDE	1	/* Wide characters (wchar_t) */
+#define XF_ENC_UTF8	2	/* UTF-8 */
+#define XF_ENC_LOCALE	3	/* Current locale */
+
+/*
+ * A place to parse printf-style format flags for each field
+ */
+typedef struct xo_format_s {
+    unsigned char xf_fc;	/* Format character */
+    unsigned char xf_enc;	/* Encoding of the string (XF_ENC_*) */
+    unsigned char xf_skip;	/* Skip this field */
+    unsigned char xf_lflag;	/* 'l' (long) */
+    unsigned char xf_hflag;;	/* 'h' (half) */
+    unsigned char xf_jflag;	/* 'j' (intmax_t) */
+    unsigned char xf_tflag;	/* 't' (ptrdiff_t) */
+    unsigned char xf_zflag;	/* 'z' (size_t) */
+    unsigned char xf_qflag;	/* 'q' (quad_t) */
+    unsigned char xf_seen_minus; /* Seen a minus */
+    int xf_leading_zero;	/* Seen a leading zero (zero fill)  */
+    unsigned xf_dots;		/* Seen one or more '.'s */
+    int xf_width[XF_WIDTH_NUM]; /* Width/precision/size numeric fields */
+    unsigned xf_stars;		/* Seen one or more '*'s */
+    unsigned char xf_star[XF_WIDTH_NUM]; /* Seen one or more '*'s */
+} xo_format_t;
+
+/*
+ * This structure represents the parsed field information, suitable for
+ * processing by xo_do_emit and anything else that needs to parse fields.
+ * Note that all pointers point to the main format string.
+ *
+ * XXX This is a first step toward compilable or cachable format
+ * strings.  We can also cache the results of dgettext when no format
+ * is used, assuming the 'p' modifier has _not_ been set.
+ */
+typedef struct xo_field_info_s {
+    xo_xff_flags_t xfi_flags;	/* Flags for this field */
+    unsigned xfi_ftype;		/* Field type, as character (e.g. 'V') */
+    const char *xfi_start;   /* Start of field in the format string */
+    const char *xfi_content;	/* Field's content */
+    const char *xfi_format;	/* Field's Format */
+    const char *xfi_encoding;	/* Field's encoding format */
+    const char *xfi_next;	/* Next character in format string */
+    ssize_t xfi_len;		/* Length of field */
+    ssize_t xfi_clen;		/* Content length */
+    ssize_t xfi_flen;		/* Format length */
+    ssize_t xfi_elen;		/* Encoding length */
+    unsigned xfi_fnum;		/* Field number (if used; 0 otherwise) */
+    unsigned xfi_renum;		/* Reordered number (0 == no renumbering) */
+} xo_field_info_t;
+
+/*
+ * We keep a 'default' handle to allow callers to avoid having to
+ * allocate one.  Passing NULL to any of our functions will use
+ * this default handle.  Most functions have a variant that doesn't
+ * require a handle at all, since most output is to stdout, which
+ * the default handle handles handily.
+ */
+static THREAD_LOCAL(xo_handle_t) xo_default_handle;
+static THREAD_LOCAL(int) xo_default_inited;
+static int xo_locale_inited;
+static const char *xo_program;
+
+/*
+ * To allow libxo to be used in diverse environment, we allow the
+ * caller to give callbacks for memory allocation.
+ */
+xo_realloc_func_t xo_realloc = realloc;
+xo_free_func_t xo_free = free;
+
+/* Forward declarations */
+
+```
+
+--- RESPONSE ---
+
+
+This is a massive library (245 chunks in one file). Not suitable for small incremental rewrite. Let me skip it.
+
+ACTION: SKIP_FILE

@@ -1,0 +1,16 @@
+=== STEP 235 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/seq:
+```
+Makefile
+Makefile.depend
+seq.1
+seq.c
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/seq

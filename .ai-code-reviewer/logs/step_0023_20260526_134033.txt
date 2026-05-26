@@ -1,0 +1,13 @@
+=== STEP 23 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/examples/kld/syscall/test/src/main.rs
+Scope: share/examples/kld/syscall/test
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now let me build the unit to validate the Rust replacement.
+
+ACTION: BUILD

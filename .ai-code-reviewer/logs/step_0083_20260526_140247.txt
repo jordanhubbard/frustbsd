@@ -1,0 +1,64 @@
+=== STEP 83 ===
+
+--- REQUEST ---
+GREP_RESULT for 'kenv':
+```
+./stand/common/boot.c:33:#include <sys/kenv.h>
+./stand/common/gfx_fb.c:266:		 * to propagate to the kenv.
+./stand/libsa/stand.h:355:#define EV_NOKENV	(1<<3)		/* don't add to kenv (loader-only) */
+./stand/libsa/bootp.c:50:/* set DHCP_ENV to one of the values above to export dhcp options to kenv */
+./stand/libsa/bootp.c:76:#ifdef DHCP_ENV		/* export the dhcp response to kenv */
+./stand/libsa/bootp.c:421: * Parse DHCP options and store them into kenv variables.
+./sys/compat/freebsd32/freebsd32_sysent.c:460:	{ .sy_narg = AS(kenv_args), .sy_call = (sy_call_t *)sys_kenv, .sy_auevent = AUE_NULL, .sy_flags = 0, .sy_thrcnt = SY_THR_STATIC },	/* 390 = kenv */
+./sys/compat/freebsd32/freebsd32_syscalls.c:398:	"kenv",			/* 390 = kenv */
+./sys/compat/freebsd32/freebsd32_syscall.h:325:#define	FREEBSD32_SYS_kenv	390
+./sys/compat/freebsd32/freebsd32_systrace_args.c:1782:	/* kenv */
+./sys/compat/freebsd32/freebsd32_systrace_args.c:1784:		struct kenv_args *p = params;
+./sys/compat/freebsd32/freebsd32_systrace_args.c:6305:	/* kenv */
+./sys/arm64/arm64/machdep_boot.c:60:static char static_kenv[4096];
+./sys/arm64/arm64/machdep_boot.c:131:	init_static_kenv(NULL, 0);
+./sys/arm64/arm64/machdep_boot.c:138:/* Convert the U-Boot command line into FreeBSD kenv and boot options. */
+./sys/geom/eli/g_eli.c:32:#include <sys/kenv.h>
+./sys/geom/eli/g_eli.c:156:	KASSERT(dynamic_kenv, ("need dynamic kenv"));
+./sys/sys/syscall.h:340:#define	SYS_kenv	390
+./sys/sys/sysproto.h:1007:struct kenv_args {
+./sys/sys/sysproto.h:2157:int	sys_kenv(struct thread *, struct kenv_args *);
+./sys/sys/sysproto.h:3148:#define	SYS_AUE_kenv	AUE_NULL
+./sys/sys/systm.h:166:void	init_static_kenv(char *, size_t);
+./sys/sys/kenv.h:33: * Constants for the kenv(2) syscall
+./sys/sys/kenv.h:49:extern bool dynamic_kenv;
+./sys/sys/kenv.h:50:extern struct mtx kenv_lock;
+./sys/security/mac_stub/mac_stub.c:520:stub_kenv_check_dump(struct ucred *cred)
+./sys/security/mac_stub/mac_stub.c:527:stub_kenv_check_get(struct ucred *cred, char *name)
+./sys/security/mac_stub/mac_stub.c:534:stub_kenv_check_set(struct ucred *cred, char *name, char *value)
+./sys/security/mac_test/mac_test.c:929:COUNTER_DECL(kenv_check_dump);
+./sys/security/mac_test/mac_test.c:931:test_kenv_check_dump(struct ucred *cred)
+./sys/security/mac_test/mac_test.c:935:	COUNTER_INC(kenv_check_dump);
+./sys/security/mac/mac_framework.h:233:int	mac_kenv_check_dump(struct ucred *cred);
+./sys/security/mac/mac_framework.h:234:int	mac_kenv_check_get(struct ucred *cred, char *name);
+./sys/security/mac/mac_framework.h:235:int	mac_kenv_check_set(struct ucred *cred, char *name, char *value);
+./sys/security/mac/mac_system.c:71:MAC_CHECK_PROBE_DEFINE1(kenv_check_dump, "struct ucred *");
+./sys/security/mac/mac_system.c:74:mac_kenv_check_dump(struct ucred *cred)
+./sys/security/mac/mac_system.c:78:	MAC_POLICY_CHECK_NOSLEEP(kenv_check_dump, cred);
+./sys/security/mac/mac_policy.h:278:typedef int	(*mpo_kenv_check_dump_t)(struct ucred *cred);
+./sys/security/mac/mac_policy.h:279:typedef int	(*mpo_kenv_check_get_t)(struct ucred *cred, char *name);
+./sys/security/mac/mac_policy.h:280:typedef int	(*mpo_kenv_check_set_t)(struct ucred *cred, char *name,
+./sys/kern/subr_hints.c:31:#include <sys/kenv.h>
+./sys/kern/subr_hints.c:46: * has already been setup (dynamic_kenv) and that we have added any supplied
+./sys/kern/subr_hints.c:99:_res_checkenv(char *envp)
+./sys/kern/systrace_args.c:1882:	/* kenv */
+./sys/kern/systrace_args.c:1884:		struct kenv_args *p = params;
+./sys/kern/systrace_args.c:6566:	/* kenv */
+./sys/kern/kern_sysctl.c:1916:	 * can be modified by kenv(2), microoptimise and treat it as a
+./sys/kern/syscalls.c:398:	"kenv",			/* 390 = kenv */
+./sys/kern/kern_environment.c:34: * We make these available through the kenv(2) syscall for userland
+./sys/kern/kern_environment.c:42:#include <sys/kenv.h>
+... [82 more matches]
+```
+
+--- RESPONSE ---
+
+
+Let me check the kenv constants and syscall interface.
+
+ACTION: READ_FILE sys/sys/kenv.h

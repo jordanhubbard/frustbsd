@@ -1,0 +1,13 @@
+=== STEP 171 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Marked current file as skipped.
+Remaining files in contrib/netbsd-tests/lib/libc/arch/powerpc:
+  - contrib/netbsd-tests/lib/libc/arch/powerpc/exec_prot_support.c
+  - contrib/netbsd-tests/lib/libc/arch/powerpc/return_one.S
+Please READ_FILE another source file or SET_SCOPE to continue progress.
+
+--- RESPONSE ---
+
+
+ACTION: SKIP_FILE

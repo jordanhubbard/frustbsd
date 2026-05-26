@@ -119,6 +119,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-24T22:42:21.132011"
   },
+  "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/json": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T15:29:23.002207"
+  },
   "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes": {
     "attempts": 3,
     "last_attempt": "2026-05-25T03:25:26.071124"
@@ -138,6 +142,10 @@
   "contrib/libxo/encoder/test": {
     "attempts": 2,
     "last_attempt": "2026-05-23T17:55:20.396199"
+  },
+  "contrib/libxo/libxo": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T15:02:43.717973"
   },
   "contrib/llvm-project/clang/lib/Analysis/plugins/CheckerDependencyHandling": {
     "attempts": 1,
@@ -175,6 +183,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-23T02:28:48.009957"
   },
+  "contrib/llvm-project/llvm/lib/CodeGenTypes": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T13:57:11.185943"
+  },
   "contrib/llvm-project/llvm/lib/Frontend/Directive": {
     "attempts": 3,
     "last_attempt": "2026-05-24T00:35:37.449118"
@@ -183,9 +195,17 @@
     "attempts": 2,
     "last_attempt": "2026-05-22T21:07:43.325248"
   },
+  "contrib/llvm-project/llvm/lib/Target/AMDGPU/TargetInfo": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T15:44:26.856152"
+  },
   "contrib/llvm-project/llvm/lib/Target/ARC/TargetInfo": {
     "attempts": 3,
     "last_attempt": "2026-05-24T08:08:33.309056"
+  },
+  "contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T15:50:02.373235"
   },
   "contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo": {
     "attempts": 3,
@@ -264,8 +284,8 @@
     "last_attempt": "2026-05-24T15:46:59.847502"
   },
   "contrib/netbsd-tests/fs/lfs": {
-    "attempts": 2,
-    "last_attempt": "2026-05-26T13:16:23.627956"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T13:35:28.189364"
   },
   "contrib/netbsd-tests/fs/msdosfs": {
     "attempts": 3,
@@ -307,6 +327,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-26T05:49:03.781728"
   },
+  "contrib/netbsd-tests/lib/libc/arch/powerpc": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T14:42:41.889018"
+  },
   "contrib/netbsd-tests/lib/libc/arch/powerpc64": {
     "attempts": 3,
     "last_attempt": "2026-05-25T18:01:05.075456"
@@ -339,6 +363,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-26T11:08:51.300134"
   },
+  "contrib/netbsd-tests/lib/libc/tls/dso": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T14:24:53.104239"
+  },
   "contrib/netbsd-tests/lib/libc/tls_dso": {
     "attempts": 3,
     "last_attempt": "2026-05-26T10:14:28.091266"
@@ -366,6 +394,10 @@
   "contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2": {
     "attempts": 3,
     "last_attempt": "2026-05-26T12:02:17.839961"
+  },
+  "contrib/netbsd-tests/rump/rumpkern/h_server": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T14:36:53.411238"
   },
   "contrib/ntp/libntp/lib/isc/nothreads": {
     "attempts": 1,
@@ -410,6 +442,10 @@
   "lib/libbsdstat": {
     "attempts": 1,
     "last_attempt": "2026-05-26T11:21:51.924097"
+  },
+  "lib/libc/csu/powerpc64": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T14:31:51.062793"
   },
   "lib/libc/csu/riscv": {
     "attempts": 1,
@@ -528,8 +564,8 @@
     "last_attempt": "2026-05-23T22:19:33.641774"
   },
   "share/examples/kld/syscall/test": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T13:19:44.821285"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T13:36:13.568999"
   },
   "stand/ficl": {
     "attempts": 3,
@@ -607,9 +643,21 @@
     "attempts": 1,
     "last_attempt": "2026-05-23T13:38:12.689367"
   },
+  "sys/contrib/libsodium/src/libsodium/crypto_stream/xsalsa20": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T15:39:07.887222"
+  },
+  "sys/contrib/libsodium/src/libsodium/randombytes/nativeclient": {
+    "attempts": 2,
+    "last_attempt": "2026-05-26T14:14:07.470938"
+  },
   "sys/contrib/openzfs/lib/libzfs_core/os/linux": {
     "attempts": 3,
     "last_attempt": "2026-05-23T20:22:15.931538"
+  },
+  "sys/crypto/libsodium": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T14:49:47.592257"
   },
   "sys/security/mac_none": {
     "attempts": 3,

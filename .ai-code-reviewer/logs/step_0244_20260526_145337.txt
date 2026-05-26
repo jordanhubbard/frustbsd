@@ -1,0 +1,17 @@
+=== STEP 244 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/head:
+```
+Makefile
+Makefile.depend
+Makefile.depend.options
+head.1
+head.c
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/head

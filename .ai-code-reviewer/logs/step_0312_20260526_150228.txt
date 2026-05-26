@@ -1,0 +1,18 @@
+=== STEP 312 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*libxo*':
+```
+./contrib/libxo/libxo/libxo.c
+./contrib/libxo/libxo/libxo.3
+./contrib/libxo/libxo/libxo-csv.7
+./contrib/libxo/packaging/libxo.spec.in
+./contrib/libxo/packaging/libxo.pc.in
+./contrib/libxo/packaging/libxo.rb.base.in
+./contrib/libxo/libxo-config.in
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE lib/libxo

@@ -1,0 +1,11 @@
+=== STEP 369 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/libxo/Makefile*'
+
+--- RESPONSE ---
+
+
+The build errors are from top-level Makefile.inc1 `.info` lines being treated as errors. This is a build infrastructure issue, not related to my changes. The `contrib/libxo/libxo` scope uses autotools and has no FreeBSD Makefile wrapper. Let me check the parent directory for a FreeBSD Makefile.
+
+ACTION: LIST_DIR contrib

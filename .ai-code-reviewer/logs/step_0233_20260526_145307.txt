@@ -1,0 +1,18 @@
+=== STEP 233 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/env:
+```
+Makefile
+Makefile.depend
+env.1
+env.c
+envopts.c
+envopts.h
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/env

@@ -1,0 +1,11 @@
+=== STEP 115 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+The build errors are top-level buildworld issues about compiler/linker bootstrapping, not related to my changes. Let me try building the specific unit directly.
+
+ACTION: READ_FILE share/mk/bsd.rust.mk

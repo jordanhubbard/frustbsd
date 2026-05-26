@@ -1,0 +1,45 @@
+=== STEP 20 ===
+
+--- REQUEST ---
+GREP_RESULT for 'struct module_stat':
+```
+./tests/sys/kern/module_test.c:98:	struct module_stat ms;
+./tests/sys/kern/module_test.c:125:	struct module_stat_v1 {
+./tests/sys/kern/module_test.c:134:	ATF_REQUIRE(modstat(0, (struct module_stat *)&ms) == -1);
+./sys/compat/freebsd32/freebsd32_proto.h:271:	char stat_l_[PADL_(struct module_stat32 *)]; struct module_stat32 * stat; char stat_r_[PADR_(struct module_stat32 *)];
+./sys/compat/freebsd32/freebsd32_systrace_args.c:1328:		uarg[a++] = (intptr_t)p->stat; /* struct module_stat32 * */
+./sys/compat/freebsd32/freebsd32_systrace_args.c:5569:			p = "userland struct module_stat32 *";
+./sys/sys/sysproto.h:728:	char stat_l_[PADL_(struct module_stat *)]; struct module_stat * stat; char stat_r_[PADR_(struct module_stat *)];
+./sys/sys/module.h:260:struct module_stat {
+./sys/sys/module.h:261:	int		version;	/* set to sizeof(struct module_stat) */
+./sys/sys/module.h:275:int	modstat(int _modid, struct module_stat *_stat);
+./sys/kern/kern_module.c:359:struct module_stat_v1 {
+./sys/kern/kern_module.c:360:	int	version;		/* set to sizeof(struct module_stat) */
+./sys/kern/kern_module.c:366:struct module_stat_v2 {
+./sys/kern/systrace_args.c:1349:		uarg[a++] = (intptr_t)p->stat; /* struct module_stat * */
+./sys/kern/systrace_args.c:5692:			p = "userland struct module_stat *";
+./sbin/kldstat/kldstat.c:52:	struct module_stat stat;
+./sbin/kldstat/kldstat.c:55:	stat.version = sizeof(struct module_stat);
+./sbin/kldstat/kldstat.c:112:	struct module_stat stat;
+./sbin/ifconfig/ifconfig.c:2000:	struct module_stat mstat;
+./sbin/ifconfig/ifconfig.c:2041:	mstat.version = sizeof(struct module_stat);
+./tools/regression/kgssapi/gsstest.c:82:	struct module_stat stat;
+./contrib/atf/atf-c/tc.c:475:    struct module_stat mstat = { .version = sizeof(mstat) };
+./share/examples/kld/syscall/test/call.c:42:	struct module_stat stat;
+./lib/libpmc/libpmc.c:1520:	struct module_stat pmc_modstat;
+./lib/libpmc/libpmc.c:1530:	pmc_modstat.version = sizeof(struct module_stat);
+./lib/libutil/kld.c:42:	struct module_stat mstat;
+./lib/libsys/_libsys.h:38:struct module_stat;
+./lib/libsys/_libsys.h:225:typedef int (__sys_modstat_t)(int, struct module_stat *);
+./lib/libsys/_libsys.h:635:int __sys_modstat(int modid, struct module_stat * stat);
+./cddl/contrib/opensolaris/lib/libdtrace/common/dt_module.c:1133:	struct module_stat ms;
+./usr.sbin/bsnmpd/modules/snmp_wlan/wlan_sys.c:124:	struct module_stat mstat;
+./usr.sbin/bsnmpd/modules/snmp_wlan/wlan_sys.c:126:	mstat.version = sizeof(struct module_stat);
+./usr.sbin/bsnmpd/modules/snmp_bridge/bridge_sys.c:84:	struct module_stat mstat;
+./usr.sbin/bsnmpd/modules/snmp_bridge/bridge_sys.c:87:	mstat.version = sizeof(struct module_stat);
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE sys/sys/module.h

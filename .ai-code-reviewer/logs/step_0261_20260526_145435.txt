@@ -1,0 +1,17 @@
+=== STEP 261 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/wc:
+```
+Makefile
+Makefile.depend
+Makefile.depend.options
+tests
+wc.1
+wc.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/wc

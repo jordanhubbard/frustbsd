@@ -1,0 +1,13 @@
+=== STEP 387 ===
+
+--- REQUEST ---
+SCOPE_ABANDONED: cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/json was marked skipped.
+
+Reason: LLM returned an invalid response while working this scope: LLM provider returned no text content
+Any tracked edits were reverted and untracked files created under the scope were removed.
+NEXT: Use SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_stream/xsalsa20
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_stream/xsalsa20

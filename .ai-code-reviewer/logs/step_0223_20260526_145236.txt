@@ -1,0 +1,12 @@
+=== STEP 223 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/timeout is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/json
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin

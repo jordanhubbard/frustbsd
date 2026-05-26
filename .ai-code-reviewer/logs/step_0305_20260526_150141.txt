@@ -1,0 +1,29 @@
+=== STEP 305 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/crypto/libsodium/randombytes.c:
+PROGRESS:
+📁 Directory: sys/crypto/libsodium
+   Files: 0/8
+📄 File: sys/crypto/libsodium/randombytes.c
+
+```
+/* This file is in the public domain. */
+
+#include <sys/cdefs.h>
+#include <sys/libkern.h>
+
+#include <sodium/randombytes.h>
+
+void
+randombytes_buf(void *buf, size_t size)
+{
+	arc4random_buf(buf, size);
+}
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SKIP_FILE

@@ -1,0 +1,11 @@
+=== STEP 364 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/libxo/Makefile*'
+
+--- RESPONSE ---
+
+
+The build errors are from top-level Makefile.inc1, not from my changes. The `contrib/libxo/libxo` scope uses autotools (Makefile.am, configure.ac) and has no FreeBSD Makefile wrapper - it's not a proper FreeBSD build unit. I need to move to a different scope.
+
+ACTION: SET_SCOPE bin/cat/tests

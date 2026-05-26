@@ -1,0 +1,12 @@
+=== STEP 63 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Marked current file as skipped.
+Remaining files in sys/contrib/libsodium/src/libsodium/randombytes/nativeclient:
+  (All tracked files rewritten or skipped in this directory)
+Please READ_FILE another source file or SET_SCOPE to continue progress.
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/cat/tests

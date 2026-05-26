@@ -1,0 +1,14 @@
+=== STEP 376 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Marked current file as skipped.
+Remaining files in cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/json:
+  (All tracked files rewritten or skipped in this directory)
+Please READ_FILE another source file or SET_SCOPE to continue progress.
+
+--- RESPONSE ---
+
+
+This scope is a dtrace test directory with only one C file (a test program with USDT probes) and no Makefile. Not suitable for a standalone Rust rewrite. Let me move to the next pending unit.
+
+ACTION: SET_SCOPE bin/cat/tests

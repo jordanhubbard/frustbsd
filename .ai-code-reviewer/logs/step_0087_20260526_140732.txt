@@ -1,0 +1,267 @@
+=== STEP 87 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/kenv/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The argument parsing in main.rs has duplicated flag handling. Let me fix it and update the Makefile.
+
+ACTION: WRITE_FILE bin/kenv/src/main.rs
+CONTENT:
+/*-
+ * SPDX-License-Identifier: BSD-2-Clause
+ *
+ * Copyright (c) 2000  Peter Wemm <peter@freebsd.org>
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+use std::env;
+use std::ffi::CString;
+use std::io::{self, Write};
+use std::os::raw::c_int;
+use std::process;
+
+const KENV_GET: c_int = 0;
+const KENV_SET: c_int = 1;
+const KENV_UNSET: c_int = 2;
+const KENV_DUMP: c_int = 3;
+const KENV_DUMP_LOADER: c_int = 4;
+const KENV_DUMP_STATIC: c_int = 5;
+
+extern "C" {
+    fn kenv(
+        typ: c_int,
+        name: *const std::os::raw::c_char,
+        buf: *mut std::os::raw::c_char,
+        buflen: usize,
+    ) -> c_int;
+}
+
+fn usage() -> ! {
+    let _ = writeln!(
+        io::stderr(),
+        "usage: kenv [-l|-s] [-hNq]\n\
+         \tkenv [-qv] variable[=value]\n\
+         \tkenv [-q] -u variable"
+    );
+    process::exit(1)
+}
+
+fn kdumpenv(dump_type: c_int, hflag: bool, nflag: bool, qflag: bool) -> c_int {
+    let envlen = unsafe { kenv(dump_type, std::ptr::null(), std::ptr::null_mut(), 0) };
+    if envlen < 0 {
+        return -1;
+    }
+
+    let mut buflen = envlen * 120 / 100;
+    let mut buf: Vec<u8>;
+    loop {
+        buf = vec![0u8; buflen + 1];
+        let ret = unsafe { kenv(dump_type, std::ptr::null(), buf.as_mut_ptr() as *mut _, buflen) };
+        if ret < 0 {
+            return -1;
+        }
+        if ret > buflen {
+            buflen = ret;
+        } else {
+            break;
+        }
+    }
+
+    let mut pos = 0;
+    while pos < buf.len() && buf[pos] != 0 {
+        let line_start = pos;
+        while pos < buf.len() && buf[pos] != 0 {
+            pos += 1;
+        }
+        pos += 1;
+
+        let line = &buf[line_start..pos - 1];
+        let line_str = std::str::from_utf8(line).unwrap_or("");
+
+        if hflag && !line_str.starts_with("hint.") {
+            continue;
+        }
+
+        if let Some(eq_pos) = line_str.find('=') {
+            let key = &line_str[..eq_pos];
+            let val = &line_str[eq_pos + 1..];
+
+            if nflag {
+                let _ = writeln!(io::stdout(), "{}", key);
+            } else {
+                let _ = writeln!(io::stdout(), "{}=\"{}\"", key, val);
+            }
+        }
+    }
+
+    0
+}
+
+fn kgetenv(env_name: &str, vflag: bool) -> c_int {
+    let mut buf = [0u8; 1024];
+    let c_name = match CString::new(env_name) {
+        Ok(s) => s,
+        Err(_) => return -1,
+    };
+    let ret = unsafe { kenv(KENV_GET, c_name.as_ptr(), buf.as_mut_ptr() as *mut _, buf.len()) };
+    if ret < 0 {
+        return ret;
+    }
+
+    let nul_pos = buf.iter().position(|&b| b == 0).unwrap_or(buf.len());
+    let val_str = std::str::from_utf8(&buf[..nul_pos]).unwrap_or("");
+
+    if vflag {
+        let _ = writeln!(io::stdout(), "{}=\"{}\"", env_name, val_str);
+    } else {
+        let _ = writeln!(io::stdout(), "{}", val_str);
+    }
+    0
+}
+
+fn ksetenv(env_name: &str, val: &str) -> c_int {
+    let c_name = match CString::new(env_name) {
+        Ok(s) => s,
+        Err(_) => return -1,
+    };
+    let c_val = match CString::new(val) {
+        Ok(s) => s,
+        Err(_) => return -1,
+    };
+    let ret = unsafe { kenv(KENV_SET, c_name.as_ptr(), c_val.as_ptr() as *mut _, c_val.as_bytes().len() + 1) };
+    if ret == 0 {
+        let _ = writeln!(io::stdout(), "{}=\"{}\"", env_name, val);
+    }
+    ret
+}
+
+fn kunsetenv(env_name: &str) -> c_int {
+    let c_name = match CString::new(env_name) {
+        Ok(s) => s,
+        Err(_) => return -1,
+    };
+    unsafe { kenv(KENV_UNSET, c_name.as_ptr(), std::ptr::null_mut(), 0) }
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let mut hflag = false;
+    let mut lflag = false;
+    let mut nflag = false;
+    let mut qflag = false;
+    let mut sflag = false;
+    let mut uflag = false;
+    let mut vflag = false;
+
+    let mut i = 1;
+    let mut env_arg: Option<String> = None;
+
+    while i < args.len() {
+        if let Some(rest) = args[i].strip_prefix('-') {
+            if rest.is_empty() {
+                i += 1;
+                continue;
+            }
+            for ch in rest.chars() {
+                match ch {
+                    'h' => hflag = true,
+                    'l' => lflag = true,
+                    'N' => nflag = true,
+                    'q' => qflag = true,
+                    's' => sflag = true,
+                    'u' => uflag = true,
+                    'v' => vflag = true,
+                    _ => usage(),
+                }
+            }
+            i += 1;
+        } else {
+            env_arg = Some(args[i].clone());
+            i += 1;
+            break;
+        }
+    }
+
+    let mut env_name: Option<String> = None;
+    let mut val: Option<String> = None;
+    if let Some(ref ea) = env_arg {
+        if let Some(eq_pos) = ea.find('=') {
+            env_name = Some(ea[..eq_pos].to_string());
+            val = Some(ea[eq_pos + 1..].to_string());
+        } else {
+            env_name = Some(ea.clone());
+        }
+    }
+
+    if (hflag || nflag) && env_name.is_some() {
+        usage();
+    }
+    if lflag && sflag {
+        usage();
+    }
+    if (uflag || vflag) && env_name.is_none() {
+        usage();
+    }
+
+    let error;
+    if env_name.is_none() {
+        let dump_type = if lflag {
+            KENV_DUMP_LOADER
+        } else if sflag {
+            KENV_DUMP_STATIC
+        } else {
+            KENV_DUMP
+        };
+        error = kdumpenv(dump_type, hflag, nflag, qflag);
+        if error != 0 && !qflag {
+            let _ = writeln!(io::stderr(), "kenv: requested environment is unavailable");
+        }
+    } else if let Some(ref name) = env_name {
+        if val.is_none() {
+            if uflag {
+                error = kunsetenv(name);
+                if error != 0 && !qflag {
+                    let _ = writeln!(io::stderr(), "kenv: unable to unset {}", name);
+                }
+            } else {
+                error = kgetenv(name, vflag);
+                if error != 0 && !qflag {
+                    let _ = writeln!(io::stderr(), "kenv: unable to get {}", name);
+                }
+            }
+        } else {
+            error = ksetenv(name, val.as_ref().unwrap());
+            if error != 0 && !qflag {
+                let _ = writeln!(io::stderr(), "kenv: unable to set {} to {}", name, val.as_ref().unwrap());
+            }
+        }
+    } else {
+        error = 0;
+    }
+
+    process::exit(error);
+}

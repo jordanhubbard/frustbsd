@@ -1,0 +1,22 @@
+=== STEP 269 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tr:
+```
+Makefile
+Makefile.depend
+cmap.c
+cmap.h
+cset.c
+cset.h
+extern.h
+str.c
+tests
+tr.1
+tr.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/paste
