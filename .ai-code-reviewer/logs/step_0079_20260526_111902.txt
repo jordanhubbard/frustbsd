@@ -1,0 +1,13 @@
+=== STEP 79 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: lib/libauditd has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2
+
+--- RESPONSE ---
+
+
+Let me try some simpler usr.bin commands.
+
+ACTION: SET_SCOPE usr.bin/comm

@@ -1,0 +1,14 @@
+=== STEP 66 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/cmp is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/BPF/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me try sbin units instead.
+
+ACTION: SET_SCOPE sbin

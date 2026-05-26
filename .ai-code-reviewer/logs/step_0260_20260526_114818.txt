@@ -1,0 +1,11 @@
+=== STEP 260 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I need to include the CONTENT block with proper formatting. Let me write the file:
+
+ACTION: WRITE_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2/src/lib.rs

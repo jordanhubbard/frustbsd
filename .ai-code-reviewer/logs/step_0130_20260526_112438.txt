@@ -1,0 +1,279 @@
+=== STEP 130 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/mk/bsd.lib.mk:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/mk/bsd.lib.mk
+   Total chunks: 3
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: lib/libbsdstat
+   Files: 0/3
+📄 File: share/mk/bsd.lib.mk
+   Chunks: 1/3
+
+```
+=== CHUNK 1/3: /usr/home/jkh/Src/freebsd-src-on-angry-AI/share/mk/bsd.lib.mk === [line_chunk: chunk_1]
+=== Lines 1-250 (250 lines) ===
+
+# If INTERNALLIB is defined, we build lib<name>.a and lib<name>_pie.a,
+# i.e. only static archives without dso, in both non-PIE and PIE variants,
+# suitable for static linking into binaries.
+# INTERNALLIB library headers are not installed.  A component that uses
+# the library should add explicit -I$(LIB<name>DIR) to CFLAGS.
+#
+# If PRIVATELIB is defined, we build and install both libprivate<name>.a
+# and libprivate<name>.so, so the library can be linked dynamically, but
+# cannot be picked up by third-party configure scripts.
+# PRIVATELIB library headers are installed into include/private/<name>.
+#
+# If neither of control variables are defined, we install headers into
+# include/, and both non-pic static and shared libraries under the defined
+# name.
+
+.include <bsd.init.mk>
+.include <bsd.compiler.mk>
+.include <bsd.linker.mk>
+.include <bsd.compat.pre.mk>
+
+__<bsd.lib.mk>__:	.NOTMAIN
+
+.if defined(LIB_CXX) || defined(SHLIB_CXX)
+_LD=	${CXX}
+.else
+_LD=	${CC}
+.endif
+.if defined(LIB_CXX)
+LIB=	${LIB_CXX}
+.endif
+.if defined(SHLIB_CXX)
+SHLIB=	${SHLIB_CXX}
+.endif
+
+LIB_PRIVATE=	${PRIVATELIB:Dprivate}
+# Set up the variables controlling shared libraries.  After this section,
+# SHLIB_NAME will be defined only if we are to create a shared library.
+# SHLIB_LINK will be defined only if we are to create a link to it.
+# INSTALL_PIC_ARCHIVE will be defined only if we are to create a PIC archive.
+# BUILD_NOSSP_PIC_ARCHIVE will be defined only if we are to create a PIC archive.
+.if defined(NO_PIC)
+.undef SHLIB_NAME
+.undef INSTALL_PIC_ARCHIVE
+.undef BUILD_NOSSP_PIC_ARCHIVE
+.else
+.if !defined(SHLIB) && defined(LIB)
+SHLIB=		${LIB}
+.endif
+.if !defined(SHLIB_NAME) && defined(SHLIB) && defined(SHLIB_MAJOR)
+SHLIB_NAME=	lib${LIB_PRIVATE}${SHLIB}.so.${SHLIB_MAJOR}
+.endif
+.if defined(SHLIB_NAME) && !empty(SHLIB_NAME:M*.so.*)
+SHLIB_LINK?=	${SHLIB_NAME:R}
+.endif
+SONAME?=	${SHLIB_NAME}
+.endif
+
+.if defined(CRUNCH_CFLAGS)
+CFLAGS+=	${CRUNCH_CFLAGS}
+.endif
+
+.for _libcompat in ${_ALL_libcompats}
+.if ${SHLIBDIR:M*/lib${_libcompat}} || ${SHLIBDIR:M*/lib${_libcompat}/*}
+TAGS+=	lib${_libcompat}
+.endif
+.endfor
+
+.if defined(NO_ROOT)
+.if !defined(TAGS) || ! ${TAGS:Mpackage=*}
+TAGS+=	package=${PACKAGE:Uutilities}
+.endif
+
+# By default, if PACKAGE=foo, then the native runtime libraries will go into
+# the FreeBSD-foo package, and subpackages will be created for -dev, -lib32,
+# and so on.  If LIB_PACKAGE is set, then we also create a subpackage for
+# runtime libraries with a -lib suffix.  This is used when a package has
+# libraries and some other content (e.g., executables) to allow consumers to
+# depend on the libraries.
+.if defined(LIB_PACKAGE) && ! ${TAGS:Mlib*}
+.if !defined(PACKAGE)
+.error LIB_PACKAGE cannot be used without PACKAGE
+.endif
+
+LIB_TAG_ARGS=	${TAG_ARGS},lib
+.else
+LIB_TAG_ARGS=	${TAG_ARGS}
+.endif
+
+TAG_ARGS=	-T ${TAGS:ts,:[*]}
+
+DBG_TAG_ARGS=	${TAG_ARGS},dbg
+# Usually we want to put development files (e.g., static libraries) into a
+# separate -dev packages but for a few cases, like tests, that's not wanted,
+# so allow the caller to disable it by setting NO_DEV_PACKAGE.
+.if !defined(NO_DEV_PACKAGE)
+DEV_TAG_ARGS=	${TAG_ARGS},dev
+.else
+DEV_TAG_ARGS=	${TAG_ARGS}
+.endif
+
+.endif	# defined(NO_ROOT)
+
+# By default, put library manpages in the -dev subpackage, since they're not
+# usually interesting if the development files aren't installed.   For pages
+# that should be installed in the base package, define a new MANNODEV group.
+# Note that bsd.man.mk ignores this setting if MANSPLITPKG is enabled: then
+# manpages are always installed in the -man subpackage.
+MANSUBPACKAGE?=	-dev
+MANGROUPS?=	MAN
+MANGROUPS+=	MANNODEV
+MANNODEVSUBPACKAGE=
+
+# ELF hardening knobs
+.if ${MK_BIND_NOW} != "no"
+LDFLAGS+= -Wl,-znow
+.endif
+.if ${LINKER_TYPE} != "mac"
+.if ${MK_RELRO} == "no"
+LDFLAGS+= -Wl,-znorelro
+.else
+LDFLAGS+= -Wl,-zrelro
+.endif
+.endif
+.if ${MK_RETPOLINE} != "no"
+.if ${COMPILER_FEATURES:Mretpoline} && ${LINKER_FEATURES:Mretpoline}
+CFLAGS+= -mretpoline
+CXXFLAGS+= -mretpoline
+LDFLAGS+= -Wl,-zretpolineplt
+.else
+.warning Retpoline requested but not supported by compiler or linker
+.endif
+.endif
+# LLD sensibly defaults to -znoexecstack, so do the same for BFD
+LDFLAGS.bfd+= -Wl,-znoexecstack
+.if ${MK_BRANCH_PROTECTION} != "no"
+CFLAGS+=  -mbranch-protection=standard
+.if ${LINKER_FEATURES:Mbti-report} && defined(BTI_REPORT_ERROR)
+LDFLAGS+= -Wl,-zbti-report=error
+.endif
+.endif
+
+# Initialize stack variables on function entry
+.if ${OPT_INIT_ALL} != "none"
+.if ${COMPILER_FEATURES:Minit-all}
+CFLAGS+= -ftrivial-auto-var-init=${OPT_INIT_ALL}
+CXXFLAGS+= -ftrivial-auto-var-init=${OPT_INIT_ALL}
+.if ${OPT_INIT_ALL} == "zero" && ${COMPILER_TYPE} == "clang" && ${COMPILER_VERSION} < 160000
+CFLAGS+= -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang
+CXXFLAGS+= -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang
+.endif
+.else
+.warning INIT_ALL (${OPT_INIT_ALL}) requested but not supported by compiler
+.endif
+.endif
+
+# Zero used registers on return (mitigate some ROP)
+.if ${MK_ZEROREGS} != "no"
+.if ${COMPILER_FEATURES:Mzeroregs}
+ZEROREG_TYPE?= used
+CFLAGS+= -fzero-call-used-regs=${ZEROREG_TYPE}
+CXXFLAGS+= -fzero-call-used-regs=${ZEROREG_TYPE}
+.endif
+.endif
+
+# bsd.sanitizer.mk is not installed, so don't require it (e.g. for ports).
+.sinclude "bsd.sanitizer.mk"
+
+.if ${MACHINE_CPUARCH} == "riscv" && ${LINKER_FEATURES:Mriscv-relaxations} == ""
+CFLAGS += -mno-relax
+.endif
+
+.include <bsd.libnames.mk>
+
+.include <bsd.suffixes-extra.mk>
+
+_LIBDIR:=${LIBDIR}
+_SHLIBDIR:=${SHLIBDIR}
+
+.if defined(SHLIB_NAME)
+.if ${MK_DEBUG_FILES} != "no"
+SHLIB_NAME_FULL=${SHLIB_NAME}.full
+DEBUGFILE= ${SHLIB_NAME}.debug
+# Use ${DEBUGDIR} for base system debug files, else .debug subdirectory
+.if ${_SHLIBDIR} == "/boot" ||\
+    ${SHLIBDIR:C%/lib(/.*)?$%/lib%} == "/lib" ||\
+    ${SHLIBDIR:C%/usr/lib(32|exec)?(/.*)?%/usr/lib%} == "/usr/lib" ||\
+    ${SHLIBDIR:C%/usr/tests(/.*)?%/usr/tests%} == "/usr/tests"
+DEBUGFILEDIR=${DEBUGDIR}${_SHLIBDIR}
+.else
+DEBUGFILEDIR=${_SHLIBDIR}/.debug
+.endif
+.if !exists(${DESTDIR}${DEBUGFILEDIR})
+DEBUGMKDIR=
+.endif
+.else
+SHLIB_NAME_FULL=${SHLIB_NAME}
+.endif
+.endif
+
+.include <bsd.symver.mk>
+
+# Allow libraries to specify their own version map or have it
+# automatically generated (see bsd.symver.mk above).
+.if !empty(VERSION_MAP)
+${SHLIB_NAME_FULL}:	${VERSION_MAP}
+LDFLAGS+=	-Wl,--version-script=${VERSION_MAP}
+
+# Ideally we'd always enable --no-undefined-version (default for lld >= 16),
+# but we have several symbols in our version maps that may or may not exist,
+# depending on compile-time defines and that needs to be handled first.
+.if ${MK_UNDEFINED_VERSION} == "no"
+LDFLAGS+=	-Wl,--no-undefined-version
+.else
+LDFLAGS+=	-Wl,--undefined-version
+.endif
+.endif
+
+.if defined(LIB) && !empty(LIB) || defined(SHLIB_NAME)
+OBJS+=		${SRCS:N*.h:${OBJS_SRCS_FILTER:ts:}:S/$/.o/}
+BCOBJS+=	${SRCS:N*.[hsS]:N*.asm:${OBJS_SRCS_FILTER:ts:}:S/$/.bco/g}
+LLOBJS+=	${SRCS:N*.[hsS]:N*.asm:${OBJS_SRCS_FILTER:ts:}:S/$/.llo/g}
+CLEANFILES+=	${OBJS} ${BCOBJS} ${LLOBJS} ${STATICOBJS}
+.endif
+
+.if defined(LIB) && !empty(LIB)
+.if defined(STATIC_LDSCRIPT)
+_STATICLIB_SUFFIX=	_real
+.endif
+_LIBS=		lib${LIB_PRIVATE}${LIB}${_STATICLIB_SUFFIX}.a
+
+lib${LIB_PRIVATE}${LIB}${_STATICLIB_SUFFIX}.a: ${OBJS} ${STATICOBJS}
+	@${ECHO} Building static ${LIB} library
+	@rm -f ${.TARGET}
+	${AR} ${ARFLAGS} ${.TARGET} ${OBJS} ${STATICOBJS} ${ARADD}
+.endif
+
+.if !defined(INTERNALLIB)
+
+.if defined(LLVM_LINK)
+lib${LIB_PRIVATE}${LIB}.bc: ${BCOBJS}
+	${LLVM_LINK} -o ${.TARGET} ${BCOBJS}
+
+lib${LIB_PRIVATE}${LIB}.ll: ${LLOBJS}
+	${LLVM_LINK} -S -o ${.TARGET} ${LLOBJS}
+
+CLEANFILES+=	lib${LIB_PRIVATE}${LIB}.bc lib${LIB_PRIVATE}${LIB}.ll
+.endif
+
+.if defined(SHLIB_NAME) || \
+    defined(INSTALL_PIC_ARCHIVE) && defined(LIB) && !empty(LIB)
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE lib/libbsdstat/rust/Cargo.toml

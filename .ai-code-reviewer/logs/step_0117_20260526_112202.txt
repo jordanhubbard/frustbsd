@@ -1,0 +1,26 @@
+=== STEP 117 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/lib/libbsdstat/Makefile:
+PROGRESS:
+📁 Directory: lib/libbsdstat
+   Files: 0/3
+📄 File: lib/libbsdstat/Makefile
+
+```
+PACKAGE=	lib${LIB}
+LIB=	bsdstat
+SHLIB_MAJOR=	1
+PRIVATELIB=
+
+SRCS=	bsdstat.c
+INCS=	bsdstat.h
+
+.include <bsd.lib.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE lib/libbsdstat/bsdstat.h

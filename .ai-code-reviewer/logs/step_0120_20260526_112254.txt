@@ -1,0 +1,11 @@
+=== STEP 120 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+No `bsd.rust.mk` exists. I need to create a Rust crate that produces a C ABI compatible static library. Let me check what Rust tooling is available.
+
+ACTION: FIND_FILE share/mk/bsd.rust.mk

@@ -1,0 +1,11 @@
+=== STEP 132 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+Let me break the loop by checking what's in the directory first.
+
+ACTION: LIST_DIR lib/libbsdstat

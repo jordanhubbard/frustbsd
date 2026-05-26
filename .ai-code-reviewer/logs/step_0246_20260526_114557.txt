@@ -1,0 +1,32 @@
+=== STEP 246 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2/h_helper_symver_dso2.map:
+PROGRESS:
+📁 Directory: contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2
+   Files: 0/1
+📄 File: contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2/h_helper_symver_dso2.map
+
+```
+#	$NetBSD: h_helper_symver_dso2.map,v 1.1 2011/06/25 05:45:13 nonaka Exp $
+
+V_1 {
+	testfunc;
+};
+
+V_2 {
+	testfunc;
+};
+
+V_3 {
+	testfunc;
+};
+
+```
+
+--- RESPONSE ---
+
+
+I need to add symbol versioning to the Rust code. Let me update lib.rs to include the `.symver` directives:
+
+ACTION: EDIT_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2/src/lib.rs

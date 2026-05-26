@@ -1,0 +1,12 @@
+=== STEP 7 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory contrib/llvm-project/compiler-rt/lib/builtins/loongarch skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/netbsd-tests/lib/libc/gen/execve
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/netbsd-tests/lib/libc/gen/execve

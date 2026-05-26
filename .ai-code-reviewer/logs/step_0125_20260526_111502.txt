@@ -1,0 +1,11 @@
+=== STEP 125 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+Let me try the exact format from the instructions:
+
+ACTION: WRITE_FILE contrib/netbsd-tests/lib/libc/gen/execve/Cargo.toml

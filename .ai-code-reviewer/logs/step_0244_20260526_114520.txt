@@ -1,0 +1,32 @@
+=== STEP 244 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2/src/lib.rs:
+PROGRESS:
+📁 Directory: contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2
+   Files: 0/1
+📄 File: contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2/src/lib.rs
+
+```
+#[no_mangle]
+pub extern "C" fn testfunc_new() -> i32 {
+    3
+}
+
+#[no_mangle]
+pub extern "C" fn testfunc_compat1() -> i32 {
+    1
+}
+
+#[no_mangle]
+pub extern "C" fn testfunc_compat2() -> i32 {
+    2
+}
+```
+
+--- RESPONSE ---
+
+
+The Rust replacement already exists with basic function implementations. However, it's missing the symbol versioning that the C code uses via `__asm(".symver ...")`. Let me check the parent Makefile and try building.
+
+ACTION: LIST_DIR contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2

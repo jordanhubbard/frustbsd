@@ -1,0 +1,29 @@
+=== STEP 216 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2/Makefile
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2/Makefile
+CONTENT:
+<<<
+# Makefile for helper_symver_dso2 Rust replacement
+
+CARGO ?= cargo
+CARGO_TARGET_DIR ?= ${.OBJDIR}/cargo-target
+
+all: libhelper_symver_dso2.so
+
+libhelper_symver_dso2.so: Cargo.toml src/lib.rs
+	${CARGO} build --manifest-path Cargo.toml --target-dir ${CARGO_TARGET_DIR} --release
+	cp ${CARGO_TARGET_DIR}/release/libhelper_symver_dso2.so ${.TARGET}
+
+clean:
+	rm -f libhelper_symver_dso2.so
+	${CARGO} clean --manifest-path Cargo.toml --target-dir ${CARGO_TARGET_DIR} 2>/dev/null || true
+
+.PHONY: all clean
+>>>

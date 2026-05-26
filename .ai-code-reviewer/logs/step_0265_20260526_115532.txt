@@ -1,0 +1,31 @@
+=== STEP 265 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/libexec/ld.elf_so:
+```
+data
+h_df_1_noopen.c
+h_dl_symver.c
+h_ifunc.c
+h_locking.c
+helper_dso1
+helper_dso2
+helper_ifunc_dso
+helper_symver_dso0
+helper_symver_dso1
+helper_symver_dso2
+t_df_1_noopen.sh
+t_dl_symver.sh
+t_dlerror-cleared.c
+t_dlerror-false.c
+t_dlinfo.c
+t_dlvsym.c
+t_ifunc.c
+```
+
+--- RESPONSE ---
+
+
+The build errors are system-level (libclang bootstrapping), not related to my changes. Let me check if cargo can build the Rust crate directly.
+
+ACTION: LIST_DIR contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2

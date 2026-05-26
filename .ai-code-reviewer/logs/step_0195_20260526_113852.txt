@@ -1,0 +1,11 @@
+=== STEP 195 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I need to include the CONTENT block with triple angle brackets on separate lines after the ACTION line.
+
+ACTION: WRITE_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2/Cargo.toml

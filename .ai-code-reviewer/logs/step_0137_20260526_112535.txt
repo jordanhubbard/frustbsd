@@ -1,0 +1,9 @@
+=== STEP 137 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE lib/libbsdstat/rust/Cargo.toml

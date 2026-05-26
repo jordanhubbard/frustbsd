@@ -1,0 +1,11 @@
+=== STEP 18 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/chmod/tests has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/BPF/TargetInfo
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR bin
