@@ -1,0 +1,54 @@
+=== STEP 15 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+No Rust make fragment exists. I need to add explicit local Makefile rules. Let me update the Makefile.
+
+ACTION: EDIT_FILE usr.bin/mididump/Makefile
+OLD:
+<<<
+.include <src.opts.mk>
+
+PACKAGE=	sound
+
+PROG=		mididump
+SRCS=		${PROG}.c
+MAN=		${PROG}.1
+LIBADD+=	m
+
+.include <bsd.prog.mk>
+>>>
+NEW:
+<<<
+.include <src.opts.mk>
+
+PACKAGE=	sound
+
+PROG=		mididump
+SRCS=		${PROG}.c
+MAN=		${PROG}.1
+LIBADD+=	m
+
+RUSTPROG=	mididump
+RUSTSRCS=	src/main.rs
+
+.if defined(WITH_RUST)
+PROG=		mididump
+SRCS=
+LIBADD=
+
+.PHONY: rust-build
+rust-build:
+	cargo build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${.OBJDIR}/cargo-target --release
+	${INSTALL} -s ${.OBJDIR}/cargo-target/release/mididump ${DESTDIR}${BINDIR}/${PROG}
+
+all: rust-build
+install: rust-build
+.else
+.include <bsd.prog.mk>
+.endif
+>>>

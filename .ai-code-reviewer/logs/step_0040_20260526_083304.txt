@@ -1,0 +1,15 @@
+=== STEP 40 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*bsd.prog.mk*':
+```
+./tools/build/mk/bsd.prog.mk
+./share/mk/bsd.prog.mk
+```
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level `Makefile.inc1` system bootstrap, not from my unit. Let me check how the build is being invoked.
+
+ACTION: READ_FILE share/mk/bsd.prog.mk

@@ -1,0 +1,12 @@
+=== STEP 513 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE sys/security/mac_none
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/mididump

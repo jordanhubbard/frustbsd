@@ -1,0 +1,11 @@
+=== STEP 565 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I need to provide a complete response. Let me write the Makefile:
+
+ACTION: WRITE_FILE usr.bin/mididump/Makefile

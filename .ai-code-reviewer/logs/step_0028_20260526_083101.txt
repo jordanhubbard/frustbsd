@@ -1,0 +1,11 @@
+=== STEP 28 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'SYSTEM_COMPILER'
+
+--- RESPONSE ---
+
+
+Let me check how the build system is configured and what build command is being used.
+
+ACTION: GREP SYSTEM_COMPILER

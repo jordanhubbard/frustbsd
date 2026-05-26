@@ -1,0 +1,61 @@
+=== STEP 17 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/mididump/Makefile
+Scope: usr.bin/mididump
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Let me reconsider the Makefile approach. The FreeBSD build system needs specific integration. Let me try a cleaner approach that works with `make -C`.
+
+ACTION: EDIT_FILE usr.bin/mididump/Makefile
+OLD:
+<<<
+.include <src.opts.mk>
+
+PACKAGE=	sound
+
+PROG=		mididump
+MAN=		${PROG}.1
+
+# Rust replacement build
+CARGO=		cargo
+CARGO_TARGET_DIR=	${.OBJDIR}/cargo-target
+
+.PHONY: all install clean
+
+all: ${PROG}.bin
+
+${PROG}.bin: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR} --release
+	${INSTALL} -s ${CARGO_TARGET_DIR}/release/${PROG} ${.OBJDIR}/${PROG}
+
+install: ${PROG}.bin
+	${INSTALL} -s ${.OBJDIR}/${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	rm -f ${.OBJDIR}/${PROG}
+	rm -rf ${CARGO_TARGET_DIR}
+>>>
+NEW:
+<<<
+.include <src.opts.mk>
+
+PACKAGE=	sound
+
+PROG=		mididump
+MAN=		${PROG}.1
+
+# Rust replacement for mididump
+CARGO=		cargo
+CARGO_TARGET_DIR=	${.OBJDIR}/cargo-target
+
+# Build the Rust binary
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR} --release
+	${INSTALL} -s ${CARGO_TARGET_DIR}/release/${PROG} ${.OBJDIR}/${PROG}
+
+.include <bsd.prog.mk>
+>>>

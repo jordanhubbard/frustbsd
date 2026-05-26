@@ -483,6 +483,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-23T07:15:26.124832"
   },
+  "sys/contrib/libsodium/src/libsodium/crypto_generichash/blake2b": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T08:49:53.066790"
+  },
   "sys/contrib/libsodium/src/libsodium/crypto_hash": {
     "attempts": 3,
     "last_attempt": "2026-05-23T02:56:35.143843"
@@ -532,8 +536,8 @@
     "last_attempt": "2026-05-23T20:22:15.931538"
   },
   "sys/security/mac_none": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T08:13:46.062596"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T08:46:23.577194"
   },
   "tools/regression/tls/libxx": {
     "attempts": 1,
@@ -844,8 +848,8 @@
     "last_attempt": "2026-05-22T02:55:02.145593"
   },
   "usr.bin/mididump": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T07:55:48.958307"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T08:15:57.301717"
   },
   "usr.bin/mkfifo": {
     "attempts": 1,

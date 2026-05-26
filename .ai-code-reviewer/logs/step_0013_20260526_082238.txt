@@ -1,0 +1,347 @@
+=== STEP 13 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/mididump/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now I need to create the src directory and write the Rust implementation. Let me create the main.rs file.
+
+ACTION: WRITE_FILE usr.bin/mididump/src/main.rs
+CONTENT:
+<<<
+// SPDX-License-Identifier: BSD-2-Clause
+//
+// Copyright (c) 2024 The FreeBSD Foundation
+//
+// This software was developed by Christos Margiolis <christos@FreeBSD.org>
+// under sponsorship from the FreeBSD Foundation.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+// OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+// OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+
+use std::env;
+use std::fs::File;
+use std::io::{self, Read};
+use std::process;
+
+const NOTE_NAMES: &[(Option<&str>, &str)] = &[
+    (None, "C"),
+    (Some("Db"), "C#"),
+    (None, "D"),
+    (Some("Eb"), "D#"),
+    (None, "E"),
+    (None, "F"),
+    (Some("Gb"), "F#"),
+    (None, "G"),
+    (Some("Ab"), "G#"),
+    (None, "A"),
+    (Some("Bb"), "A#"),
+    (None, "B"),
+];
+
+const CHAN_MASK: u8 = 0x0f;
+
+fn note2octave(n: u8) -> i32 {
+    (n as i32) / 12 - 1
+}
+
+fn note2freq(n: u8) -> f64 {
+    440.0 * 2.0f64.powf(((n as f64) - 69.0) / 12.0)
+}
+
+fn usage() -> ! {
+    eprintln!("usage: {} [-t] device", env::args().next().unwrap_or_else(|| "mididump".to_string()));
+    process::exit(1);
+}
+
+fn read_byte<R: Read>(reader: &mut R) -> u8 {
+    let mut buf = [0u8; 1];
+    match reader.read_exact(&mut buf) {
+        Ok(()) => buf[0],
+        Err(e) => {
+            eprintln!("read: {}", e);
+            process::exit(1);
+        }
+    }
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let mut tflag = false;
+    let mut device = None;
+
+    let mut i = 1;
+    while i < args.len() {
+        if args[i] == "-t" {
+            tflag = true;
+            i += 1;
+        } else if args[i].starts_with('-') {
+            usage();
+        } else {
+            device = Some(&args[i]);
+            i += 1;
+        }
+    }
+
+    let device = match device {
+        Some(d) => d,
+        None => usage(),
+    };
+
+    let file = match File::open(device) {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("open({}): {}", device, e);
+            process::exit(1);
+        }
+    };
+
+    let mut reader = io::BufReader::new(file);
+
+    loop {
+        let event = read_byte(&mut reader);
+        if event & 0x80 == 0 {
+            continue;
+        }
+        let chan = ((event & CHAN_MASK) + 1) as u32;
+
+        match event {
+            0x80..=0x8f | 0x90..=0x9f => {
+                let b1 = read_byte(&mut reader);
+                let b2 = read_byte(&mut reader);
+                let idx = (b1 % NOTE_NAMES.len() as u8) as usize;
+                let (alt, name) = NOTE_NAMES[idx];
+                let octave = note2octave(b1);
+                let mut buf = format!("{}{}", name, octave);
+                if let Some(alt_name) = alt {
+                    buf.push_str(&format!("/{}{}", alt_name, octave));
+                }
+                let on_off = if event >= 0x80 && event <= 0x8f { "off" } else { "on" };
+                println!(
+                    "Note {:<3}\t\tchannel={}, note={} ({}, {:.2}Hz), velocity={}",
+                    on_off, chan, b1, buf, note2freq(b1), b2
+                );
+            }
+            0xa0..=0xaf => {
+                let b1 = read_byte(&mut reader);
+                let b2 = read_byte(&mut reader);
+                println!(
+                    "Polyphonic aftertouch\tchannel={}, note={}, pressure={}",
+                    chan, b1, b2
+                );
+            }
+            0xb0..=0xbf => {
+                let b1 = read_byte(&mut reader);
+                let b2 = read_byte(&mut reader);
+                let ctl_name = match ctl_name(b1) {
+                    Some(n) => n,
+                    None => {
+                        println!(
+                            "Control/Mode change\tchannel={}, control={}, value={}",
+                            chan, b1, b2
+                        );
+                        continue;
+                    }
+                };
+                print!(
+                    "Control/Mode change\tchannel={}, control={} ({}), value={}",
+                    chan, b1, ctl_name, b2
+                );
+                if b1 >= 0x40 && b1 <= 0x45 {
+                    if b2 <= 63 {
+                        print!(" (off)");
+                    } else {
+                        print!(" (on)");
+                    }
+                }
+                if b1 == 0x7a {
+                    if b2 == 0 {
+                        print!(" (off)");
+                    } else if b2 == 127 {
+                        print!(" (on");
+                    }
+                }
+                println!();
+            }
+            0xc0..=0xcf => {
+                let b1 = read_byte(&mut reader);
+                println!("Program change\t\tchannel={}, program={}", chan, b1);
+            }
+            0xd0..=0xdf => {
+                let b1 = read_byte(&mut reader);
+                println!(
+                    "Channel aftertouch\tchannel={}, pressure={}",
+                    chan, b1
+                );
+            }
+            0xe0..=0xef => {
+                let b1 = read_byte(&mut reader);
+                let b2 = read_byte(&mut reader);
+                println!(
+                    "Pitch bend\t\tchannel={}, change={}",
+                    chan,
+                    (b1 as i32) | ((b2 as i32) << 7)
+                );
+            }
+            0xf0 => {
+                print!("SysEx\t\t\tvendorid=");
+                let b1 = read_byte(&mut reader);
+                print!("0x{:02x}", b1);
+                if b1 == 0 {
+                    print!(
+                        " 0x{:02x} 0x{:02x}",
+                        read_byte(&mut reader),
+                        read_byte(&mut reader)
+                    );
+                }
+                print!(" data=");
+                loop {
+                    let b1 = read_byte(&mut reader);
+                    print!("0x{:02x} ", b1);
+                    if b1 == 0xf7 {
+                        break;
+                    }
+                }
+                println!();
+            }
+            0xf2 => {
+                let b1 = read_byte(&mut reader);
+                let b2 = read_byte(&mut reader);
+                println!(
+                    "Song position pointer\tptr={}",
+                    (b1 as u32) | ((b2 as u32) << 7)
+                );
+            }
+            0xf3 => {
+                let b1 = read_byte(&mut reader);
+                println!("Song select\t\tsong={}", b1);
+            }
+            0xf6 => {
+                println!("Tune request");
+            }
+            0xf7 => {
+                println!("End of SysEx (EOX)");
+            }
+            0xf8 => {
+                if tflag {
+                    println!("Timing clock");
+                }
+            }
+            0xfa => {
+                println!("Start");
+            }
+            0xfb => {
+                println!("Continue");
+            }
+            0xfc => {
+                println!("Stop");
+            }
+            0xfe => {
+                println!("Active sensing");
+            }
+            0xff => {
+                println!("System reset");
+            }
+            0xf1 | 0xf4 | 0xf5 | 0xf9 | 0xfd => {
+                // TODO? MIDI time code qtr. frame, undefined/reserved
+            }
+            _ => {
+                println!("Unknown event type: 0x{:02x}", event);
+            }
+        }
+    }
+}
+
+fn ctl_name(b1: u8) -> Option<&'static str> {
+    match b1 {
+        0x00 => Some("Bank Select"),
+        0x01 => Some("Modulation Wheel"),
+        0x02 => Some("Breath Controller"),
+        0x03 => Some("Undefined"),
+        0x04 => Some("Foot Pedal"),
+        0x05 => Some("Portamento Time"),
+        0x06 => Some("Data Entry"),
+        0x07 => Some("Volume"),
+        0x08 => Some("Balance"),
+        0x09 => Some("Undefined"),
+        0x0a => Some("Pan"),
+        0x0b => Some("Expression"),
+        0x0c => Some("Effect Controller 1"),
+        0x0d => Some("Effect Controller 2"),
+        0x0e => Some("Undefined"),
+        0x0f => Some("Undefined"),
+        0x10 => Some("General Purpose 1"),
+        0x11 => Some("General Purpose 2"),
+        0x12 => Some("General Purpose 3"),
+        0x13 => Some("General Purpose 4"),
+        0x14..=0x1f => Some("Undefined"),
+        0x20..=0x3f => Some("LSB Controller"),
+        0x40 => Some("Damper Pedal (Sustain)"),
+        0x41 => Some("Portamento"),
+        0x42 => Some("Sostenuto Pedal"),
+        0x43 => Some("Soft Pedal"),
+        0x44 => Some("Legato Foot-Switch"),
+        0x45 => Some("Hold 2"),
+        0x46 => Some("Sound Controller 1"),
+        0x47 => Some("Sound Controller 2"),
+        0x48 => Some("Sound Controller 3"),
+        0x49 => Some("Sound Controller 4"),
+        0x4a => Some("Sound Controller 5"),
+        0x4b => Some("Sound Controller 6"),
+        0x4c => Some("Sound Controller 7"),
+        0x4d => Some("Sound Controller 8"),
+        0x4e => Some("Sound Controller 9"),
+        0x4f => Some("Sound Controller 10"),
+        0x50 => Some("General Purpose 5"),
+        0x51 => Some("General Purpose 6"),
+        0x52 => Some("General Purpose 7"),
+        0x53 => Some("General Purpose 8"),
+        0x54 => Some("Portamento CC"),
+        0x55..=0x57 => Some("Undefined"),
+        0x58 => Some("Hi-Res Velocity Prefix"),
+        0x59..=0x5a => Some("Undefined"),
+        0x5b => Some("Effect 1 Depth"),
+        0x5c => Some("Effect 2 Depth"),
+        0x5d => Some("Effect 3 Depth"),
+        0x5e => Some("Effect 4 Depth"),
+        0x5f => Some("Effect 5 Depth"),
+        0x60 => Some("Data Increment"),
+        0x61 => Some("Data Decrement"),
+        0x62 => Some("NRPN (LSB)"),
+        0x63 => Some("NRPN (MSB)"),
+        0x64 => Some("RPN (LSB)"),
+        0x65 => Some("RPN (MSB)"),
+        0x66..=0x77 => Some("Undefined"),
+        0x78 => Some("All Sound Off"),
+        0x79 => Some("Reset All Controllers"),
+        0x7a => Some("Local On/Off Switch"),
+        0x7b => Some("All Notes Off"),
+        0x7c => Some("Omni Mode Off"),
+        0x7d => Some("Omni Mode On"),
+        0x7e => Some("Mono Mode"),
+        0x7f => Some("Poly Mode"),
+        _ => None,
+    }
+}
+>>>

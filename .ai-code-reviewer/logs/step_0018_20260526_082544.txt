@@ -1,0 +1,56 @@
+=== STEP 18 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/mididump/Makefile
+Scope: usr.bin/mididump
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Let me reconsider the Makefile. The `bsd.prog.mk` will try to compile C sources. I need a cleaner approach.
+
+ACTION: EDIT_FILE usr.bin/mididump/Makefile
+OLD:
+<<<
+.include <src.opts.mk>
+
+PACKAGE=	sound
+
+PROG=		mididump
+MAN=		${PROG}.1
+
+# Rust replacement for mididump
+CARGO=		cargo
+CARGO_TARGET_DIR=	${.OBJDIR}/cargo-target
+
+# Build the Rust binary
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR} --release
+	${INSTALL} -s ${CARGO_TARGET_DIR}/release/${PROG} ${.OBJDIR}/${PROG}
+
+.include <bsd.prog.mk>
+>>>
+NEW:
+<<<
+.include <src.opts.mk>
+
+PACKAGE=	sound
+
+PROG=		mididump
+MAN=		${PROG}.1
+
+# Rust replacement for mididump - no C sources
+SRCS=
+LIBADD=
+
+CARGO=		cargo
+CARGO_TARGET_DIR=	${.OBJDIR}/cargo-target
+
+# Override the normal build to use cargo
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR} --release
+	${INSTALL} -s ${CARGO_TARGET_DIR}/release/${PROG} ${.OBJDIR}/${PROG}
+
+.include <bsd.prog.mk>
+>>>

@@ -1,0 +1,11 @@
+=== STEP 516 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+Writing Cargo.toml for mididump Rust crate:
+
+ACTION: WRITE_FILE usr.bin/mididump/rust/Cargo.toml

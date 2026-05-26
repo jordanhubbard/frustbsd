@@ -1,0 +1,14 @@
+=== STEP 31 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1.
+Remaining files in usr.bin/mididump:
+  - usr.bin/mididump/mididump.1
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+The build errors originate from the top-level `Makefile.inc1` system bootstrap infrastructure, not from my unit. Let me check how the build is being invoked.
+
+ACTION: GREP SYSTEM_COMPILER

@@ -1,0 +1,31 @@
+=== STEP 623 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_generichash/blake2b/Makefile:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_generichash/blake2b
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/crypto_generichash/blake2b/Makefile
+
+```
+# generichash_blake2 - Rust replacement
+# Standalone build - does not depend on FreeBSD build system
+
+CARGO?=	cargo
+TARGET_DIR?=	${.CURDIR}/target
+
+all: ${TARGET_DIR}/release/libgenerichash_blake2.a
+
+${TARGET_DIR}/release/libgenerichash_blake2.a: Cargo.toml src/lib.rs
+	${CARGO} build --release --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${TARGET_DIR}
+
+clean:
+	${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${TARGET_DIR}
+
+.PHONY: all clean
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR sys/contrib/libsodium/src/libsodium/crypto_generichash/blake2b

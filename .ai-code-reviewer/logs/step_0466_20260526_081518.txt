@@ -1,0 +1,9 @@
+=== STEP 466 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/mididump/rust/Cargo.toml

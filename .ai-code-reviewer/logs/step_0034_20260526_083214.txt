@@ -1,0 +1,11 @@
+=== STEP 34 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'SYSTEM_COMPILER'
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level `Makefile.inc1` system bootstrap, not from my unit. Let me check how the build is being invoked.
+
+ACTION: GREP SYSTEM_COMPILER

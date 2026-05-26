@@ -1,0 +1,20 @@
+=== STEP 73 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/rev:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+cargo-target
+rev
+rev.1
+rev.c
+src
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin/link

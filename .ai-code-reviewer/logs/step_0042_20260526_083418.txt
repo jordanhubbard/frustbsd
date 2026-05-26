@@ -1,0 +1,14 @@
+=== STEP 42 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*bsd.init.mk*':
+```
+./share/mk/bsd.init.mk
+```
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level `Makefile.inc1` system bootstrap, not from my unit. Let me verify the Rust crate compiles standalone first.
+
+ACTION: BUILD
