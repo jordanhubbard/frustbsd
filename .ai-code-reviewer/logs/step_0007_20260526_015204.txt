@@ -1,0 +1,36 @@
+=== STEP 7 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/lib/libc/arch:
+```
+aarch64
+alpha
+arm
+hppa
+i386
+ia64
+m68k
+mips
+or1k
+powerpc
+powerpc64
+riscv
+sh3
+sparc
+sparc64
+vax
+x86_64
+```
+
+--- RESPONSE ---
+
+
+This unit is `contrib/netbsd-tests/lib/libc/arch/arm` — NetBSD test infrastructure code, not FreeBSD userland. It contains:
+1. `exec_prot_support.c` — a trivial stub returning `NOTIMPL`
+2. `return_one.S` — ARM assembly shellcode
+
+This has no Makefile, is not FreeBSD userland code, and is architecture-specific assembly. Per the constraint: "If the selected unit has no source relevant to the configured objective, choose another scope instead of fabricating a rewrite."
+
+I'll move to the next pending unit from the queue.
+
+ACTION: SET_SCOPE bin/cat/tests

@@ -1,0 +1,175 @@
+=== STEP 69 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/diff3/diff3.c:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/diff3/diff3.c
+   Total chunks: 37
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: usr.bin/diff3
+   Files: 0/3
+📄 File: usr.bin/diff3/diff3.c
+   Chunks: 1/37
+
+```
+=== CHUNK 1/37: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/diff3/diff3.c === [header: file_header]
+=== Lines 1-146 (146 lines) ===
+
+/*	$OpenBSD: diff3prog.c,v 1.11 2009/10/27 23:59:37 deraadt Exp $	*/
+
+/*
+ * SPDX-License-Identifier: Caldera-no-preamble AND BSD-3-Clause
+ *
+ * Copyright (C) Caldera International Inc.  2001-2002.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code and documentation must retain the above
+ *    copyright notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *	This product includes software developed or owned by Caldera
+ *	International, Inc.
+ * 4. Neither the name of Caldera International, Inc. nor the names of other
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * USE OF THE SOFTWARE PROVIDED FOR UNDER THIS LICENSE BY CALDERA
+ * INTERNATIONAL, INC. AND CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL CALDERA INTERNATIONAL, INC. BE LIABLE FOR ANY DIRECT,
+ * INDIRECT INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+/*-
+ * Copyright (c) 1991, 1993
+ *	The Regents of the University of California.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+#include <sys/types.h>
+#include <sys/capsicum.h>
+#include <sys/procdesc.h>
+#include <sys/wait.h>
+
+#include <assert.h>
+#include <capsicum_helpers.h>
+#include <ctype.h>
+#include <err.h>
+#include <fcntl.h>
+#include <getopt.h>
+#include <inttypes.h>
+#include <limits.h>
+#include <spawn.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+extern char **environ;
+/*
+ * "from" is first in range of changed lines; "to" is last+1
+ * from=to=line after point of insertion for added lines.
+ */
+struct range {
+	int from;
+	int to;
+};
+
+enum difftype {
+	DIFF_NONE,
+	DIFF_TYPE1,
+	DIFF_TYPE2,
+	DIFF_TYPE3,
+};
+
+struct diff {
+	enum difftype type;
+
+	/* Ranges as lines */
+	struct range old;
+	struct range new;
+};
+
+#define EFLAG_NONE 	0
+#define EFLAG_OVERLAP 	1
+#define EFLAG_NOOVERLAP	2
+#define EFLAG_UNMERGED	3
+
+static size_t szchanges;
+
+static struct diff *d13;
+static struct diff *d23;
+/*
+ * "de" is used to gather editing scripts.  These are later spewed out in
+ * reverse order.  Its first element must be all zero, the "old" and "new"
+ * components of "de" contain line positions. Array overlap indicates which
+ * sections in "de" correspond to lines that are different in all three files.
+ */
+static struct diff *de;
+static char *overlap;
+static int  *de_delta;	/* file1-file3 line number delta per edit */
+static int  overlapcnt;
+static FILE *fp[3];
+static int cline[3];		/* # of the last-read line in each file (0-2) */
+/*
+ * The latest known correspondence between line numbers of the 3 files
+ * is stored in last[1-3];
+ */
+static int last[4];
+static int Aflag, eflag, iflag, mflag, Tflag;
+static int oflag;		/* indicates whether to mark overlaps (-E or -X) */
+static int strip_cr;
+static char *f1mark, *f2mark, *f3mark;
+static const char *oldmark = "<<<<<<<";
+static const char *orgmark = "|||||||";
+static const char *newmark = ">>>>>>>";
+static const char *divider = "=======";
+
+static bool duplicate(struct range *, struct range *);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SKIP_FILE

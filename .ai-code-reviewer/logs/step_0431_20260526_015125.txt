@@ -1,0 +1,13 @@
+=== STEP 431 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/arch/ia64
+
+--- RESPONSE ---
+
+
+I need to find a valid work unit. Let me try a different directory:
+
+ACTION: SET_SCOPE usr.bin

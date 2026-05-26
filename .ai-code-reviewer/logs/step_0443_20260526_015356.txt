@@ -1,0 +1,11 @@
+=== STEP 443 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+I need to provide a complete action with all required blocks. Let me write a minimal Cargo.toml:
+
+ACTION: WRITE_FILE usr.sbin/accton/rust/Cargo.toml

@@ -1,0 +1,173 @@
+=== STEP 44 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/chat/chat.c:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/chat/chat.c
+   Total chunks: 43
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: usr.bin/chat
+   Files: 0/3
+📄 File: usr.bin/chat/chat.c
+   Chunks: 1/43
+
+```
+=== CHUNK 1/43: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/chat/chat.c === [header: file_header]
+=== Lines 1-144 (144 lines) ===
+
+/*
+ *	Chat -- a program for automatic session establishment (i.e. dial
+ *		the phone and log in).
+ *
+ * Standard termination codes:
+ *  0 - successful completion of the script
+ *  1 - invalid argument, expect string too large, etc.
+ *  2 - error on an I/O operation or fatal error condition.
+ *  3 - timeout waiting for a simple string.
+ *  4 - the first string declared as "ABORT"
+ *  5 - the second string declared as "ABORT"
+ *  6 - ... and so on for successive ABORT strings.
+ *
+ *	This software is in the public domain.
+ *
+ * -----------------
+ *	added -T and -U option and \T and \U substitution to pass a phone
+ *	number into chat script. Two are needed for some ISDN TA applications.
+ *	Keith Dart <kdart@cisco.com>
+ *	
+ *
+ *	Added SAY keyword to send output to stderr.
+ *      This allows to turn ECHO OFF and to output specific, user selected,
+ *      text to give progress messages. This best works when stderr
+ *      exists (i.e.: pppd in nodetach mode).
+ *
+ * 	Added HANGUP directives to allow for us to be called
+ *      back. When HANGUP is set to NO, chat will not hangup at HUP signal.
+ *      We rely on timeouts in that case.
+ *
+ *      Added CLR_ABORT to clear previously set ABORT string. This has been
+ *      dictated by the HANGUP above as "NO CARRIER" (for example) must be
+ *      an ABORT condition until we know the other host is going to close
+ *      the connection for call back. As soon as we have completed the
+ *      first stage of the call back sequence, "NO CARRIER" is a valid, non
+ *      fatal string. As soon as we got called back (probably get "CONNECT"),
+ *      we should re-arm the ABORT "NO CARRIER". Hence the CLR_ABORT command.
+ *      Note that CLR_ABORT packs the abort_strings[] array so that we do not
+ *      have unused entries not being reclaimed.
+ *
+ *      In the same vein as above, added CLR_REPORT keyword.
+ *
+ *      Allow for comments. Line starting with '#' are comments and are
+ *      ignored. If a '#' is to be expected as the first character, the 
+ *      expect string must be quoted.
+ *
+ *
+ *		Francis Demierre <Francis@SwissMail.Com>
+ * 		Thu May 15 17:15:40 MET DST 1997
+ *
+ *
+ *      Added -r "report file" switch & REPORT keyword.
+ *              Robert Geer <bgeer@xmission.com>
+ *
+ *      Added -s "use stderr" and -S "don't use syslog" switches.
+ *              June 18, 1997
+ *              Karl O. Pinc <kop@meme.com>
+ *
+ *
+ *	Added -e "echo" switch & ECHO keyword
+ *		Dick Streefland <dicks@tasking.nl>
+ *
+ *
+ *	Considerable updates and modifications by
+ *		Al Longyear <longyear@pobox.com>
+ *		Paul Mackerras <paulus@cs.anu.edu.au>
+ *
+ *
+ *	The original author is:
+ *
+ *		Karl Fox <karl@MorningStar.Com>
+ *		Morning Star Technologies, Inc.
+ *		1760 Zollinger Road
+ *		Columbus, OH  43221
+ *		(614)451-1883
+ *
+ *
+ */
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <ctype.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <signal.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <syslog.h>
+#include <termios.h>
+#include <time.h>
+#include <unistd.h>
+
+#define	STR_LEN	1024
+
+#ifndef SIGTYPE
+#define SIGTYPE void
+#endif
+
+#ifndef O_NONBLOCK
+#define O_NONBLOCK	O_NDELAY
+#endif
+
+#define	MAX_ABORTS		50
+#define	MAX_REPORTS		50
+#define	DEFAULT_CHAT_TIMEOUT	45
+
+static int echo;
+static int verbose;
+static int to_log;
+static int to_stderr;
+static int Verbose;
+static int quiet;
+static int exit_code;
+static FILE* report_fp;
+static char *report_file;
+static char *chat_file;
+static char *phone_num;
+static char *phone_num2;
+static int timeout = DEFAULT_CHAT_TIMEOUT;
+
+static char blank[] = "";
+
+static int have_tty_parameters;
+
+#define term_parms struct termios
+#define get_term_param(param) tcgetattr(0, param)
+#define set_term_param(param) tcsetattr(0, TCSANOW, param)
+static struct termios saved_tty_parameters;
+
+static char *abort_string[MAX_ABORTS], *fail_reason, fail_buffer[50];
+static int n_aborts, abort_next, timeout_next, echo_next;
+static int clear_abort_next;
+
+static char *report_string[MAX_REPORTS];
+static char  report_buffer[50];
+static int n_reports, report_next, report_gathering;
+static int clear_report_next;
+
+static int say_next, hup_next;
+
+void *dup_mem(void *b, size_t c);
+void *copy_of(char *s);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

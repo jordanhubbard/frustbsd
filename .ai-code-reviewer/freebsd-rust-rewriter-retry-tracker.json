@@ -252,16 +252,16 @@
     "last_attempt": "2026-05-25T16:44:58.413131"
   },
   "contrib/netbsd-tests/lib/libc/arch/arm": {
-    "attempts": 2,
-    "last_attempt": "2026-05-26T00:16:41.922223"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T01:49:53.959478"
   },
   "contrib/netbsd-tests/lib/libc/arch/hppa": {
     "attempts": 1,
     "last_attempt": "2026-05-25T16:23:10.886513"
   },
   "contrib/netbsd-tests/lib/libc/arch/ia64": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T00:17:37.174712"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:52:15.648013"
   },
   "contrib/netbsd-tests/lib/libc/arch/m68k": {
     "attempts": 3,
@@ -548,8 +548,8 @@
     "last_attempt": "2026-05-23T17:53:36.147455"
   },
   "usr.bin/chat": {
-    "attempts": 2,
-    "last_attempt": "2026-05-26T01:11:40.612575"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T01:54:59.588257"
   },
   "usr.bin/chpass": {
     "attempts": 1,
@@ -596,8 +596,8 @@
     "last_attempt": "2026-05-22T16:58:09.899107"
   },
   "usr.bin/compress": {
-    "attempts": 2,
-    "last_attempt": "2026-05-26T01:14:44.374847"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T01:56:10.274814"
   },
   "usr.bin/csplit": {
     "attempts": 3,
@@ -620,12 +620,16 @@
     "last_attempt": "2026-05-25T20:09:17.238517"
   },
   "usr.bin/diff3": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T01:16:14.288420"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:56:41.597131"
   },
   "usr.bin/dpv": {
     "attempts": 3,
     "last_attempt": "2026-05-25T19:49:56.506413"
+  },
+  "usr.bin/dtc": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T01:57:02.536758"
   },
   "usr.bin/du": {
     "attempts": 3,
@@ -660,16 +664,16 @@
     "last_attempt": "2026-05-21T20:49:38.897585"
   },
   "usr.bin/fetch": {
-    "attempts": 2,
-    "last_attempt": "2026-05-26T01:18:20.742112"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T01:57:39.857628"
   },
   "usr.bin/find": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T01:18:46.591571"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:57:56.892142"
   },
   "usr.bin/finger": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T01:19:04.142130"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:58:01.722333"
   },
   "usr.bin/fmt": {
     "attempts": 3,
@@ -684,28 +688,28 @@
     "last_attempt": "2026-05-25T00:44:24.154937"
   },
   "usr.bin/gcore": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T01:20:13.672747"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:58:38.984796"
   },
   "usr.bin/gencat": {
-    "attempts": 2,
-    "last_attempt": "2026-05-26T01:20:25.050964"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T01:58:51.115951"
   },
   "usr.bin/genl": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T01:21:09.645026"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:59:14.799384"
   },
   "usr.bin/getaddrinfo": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T01:21:20.524221"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:59:27.312967"
   },
   "usr.bin/getconf": {
     "attempts": 3,
     "last_attempt": "2026-05-25T00:53:23.527148"
   },
   "usr.bin/getent": {
-    "attempts": 2,
-    "last_attempt": "2026-05-26T01:21:41.315852"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T01:59:41.088062"
   },
   "usr.bin/head": {
     "attempts": 3,
