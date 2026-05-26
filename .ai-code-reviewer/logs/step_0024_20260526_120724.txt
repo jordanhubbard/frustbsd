@@ -1,0 +1,14 @@
+=== STEP 24 ===
+
+--- REQUEST ---
+GREP_RESULT for 'helper_symver_dso2':
+```
+./contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso2/h_helper_symver_dso2.c:1:/*	$NetBSD: h_helper_symver_dso2.c,v 1.1 2011/06/25 05:45:13 nonaka Exp $	*/
+```
+
+--- RESPONSE ---
+
+
+Let me check how the test that uses this DSO references it.
+
+ACTION: READ_FILE contrib/netbsd-tests/libexec/ld.elf_so/t_dlvsym.c

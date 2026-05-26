@@ -1,0 +1,9 @@
+=== STEP 27 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/netbsd-tests/libexec/ld.elf_so/Makefile*'
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE contrib/netbsd-tests/libexec/ld.elf_so/Makefile

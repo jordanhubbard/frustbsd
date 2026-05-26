@@ -1,0 +1,39 @@
+=== STEP 38 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/BPF/TargetInfo/BPFTargetInfo.h:
+PROGRESS:
+📁 Directory: contrib/llvm-project/llvm/lib/Target/BPF/TargetInfo
+   Files: 0/2
+📄 File: contrib/llvm-project/llvm/lib/Target/BPF/TargetInfo/BPFTargetInfo.h
+
+```
+//===-- BPFTargetInfo.h - BPF Target Implementation -------------*- C++ -*-===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#ifndef LLVM_LIB_TARGET_BPF_TARGETINFO_BPFTARGETINFO_H
+#define LLVM_LIB_TARGET_BPF_TARGETINFO_BPFTARGETINFO_H
+
+namespace llvm {
+
+class Target;
+
+Target &getTheBPFleTarget();
+Target &getTheBPFbeTarget();
+Target &getTheBPFTarget();
+
+} // namespace llvm
+
+#endif // LLVM_LIB_TARGET_BPF_TARGETINFO_BPFTARGETINFO_H
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE contrib/llvm-project/llvm/lib/Target/BPF/TargetInfo/BPFTargetInfo.cpp

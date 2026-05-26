@@ -1,0 +1,31 @@
+=== STEP 31 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/libexec/ld.elf_so:
+```
+data
+h_df_1_noopen.c
+h_dl_symver.c
+h_ifunc.c
+h_locking.c
+helper_dso1
+helper_dso2
+helper_ifunc_dso
+helper_symver_dso0
+helper_symver_dso1
+helper_symver_dso2
+t_df_1_noopen.sh
+t_dl_symver.sh
+t_dlerror-cleared.c
+t_dlerror-false.c
+t_dlinfo.c
+t_dlvsym.c
+t_ifunc.c
+```
+
+--- RESPONSE ---
+
+
+This is a test helper DSO directory with no Makefile. These are built by the parent test infrastructure. Let me check how FreeBSD builds these by looking at the parent test infrastructure.
+
+ACTION: LIST_DIR contrib/netbsd-tests/libexec

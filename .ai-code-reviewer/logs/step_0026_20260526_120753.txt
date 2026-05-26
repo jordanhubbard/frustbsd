@@ -1,0 +1,11 @@
+=== STEP 26 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/netbsd-tests/libexec/ld.elf_so/Makefile*'
+
+--- RESPONSE ---
+
+
+Let me check the parent test directory for a Makefile.
+
+ACTION: FIND_FILE contrib/netbsd-tests/libexec/ld.elf_so/Makefile

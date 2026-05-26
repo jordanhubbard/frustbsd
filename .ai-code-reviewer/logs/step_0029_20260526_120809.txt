@@ -1,0 +1,11 @@
+=== STEP 29 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/netbsd-tests/libexec/ld.elf_so/Makefile*'
+
+--- RESPONSE ---
+
+
+Let me check how FreeBSD builds these test helper DSOs by looking at the parent test infrastructure.
+
+ACTION: FIND_FILE contrib/netbsd-tests/libexec/ld.elf_so/Makefile

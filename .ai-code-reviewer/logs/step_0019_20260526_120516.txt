@@ -1,0 +1,14 @@
+=== STEP 19 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*bsd.test.mk*':
+```
+./share/mk/bsd.test.mk
+```
+
+--- RESPONSE ---
+
+
+Let me check how these helper DSOs are built by looking at the test infrastructure.
+
+ACTION: READ_FILE share/mk/bsd.test.mk

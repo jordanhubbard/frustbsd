@@ -1,0 +1,11 @@
+=== STEP 22 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/netbsd-tests/libexec/ld.elf_so/Makefile*'
+
+--- RESPONSE ---
+
+
+This is a test helper DSO with no local Makefile. Let me find how it's built by checking the parent build infrastructure.
+
+ACTION: FIND_FILE contrib/netbsd-tests/libexec/ld.elf_so/Makefile

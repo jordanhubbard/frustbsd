@@ -1,0 +1,11 @@
+=== STEP 16 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/netbsd-tests/Makefile*'
+
+--- RESPONSE ---
+
+
+Let me check how these helper DSOs are built in the broader test infrastructure.
+
+ACTION: LIST_DIR contrib/netbsd-tests
