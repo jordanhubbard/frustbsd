@@ -1,0 +1,25 @@
+=== STEP 101 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/tsort
+   Files: 0/3
+📄 File: usr.bin/tsort/tsort.c
+   Chunks: 3/15
+
+```
+=== CHUNK 3/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tsort/tsort.c === [function: find_cycle]
+=== Lines 93-95 (3 lines) ===
+
+static int	 find_cycle(NODE *, NODE *, int, int);
+static NODE	*get_node(char *);
+static void	*grow_buf(void *, size_t);
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

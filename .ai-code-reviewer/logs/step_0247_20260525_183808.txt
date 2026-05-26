@@ -1,0 +1,14 @@
+=== STEP 247 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/date is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/arch/vax
+
+--- RESPONSE ---
+
+
+I need to find a work unit that is not skipped. Let me try some other directories.
+
+ACTION: SET_SCOPE bin/

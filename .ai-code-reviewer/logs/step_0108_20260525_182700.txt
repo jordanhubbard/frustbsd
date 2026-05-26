@@ -1,0 +1,75 @@
+=== STEP 108 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/tsort
+   Files: 0/3
+📄 File: usr.bin/tsort/tsort.c
+   Chunks: 10/15
+
+```
+=== CHUNK 10/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tsort/tsort.c === [function: add_arc]
+=== Lines 191-243 (53 lines) ===
+
+static void
+add_arc(char *s1, char *s2)
+{
+	NODE *n1;
+	NODE *n2;
+	int bsize, i;
+
+	n1 = get_node(s1);
+
+	if (!strcmp(s1, s2))
+		return;
+
+	n2 = get_node(s2);
+
+	/*
+	 * Check if this arc is already here.
+	 */
+	for (i = 0; i < n1->n_narcs; i++)
+		if (n1->n_arcs[i] == n2)
+			return;
+	/*
+	 * Add it.
+	 */
+	if (n1->n_narcs == n1->n_arcsize) {
+		if (!n1->n_arcsize)
+			n1->n_arcsize = 10;
+		bsize = n1->n_arcsize * sizeof(*n1->n_arcs) * 2;
+		n1->n_arcs = grow_buf(n1->n_arcs, bsize);
+		n1->n_arcsize = bsize / sizeof(*n1->n_arcs);
+	}
+	n1->n_arcs[n1->n_narcs++] = n2;
+	++n2->n_refcnt;
+}
+
+/* Find a node in the graph (insert if not found) and return a pointer to it. */
+static NODE *
+get_node(char *name)
+{
+	DBT data, key;
+	NODE *n;
+
+	if (db == NULL &&
+	    (db = dbopen(NULL, O_RDWR, 0, DB_HASH, NULL)) == NULL)
+		err(1, "db: %s", name);
+
+	key.data = name;
+	key.size = strlen(name) + 1;
+
+	switch ((*db->get)(db, &key, &data, 0)) {
+	case 0:
+		memcpy(&n, data.data, sizeof(n));
+		return (n);
+	case 1:
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

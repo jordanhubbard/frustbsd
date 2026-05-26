@@ -1,0 +1,9 @@
+=== STEP 176 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'bin/*/Makefile'
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/cat

@@ -1,0 +1,39 @@
+=== STEP 111 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/tsort
+   Files: 0/3
+📄 File: usr.bin/tsort/tsort.c
+   Chunks: 13/15
+
+```
+=== CHUNK 13/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tsort/tsort.c === [function: remove_node]
+=== Lines 351-367 (17 lines) ===
+
+static void
+remove_node(NODE *n)
+{
+	NODE **np;
+	int i;
+
+	(void)printf("%s\n", n->n_name);
+	for (np = n->n_arcs, i = n->n_narcs; --i >= 0; np++)
+		--(*np)->n_refcnt;
+	n->n_narcs = 0;
+	*n->n_prevp = n->n_next;
+	if (n->n_next)
+		n->n_next->n_prevp = n->n_prevp;
+}
+
+
+/* look for the longest? cycle from node from to node to. */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

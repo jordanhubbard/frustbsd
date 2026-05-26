@@ -1,0 +1,68 @@
+=== STEP 112 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/tsort
+   Files: 0/3
+📄 File: usr.bin/tsort/tsort.c
+   Chunks: 14/15
+
+```
+=== CHUNK 14/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tsort/tsort.c === [function: find_cycle]
+=== Lines 368-413 (46 lines) ===
+
+static int
+find_cycle(NODE *from, NODE *to, int longest_len, int depth)
+{
+	NODE **np;
+	int i, len;
+
+	/*
+	 * avoid infinite loops and ignore portions of the graph known
+	 * to be acyclic
+	 */
+	if (from->n_flags & (NF_NODEST|NF_MARK|NF_ACYCLIC))
+		return (0);
+	from->n_flags |= NF_MARK;
+
+	for (np = from->n_arcs, i = from->n_narcs; --i >= 0; np++) {
+		cycle_buf[depth] = *np;
+		if (*np == to) {
+			if (depth + 1 > longest_len) {
+				longest_len = depth + 1;
+				(void)memcpy((char *)longest_cycle,
+				    (char *)cycle_buf,
+				    longest_len * sizeof(NODE *));
+			}
+		} else {
+			if ((*np)->n_flags & (NF_MARK|NF_ACYCLIC|NF_NODEST))
+				continue;
+			len = find_cycle(*np, to, longest_len, depth + 1);
+
+			if (debug)
+				(void)printf("%*s %s->%s %d\n", depth, "",
+				    from->n_name, to->n_name, len);
+
+			if (len == 0)
+				(*np)->n_flags |= NF_NODEST;
+
+			if (len > longest_len)
+				longest_len = len;
+
+			if (len > 0 && !longest)
+				break;
+		}
+	}
+	from->n_flags &= ~NF_MARK;
+	return (longest_len);
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

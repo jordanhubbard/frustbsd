@@ -1,0 +1,28 @@
+=== STEP 48 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/lib/libc/arch:
+```
+aarch64
+alpha
+arm
+hppa
+i386
+ia64
+m68k
+mips
+or1k
+powerpc
+powerpc64
+riscv
+sh3
+sparc
+sparc64
+vax
+x86_64
+```
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE contrib/netbsd-tests/lib/libc/Makefile

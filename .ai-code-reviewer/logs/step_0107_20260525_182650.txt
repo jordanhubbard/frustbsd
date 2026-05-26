@@ -1,0 +1,34 @@
+=== STEP 107 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/tsort
+   Files: 0/3
+📄 File: usr.bin/tsort/tsort.c
+   Chunks: 9/15
+
+```
+=== CHUNK 9/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/tsort/tsort.c === [function: grow_buf]
+=== Lines 179-190 (12 lines) ===
+
+static void *
+grow_buf(void *bp, size_t size)
+{
+	if ((bp = realloc(bp, size)) == NULL)
+		err(1, NULL);
+	return (bp);
+}
+
+/*
+ * add an arc from node s1 to node s2 in the graph.  If s1 or s2 are not in
+ * the graph, then add them.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

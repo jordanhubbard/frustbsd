@@ -1,0 +1,19 @@
+=== STEP 51 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/bin/ln:
+```
+Makefile
+Makefile.depend
+ln.1
+ln.c
+symlink.7
+tests
+```
+
+--- RESPONSE ---
+
+
+Let me try a different approach and find a unit that isn't skipped.
+
+ACTION: SET_SCOPE bin/ln

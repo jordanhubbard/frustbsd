@@ -1,0 +1,38 @@
+=== STEP 50 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/lib:
+```
+csu
+libbluetooth
+libbpfjit
+libc
+libcrypt
+libcurses
+libdes
+libevent
+libexecinfo
+libm
+libobjc
+libposix
+libppath
+libprop
+libpthread
+libpthread_dbg
+librefuse
+librt
+librumpclient
+librumphijack
+libskey
+libsljit
+libusbhid
+libutil
+semaphore
+```
+
+--- RESPONSE ---
+
+
+This unit is part of the NetBSD test suite with architecture-specific assembly stubs - not a good candidate for a meaningful Rust rewrite. Let me find a better unit.
+
+ACTION: LIST_DIR bin/ln

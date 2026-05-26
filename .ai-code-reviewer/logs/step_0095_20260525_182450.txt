@@ -1,0 +1,281 @@
+=== STEP 95 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/.ai-code-reviewer/REWRITE-SUMMARY.md:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/.ai-code-reviewer/REWRITE-SUMMARY.md
+   Total chunks: 4
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: usr.bin/tsort
+   Files: 0/3
+📄 File: .ai-code-reviewer/REWRITE-SUMMARY.md
+   Chunks: 1/4
+
+```
+=== CHUNK 1/4: /usr/home/jkh/Src/freebsd-src-on-angry-AI/.ai-code-reviewer/REWRITE-SUMMARY.md === [line_chunk: chunk_1]
+=== Lines 1-250 (250 lines) ===
+
+# Rewrite Summary
+
+Progress tracking for code rewrite sessions.
+
+---
+## 2026-05-22 14:24 - usr.bin/pathchk ✓
+
+**Directory:** `usr.bin/pathchk`
+
+**Summary:** [ai-code-reviewer] pathchk: Rewrite source
+
+**Files changed:**
+  - usr.bin/pathchk/Makefile
+  - usr.bin/pathchk/Cargo.toml
+  - usr.bin/pathchk/pathchk
+  - usr.bin/pathchk/pathchk.1.gz
+  - usr.bin/pathchk/pathchk.debug
+  - usr.bin/pathchk/pathchk.full
+  - usr.bin/pathchk/src/main.rs
+
+---
+
+## 2026-05-22 14:09 - usr.bin/number ✓
+
+**Directory:** `usr.bin/number`
+
+**Summary:** [ai-code-reviewer] number: Rewrite C implementation to Rust
+
+**Files changed:**
+  - usr.bin/number/Makefile
+  - usr.bin/number/Cargo.toml
+  - usr.bin/number/src/main.rs
+
+---
+
+## 2026-05-22 14:04 - usr.bin/backlight ✓
+
+**Directory:** `usr.bin/backlight`
+
+**Summary:** [ai-code-reviewer] backlight: Rewrite C implementation in Rust
+
+**Files changed:**
+  - usr.bin/backlight/Makefile
+  - usr.bin/backlight/.cargo/config.toml
+  - usr.bin/backlight/Cargo.lock
+  - usr.bin/backlight/Cargo.toml
+  - usr.bin/backlight/cargo-target/.rustc_info.json
+  - usr.bin/backlight/cargo-target/CACHEDIR.TAG
+  - usr.bin/backlight/cargo-target/debug/.cargo-lock
+  - usr.bin/backlight/cargo-target/debug/.fingerprint/backlight-7cc95a4aef9c929f/invoked.timestamp
+  - usr.bin/backlight/cargo-target/debug/.fingerprint/backlight-7cc95a4aef9c929f/output-bin-backlight
+  - usr.bin/backlight/cargo-target/debug/.fingerprint/backlight-f4f23c4326ac8c4b/invoked.timestamp
+  - ... and 8 more
+
+---
+
+## 2026-05-22 13:38 - usr.bin/c99 ✓
+
+**Directory:** `usr.bin/c99`
+
+**Summary:** [ai-code-reviewer] c99: Rewrite C wrapper to Rust with Cargo build
+
+**Files changed:**
+  - usr.bin/c99/Makefile
+  - usr.bin/c99/Cargo.lock
+  - usr.bin/c99/Cargo.toml
+  - usr.bin/c99/cargo-target/.rustc_info.json
+  - usr.bin/c99/cargo-target/CACHEDIR.TAG
+  - usr.bin/c99/cargo-target/debug/.cargo-lock
+  - usr.bin/c99/cargo-target/debug/.fingerprint/c99-388365a62fe5dc3e/invoked.timestamp
+  - usr.bin/c99/cargo-target/debug/.fingerprint/c99-388365a62fe5dc3e/output-bin-c99
+  - usr.bin/c99/cargo-target/debug/deps/c99-388365a62fe5dc3e.d
+  - usr.bin/c99/cargo-target/debug/incremental/c99-0712ayzgwf90d/s-hirurc0v8f-0zgmc6g-working/dep-graph.part.bin
+  - ... and 2 more
+
+---
+
+## 2026-05-22 13:28 - usr.bin/pom ✓
+
+**Directory:** `usr.bin/pom`
+
+**Summary:** [ai-code-reviewer] pom: Begin Rust rewrite and configure build
+
+**Files changed:**
+  - usr.bin/pom/Makefile
+  - usr.bin/pom/Makefile.depend
+  - usr.bin/pom/Cargo.lock
+  - usr.bin/pom/Cargo.toml
+  - usr.bin/pom/cargo-target/.rustc_info.json
+  - usr.bin/pom/cargo-target/CACHEDIR.TAG
+  - usr.bin/pom/cargo-target/debug/.cargo-lock
+  - usr.bin/pom/cargo-target/debug/.fingerprint/pom-cbac7645422b2252/invoked.timestamp
+  - usr.bin/pom/cargo-target/debug/.fingerprint/pom-cbac7645422b2252/output-bin-pom
+  - usr.bin/pom/cargo-target/debug/deps/pom-cbac7645422b2252.d
+  - ... and 3 more
+
+---
+
+## 2026-05-22 11:48 - usr.bin/renice ✓
+
+**Directory:** `usr.bin/renice`
+
+**Summary:** [ai-code-reviewer] renice: Rewrite utility in Rust using Cargo build system
+
+**Files changed:**
+  - usr.bin/renice/Makefile
+  - usr.bin/renice/Cargo.lock
+  - usr.bin/renice/Cargo.toml
+  - usr.bin/renice/cargo-target/.rustc_info.json
+  - usr.bin/renice/cargo-target/CACHEDIR.TAG
+  - usr.bin/renice/cargo-target/debug/.cargo-lock
+  - usr.bin/renice/cargo-target/debug/.fingerprint/renice-a0aa7ec3d9653941/invoked.timestamp
+  - usr.bin/renice/cargo-target/debug/.fingerprint/renice-a0aa7ec3d9653941/output-bin-renice
+  - usr.bin/renice/cargo-target/debug/deps/renice-a0aa7ec3d9653941.d
+  - usr.bin/renice/cargo-target/debug/incremental/renice-362fj2gr2jv5v/s-hirrpnsqdx-1kpjnag-d6kbly2kf8es1rmgwtw16yrk9/dep-graph.bin
+  - ... and 4 more
+
+---
+
+## 2026-05-22 11:38 - usr.bin/expand ✓
+
+**Directory:** `usr.bin/expand`
+
+**Summary:** [ai-code-reviewer] expand: Rewrite in Rust and update build system
+
+**Files changed:**
+  - usr.bin/expand/Makefile
+  - usr.bin/expand/Cargo.lock
+  - usr.bin/expand/Cargo.toml
+  - usr.bin/expand/cargo-target/.rustc_info.json
+  - usr.bin/expand/cargo-target/CACHEDIR.TAG
+  - usr.bin/expand/cargo-target/debug/.cargo-lock
+  - usr.bin/expand/cargo-target/debug/.fingerprint/expand-7689379ab8f5c6f5/invoked.timestamp
+  - usr.bin/expand/cargo-target/debug/.fingerprint/expand-7689379ab8f5c6f5/output-bin-expand
+  - usr.bin/expand/cargo-target/debug/deps/expand-7689379ab8f5c6f5.d
+  - usr.bin/expand/cargo-target/debug/incremental/expand-2helepjavehmh/s-hirrgxk9zu-0stlcig-working/dep-graph.part.bin
+  - ... and 2 more
+
+---
+
+## 2026-05-22 11:29 - usr.bin/hesinfo ✓
+
+**Directory:** `usr.bin/hesinfo`
+
+**Summary:** [ai-code-reviewer] hesinfo: Rewrite C implementation in Rust
+
+**Files changed:**
+  - usr.bin/hesinfo/Makefile
+  - usr.bin/hesinfo/Cargo.lock
+  - usr.bin/hesinfo/Cargo.toml
+  - usr.bin/hesinfo/cargo-target/.rustc_info.json
+  - usr.bin/hesinfo/cargo-target/CACHEDIR.TAG
+  - usr.bin/hesinfo/cargo-target/debug/.cargo-lock
+  - usr.bin/hesinfo/cargo-target/debug/.fingerprint/hesinfo-c87e176f8d1cab00/invoked.timestamp
+  - usr.bin/hesinfo/cargo-target/debug/.fingerprint/hesinfo-c87e176f8d1cab00/output-bin-hesinfo
+  - usr.bin/hesinfo/cargo-target/debug/deps/hesinfo-c87e176f8d1cab00.d
+  - usr.bin/hesinfo/cargo-target/debug/incremental/hesinfo-3tw0t5to1gfum/s-hirr7v7mj1-0gcgv8m-30s0r73huvkzn4q45ff3zbjyo/dep-graph.bin
+  - ... and 4 more
+
+---
+
+## 2026-05-22 11:08 - usr.bin/c89 ✓
+
+**Directory:** `usr.bin/c89`
+
+**Summary:** [ai-code-reviewer] c89: Rewrite C implementation in Rust
+
+**Files changed:**
+  - usr.bin/c89/Makefile
+  - usr.bin/c89/Cargo.lock
+  - usr.bin/c89/Cargo.toml
+  - usr.bin/c89/cargo-target/.rustc_info.json
+  - usr.bin/c89/cargo-target/CACHEDIR.TAG
+  - usr.bin/c89/cargo-target/debug/.cargo-lock
+  - usr.bin/c89/cargo-target/debug/.fingerprint/c89-b6ed795b128803f2/invoked.timestamp
+  - usr.bin/c89/cargo-target/debug/.fingerprint/c89-b6ed795b128803f2/output-bin-c89
+  - usr.bin/c89/cargo-target/debug/deps/c89-b6ed795b128803f2.d
+  - usr.bin/c89/cargo-target/debug/incremental/c89-1xcd6svkcwfh9/s-hirqoftg5l-0zhhqfn-working/dep-graph.part.bin
+  - ... and 2 more
+
+---
+
+## 2026-05-22 11:01 - usr.bin/leave ✓
+
+**Directory:** `usr.bin/leave`
+
+**Summary:** [ai-code-reviewer] leave: Rewrite utility in Rust
+
+**Files changed:**
+  - usr.bin/leave/Makefile
+  - usr.bin/leave/Makefile.depend
+  - usr.bin/leave/Cargo.lock
+  - usr.bin/leave/Cargo.toml
+  - usr.bin/leave/cargo-target/.rustc_info.json
+  - usr.bin/leave/cargo-target/CACHEDIR.TAG
+  - usr.bin/leave/cargo-target/debug/.cargo-lock
+  - usr.bin/leave/cargo-target/debug/.fingerprint/leave-f12fb7aa0db49ca5/invoked.timestamp
+  - usr.bin/leave/cargo-target/debug/.fingerprint/leave-f12fb7aa0db49ca5/output-bin-leave
+  - usr.bin/leave/cargo-target/debug/deps/leave-f12fb7aa0db49ca5.d
+  - ... and 3 more
+
+---
+
+## 2026-05-22 10:40 - usr.bin/enigma ✓
+
+**Directory:** `usr.bin/enigma`
+
+**Summary:** [ai-code-reviewer] enigma: rewrite C implementation to Rust
+
+**Files changed:**
+  - usr.bin/enigma/Cargo.toml
+  - usr.bin/enigma/Makefile
+  - usr.bin/enigma/Makefile.depend
+  - usr.bin/enigma/cargo-target/debug/.fingerprint/enigma-56a668ce9e9d145b/output-bin-enigma
+  - usr.bin/enigma/cargo-target/debug/.fingerprint/enigma-ed75bad22ee64eff/run-build-script-build-script-build
+  - usr.bin/enigma/cargo-target/debug/.fingerprint/enigma-ed75bad22ee64eff/run-build-script-build-script-build.json
+  - usr.bin/enigma/cargo-target/debug/incremental/enigma-2dns2xkap0rzz/s-hirpavslla-17e208w-working/dep-graph.part.bin
+  - usr.bin/enigma/cargo-target/debug/incremental/enigma-2dns2xkap0rzz/s-hirpavslla-17e208w.lock
+  - usr.bin/enigma/src/main.rs
+  - usr.bin/enigma/cargo-target/debug/.fingerprint/enigma-56a668ce9e9d145b/bin-enigma
+  - ... and 10 more
+
+---
+
+## 2026-05-22 10:16 - usr.bin/which ✓
+
+**Directory:** `usr.bin/which`
+
+**Summary:** [ai-code-reviewer] which: Begin Rust rewrite of which utility
+
+**Files changed:**
+  - usr.bin/enigma/Makefile
+  - usr.bin/which/Cargo.toml
+  - usr.bin/which/cargo-target/debug/deps/which-d747b2d1a406d972
+  - usr.bin/which/cargo-target/debug/incremental/which-01crgo2pjlvu3/s-hirp0fle1w-17i8cbl-9v0zblwzg781o16pszjuntr3w/dep-graph.bin
+  - usr.bin/which/cargo-target/debug/incremental/which-01crgo2pjlvu3/s-hirp0fle1w-17i8cbl-9v0zblwzg781o16pszjuntr3w/query-cache.bin
+  - usr.bin/which/cargo-target/debug/incremental/which-01crgo2pjlvu3/s-hirp0fle1w-17i8cbl-9v0zblwzg781o16pszjuntr3w/work-products.bin
+  - usr.bin/which/cargo-target/debug/incremental/which-01crgo2pjlvu3/s-hirp0fle1w-17i8cbl.lock
+  - usr.bin/which/cargo-target/debug/which
+  - usr.bin/which/src/main.rs
+  - usr.bin/which/which
+  - ... and 31 more
+
+---
+
+## 2026-05-22 10:12 - usr.bin/soelim ✓
+
+**Directory:** `usr.bin/soelim`
+
+**Summary:** [ai-code-reviewer] soelim: Initialize Rust rewrite with Cargo build
+
+```
+
+--- RESPONSE ---
+
+
+Let me check how the build system actually invokes builds for individual units.
+
+ACTION: READ_FILE .ai-code-reviewer/freebsd-rust-rewriter-retry-tracker.json

@@ -1,0 +1,14 @@
+=== STEP 36 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/rmdir is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/arch/powerpc64
+
+--- RESPONSE ---
+
+
+Let me try the suggested next unit.
+
+ACTION: SET_SCOPE contrib/netbsd-tests/lib/libc/arch/powerpc64

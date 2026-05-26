@@ -1,0 +1,11 @@
+=== STEP 40 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bin/ln/ln.c*'
+
+--- RESPONSE ---
+
+
+Let me try the suggested next unit from the index.
+
+ACTION: SET_SCOPE contrib/netbsd-tests/lib/libc/arch/sh3

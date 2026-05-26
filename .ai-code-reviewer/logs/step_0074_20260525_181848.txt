@@ -1,0 +1,57 @@
+=== STEP 74 ===
+
+--- REQUEST ---
+
+⚠️  INCOMPLETE RESPONSE DETECTED
+
+Problem: EDIT_FILE action without OLD block
+Response length: 42 chars
+Last 100 chars: ...
+
+ACTION: EDIT_FILE usr.bin/tsort/Makefile
+
+Your response appears to have been cut off before completion.
+Please provide a COMPLETE response including:
+1. Your analysis
+2. A SINGLE, COMPLETE ACTION directive
+3. For EDIT_FILE: both complete OLD and NEW blocks
+
+If you're working with a large file causing timeouts:
+- Focus on ONE specific issue at a time
+- Use smaller OLD/NEW blocks
+- Consider SKIP_FILE if the file is too complex
+
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE usr.bin/tsort/Makefile
+OLD:
+.include <src.opts.mk>
+
+PROG=	tsort
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}=	tests
+
+.include <bsd.prog.mk>
+NEW:
+.include <src.opts.mk>
+
+PROG=	tsort
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}=	tests
+
+# Rust build integration
+RUSTC?=	rustc
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+.PHONY: rust-build
+rust-build:
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml \
+	    --target-dir ${CARGO_TARGET_DIR} --release
+	${INSTALL} -s ${CARGO_TARGET_DIR}/release/tsort ${.OBJDIR}/${PROG}
+
+.include <bsd.prog.mk>
