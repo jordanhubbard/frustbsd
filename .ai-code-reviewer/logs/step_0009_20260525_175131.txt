@@ -1,0 +1,13 @@
+=== STEP 9 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/lib/libc/arch/powerpc64:
+```
+exec_prot_support.c
+return_one.S
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR contrib/netbsd-tests/lib/libc

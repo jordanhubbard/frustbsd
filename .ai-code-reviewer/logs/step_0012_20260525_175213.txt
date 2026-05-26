@@ -1,0 +1,9 @@
+=== STEP 12 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'contrib/netbsd-tests/*/Makefile'
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR contrib/netbsd-tests/lib/libc/common

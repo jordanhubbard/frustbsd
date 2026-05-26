@@ -1,0 +1,12 @@
+=== STEP 119 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/mkuzip is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/arch/sh3
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE lib/liby

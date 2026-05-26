@@ -1,0 +1,66 @@
+=== STEP 19 ===
+
+--- REQUEST ---
+GREP_RESULT for 'exec_prot':
+```
+./sys/arm64/arm64/elf_machdep.c:76:static void arm64_exec_protect(struct image_params *, int);
+./sys/arm64/arm64/elf_machdep.c:117:	.sv_protect	= arm64_exec_protect,
+./sys/arm64/arm64/elf_machdep.c:369:arm64_exec_protect(struct image_params *imgp, int flags __unused)
+./contrib/netbsd-tests/lib/libc/sys/t_mprotect.c:48:#include "../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/sys/t_mprotect.c:179:	xp_support = exec_prot_support();
+./contrib/netbsd-tests/lib/libc/common/exec_prot.h:1:/* $NetBSD: exec_prot.h,v 1.1 2011/07/18 23:16:11 jym Exp $ */
+./contrib/netbsd-tests/lib/libc/common/exec_prot.h:50:int exec_prot_support(void);
+./contrib/netbsd-tests/lib/libc/arch/mips/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:10 jym Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/mips/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:10 jym Exp $");
+./contrib/netbsd-tests/lib/libc/arch/mips/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/sparc/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:10 jym Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/sparc/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:10 jym Exp $");
+./contrib/netbsd-tests/lib/libc/arch/sparc/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/vax/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:10 jym Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/vax/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:10 jym Exp $");
+./contrib/netbsd-tests/lib/libc/arch/vax/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/arm/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:09 jym Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/arm/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:09 jym Exp $");
+./contrib/netbsd-tests/lib/libc/arch/arm/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/alpha/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:09 jym Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/alpha/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:09 jym Exp $");
+./contrib/netbsd-tests/lib/libc/arch/alpha/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/m68k/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:09 jym Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/m68k/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:09 jym Exp $");
+./contrib/netbsd-tests/lib/libc/arch/m68k/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/hppa/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:09 jym Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/hppa/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:09 jym Exp $");
+./contrib/netbsd-tests/lib/libc/arch/hppa/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/aarch64/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.1 2014/08/10 05:47:38 matt Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/aarch64/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2014/08/10 05:47:38 matt Exp $");
+./contrib/netbsd-tests/lib/libc/arch/aarch64/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/sh3/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:10 jym Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/sh3/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:10 jym Exp $");
+./contrib/netbsd-tests/lib/libc/arch/sh3/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/or1k/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.1 2014/09/03 19:34:26 matt Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/or1k/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2014/09/03 19:34:26 matt Exp $");
+./contrib/netbsd-tests/lib/libc/arch/or1k/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/riscv/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.1 2014/09/19 17:36:26 matt Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/riscv/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2014/09/19 17:36:26 matt Exp $");
+./contrib/netbsd-tests/lib/libc/arch/riscv/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/ia64/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:09 jym Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/ia64/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:09 jym Exp $");
+./contrib/netbsd-tests/lib/libc/arch/ia64/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/sparc64/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.2 2016/12/31 11:51:20 martin Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/sparc64/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.2 2016/12/31 11:51:20 martin Exp $");
+./contrib/netbsd-tests/lib/libc/arch/sparc64/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/powerpc64/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:10 jym Exp $ */
+./contrib/netbsd-tests/lib/libc/arch/powerpc64/exec_prot_support.c:33:__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2011/07/18 23:16:10 jym Exp $");
+./contrib/netbsd-tests/lib/libc/arch/powerpc64/exec_prot_support.c:35:#include "../../common/exec_prot.h"
+./contrib/netbsd-tests/lib/libc/arch/powerpc/exec_prot_support.c:1:/*      $NetBSD: exec_prot_support.c,v 1.2 2012/03/16 08:51:47 matt Exp $ */
+... [8 more matches]
+```
+
+--- RESPONSE ---
+
+
+This unit is a NetBSD test support file that's only compiled under `#ifdef __NetBSD__`. On FreeBSD, this code is never used. There's no Makefile in this directory, and it's not a standalone command or library. This is not a meaningful unit to rewrite for FreeBSD.
+
+Let me move to the next pending unit from the queue.
+
+ACTION: SET_SCOPE bin/cat/tests

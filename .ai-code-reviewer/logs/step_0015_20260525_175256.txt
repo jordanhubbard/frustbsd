@@ -1,0 +1,9 @@
+=== STEP 15 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/netbsd-tests/lib/libc/Makefile*'
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE contrib/netbsd-tests/lib/libc/arch/powerpc64/return_one.S

@@ -1,0 +1,13 @@
+=== STEP 5 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: contrib/file/python/file_magic has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/arch/powerpc64
+
+--- RESPONSE ---
+
+
+The current unit has no C/C++ source files. Let me try the next suggested directory.
+
+ACTION: SET_SCOPE contrib/netbsd-tests/lib/libc/arch/powerpc64

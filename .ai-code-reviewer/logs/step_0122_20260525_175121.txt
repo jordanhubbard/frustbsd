@@ -1,0 +1,12 @@
+=== STEP 122 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: lib/liby is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/arch/sh3
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/file/python/file_magic

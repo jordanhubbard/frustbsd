@@ -1,0 +1,37 @@
+=== STEP 10 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/lib/libc:
+```
+arch
+c063
+common
+db
+gen
+hash
+inet
+locale
+net
+regex
+rpc
+setjmp
+ssp
+stdio
+stdlib
+string
+sync
+sys
+t_cdb.c
+t_convfp.c
+t_gdtoa.c
+termios
+time
+tls
+tls_dso
+ttyio
+```
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE Makefile

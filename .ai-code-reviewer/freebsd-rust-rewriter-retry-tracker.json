@@ -244,12 +244,12 @@
     "last_attempt": "2026-05-25T17:40:39.306977"
   },
   "contrib/netbsd-tests/lib/libc/arch/powerpc64": {
-    "attempts": 1,
-    "last_attempt": "2026-05-25T17:33:24.489659"
+    "attempts": 2,
+    "last_attempt": "2026-05-25T17:50:54.029762"
   },
   "contrib/netbsd-tests/lib/libc/arch/sh3": {
-    "attempts": 1,
-    "last_attempt": "2026-05-25T17:44:52.740795"
+    "attempts": 2,
+    "last_attempt": "2026-05-25T17:55:01.124687"
   },
   "contrib/netbsd-tests/lib/libc/arch/sparc": {
     "attempts": 1,
@@ -456,8 +456,8 @@
     "last_attempt": "2026-05-22T19:54:44.158526"
   },
   "usr.bin/ar": {
-    "attempts": 2,
-    "last_attempt": "2026-05-25T16:37:43.207011"
+    "attempts": 3,
+    "last_attempt": "2026-05-25T17:55:16.682473"
   },
   "usr.bin/at": {
     "attempts": 3,

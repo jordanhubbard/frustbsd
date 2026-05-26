@@ -1,0 +1,38 @@
+=== STEP 125 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/mkuzip:
+```
+Makefile
+Makefile.depend
+mkuz_blk.c
+mkuz_blk.h
+mkuz_blk_chain.h
+mkuz_blockcache.c
+mkuz_blockcache.h
+mkuz_cfg.h
+mkuz_cloop.h
+mkuz_conveyor.c
+mkuz_conveyor.h
+mkuz_format.h
+mkuz_fqueue.c
+mkuz_fqueue.h
+mkuz_insize.c
+mkuz_insize.h
+mkuz_lzma.c
+mkuz_lzma.h
+mkuz_time.c
+mkuz_time.h
+mkuz_zlib.c
+mkuz_zlib.h
+mkuz_zstd.c
+mkuz_zstd.h
+mkuzip.8
+mkuzip.c
+mkuzip.h
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE lib/liby

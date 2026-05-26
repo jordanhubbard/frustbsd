@@ -1,0 +1,14 @@
+=== STEP 23 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/chmod is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/arch/sh3
+
+--- RESPONSE ---
+
+
+Let me try a different approach and find a unit with C source that isn't skipped.
+
+ACTION: SET_SCOPE usr.bin/asa
