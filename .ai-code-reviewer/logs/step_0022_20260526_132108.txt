@@ -1,0 +1,11 @@
+=== STEP 22 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*share/mk/bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+Let me check how the recently completed units handled Rust integration.
+
+ACTION: LIST_DIR usr.bin/basename

@@ -1,0 +1,9 @@
+=== STEP 7 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/netbsd-tests*'
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR contrib/netbsd-tests

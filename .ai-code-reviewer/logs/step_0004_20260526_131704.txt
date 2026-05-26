@@ -1,0 +1,30 @@
+=== STEP 4 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/fs:
+```
+cd9660
+common
+ffs
+fifofs
+h_funcs.subr
+hfs
+kernfs
+lfs
+msdosfs
+nfs
+nullfs
+psshfs
+ptyfs
+puffs
+tmpfs
+umapfs
+union
+vfs
+zfs
+```
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE contrib/netbsd-tests/Makefile

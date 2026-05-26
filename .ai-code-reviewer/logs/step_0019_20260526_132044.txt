@@ -1,0 +1,64 @@
+=== STEP 19 ===
+
+--- REQUEST ---
+GREP_RESULT for 'modfind':
+```
+./tests/sys/kern/module_test.c:35:ATF_TC_WITHOUT_HEAD(modfind);
+./tests/sys/kern/module_test.c:36:ATF_TC_BODY(modfind, tc)
+./tests/sys/kern/module_test.c:41:	modid = modfind("rootbus");
+./tests/freebsd_test_suite/macros.h:48:	if (modfind(_mod_name) == -1) {					\
+./tests/freebsd_test_suite/macros.h:87:	if (modfind(_mod_name) == -1) {					\
+./sys/compat/freebsd32/freebsd32_sysent.c:373:	{ .sy_narg = AS(modfind_args), .sy_call = (sy_call_t *)sys_modfind, .sy_auevent = AUE_NULL, .sy_flags = 0, .sy_thrcnt = SY_THR_STATIC },	/* 303 = modfind */
+./sys/compat/freebsd32/freebsd32_syscalls.c:311:	"modfind",			/* 303 = modfind */
+./sys/compat/freebsd32/freebsd32_syscall.h:248:#define	FREEBSD32_SYS_modfind	303
+./sys/compat/freebsd32/freebsd32_systrace_args.c:1339:	/* modfind */
+./sys/compat/freebsd32/freebsd32_systrace_args.c:1341:		struct modfind_args *p = params;
+./sys/compat/freebsd32/freebsd32_systrace_args.c:5585:	/* modfind */
+./sys/sys/syscall.h:254:#define	SYS_modfind	303
+./sys/sys/sysproto.h:733:struct modfind_args {
+./sys/sys/sysproto.h:2093:int	sys_modfind(struct thread *, struct modfind_args *);
+./sys/sys/sysproto.h:3077:#define	SYS_AUE_modfind	AUE_NULL
+./sys/sys/module.h:276:int	modfind(const char *_name);
+./sys/kern/kern_module.c:447:sys_modfind(struct thread *td, struct modfind_args *uap)
+./sys/kern/systrace_args.c:1360:	/* modfind */
+./sys/kern/systrace_args.c:1362:		struct modfind_args *p = params;
+./sys/kern/systrace_args.c:5708:	/* modfind */
+./sys/kern/syscalls.c:311:	"modfind",			/* 303 = modfind */
+./sys/kern/init_sysent.c:372:	{ .sy_narg = AS(modfind_args), .sy_call = (sy_call_t *)sys_modfind, .sy_auevent = AUE_NULL, .sy_flags = 0, .sy_thrcnt = SY_THR_STATIC },	/* 303 = modfind */
+./sys/contrib/openzfs/lib/libzfs/os/freebsd/libzfs_compat.c:207:	if (modfind("zfs") < 0) {
+./sys/contrib/openzfs/lib/libzfs/os/freebsd/libzfs_compat.c:231:	 * modfind("zfs") so out-of-base openzfs userland works with the
+./sys/contrib/openzfs/lib/libzfs/os/freebsd/libzfs_compat.c:234:	if (modfind("zfs") < 0) {
+./sbin/geom/core/geom.c:200:	if (modfind(name1) < 0) {
+./sbin/geom/core/geom.c:202:		if (kldload(name2) < 0 || modfind(name1) < 0) {
+./sbin/geom/core/geom.c:1437:	if (modfind(name) >= 0)
+./sbin/mount_udf/mount_udf.c:141:	if (modfind("udf_iconv") < 0)
+./sbin/mount_udf/mount_udf.c:142:		if (kldload("udf_iconv") < 0 || modfind("udf_iconv") < 0) {
+./sbin/mount_msdosfs/mount_msdosfs.c:298:	if (modfind("msdosfs_iconv") < 0)
+./sbin/mount_msdosfs/mount_msdosfs.c:299:		if (kldload("msdosfs_iconv") < 0 || modfind("msdosfs_iconv") < 0) {
+./sbin/route/route_netlink.c:108:	if (modfind("netlink") == -1 && errno == ENOENT) {
+./sbin/mount_cd9660/mount_cd9660.c:250:	if (modfind("cd9660_iconv") < 0)
+./sbin/mount_cd9660/mount_cd9660.c:251:		if (kldload("cd9660_iconv") < 0 || modfind("cd9660_iconv") < 0) {
+./sbin/setkey/setkey.c:112:	if (modfind(name) < 0)
+./sbin/setkey/setkey.c:113:		if (kldload(name) < 0 || modfind(name) < 0) {
+./sbin/mdmfs/mdmfs.c:313:		else if ((idx = modfind("tmpfs")) == -1)
+./sbin/mount_nfs/mount_nfs.c:451:	if (modfind("nfscl") < 0) {
+./sbin/mount_nfs/mount_nfs.c:454:		    modfind("nfscl") < 0)
+./sbin/hastd/hastd.c:89:	if (modfind("g_gate") == -1) {
+./sbin/hastd/hastd.c:91:		if (kldload("geom_gate") == -1 || modfind("g_gate") == -1) {
+./sbin/ggate/shared/ggate.c:214:	if (modfind("g_gate") == -1) {
+./sbin/ggate/shared/ggate.c:216:		if (kldload("geom_gate") == -1 || modfind("g_gate") == -1) {
+./sbin/ccdconfig/ccdconfig.c:138:	if (modfind("g_ccd") < 0) {
+./sbin/ccdconfig/ccdconfig.c:140:		if (kldload("geom_ccd") < 0 || modfind("g_ccd") < 0)
+./sbin/kldstat/kldstat.c:158:		if ((modid = modfind(modname)) < 0) {
+./sbin/ifconfig/ifconfig_netlink.c:92:	if (modfind("netlink") == -1 && errno == ENOENT) {
+./libexec/pppoed/pppoed.c:466:    if (modfind(module[f]) == -1 && kldload(module[f]) == -1) {
+./tools/tools/nvmf/nvmfd/nvmfd.c:216:		if (modfind("nvmft") == -1 && kldload("nvmft") == -1)
+... [46 more matches]
+```
+
+--- RESPONSE ---
+
+
+This is a small userland command that calls `modfind`, `modstat`, and `syscall`. Let me check the header definitions.
+
+ACTION: READ_FILE sys/sys/module.h

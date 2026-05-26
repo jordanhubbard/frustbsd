@@ -264,8 +264,8 @@
     "last_attempt": "2026-05-24T15:46:59.847502"
   },
   "contrib/netbsd-tests/fs/lfs": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T13:04:23.484415"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T13:16:23.627956"
   },
   "contrib/netbsd-tests/fs/msdosfs": {
     "attempts": 3,
@@ -526,6 +526,10 @@
   "share/examples/FreeBSD_version": {
     "attempts": 3,
     "last_attempt": "2026-05-23T22:19:33.641774"
+  },
+  "share/examples/kld/syscall/test": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T13:19:44.821285"
   },
   "stand/ficl": {
     "attempts": 3,

@@ -1,0 +1,18 @@
+=== STEP 12 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/fs/lfs:
+```
+t_pr.c
+```
+
+--- RESPONSE ---
+
+
+This unit contains only a test file (`t_pr.c`) that depends on ATF testing framework and rump kernel infrastructure. It is not a userland command or library — it's a regression test using kernel-level mount/syscall infrastructure. This doesn't fit the configured objective of translating userland C/C++ libraries and commands to Rust.
+
+Per the constraint: "If the selected unit has no source relevant to the configured objective, choose another scope instead of fabricating a rewrite."
+
+I'll skip this unit and move to the next pending unit.
+
+ACTION: SET_SCOPE bin/cat/tests

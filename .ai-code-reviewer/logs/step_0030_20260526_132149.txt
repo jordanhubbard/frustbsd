@@ -1,0 +1,9 @@
+=== STEP 30 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE share/examples/kld/syscall/test/Cargo.toml
