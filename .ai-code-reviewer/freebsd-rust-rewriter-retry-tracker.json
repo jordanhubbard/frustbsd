@@ -311,6 +311,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-25T18:48:52.530809"
   },
+  "contrib/netbsd-tests/lib/libc/tls_dso": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T10:04:10.005306"
+  },
   "contrib/netbsd-tests/lib/semaphore/pthread": {
     "attempts": 3,
     "last_attempt": "2026-05-22T22:17:17.637990"
