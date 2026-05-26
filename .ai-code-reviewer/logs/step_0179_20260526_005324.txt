@@ -1,0 +1,12 @@
+=== STEP 179 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/fmt is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE usr.sbin/route6d/misc
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/true

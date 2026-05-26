@@ -1,0 +1,9 @@
+=== STEP 260 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.sbin/ac/rust/src/main.rs

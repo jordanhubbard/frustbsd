@@ -1,0 +1,12 @@
+=== STEP 147 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory sys/contrib/libsodium/src/libsodium/crypto_kdf/blake2b skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE usr.sbin/route6d/misc
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.sbin/route6d/misc

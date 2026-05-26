@@ -1,0 +1,12 @@
+=== STEP 331 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory usr.sbin/route6d/misc skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/netbsd-tests/lib/libc/arch/arm
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/netbsd-tests/lib/libc/arch/arm

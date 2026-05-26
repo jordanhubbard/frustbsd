@@ -1,0 +1,12 @@
+=== STEP 382 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/colrm is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/arch/arm
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/cmp

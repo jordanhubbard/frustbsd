@@ -148,8 +148,8 @@
     "last_attempt": "2026-05-23T05:12:11.840100"
   },
   "contrib/llvm-project/compiler-rt/lib/scudo/standalone/fuzz": {
-    "attempts": 1,
-    "last_attempt": "2026-05-25T23:28:32.873108"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T00:41:24.115750"
   },
   "contrib/llvm-project/libcxx/src/pstl": {
     "attempts": 3,
@@ -460,8 +460,8 @@
     "last_attempt": "2026-05-25T15:01:06.974767"
   },
   "sys/contrib/libsodium/src/libsodium/crypto_kdf/blake2b": {
-    "attempts": 1,
-    "last_attempt": "2026-05-25T23:39:59.379379"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T00:33:31.700542"
   },
   "sys/contrib/libsodium/src/libsodium/crypto_scalarmult": {
     "attempts": 2,
@@ -548,8 +548,12 @@
     "last_attempt": "2026-05-23T17:53:36.147455"
   },
   "usr.bin/chat": {
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:11:40.612575"
+  },
+  "usr.bin/chpass": {
     "attempts": 1,
-    "last_attempt": "2026-05-25T21:27:19.881602"
+    "last_attempt": "2026-05-26T01:12:49.146592"
   },
   "usr.bin/cksum": {
     "attempts": 1,
@@ -592,16 +596,16 @@
     "last_attempt": "2026-05-22T16:58:09.899107"
   },
   "usr.bin/compress": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T22:23:53.721893"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:14:44.374847"
   },
   "usr.bin/csplit": {
     "attempts": 3,
     "last_attempt": "2026-05-24T22:23:58.311473"
   },
   "usr.bin/ctags": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T22:24:03.486688"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:15:09.184751"
   },
   "usr.bin/ctlstat": {
     "attempts": 3,
@@ -614,6 +618,10 @@
   "usr.bin/diff": {
     "attempts": 3,
     "last_attempt": "2026-05-25T20:09:17.238517"
+  },
+  "usr.bin/diff3": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T01:16:14.288420"
   },
   "usr.bin/dpv": {
     "attempts": 3,
@@ -652,8 +660,16 @@
     "last_attempt": "2026-05-21T20:49:38.897585"
   },
   "usr.bin/fetch": {
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:18:20.742112"
+  },
+  "usr.bin/find": {
     "attempts": 1,
-    "last_attempt": "2026-05-25T19:14:42.052681"
+    "last_attempt": "2026-05-26T01:18:46.591571"
+  },
+  "usr.bin/finger": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T01:19:04.142130"
   },
   "usr.bin/fmt": {
     "attempts": 3,
@@ -667,17 +683,29 @@
     "attempts": 3,
     "last_attempt": "2026-05-25T00:44:24.154937"
   },
-  "usr.bin/gencat": {
+  "usr.bin/gcore": {
     "attempts": 1,
-    "last_attempt": "2026-05-25T19:50:51.731351"
+    "last_attempt": "2026-05-26T01:20:13.672747"
+  },
+  "usr.bin/gencat": {
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:20:25.050964"
+  },
+  "usr.bin/genl": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T01:21:09.645026"
+  },
+  "usr.bin/getaddrinfo": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T01:21:20.524221"
   },
   "usr.bin/getconf": {
     "attempts": 3,
     "last_attempt": "2026-05-25T00:53:23.527148"
   },
   "usr.bin/getent": {
-    "attempts": 1,
-    "last_attempt": "2026-05-25T16:51:37.447862"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:21:41.315852"
   },
   "usr.bin/head": {
     "attempts": 3,
@@ -699,13 +727,29 @@
     "attempts": 3,
     "last_attempt": "2026-05-25T03:40:14.004062"
   },
-  "usr.bin/join": {
+  "usr.bin/indent": {
     "attempts": 1,
-    "last_attempt": "2026-05-24T13:12:22.998342"
+    "last_attempt": "2026-05-26T01:25:53.785041"
+  },
+  "usr.bin/ipcrm": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T01:26:04.638935"
+  },
+  "usr.bin/ipcs": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T01:26:33.818704"
+  },
+  "usr.bin/join": {
+    "attempts": 2,
+    "last_attempt": "2026-05-26T01:26:52.056477"
   },
   "usr.bin/jot": {
     "attempts": 1,
     "last_attempt": "2026-05-22T18:13:07.386524"
+  },
+  "usr.bin/killall": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T01:37:06.638738"
   },
   "usr.bin/last": {
     "attempts": 3,
@@ -980,7 +1024,7 @@
     "last_attempt": "2026-05-25T07:55:22.483504"
   },
   "usr.sbin/route6d/misc": {
-    "attempts": 1,
-    "last_attempt": "2026-05-25T23:47:35.278948"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T00:41:43.755143"
   }
 }

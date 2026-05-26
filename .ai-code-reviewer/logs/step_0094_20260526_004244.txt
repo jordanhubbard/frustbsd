@@ -1,0 +1,375 @@
+=== STEP 94 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/sys/bus.h:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/sys/bus.h
+   Total chunks: 192
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: lib/libdevctl
+   Files: 0/4
+📄 File: sys/sys/bus.h
+   Chunks: 1/192
+
+```
+=== CHUNK 1/192: /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/sys/bus.h === [header: file_header]
+=== Lines 1-346 (346 lines) ===
+
+/*-
+ * SPDX-License-Identifier: BSD-2-Clause
+ *
+ * Copyright (c) 1997,1998,2003 Doug Rabson
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+#ifndef _SYS_BUS_H_
+#define _SYS_BUS_H_
+
+#include <machine/_limits.h>
+#include <machine/_bus.h>
+#include <sys/_bus_dma.h>
+#include <sys/ioccom.h>
+
+/**
+ * @defgroup NEWBUS newbus - a generic framework for managing devices
+ * @{
+ */
+
+/**
+ * @brief Interface information structure.
+ */
+struct u_businfo {
+	int	ub_version;		/**< @brief interface version */
+#define BUS_USER_VERSION	2
+	int	ub_generation;		/**< @brief generation count */
+};
+
+/**
+ * @brief State of the device.
+ */
+typedef enum device_state {
+	DS_NOTPRESENT = 10,		/**< @brief not probed or probe failed */
+	DS_ALIVE = 20,			/**< @brief probe succeeded */
+	DS_ATTACHING = 25,		/**< @brief currently attaching */
+	DS_ATTACHED = 30,		/**< @brief attach method called */
+} device_state_t;
+
+/**
+ * @brief Device proprty types.
+ *
+ * Those are used by bus logic to encode requested properties,
+ * e.g. in DT all properties are stored as BE and need to be converted
+ * to host endianness.
+ */
+typedef enum device_property_type {
+	DEVICE_PROP_ANY = 0,
+	DEVICE_PROP_BUFFER = 1,
+	DEVICE_PROP_UINT32 = 2,
+	DEVICE_PROP_UINT64 = 3,
+	DEVICE_PROP_HANDLE = 4,
+} device_property_type_t;
+
+/**
+ * @brief Device information exported to userspace.
+ * The strings are placed one after the other, separated by NUL characters.
+ * Fields should be added after the last one and order maintained for compatibility
+ */
+#define BUS_USER_BUFFER		(3 * 1024)
+struct u_device {
+	uintptr_t	dv_handle;
+	uintptr_t	dv_parent;
+	uint32_t	dv_devflags;		/**< @brief API Flags for device */
+	uint16_t	dv_flags;		/**< @brief flags for dev state */
+	device_state_t	dv_state;		/**< @brief State of attachment */
+	char		dv_fields[BUS_USER_BUFFER]; /**< @brief NUL terminated fields */
+	/* name (name of the device in tree) */
+	/* desc (driver description) */
+	/* drivername (Name of driver without unit number) */
+	/* pnpinfo (Plug and play information from bus) */
+	/* location (Location of device on parent */
+	/* NUL */
+};
+
+/* Flags exported via dv_flags. */
+#define	DF_ENABLED	0x01		/* device should be probed/attached */
+#define	DF_FIXEDCLASS	0x02		/* devclass specified at create time */
+#define	DF_WILDCARD	0x04		/* unit was originally wildcard */
+#define	DF_DESCMALLOCED	0x08		/* description was malloced */
+#define	DF_QUIET	0x10		/* don't print verbose attach message */
+#define	DF_DONENOMATCH	0x20		/* don't execute DEVICE_NOMATCH again */
+#define	DF_EXTERNALSOFTC 0x40		/* softc not allocated by us */
+#define	DF_SUSPENDED	0x100		/* Device is suspended. */
+#define	DF_QUIET_CHILDREN 0x200		/* Default to quiet for all my children */
+#define	DF_ATTACHED_ONCE 0x400		/* Has been attached at least once */
+#define	DF_NEEDNOMATCH	0x800		/* Has a pending NOMATCH event */
+
+/**
+ * @brief Device request structure used for ioctl's.
+ *
+ * Used for ioctl's on /dev/devctl2.  All device ioctl's
+ * must have parameter definitions which begin with dr_name.
+ */
+struct devreq_buffer {
+	void	*buffer;
+	size_t	length;
+};
+
+struct devreq {
+	char		dr_name[128];
+	int		dr_flags;		/* request-specific flags */
+	union {
+		struct devreq_buffer dru_buffer;
+		void	*dru_data;
+	} dr_dru;
+#define	dr_buffer	dr_dru.dru_buffer	/* variable-sized buffer */
+#define	dr_data		dr_dru.dru_data		/* fixed-size buffer */
+};
+
+#define	DEV_ATTACH	_IOW('D', 1, struct devreq)
+#define	DEV_DETACH	_IOW('D', 2, struct devreq)
+#define	DEV_ENABLE	_IOW('D', 3, struct devreq)
+#define	DEV_DISABLE	_IOW('D', 4, struct devreq)
+#define	DEV_SUSPEND	_IOW('D', 5, struct devreq)
+#define	DEV_RESUME	_IOW('D', 6, struct devreq)
+#define	DEV_SET_DRIVER	_IOW('D', 7, struct devreq)
+#define	DEV_CLEAR_DRIVER _IOW('D', 8, struct devreq)
+#define	DEV_RESCAN	_IOW('D', 9, struct devreq)
+#define	DEV_DELETE	_IOW('D', 10, struct devreq)
+#define	DEV_FREEZE	_IOW('D', 11, struct devreq)
+#define	DEV_THAW	_IOW('D', 12, struct devreq)
+#define	DEV_RESET	_IOW('D', 13, struct devreq)
+#define	DEV_GET_PATH	_IOWR('D', 14, struct devreq)
+
+/* Flags for DEV_DETACH and DEV_DISABLE. */
+#define	DEVF_FORCE_DETACH	0x0000001
+
+/* Flags for DEV_SET_DRIVER. */
+#define	DEVF_SET_DRIVER_DETACH	0x0000001	/* Detach existing driver. */
+
+/* Flags for DEV_CLEAR_DRIVER. */
+#define	DEVF_CLEAR_DRIVER_DETACH 0x0000001	/* Detach existing driver. */
+
+/* Flags for DEV_DELETE. */
+#define	DEVF_FORCE_DELETE	0x0000001
+
+/* Flags for DEV_RESET */
+#define	DEVF_RESET_DETACH	0x0000001	/* Detach drivers vs suspend
+						   device */
+#define DEVICE_UNIT_ANY		(-1)
+
+#ifdef _KERNEL
+
+#include <sys/_eventhandler.h>
+#include <sys/kobj.h>
+#include <sys/systm.h>
+#include <sys/devctl.h>
+
+/**
+ * Device name parsers.  Hook to allow device enumerators to map
+ * scheme-specific names to a device.
+ */
+typedef void (*dev_lookup_fn)(void *arg, const char *name,
+    device_t *result);
+EVENTHANDLER_DECLARE(dev_lookup, dev_lookup_fn);
+
+/**
+ * @brief A device driver.
+ *
+ * Provides an abstraction layer for driver dispatch.
+ */
+typedef struct kobj_class	driver_t;
+
+/**
+ * @brief A device class
+ *
+ * The devclass object has two main functions in the system. The first
+ * is to manage the allocation of unit numbers for device instances
+ * and the second is to hold the list of device drivers for a
+ * particular bus type. Each devclass has a name and there cannot be
+ * two devclasses with the same name. This ensures that unique unit
+ * numbers are allocated to device instances.
+ *
+ * Drivers that support several different bus attachments (e.g. isa,
+ * pci, pccard) should all use the same devclass to ensure that unit
+ * numbers do not conflict.
+ *
+ * Each devclass may also have a parent devclass. This is used when
+ * searching for device drivers to allow a form of inheritance. When
+ * matching drivers with devices, first the driver list of the parent
+ * device's devclass is searched. If no driver is found in that list,
+ * the search continues in the parent devclass (if any).
+ */
+typedef struct devclass		*devclass_t;
+
+/**
+ * @brief A device method
+ */
+#define device_method_t		kobj_method_t
+
+/**
+ * @brief Driver interrupt filter return values
+ *
+ * If a driver provides an interrupt filter routine it must return an
+ * integer consisting of oring together zero or more of the following
+ * flags:
+ *
+ *	FILTER_STRAY	- this device did not trigger the interrupt
+ *	FILTER_HANDLED	- the interrupt has been fully handled and can be EOId
+ *	FILTER_SCHEDULE_THREAD - the threaded interrupt handler should be
+ *			  scheduled to execute
+ *
+ * If the driver does not provide a filter, then the interrupt code will
+ * act is if the filter had returned FILTER_SCHEDULE_THREAD.  Note that it
+ * is illegal to specify any other flag with FILTER_STRAY and that it is
+ * illegal to not specify either of FILTER_HANDLED or FILTER_SCHEDULE_THREAD
+ * if FILTER_STRAY is not specified.
+ */
+#define	FILTER_STRAY		0x01
+#define	FILTER_HANDLED		0x02
+#define	FILTER_SCHEDULE_THREAD	0x04
+
+/**
+ * @brief Driver interrupt service routines
+ *
+ * The filter routine is run in primary interrupt context and may not
+ * block or use regular mutexes.  It may only use spin mutexes for
+ * synchronization.  The filter may either completely handle the
+ * interrupt or it may perform some of the work and defer more
+ * expensive work to the regular interrupt handler.  If a filter
+ * routine is not registered by the driver, then the regular interrupt
+ * handler is always used to handle interrupts from this device.
+ *
+ * The regular interrupt handler executes in its own thread context
+ * and may use regular mutexes.  However, it is prohibited from
+ * sleeping on a sleep queue.
+ */
+typedef int driver_filter_t(void *);
+typedef void driver_intr_t(void *);
+
+/**
+ * @brief Interrupt type bits.
+ *
+ * These flags may be passed by drivers to bus_setup_intr(9) when
+ * registering a new interrupt handler. The field is overloaded to
+ * specify both the interrupt's type and any special properties.
+ *
+ * The INTR_TYPE* bits will be passed to intr_priority(9) to determine
+ * the scheduling priority of the handler's ithread. Historically, each
+ * type was assigned a unique scheduling preference, but now only
+ * INTR_TYPE_CLK receives a default priority higher than other
+ * interrupts. See sys/priority.h.
+ *
+ * Buses may choose to modify or augment these flags as appropriate,
+ * e.g. nexus may apply INTR_EXCL.
+ */
+enum intr_type {
+	INTR_TYPE_TTY = 1,
+	INTR_TYPE_BIO = 2,
+	INTR_TYPE_NET = 4,
+	INTR_TYPE_CAM = 8,
+	INTR_TYPE_MISC = 16,
+	INTR_TYPE_CLK = 32,
+	INTR_TYPE_AV = 64,
+	INTR_EXCL = 256,		/* exclusive interrupt */
+	INTR_MPSAFE = 512,		/* this interrupt is SMP safe */
+	INTR_ENTROPY = 1024,		/* this interrupt provides entropy */
+	INTR_SLEEPABLE = 2048,		/* this interrupt handler can sleep */
+	INTR_MD1 = 4096,		/* flag reserved for MD use */
+	INTR_MD2 = 8192,		/* flag reserved for MD use */
+	INTR_MD3 = 16384,		/* flag reserved for MD use */
+	INTR_MD4 = 32768		/* flag reserved for MD use */
+};
+
+enum intr_trigger {
+	INTR_TRIGGER_INVALID = -1,
+	INTR_TRIGGER_CONFORM = 0,
+	INTR_TRIGGER_EDGE = 1,
+	INTR_TRIGGER_LEVEL = 2
+};
+
+enum intr_polarity {
+	INTR_POLARITY_CONFORM = 0,
+	INTR_POLARITY_HIGH = 1,
+	INTR_POLARITY_LOW = 2
+};
+
+/**
+ * Bus drivers may maintain a set of bus-specific instance variables
+ * for each child device.  The BUS_READ_IVAR/BUS_WRITE_IVAR API can be
+ * used to access these variables using an index value.  Some index
+ * values are private to a single bus and should be defined in the
+ * private range.  Other index values are shared by multiple busses
+ * and must have the same meaning in all bus drivers.
+ */
+
+#define	BUS_IVARS_PRIVATE	0x0	/* private variables */
+#define	BUS_IVARS_ACPI		0x100
+#define	BUS_IVARS_GIC		0x200
+#define	BUS_IVARS_GPIOBUS	0x300
+#define	BUS_IVARS_SUPERIO	0x400
+
+/**
+ * CPU sets supported by bus_get_cpus().  Note that not all sets may be
+ * supported for a given device.  If a request is not supported by a
+ * device (or its parents), then bus_get_cpus() will fail with EINVAL.
+ */
+enum cpu_sets {
+	LOCAL_CPUS = 0,
+	INTR_CPUS
+};
+
+struct resource;
+
+/**
+ * @brief A resource mapping.
+ */
+struct resource_map {
+	bus_space_tag_t r_bustag;
+	bus_space_handle_t r_bushandle;
+	bus_size_t r_size;
+	void	*r_vaddr;
+};
+
+/**
+ * @brief Optional properties of a resource mapping request.
+ */
+struct resource_map_request {
+	size_t	size;
+	rman_res_t offset;
+	rman_res_t length;
+	vm_memattr_t memattr;
+};
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: SKIP_FILE

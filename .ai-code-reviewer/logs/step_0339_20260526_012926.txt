@@ -1,0 +1,12 @@
+=== STEP 339 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/echo is already marked complete.
+
+Completed work units are closed after a successful build and commit; do not reopen the same unit for incremental polish.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/arch/riscv
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/expr

@@ -1,0 +1,15 @@
+=== STEP 212 ===
+
+--- REQUEST ---
+TIMEOUT: You have spent too many iterations on usr.sbin/route6d/misc. This directory is being skipped.
+
+SCOPE_ABANDONED: usr.sbin/route6d/misc was marked skipped.
+
+Reason: Exceeded 120 iterations without completing the scope
+Any tracked edits were reverted and untracked files created under the scope were removed.
+NEXT: Use SET_SCOPE contrib/llvm-project/compiler-rt/lib/scudo/standalone/fuzz
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/cp

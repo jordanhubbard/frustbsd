@@ -1,0 +1,12 @@
+=== STEP 25 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/basename is already marked complete.
+
+Completed work units are closed after a successful build and commit; do not reopen the same unit for incremental polish.
+NEXT: Use SET_SCOPE contrib/llvm-project/compiler-rt/lib/scudo/standalone/fuzz
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.bin

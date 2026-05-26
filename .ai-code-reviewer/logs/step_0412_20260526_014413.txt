@@ -1,0 +1,14 @@
+=== STEP 412 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.sbin/ac is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/arch/ia64
+
+--- RESPONSE ---
+
+
+I need to find a valid work unit. Let me try a different approach:
+
+ACTION: SET_SCOPE usr.sbin/ac

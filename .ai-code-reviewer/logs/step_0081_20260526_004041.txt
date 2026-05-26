@@ -1,0 +1,12 @@
+=== STEP 81 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory usr.bin/dpv skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/llvm-project/compiler-rt/lib/scudo/standalone/fuzz
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/drill

@@ -1,0 +1,12 @@
+=== STEP 63 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/look is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/compiler-rt/lib/scudo/standalone/fuzz
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/units

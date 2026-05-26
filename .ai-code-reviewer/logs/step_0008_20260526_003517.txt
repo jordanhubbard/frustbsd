@@ -1,0 +1,28 @@
+=== STEP 8 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project:
+```
+FREEBSD-Xlist
+clang
+compiler-rt
+libc
+libcxx
+libunwind
+lld
+lldb
+llvm
+openmp
+third-party
+```
+
+--- RESPONSE ---
+
+
+This unit is `contrib/llvm-project/compiler-rt/lib/scudo/standalone/fuzz` - an LLVM fuzzer test for the scudo allocator. This is LLVM contrib code, not FreeBSD userland. It depends on LLVM's libFuzzer (`FuzzedDataProvider.h`) and scudo allocator internals, which are outside the FreeBSD userland rewrite objective.
+
+Per the constraint: "If the selected unit has no source relevant to the configured objective, choose another scope instead of fabricating a rewrite."
+
+I'll move to the next pending unit.
+
+ACTION: SET_SCOPE bin/cat/tests

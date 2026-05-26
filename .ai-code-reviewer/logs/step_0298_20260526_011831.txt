@@ -1,0 +1,11 @@
+=== STEP 298 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+Edit Makefile:
+
+ACTION: EDIT_FILE usr.sbin/accton/Makefile

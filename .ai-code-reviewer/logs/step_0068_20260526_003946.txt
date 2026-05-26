@@ -1,0 +1,12 @@
+=== STEP 68 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: libexec/getty is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/compiler-rt/lib/scudo/standalone/fuzz
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/diff

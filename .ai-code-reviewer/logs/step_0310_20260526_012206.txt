@@ -1,0 +1,11 @@
+=== STEP 310 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+Edit Makefile to add Rust build integration:
+
+ACTION: EDIT_FILE usr.sbin/accton/Makefile

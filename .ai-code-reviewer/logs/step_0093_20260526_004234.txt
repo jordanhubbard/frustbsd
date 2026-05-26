@@ -1,0 +1,33 @@
+=== STEP 93 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*bus.h*':
+```
+./sys/compat/linuxkpi/common/include/acpi/acpi_bus.h
+./sys/compat/linuxkpi/dummy/include/linux/device/bus.h
+./sys/arm64/include/bus.h
+./sys/arm64/include/_bus.h
+./sys/sys/bus.h
+./sys/dev/quicc/quicc_bus.h
+./sys/dev/smbus/smbus.h
+./sys/dev/uart/uart_bus.h
+./sys/dev/fdt/simplebus.h
+./sys/dev/hyperv/include/vmbus.h
+./sys/dev/hid/hidbus.h
+./sys/dev/puc/puc_bus.h
+./sys/dev/scc/scc_bus.h
+./sys/dev/usb/usb_bus.h
+./sys/dev/pwm/pwmbus.h
+./sys/dev/acpica/acpi_smbus.h
+./sys/dev/ofw/ofw_bus.h
+./sys/dev/iicbus/iicbus.h
+./sys/dev/iicbus/iic_recover_bus.h
+./sys/x86/include/bus.h
+```
+
+--- RESPONSE ---
+
+
+Let me check the kernel header for the structures and constants needed.
+
+ACTION: READ_FILE sys/sys/bus.h

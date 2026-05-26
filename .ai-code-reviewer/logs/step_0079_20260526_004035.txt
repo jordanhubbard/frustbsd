@@ -1,0 +1,10 @@
+=== STEP 79 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Directory not found: libexec/ld-elf
+TIP: Use LIST_DIR to see available directories
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE libexec/ld-elf.so.1

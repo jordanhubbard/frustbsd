@@ -1,0 +1,12 @@
+=== STEP 275 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory usr.bin/diff skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/netbsd-tests/lib/libc/arch/arm
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/diff3

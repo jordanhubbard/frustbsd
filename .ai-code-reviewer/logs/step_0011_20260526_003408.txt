@@ -1,0 +1,63 @@
+=== STEP 11 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/include/sodium/crypto_kdf_blake2b.h:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_kdf/blake2b
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/include/sodium/crypto_kdf_blake2b.h
+
+```
+#ifndef crypto_kdf_blake2b_H
+#define crypto_kdf_blake2b_H
+
+#include <stddef.h>
+#include <stdint.h>
+
+#include "crypto_kdf_blake2b.h"
+#include "export.h"
+
+#ifdef __cplusplus
+# ifdef __GNUC__
+#  pragma GCC diagnostic ignored "-Wlong-long"
+# endif
+extern "C" {
+#endif
+
+#define crypto_kdf_blake2b_BYTES_MIN 16
+SODIUM_EXPORT
+size_t crypto_kdf_blake2b_bytes_min(void);
+
+#define crypto_kdf_blake2b_BYTES_MAX 64
+SODIUM_EXPORT
+size_t crypto_kdf_blake2b_bytes_max(void);
+
+#define crypto_kdf_blake2b_CONTEXTBYTES 8
+SODIUM_EXPORT
+size_t crypto_kdf_blake2b_contextbytes(void);
+
+#define crypto_kdf_blake2b_KEYBYTES 32
+SODIUM_EXPORT
+size_t crypto_kdf_blake2b_keybytes(void);
+
+SODIUM_EXPORT
+int crypto_kdf_blake2b_derive_from_key(unsigned char *subkey, size_t subkey_len,
+                                       uint64_t subkey_id,
+                                       const char ctx[crypto_kdf_blake2b_CONTEXTBYTES],
+                                       const unsigned char key[crypto_kdf_blake2b_KEYBYTES]);
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+
+```
+
+--- RESPONSE ---
+
+
+This unit is `sys/contrib/libsodium` - a third-party crypto library in the kernel tree, not FreeBSD userland. Per the constraint about choosing units relevant to the objective, I should find a proper userland unit.
+
+Let me look for a small userland command to rewrite.
+
+ACTION: LIST_DIR bin/cat

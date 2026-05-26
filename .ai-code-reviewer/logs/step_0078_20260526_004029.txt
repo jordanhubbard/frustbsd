@@ -1,0 +1,13 @@
+=== STEP 78 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: lib/libcasper has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE contrib/llvm-project/compiler-rt/lib/scudo/standalone/fuzz
+
+--- RESPONSE ---
+
+
+Let me try a different approach and look for units that are known to have C source files.
+
+ACTION: SET_SCOPE lib/libcbor

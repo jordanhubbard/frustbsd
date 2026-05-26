@@ -1,0 +1,13 @@
+=== STEP 85 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/ee has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE sys/contrib/libsodium/src/libsodium/crypto_kdf/blake2b
+
+--- RESPONSE ---
+
+
+I'll try usr.bin/elfcopy which should have C source.
+
+ACTION: SET_SCOPE usr.bin/elfcopy
