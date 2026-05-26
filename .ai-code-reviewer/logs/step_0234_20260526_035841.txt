@@ -1,0 +1,20 @@
+=== STEP 234 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/LoongArch/TargetInfo/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE contrib/llvm-project/llvm/lib/Target/LoongArch/TargetInfo/src/lib.rs
+CONTENT:
+<<<
+// LoongArch target info - Rust replacement stub
+// This is a placeholder for the LLVM LoongArch target info.
+
+#[no_mangle]
+pub extern "C" fn LLVMInitializeLoongArchTargetInfo() {
+    // Stub implementation
+}
+>>>

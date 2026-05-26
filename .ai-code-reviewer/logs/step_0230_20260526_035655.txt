@@ -1,0 +1,15 @@
+=== STEP 230 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/LoongArch/TargetInfo:
+```
+LoongArchTargetInfo.cpp
+LoongArchTargetInfo.h
+```
+
+--- RESPONSE ---
+
+
+I need to understand what's happening with the pending changes. Let me check the current state:
+
+ACTION: LIST_DIR contrib/llvm-project/llvm/lib/Target/LoongArch/TargetInfo

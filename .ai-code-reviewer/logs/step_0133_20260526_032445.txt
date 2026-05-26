@@ -1,0 +1,11 @@
+=== STEP 133 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/ntp/libntp/lib/isc/Makefile*'
+
+--- RESPONSE ---
+
+
+This unit has no Makefile and is part of a contributed NTP library. The C files are trivial stubs (empty translation unit and a function that does nothing). This is not a suitable rewrite target. Let me move to the next unit.
+
+ACTION: SET_SCOPE bin/cat/tests

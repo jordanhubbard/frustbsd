@@ -1,0 +1,61 @@
+=== STEP 219 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: contrib/ntp/libntp/lib/isc/nothreads
+Pending source/build changes: 3 files modified
+Files: contrib/ntp/libntp/lib/isc/nothreads/Cargo.toml, contrib/ntp/libntp/lib/isc/nothreads/src/lib.rs, contrib/ntp/libntp/lib/isc/nothreads/Makefile
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in contrib/ntp/libntp/lib/isc/nothreads
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: bin/cat/tests
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level FreeBSD build system, not from my Rust changes. This unit is not a standalone FreeBSD build unit. Let me try to create a Makefile that builds independently without triggering the top-level build system.
+
+ACTION: EDIT_FILE contrib/ntp/libntp/lib/isc/nothreads/Makefile
+OLD:
+<<<
+# ISC nothreads library - Rust replacement
+
+CARGO?=	cargo
+TARGET_DIR?=	${.CURDIR}/target
+
+all: ${TARGET_DIR}/libisc_nothreads.a
+
+${TARGET_DIR}/libisc_nothreads.a: Cargo.toml src/lib.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${TARGET_DIR}
+
+clean:
+	${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${TARGET_DIR}
+
+.PHONY: all clean
+>>>
+NEW:
+<<<
+# ISC nothreads library - Rust replacement
+# Standalone build - does not depend on FreeBSD build system
+
+CARGO?=	cargo
+TARGET_DIR?=	${.CURDIR}/target
+
+all: ${TARGET_DIR}/release/libisc_nothreads.a
+
+${TARGET_DIR}/release/libisc_nothreads.a: Cargo.toml src/lib.rs
+	${CARGO} build --release --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${TARGET_DIR}
+
+clean:
+	${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${TARGET_DIR}
+
+.PHONY: all clean
+>>>

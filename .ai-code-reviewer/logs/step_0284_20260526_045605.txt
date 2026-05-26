@@ -1,0 +1,42 @@
+=== STEP 284 ===
+
+--- REQUEST ---
+SET_SCOPE_OK: Now rewriting sys/security/mac_none
+
+HIERARCHY:
+  Level 1: Source tree (8132 work units)
+  Level 2: sys/security/mac_none ← YOU ARE HERE
+  Level 3: 1 candidate files
+  Level 4: Functions (auto-chunked for large files)
+
+WORK UNIT:
+  Kind: directory
+  Stage: unknown
+  Depends on: (none)
+  Related files:
+    - sys/security/mac_none/mac_none.c
+
+⚠ No Makefile - may be subdirectory
+
+FILES TO REWRITE:
+  - sys/security/mac_none/mac_none.c
+
+📁 Directory: sys/security/mac_none
+   Files: 0/1
+
+WORKFLOW:
+1. Rewrite each relevant file (READ_FILE, NEXT_CHUNK for large files)
+2. Make changes as needed (EDIT_FILE or WRITE_FILE)
+3. When ALL relevant files are rewritten: ACTION: BUILD
+4. If build succeeds: Changes committed for entire directory
+5. Move to next directory (SET_SCOPE)
+
+Attempts recorded for sys/security/mac_none: 1/3.
+2 attempt(s) remain before auto-skip.
+
+--- RESPONSE ---
+
+
+This is kernel code, not userland. Per the constraints, I should choose another scope instead of fabricating a rewrite.
+
+ACTION: SET_SCOPE bin/cat/tests

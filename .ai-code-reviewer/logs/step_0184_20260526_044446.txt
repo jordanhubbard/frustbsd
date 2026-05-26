@@ -1,0 +1,273 @@
+=== STEP 184 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.sbin/ac
+   Files: 0/3
+📄 File: usr.sbin/ac/src/main.rs
+   Chunks: 2/3
+✏️  Edits: 3 files modified
+
+```
+=== CHUNK 2/3: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.sbin/ac/src/main.rs === [line_chunk: chunk_2]
+=== Lines 251-500 (250 lines) ===
+
+        strftime(
+            date.as_mut_ptr() as *mut c_char,
+            date.len(),
+            format.as_ptr(),
+            tm_ptr,
+        );
+    }
+
+    let date_str = unsafe {
+        CStr::from_ptr(date.as_ptr() as *const c_char)
+            .to_string_lossy()
+            .into_owned()
+    };
+
+    let mut total = timeval { tv_sec: 0, tv_usec: 0 };
+    unsafe {
+        for lp in CUR_UTMPX.iter_mut() {
+            let mut diff = timeval { tv_sec: 0, tv_usec: 0 };
+            timersub(&today, &lp.time, &mut diff);
+            update_user(&lp.user, diff);
+            lp.time = today;
+        }
+        for up in USERS.iter() {
+            let mut add = up.time;
+            timeradd(&total, &add, &mut total);
+        }
+        for up in USERS.iter_mut() {
+            timerclear(&mut up.time);
+        }
+    }
+
+    if timerisset(&total) {
+        println!(
+            "{} {:11.2}",
+            date_str,
+            total.tv_sec as f64 / 3600.0
+        );
+    }
+}
+
+fn log_out(ut_type: c_short, ut_id: &str, ut_tv: timeval) {
+    unsafe {
+        let mut i = 0;
+        while i < CUR_UTMPX.len() {
+            let lp = &CUR_UTMPX[i];
+            let match_id = if ut_type == BOOT_TIME || ut_type == SHUTDOWN_TIME {
+                true
+            } else if ut_type == DEAD_PROCESS {
+                lp.id == ut_id
+            } else {
+                false
+            };
+            if match_id {
+                let mut secs = timeval { tv_sec: 0, tv_usec: 0 };
+                timersub(&ut_tv, &lp.time, &mut secs);
+                update_user(&lp.user, secs);
+                CUR_UTMPX.remove(i);
+            } else {
+                i += 1;
+            }
+        }
+    }
+}
+
+fn log_in(usr: &utmpx) {
+    unsafe {
+        if FLAGS & AC_T != 0 {
+            let line = CStr::from_ptr(usr.ut_line.as_ptr() as *const c_char)
+                .to_string_lossy();
+            if !do_tty(&line) {
+                return;
+            }
+        }
+
+        let user = CStr::from_ptr(usr.ut_user.as_ptr() as *const c_char)
+            .to_string_lossy()
+            .into_owned();
+        let id = CStr::from_ptr(usr.ut_id.as_ptr() as *const c_char)
+            .to_string_lossy()
+            .into_owned();
+        let line = CStr::from_ptr(usr.ut_line.as_ptr() as *const c_char)
+            .to_string_lossy()
+            .into_owned();
+
+        CUR_UTMPX.push(UtmpxEntry {
+            user,
+            id,
+            line,
+            time: usr.ut_tv,
+        });
+    }
+}
+
+fn ac_main(file: Option<&str>) {
+    let mut day = -1;
+    let mut prev_secs = timeval { tv_sec: 0, tv_usec: 0 };
+    let mut clock_shift = timeval { tv_sec: 0, tv_usec: 0 };
+    let mut ut_timecopy = timeval { tv_sec: 0, tv_usec: 0 };
+
+    let c_file = match file {
+        Some(f) => CString::new(f).unwrap(),
+        None => CString::new("").unwrap(),
+    };
+
+    unsafe {
+        if setutxdb(UTXDB_LOG, c_file.as_ptr()) != 0 {
+            eprintln!("ac: {}: No such file or directory", file.unwrap_or("wtmp"));
+            std::process::exit(1);
+        }
+    }
+
+    loop {
+        let usr = unsafe { getutxent() };
+        if usr.is_null() {
+            break;
+        }
+
+        let usr_ref = unsafe { &*usr };
+        ut_timecopy = usr_ref.ut_tv;
+
+        if ut_timecopy.tv_sec < prev_secs.tv_sec
+            || (ut_timecopy.tv_sec == prev_secs.tv_sec
+                && ut_timecopy.tv_usec < prev_secs.tv_usec)
+        {
+            ut_timecopy = prev_secs;
+        }
+        prev_secs = ut_timecopy;
+
+        unsafe {
+            if !timerisset(&FIRST_TIME) {
+                FIRST_TIME = ut_timecopy;
+            }
+        }
+
+        if unsafe { FLAGS } & AC_D != 0 {
+            let ltm = unsafe { localtime(&ut_timecopy) };
+            if !ltm.is_null() {
+                let yday = unsafe { (*ltm).tm_yday };
+                if day >= 0 && day != yday {
+                    day = yday;
+                    let mut secs = ut_timecopy;
+                    secs.tv_sec -= unsafe { (*ltm).tm_sec } as i64;
+                    secs.tv_sec -= 60 * unsafe { (*ltm).tm_min } as i64;
+                    secs.tv_sec -= 3600 * unsafe { (*ltm).tm_hour } as i64;
+                    secs.tv_usec = 0;
+                    show_today(secs);
+                } else {
+                    day = yday;
+                }
+            }
+        }
+
+        match usr_ref.ut_type {
+            OLD_TIME => {
+                unsafe { clock_shift = ut_timecopy };
+            }
+            NEW_TIME => {
+                unsafe {
+                    timersub(&clock_shift, &ut_timecopy, &mut clock_shift);
+                    for lp in CUR_UTMPX.iter_mut() {
+                        timersub(&lp.time, &clock_shift, &mut lp.time);
+                    }
+                }
+            }
+            BOOT_TIME | SHUTDOWN_TIME => {
+                let id = CStr::from_ptr(usr_ref.ut_id.as_ptr() as *const c_char)
+                    .to_string_lossy()
+                    .into_owned();
+                log_out(usr_ref.ut_type, &id, usr_ref.ut_tv);
+                unsafe { FIRST_TIME = ut_timecopy };
+            }
+            USER_PROCESS => {
+                let line = CStr::from_ptr(usr_ref.ut_line.as_ptr() as *const c_char)
+                    .to_string_lossy();
+                let host = CStr::from_ptr(usr_ref.ut_host.as_ptr() as *const c_char)
+                    .to_string_lossy();
+                if !line.starts_with("pts/") || !host.is_empty() {
+                    log_in(usr_ref);
+                }
+            }
+            DEAD_PROCESS => {
+                let id = CStr::from_ptr(usr_ref.ut_id.as_ptr() as *const c_char)
+                    .to_string_lossy()
+                    .into_owned();
+                log_out(usr_ref.ut_type, &id, usr_ref.ut_tv);
+            }
+            _ => {}
+        }
+
+        unsafe { free(usr as *mut std::os::raw::c_void) };
+    }
+
+    unsafe { endutxent() };
+
+    let mut now = timeval { tv_sec: 0, tv_usec: 0 };
+    unsafe { gettimeofday(&mut now, ptr::null_mut()) };
+
+    if unsafe { FLAGS } & AC_D != 0 {
+        let ltm = unsafe { localtime(&ut_timecopy) };
+        if !ltm.is_null() {
+            let yday = unsafe { (*ltm).tm_yday };
+            if day >= 0 && day != yday {
+                let mut secs = ut_timecopy;
+                secs.tv_sec -= unsafe { (*ltm).tm_sec } as i64;
+                secs.tv_sec -= 60 * unsafe { (*ltm).tm_min } as i64;
+                secs.tv_sec -= 3600 * unsafe { (*ltm).tm_hour } as i64;
+                secs.tv_usec = 0;
+                show_today(secs);
+            }
+        }
+    }
+
+    let mut usht = usr_ref;
+    if unsafe { FLAGS } & AC_W != 0 {
+        usht.ut_tv = ut_timecopy;
+    } else {
+        usht.ut_tv = now;
+    }
+    usht.ut_type = SHUTDOWN_TIME;
+
+    let id = CStr::from_ptr(usht.ut_id.as_ptr() as *const c_char)
+        .to_string_lossy()
+        .into_owned();
+    log_out(usht.ut_type, &id, usht.ut_tv);
+
+    if unsafe { FLAGS } & AC_D != 0 {
+        show_today(now);
+    } else {
+        if unsafe { FLAGS } & AC_P != 0 {
+            show_users();
+        }
+        show("total", unsafe { TOTAL });
+    }
+}
+
+fn usage() {
+    eprintln!("Usage: ac [-c console] [-dp] [-t tty] [-w file] [user ...]");
+    std::process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let mut argv: Vec<*mut c_char> = args.iter()
+        .map(|s| CString::new(s.as_bytes()).unwrap())
+        .map(|c| c.into_raw())
+        .collect();
+    let argc = argv.len() as c_int;
+    unsafe { setlocale(LC_TIME, CString::new("").unwrap().as_ptr()); }
+    let mut file: Option<String> = None;
+    let mut users: Vec<String> = Vec::new();
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

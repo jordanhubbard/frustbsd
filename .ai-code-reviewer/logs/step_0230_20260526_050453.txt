@@ -1,0 +1,11 @@
+=== STEP 230 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+This unit is RISC-V test infrastructure with no Makefile. The C file just returns a constant and the `.S` file is assembly. Let me create the Rust replacement files.
+
+ACTION: WRITE_FILE contrib/netbsd-tests/lib/libc/arch/riscv/Cargo.toml

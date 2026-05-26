@@ -1,0 +1,9 @@
+=== STEP 160 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*usr.sbin/ac/ac.c*'
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR usr.sbin/ac

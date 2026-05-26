@@ -1,0 +1,62 @@
+=== STEP 118 ===
+
+--- REQUEST ---
+GREP_RESULT for 'exit':
+```
+./tests/sys/netinet/ip6_mrouted.c:56:	exit(1);
+./tests/sys/netinet/multicast-receive.c:39:#include <sysexits.h>
+./tests/sys/netinet/socket_afinet.c:361:				_exit(1);
+./tests/sys/netinet/socket_afinet.c:366:			_exit(2);
+./tests/sys/netinet/socket_afinet.c:368:			_exit(3);
+./tests/sys/netinet/tcp_user_cookie.c:39:#include <sysexits.h>
+./tests/sys/netinet/tcp_user_cookie.c:63:		exit(2);
+./tests/sys/netinet/libalias/util.c:56:		exit(-1);				\
+./tests/sys/netinet/libalias/perf.c:63:	exit(1);
+./tests/sys/netinet/udp_dontroute.c:69:		exit(2);
+./tests/sys/net/randsleep.c:46:		exit(2);
+./tests/sys/net/randsleep.c:53:		exit(1);
+./tests/sys/net/bpf/pcap-test.c:256:		exit(1);
+./tests/sys/net/routing/rtsock_common.h:62:#include <sysexits.h>
+./tests/sys/net/transient_tuntap.c:8: * This test simply configures the tunnel as transient and exits.  By the time
+./tests/sys/capsicum/smoketest.c:63:    fprintf(stderr, "  [%d] child exit(0)\n", getpid());
+./tests/sys/capsicum/smoketest.c:64:    exit(0);
+./tests/sys/capsicum/smoketest.c:111:    exit(0);
+./tests/sys/capsicum/waittest.c:16:    exit(1);
+./tests/sys/capsicum/waittest.c:20:    exit(123);
+./tests/sys/capsicum/ioctls_test.c:42: * the early exit and fails some requirement itself.
+./tests/sys/capsicum/ioctls_test.c:57:	_exit(32);
+./tests/sys/capsicum/ioctls_test.c:103:		/* Close both sockets during exit(). */
+./tests/sys/capsicum/capsicum-test.h:69:// exit status.
+./tests/sys/capsicum/capsicum-test.h:75:        exit(HasFailure());                                    \
+./tests/sys/netmap/ctrl-api-test.c:116:			exit(EXIT_FAILURE);
+./tests/sys/netmap/ctrl-api-test.c:121:				exit(EXIT_FAILURE);
+./tests/sys/netmap/ctrl-api-test.c:126:		exit(EXIT_FAILURE);
+./tests/sys/kqueue/libkqueue/proc.c:39:    /* Create a child that waits to be killed and then exits */
+./tests/sys/kqueue/libkqueue/proc.c:48:        exit(2);
+./tests/sys/kqueue/libkqueue/proc.c:108:         * Spawn a grandchild that will immediately exit. If the kernel has bug
+./tests/sys/kqueue/libkqueue/common.h:25:# define err(rc,msg,...) do { perror(msg); exit(rc); } while (0)
+./tests/sys/kqueue/libkqueue/common.h:26:# define errx(rc,msg,...) do { puts(msg); exit(rc); } while (0)
+./tests/sys/kqueue/libkqueue/main.c:341:     * it when they exit, causing some data to be printed twice.
+./tests/sys/kqueue/libkqueue/vnode.c:88:            _exit(1);
+./tests/sys/kqueue/libkqueue/vnode.c:93:        _exit(0);
+./tests/sys/kqueue/kqueue_fork.c:73:		_exit(0);
+./tests/sys/kqueue/kqueue_fork.c:232:	 * We're only using pdfork here for the kill-on-exit semantics, in case
+./tests/sys/kqueue/kqueue_fork.c:242:			_exit(RECV_ERROR);
+./tests/sys/file/closefrom_test.c:70:		exit(1);
+./tests/sys/file/closefrom_test.c:78:	exit(0);
+./tests/sys/file/closefrom_test.c:196:		exit(0);
+./tests/sys/file/newfileops_on_fork_test.c:80:		exit(0);
+./tests/sys/file/newfileops_on_fork_test.c:90:			exit(0);
+./tests/sys/file/newfileops_on_fork_test.c:121:	exit(0);
+./tests/sys/file/path_test.c:90:/* Wait for a child process to exit with status 0. */
+./tests/sys/file/path_test.c:98:	ATF_REQUIRE_MSG(WIFEXITED(status), "child exited abnormally, status %d",
+./tests/sys/file/path_test.c:101:	    "child exit status is %d, expected %d",
+./tests/sys/file/flock_helper.c:214:		exit(0);
+./tests/sys/file/flock_helper.c:285:		exit(0);
+... [10637 more matches]
+```
+
+--- RESPONSE ---
+
+
+ACTION: GREP std.process

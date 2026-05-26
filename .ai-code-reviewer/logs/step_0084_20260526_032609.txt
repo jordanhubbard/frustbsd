@@ -1,0 +1,33 @@
+=== STEP 84 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.sbin/ac
+   Files: 0/3
+📄 File: usr.sbin/ac/Makefile
+
+```
+=== CHUNK 10/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.sbin/ac/ac.c === [function: show_users]
+=== Lines 267-278 (12 lines) ===
+
+static void
+show_users(void)
+{
+	struct user_entry *lp;
+
+	SLIST_FOREACH(lp, &Users, next)
+		show(lp->user, lp->time);
+}
+
+/*
+ * print total login time for 24hr period in decimal hours
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

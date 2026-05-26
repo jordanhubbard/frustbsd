@@ -1,0 +1,48 @@
+=== STEP 312 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: tools/regression/sigqueue/sigqtest1
+Pending source/build changes: 2 files modified
+Files: tools/regression/sigqueue/sigqtest1/Cargo.toml, tools/regression/sigqueue/sigqtest1/src/main.rs
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in tools/regression/sigqueue/sigqtest1
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: contrib/netbsd-tests/libexec/ld.elf_so/helper_dso2
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE tools/regression/sigqueue/sigqtest1/Makefile
+OLD:
+<<<
+PROG=sigqtest1
+MAN=
+DEBUG_FLAGS=-g
+
+.include <bsd.prog.mk>
+>>>
+NEW:
+<<<
+PROG=sigqtest1
+MAN=
+DEBUG_FLAGS=-g
+
+CARGO?=	cargo
+RUST_TARGET_DIR?=	${.OBJDIR}/rust-target
+
+# Build Rust replacement
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --release --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${RUST_TARGET_DIR}
+	${CP} ${RUST_TARGET_DIR}/release/${PROG} ${.OBJDIR}/${PROG}
+
+.include <bsd.prog.mk>
+>>>

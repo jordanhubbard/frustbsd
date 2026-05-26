@@ -1,0 +1,28 @@
+=== STEP 295 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/sys/contrib/libsodium/src/libsodium/crypto_generichash/blake2b/src/lib.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE sys/contrib/libsodium/src/libsodium/crypto_generichash/blake2b/Makefile
+CONTENT:
+<<<
+# generichash_blake2 - Rust replacement
+# Standalone build - does not depend on FreeBSD build system
+
+CARGO?=	cargo
+TARGET_DIR?=	${.CURDIR}/target
+
+all: ${TARGET_DIR}/release/libgenerichash_blake2.a
+
+${TARGET_DIR}/release/libgenerichash_blake2.a: Cargo.toml src/lib.rs
+	${CARGO} build --release --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${TARGET_DIR}
+
+clean:
+	${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${TARGET_DIR}
+
+.PHONY: all clean
+>>>

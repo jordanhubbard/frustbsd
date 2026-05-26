@@ -1,0 +1,14 @@
+=== STEP 10 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/false is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/arch/arm
+
+--- RESPONSE ---
+
+
+Let me try the next suggested unit from the index.
+
+ACTION: SET_SCOPE contrib/netbsd-tests/lib/libc/arch/arm

@@ -1,0 +1,14 @@
+=== STEP 16 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/yes is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/arch/ia64
+
+--- RESPONSE ---
+
+
+Let me try a different unit that's likely not skipped.
+
+ACTION: SET_SCOPE usr.bin/number

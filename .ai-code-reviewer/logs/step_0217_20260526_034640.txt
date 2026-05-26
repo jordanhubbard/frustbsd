@@ -1,0 +1,72 @@
+=== STEP 217 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/ntp:
+```
+COPYRIGHT
+ChangeLog
+CommitLog
+CommitLog-4.1.0
+INSTALL
+Makefile.am
+Makefile.in
+NEWS
+NOTES.y2kfixes
+README
+README.bk
+README.hackers
+README.leapsmear
+README.patches
+README.pullrequests
+README.refclocks
+README.versions
+TODO
+WHERE-TO-START
+aclocal.m4
+adjtimed
+bincheck.mf
+bootstrap
+build
+check-libntp.mf
+check-libntpd.mf
+check-libopts.mf
+check-libunity.mf
+check-scm-rev.mf
+clockstuff
+conf
+config.h.in
+configure
+configure.ac
+deps-ver
+depsver.mf
+dot.emacs
+flock-build
+html
+include
+includes.mf
+kernel
+libjsmn
+libntp
+libparse
+ntpd
+ntpdate
+ntpdc
+ntpq
+ntpsnmpd
+packageinfo.sh
+parseutil
+ports
+readme.y2kfixes
+results.y2kfixes
+scripts
+sntp
+tests
+util
+```
+
+--- RESPONSE ---
+
+
+I need to understand the build system better. Let me check the top-level Makefile structure:
+
+ACTION: READ_FILE Makefile

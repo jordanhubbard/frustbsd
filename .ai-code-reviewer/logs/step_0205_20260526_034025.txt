@@ -1,0 +1,14 @@
+=== STEP 205 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/getent is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/LoongArch/TargetInfo
+
+--- RESPONSE ---
+
+
+I need to move to the next suggested unit since this one has no Makefile and isn't a standalone FreeBSD build unit.
+
+ACTION: SET_SCOPE contrib/llvm-project/llvm/lib/Target/LoongArch/TargetInfo

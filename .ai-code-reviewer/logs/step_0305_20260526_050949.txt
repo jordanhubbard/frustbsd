@@ -1,0 +1,33 @@
+=== STEP 305 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/tools/regression/sigqueue/sigqtest1/Makefile:
+PROGRESS:
+📁 Directory: tools/regression/sigqueue/sigqtest1
+   Files: 0/2
+📄 File: tools/regression/sigqueue/sigqtest1/Makefile
+
+```
+PROG=sigqtest1
+MAN=
+DEBUG_FLAGS=-g
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE tools/regression/sigqueue/sigqtest1/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "sigqtest1"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "sigqtest1"
+path = "src/main.rs"
+>>>

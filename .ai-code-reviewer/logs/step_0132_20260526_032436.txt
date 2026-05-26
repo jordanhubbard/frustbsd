@@ -1,0 +1,38 @@
+=== STEP 132 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/ntp/libntp/lib/isc:
+```
+assertions.c
+backtrace-emptytbl.c
+backtrace.c
+buffer.c
+error.c
+event.c
+include
+inet_ntop.c
+inet_pton.c
+lib.c
+log.c
+md5.c
+netaddr.c
+netscope.c
+nls
+nothreads
+ondestroy.c
+pthreads
+random.c
+result.c
+sha1.c
+sockaddr.c
+task.c
+task_p.h
+tsmemcmp.c
+unix
+win32
+```
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE contrib/ntp/libntp/lib/isc/Makefile

@@ -1,0 +1,21 @@
+=== STEP 242 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/lib/libc/arch/or1k/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE contrib/netbsd-tests/lib/libc/arch/or1k/src/lib.rs
+CONTENT:
+<<<
+// exec_prot_support - Rust replacement stub
+// NetBSD test support for OpenRISC architecture
+
+#[no_mangle]
+pub extern "C" fn exec_prot_support() -> i32 {
+    // PERPAGE_XP = 1 (from NetBSD exec_prot.h)
+    1
+}
+>>>

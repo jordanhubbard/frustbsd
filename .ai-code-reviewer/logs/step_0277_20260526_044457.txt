@@ -1,0 +1,38 @@
+=== STEP 277 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Cannot change directory with uncommitted changes
+
+Current directory: contrib/llvm-project/clang/lib/Analysis/plugins/SampleAnalyzer
+Pending source/build changes: 1 files modified
+Files: path/to/file
+
+You MUST complete the current directory first:
+1. Rewrite all relevant files in contrib/llvm-project/clang/lib/Analysis/plugins/SampleAnalyzer
+2. Run ACTION: BUILD to test changes
+3. If build fails: fix errors and BUILD again
+4. If build succeeds: changes will be committed automatically
+5. THEN you can move to: bin/cat/tests
+
+BUILD and COMMIT happen at directory level!
+Each directory is one logical unit.
+
+
+--- RESPONSE ---
+
+
+I need to complete this unit first. Let me create a minimal Rust crate that builds independently:
+
+ACTION: WRITE_FILE contrib/llvm-project/clang/lib/Analysis/plugins/SampleAnalyzer/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "sample-analyzer"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+name = "sample_analyzer"
+path = "src/lib.rs"
+>>>

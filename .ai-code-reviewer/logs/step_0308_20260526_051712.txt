@@ -1,0 +1,15 @@
+=== STEP 308 ===
+
+--- REQUEST ---
+TIMEOUT: You have spent too many iterations on contrib/netbsd-tests/lib/libc/arch/riscv. This directory is being skipped.
+
+SCOPE_ABANDONED: contrib/netbsd-tests/lib/libc/arch/riscv was marked skipped.
+
+Reason: Exceeded 120 iterations without completing the scope
+Any tracked edits were reverted and untracked files created under the scope were removed.
+NEXT: Use SET_SCOPE contrib/ntp/libntp/lib/isc/nothreads
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/ntp/libntp/lib/isc/nothreads

@@ -1,0 +1,13 @@
+=== STEP 13 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/netbsd-tests/Makefile*'
+
+--- RESPONSE ---
+
+
+This unit has no Makefile and is part of a contributed NetBSD test suite, not a buildable FreeBSD unit. The C file is trivial (returns a constant) and the assembly is architecture-specific shellcode. This is not a suitable rewrite target.
+
+Let me find a better unit with actual buildable C source.
+
+ACTION: FIND_FILE usr.bin/*/Makefile

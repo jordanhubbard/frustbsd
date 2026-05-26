@@ -1,0 +1,37 @@
+=== STEP 209 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+The `bsd.rust.mk` file doesn't exist in the FreeBSD tree. I need to create a proper Makefile that builds the Rust crate using cargo directly.
+
+ACTION: EDIT_FILE contrib/ntp/libntp/lib/isc/nothreads/Makefile
+OLD:
+<<<
+# ISC nothreads library - Rust replacement
+
+PROG=	isc_nothreads
+SRCS=	lib.rs
+
+.include <bsd.rust.mk>
+>>>
+NEW:
+<<<
+# ISC nothreads library - Rust replacement
+
+CARGO?=	cargo
+TARGET_DIR?=	${.CURDIR}/target
+
+all: ${TARGET_DIR}/libisc_nothreads.a
+
+${TARGET_DIR}/libisc_nothreads.a: Cargo.toml src/lib.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${TARGET_DIR}
+
+clean:
+	${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${TARGET_DIR}
+
+.PHONY: all clean
+>>>

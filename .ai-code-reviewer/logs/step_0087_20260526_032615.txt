@@ -1,0 +1,77 @@
+=== STEP 87 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.sbin/ac
+   Files: 0/3
+📄 File: usr.sbin/ac/Makefile
+
+```
+=== CHUNK 13/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.sbin/ac/ac.c === [function: log_in]
+=== Lines 346-401 (56 lines) ===
+
+static void
+log_in(struct utmpx *up)
+{
+	struct utmpx_entry *lp;
+
+	/*
+	 * this could be a login. if we're not dealing with
+	 * the console name, say it is.
+	 *
+	 * If we are, and if ut_host==":0.0" we know that it
+	 * isn't a real login. _But_ if we have not yet recorded
+	 * someone being logged in on Console - due to the wtmp
+	 * file starting after they logged in, we'll pretend they
+	 * logged in, at the start of the wtmp file.
+	 */
+
+#ifdef CONSOLE_TTY
+	if (up->ut_host[0] == ':') {
+		/*
+		 * SunOS 4.0.2 does not treat ":0.0" as special but we
+		 * do.
+		 */
+		if (on_console())
+			return;
+		/*
+		 * ok, no recorded login, so they were here when wtmp
+		 * started!  Adjust ut_time!
+		 */
+		up->ut_tv = FirstTime;
+		/*
+		 * this allows us to pick the right logout
+		 */
+		strlcpy(up->ut_line, Console, sizeof(up->ut_line));
+	}
+#endif
+	/*
+	 * If we are doing specified ttys only, we ignore
+	 * anything else.
+	 */
+	if (Flags & AC_T && !do_tty(up->ut_line))
+		return;
+
+	/*
+	 * go ahead and log them in
+	 */
+	if ((lp = malloc(sizeof(*lp))) == NULL)
+		errx(1, "malloc failed");
+	SLIST_INSERT_HEAD(&CurUtmpx, lp, next);
+	strlcpy(lp->user, up->ut_user, sizeof(lp->user));
+	memcpy(lp->id, up->ut_id, sizeof(lp->id));
+#ifdef CONSOLE_TTY
+	memcpy(lp->line, up->ut_line, sizeof(lp->line));
+#endif
+	lp->time = up->ut_tv;
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

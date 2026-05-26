@@ -1,0 +1,64 @@
+=== STEP 113 ===
+
+--- REQUEST ---
+GREP_RESULT for 'process.exit':
+```
+./tests/sys/kern/ptrace_test.c:1812: * process exit when stopped due to a breakpoint trap.
+./tests/sys/kern/ptrace_test.c:1859: * process exit when stopped inside of a system call.
+./tests/sys/kern/ptrace_test.c:1909: * process exit when killing a multithreaded process.
+./tests/sys/kern/procdesc.c:176: * Verify that poll(2) of a procdesc returns POLLHUP when the process exits.
+./tests/sys/posixshm/posixshm_test.c:991:			atf_tc_fail("Child process exited with status %d",
+./sys/compat/linuxkpi/common/src/linux_compat.c:1291:	 * and the mm_struct is usually freed when a process exits.
+./sys/cddl/contrib/opensolaris/uts/common/sys/fasttrap_impl.h:53: * of a mass removal when a process exits or performs an exec.
+./sys/cddl/contrib/opensolaris/uts/common/dtrace/fasttrap.c:723:	 * ourselves when a process exits.
+./sys/sys/procdesc.h:60:	 * satisfy queries after the process exits, and process descriptor
+./sys/sys/sigio.h:40: * process exits or the process group disappears.
+./sys/sys/eventhandler.h:251:EVENTHANDLER_DECLARE(process_exit, exitlist_fn);
+./sys/sys/event.h:205:#define	NOTE_EXIT	0x80000000		/* process exited */
+./sys/sys/pmc.h:1203:#define	PMC_DEBUG_MIN_EXT	       10 /* process exit */
+./sys/sys/proc.h:1354:EVENTHANDLER_LIST_DECLARE(process_exit);
+./sys/kern/uipc_mqueue.c:688:	exit_tag = EVENTHANDLER_REGISTER(process_exit, mq_proc_exit, NULL,
+./sys/kern/uipc_mqueue.c:706:	EVENTHANDLER_DEREGISTER(process_exit, exit_tag);
+./sys/kern/kern_ktrace.c:74: * next traceable event, at system call return, or at process exit.
+./sys/kern/kern_ktrace.c:629: * When a process exits, drain per-process asynchronous trace records
+./sys/kern/kern_acct.c:325: * Write out process accounting information, on process exit.
+./sys/kern/kern_proc.c:162:EVENTHANDLER_LIST_DEFINE(process_exit);
+./sys/kern/sysv_sem.c:306:	semexit_tag = EVENTHANDLER_REGISTER(process_exit, semexit_myhook, NULL,
+./sys/kern/sysv_sem.c:356:	EVENTHANDLER_DEREGISTER(process_exit, semexit_tag);
+./sys/kern/kern_exit.c:359:	 * Check if any loadable modules need anything done at process exit.
+./sys/kern/kern_exit.c:364:	EVENTHANDLER_DIRECT_INVOKE(process_exit, p);
+./sys/kern/kern_exit.c:1193:	 * at process exit.  This makes it impossible to
+./sys/kern/kern_sig.c:2913:				 * events when the process exits.
+./sys/kern/vfs_aio.c:399:	exit_tag = EVENTHANDLER_REGISTER(process_exit, aio_proc_rundown, NULL,
+./sys/kern/sys_procdesc.c:54: * - If the process exits before the descriptor is closed, it will not
+./sys/kern/sys_procdesc.c:286: * We use the proctree_lock to ensure that process exit either happens
+./sys/kern/sys_procdesc.c:324:	/* Wakeup all waiters for this procdesc' process exit. */
+./sys/kern/kern_descrip.c:168: * the process exits.
+./sys/dev/hwt/hwt.c:157:hwt_process_exit(void *arg __unused, struct proc *p)
+./sys/dev/hwt/hwt.c:191:	hwt_exit_tag = EVENTHANDLER_REGISTER(process_exit, hwt_process_exit,
+./sys/dev/hwt/hwt.c:204:	EVENTHANDLER_DEREGISTER(process_exit, hwt_exit_tag);
+./sys/dev/filemon/filemon_wrapper.c:317:filemon_event_process_exit(void *arg __unused, struct proc *p)
+./sys/dev/filemon/filemon_wrapper.c:424:	filemon_exit_tag = EVENTHANDLER_REGISTER(process_exit,
+./sys/dev/filemon/filemon_wrapper.c:425:	    filemon_event_process_exit, NULL, EVENTHANDLER_PRI_LAST);
+./sys/dev/filemon/filemon.c:220:	 * filemon_event_process_exit() will lock on filemon->lock
+./sys/dev/bnxt/bnxt_en/if_bnxt.c:5216:		goto async_event_process_exit;
+./sys/dev/bnxt/bnxt_en/if_bnxt.c:5225:			goto async_event_process_exit;
+./sys/dev/bnxt/bnxt_en/if_bnxt.c:5260:			goto async_event_process_exit;
+./sys/dev/hwpmc/hwpmc_logging.c:1120: * Log a process exit event (and accumulated pmc value) to the log file.
+./sys/dev/hwpmc/hwpmc_logging.c:1158: * Log a process exit event of the form suitable for system-wide PMCs.
+./sys/dev/hwpmc/hwpmc_mod.c:249:static void	pmc_process_exit(void *arg, struct proc *p);
+./sys/dev/hwpmc/hwpmc_mod.c:2081:		 * process exits, so there will always be a non-header
+./sys/dev/hwpmc/hwpmc_mod.c:5060: * Handle a process exit.
+./sys/contrib/openzfs/include/sys/spa_impl.h:189:	SPA_PROC_DEACTIVATE,	/* spa_deactivate() requests process exit */
+./sys/contrib/openzfs/tests/zfs-tests/cmd/idmap_util.c:407: *   process exit code if available
+./sys/contrib/openzfs/module/zfs/dsl_userhold.c:314: * up when the process exits.
+./sys/contrib/openzfs/module/zfs/zfs_onexit.c:38: * upon process exit (triggered via the close operation from the /dev/zfs
+... [76 more matches]
+```
+
+--- RESPONSE ---
+
+
+The file seems truncated. Let me check the actual file content at the end.
+
+ACTION: READ_FILE usr.sbin/ac/src/main.rs

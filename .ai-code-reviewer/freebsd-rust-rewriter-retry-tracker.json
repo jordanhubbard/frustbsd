@@ -195,6 +195,10 @@
     "attempts": 2,
     "last_attempt": "2026-05-24T22:12:18.412267"
   },
+  "contrib/llvm-project/llvm/lib/Target/LoongArch/TargetInfo": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T05:27:59.793936"
+  },
   "contrib/llvm-project/llvm/lib/Target/M68k/TargetInfo": {
     "attempts": 3,
     "last_attempt": "2026-05-24T22:44:04.940714"
@@ -271,13 +275,17 @@
     "attempts": 3,
     "last_attempt": "2026-05-25T17:40:39.306977"
   },
+  "contrib/netbsd-tests/lib/libc/arch/or1k": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T05:33:05.737350"
+  },
   "contrib/netbsd-tests/lib/libc/arch/powerpc64": {
     "attempts": 3,
     "last_attempt": "2026-05-25T18:01:05.075456"
   },
   "contrib/netbsd-tests/lib/libc/arch/riscv": {
-    "attempts": 2,
-    "last_attempt": "2026-05-26T03:09:48.387919"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T04:44:55.971940"
   },
   "contrib/netbsd-tests/lib/libc/arch/sh3": {
     "attempts": 3,
@@ -306,6 +314,10 @@
   "contrib/netbsd-tests/libexec/ld.elf_so/helper_symver_dso1": {
     "attempts": 1,
     "last_attempt": "2026-05-24T04:06:57.818534"
+  },
+  "contrib/ntp/libntp/lib/isc/nothreads": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T05:17:13.205982"
   },
   "contrib/vis": {
     "attempts": 1,
@@ -676,8 +688,8 @@
     "last_attempt": "2026-05-26T01:57:39.857628"
   },
   "usr.bin/find": {
-    "attempts": 2,
-    "last_attempt": "2026-05-26T01:57:56.892142"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T03:14:42.863125"
   },
   "usr.bin/finger": {
     "attempts": 2,
@@ -1030,6 +1042,10 @@
   "usr.bin/ypwhich": {
     "attempts": 3,
     "last_attempt": "2026-05-25T00:55:04.006387"
+  },
+  "usr.sbin/ac": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T03:22:02.812023"
   },
   "usr.sbin/lastlogin": {
     "attempts": 2,

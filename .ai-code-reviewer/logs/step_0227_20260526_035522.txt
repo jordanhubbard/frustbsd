@@ -1,0 +1,51 @@
+=== STEP 227 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/llvm-project/llvm/lib/Target/LoongArch/TargetInfo/LoongArchTargetInfo.cpp:
+PROGRESS:
+📁 Directory: contrib/llvm-project/llvm/lib/Target/LoongArch/TargetInfo
+   Files: 0/2
+📄 File: contrib/llvm-project/llvm/lib/Target/LoongArch/TargetInfo/LoongArchTargetInfo.cpp
+
+```
+//===-- LoongArchTargetInfo.cpp - LoongArch Target Implementation ---------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#include "TargetInfo/LoongArchTargetInfo.h"
+#include "llvm/MC/TargetRegistry.h"
+#include "llvm/Support/Compiler.h"
+using namespace llvm;
+
+Target &llvm::getTheLoongArch32Target() {
+  static Target TheLoongArch32Target;
+  return TheLoongArch32Target;
+}
+
+Target &llvm::getTheLoongArch64Target() {
+  static Target TheLoongArch64Target;
+  return TheLoongArch64Target;
+}
+
+extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void
+LLVMInitializeLoongArchTargetInfo() {
+  RegisterTarget<Triple::loongarch32, /*HasJIT=*/false> X(
+      getTheLoongArch32Target(), "loongarch32", "32-bit LoongArch",
+      "LoongArch");
+  RegisterTarget<Triple::loongarch64, /*HasJIT=*/true> Y(
+      getTheLoongArch64Target(), "loongarch64", "64-bit LoongArch",
+      "LoongArch");
+}
+
+```
+
+--- RESPONSE ---
+
+
+This is LLVM compiler infrastructure code, not FreeBSD userland. Per the constraints: "If the selected unit has no source relevant to the configured objective, choose another scope instead of fabricating a rewrite."
+
+ACTION: SET_SCOPE bin/cat/tests

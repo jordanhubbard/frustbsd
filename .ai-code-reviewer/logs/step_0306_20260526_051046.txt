@@ -1,0 +1,123 @@
+=== STEP 306 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/freebsd-src-on-angry-AI/tools/regression/sigqueue/sigqtest1/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE tools/regression/sigqueue/sigqtest1/src/main.rs
+CONTENT:
+<<<
+// sigqtest1 - Rust replacement
+// Tests signal queue behavior by sending SIGRTMIN to self until queue is full
+
+use std::ffi::c_void;
+use std::os::raw::{c_int, c_uint};
+
+extern "C" {
+    fn sigaction(signum: c_int, act: *const sigaction, oldact: *mut sigaction) -> c_int;
+    fn sigemptyset(set: *mut sigset_t) -> c_int;
+    fn sigaddset(set: *mut sigset_t, signum: c_int) -> c_int;
+    fn sigprocmask(how: c_int, set: *const sigset_t, oldset: *mut sigset_t) -> c_int;
+    fn sigqueue(pid: pid_t, sig: c_int, val: union_sigval) -> c_int;
+    fn getpid() -> pid_t;
+}
+
+#[repr(C)]
+pub struct sigaction {
+    pub sa_sigaction: Option<unsafe extern "C" fn(c_int, *mut siginfo_t, *mut c_void)>,
+    pub sa_mask: sigset_t,
+    pub sa_flags: c_int,
+}
+
+#[repr(C)]
+pub struct sigset_t {
+    _data: [c_uint; 32],
+}
+
+#[repr(C)]
+pub union union_sigval {
+    pub sival_int: c_int,
+    pub sival_ptr: *mut c_void,
+}
+
+#[repr(C)]
+pub struct siginfo_t {
+    pub si_signo: c_int,
+    pub si_code: c_int,
+    pub si_value: union_sigval,
+}
+
+const SA_SIGINFO: c_int = 0x00000004;
+const SIG_BLOCK: c_int = 1;
+const SIG_UNBLOCK: c_int = 2;
+const SIGRTMIN: c_int = 32;
+const SI_QUEUE: c_int = 1;
+const EAGAIN: c_int = 11;
+
+static mut RECEIVED: c_int = 0;
+
+unsafe extern "C" fn handler(sig: c_int, si: *mut siginfo_t, _ctx: *mut c_void) {
+    if (*si).si_code != SI_QUEUE {
+        eprintln!("si_code != SI_QUEUE");
+        std::process::exit(1);
+    }
+    if (*si).si_value.sival_int != RECEIVED {
+        eprintln!("signal is out of order");
+        std::process::exit(1);
+    }
+    RECEIVED += 1;
+}
+
+fn main() {
+    unsafe {
+        let mut sa = sigaction {
+            sa_sigaction: Some(handler),
+            sa_mask: sigset_t { _data: [0; 32] },
+            sa_flags: SA_SIGINFO,
+        };
+        sigemptyset(&mut sa.sa_mask);
+        sigaction(SIGRTMIN, &sa, std::ptr::null_mut());
+
+        let mut set = sigset_t { _data: [0; 32] };
+        sigemptyset(&mut set);
+        sigaddset(&mut set, SIGRTMIN);
+        sigprocmask(SIG_BLOCK, &set, std::ptr::null_mut());
+
+        let mut i: c_int = 0;
+        loop {
+            let val = union_sigval { sival_int: i };
+            let ret = sigqueue(getpid(), SIGRTMIN, val);
+            if ret == -1 {
+                let errno = libc_errno();
+                if errno != EAGAIN {
+                    eprintln!("errno != EAGAIN");
+                    std::process::exit(1);
+                }
+                break;
+            }
+            i += 1;
+        }
+
+        sigprocmask(SIG_UNBLOCK, &set, std::ptr::null_mut());
+
+        if RECEIVED != i {
+            eprintln!("error, signal lost");
+            std::process::exit(1);
+        }
+        println!("OK");
+    }
+}
+
+fn libc_errno() -> c_int {
+    unsafe {
+        // Use libc::errno via FFI
+        extern "C" {
+            fn __errno() -> *mut c_int;
+        }
+        *__errno()
+    }
+}
+>>>

@@ -1,0 +1,16 @@
+=== STEP 252 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/lib/libc/arch/or1k:
+```
+Cargo.toml
+Makefile
+exec_prot_support.c
+return_one.S
+src
+```
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

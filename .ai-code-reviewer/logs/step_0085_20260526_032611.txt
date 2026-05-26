@@ -1,0 +1,57 @@
+=== STEP 85 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.sbin/ac
+   Files: 0/3
+📄 File: usr.sbin/ac/Makefile
+
+```
+=== CHUNK 11/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.sbin/ac/ac.c === [function: show_today]
+=== Lines 279-314 (36 lines) ===
+
+static void
+show_today(struct timeval today)
+{
+	struct user_entry *up;
+	struct utmpx_entry *lp;
+	char date[64];
+	struct timeval diff, total = { 0, 0 }, usec = { 0, 1 }, yesterday;
+	static int d_first = -1;
+
+	if (d_first < 0)
+		d_first = (*nl_langinfo(D_MD_ORDER) == 'd');
+	timersub(&today, &usec, &yesterday);
+	(void)strftime(date, sizeof(date),
+		       d_first ? "%e %b  total" : "%b %e  total",
+		       localtime(&yesterday.tv_sec));
+
+	SLIST_FOREACH(lp, &CurUtmpx, next) {
+		timersub(&today, &lp->time, &diff);
+		update_user(lp->user, diff);
+		/* As if they just logged in. */
+		lp->time = today;
+	}
+	SLIST_FOREACH(up, &Users, next) {
+		timeradd(&total, &up->time, &total);
+		/* For next day. */
+		timerclear(&up->time);
+	}
+	if (timerisset(&total))
+		(void)printf("%s %11.2f\n", date, (double)total.tv_sec / 3600);
+}
+
+/*
+ * Log a user out and update their times.
+ * If ut_type is BOOT_TIME or SHUTDOWN_TIME, we log all users out as the
+ * system has been shut down.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

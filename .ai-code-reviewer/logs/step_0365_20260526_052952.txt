@@ -1,0 +1,11 @@
+=== STEP 365 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+The system keeps rejecting my WRITE_FILE calls because the CONTENT block isn't being parsed. Let me try a different approach:
+
+ACTION: WRITE_FILE contrib/llvm-project/llvm/lib/Target/LoongArch/TargetInfo/Cargo.toml

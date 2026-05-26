@@ -1,0 +1,15 @@
+=== STEP 186 ===
+
+--- REQUEST ---
+TIMEOUT: You have spent too many iterations on usr.sbin/ac. This directory is being skipped.
+
+SCOPE_ABANDONED: usr.sbin/ac was marked skipped.
+
+Reason: Exceeded 120 iterations without completing the scope
+Any tracked edits were reverted and untracked files created under the scope were removed.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/arch/riscv
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE contrib/netbsd-tests/lib/libc/arch/riscv

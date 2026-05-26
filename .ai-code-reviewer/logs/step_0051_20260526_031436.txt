@@ -1,0 +1,12 @@
+=== STEP 51 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory usr.bin/fetch skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/netbsd-tests/lib/libc/arch/ia64
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/file

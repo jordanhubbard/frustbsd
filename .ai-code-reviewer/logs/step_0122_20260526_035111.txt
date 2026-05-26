@@ -1,0 +1,280 @@
+=== STEP 122 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.sbin/ac/src/main.rs:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.sbin/ac/src/main.rs
+   Total chunks: 2
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: usr.sbin/ac
+   Files: 0/3
+📄 File: usr.sbin/ac/src/main.rs
+   Chunks: 1/2
+✏️  Edits: 3 files modified
+
+```
+=== CHUNK 1/2: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.sbin/ac/src/main.rs === [line_chunk: chunk_1]
+=== Lines 1-250 (250 lines) ===
+
+use std::ffi::{CStr, CString};
+use std::os::raw::{c_char, c_int, c_short};
+use std::ptr;
+
+extern "C" {
+    fn setlocale(category: c_int, locale: *const c_char) -> *mut c_char;
+    fn getopt(argc: c_int, argv: *const *mut c_char, optstring: *const c_char) -> c_int;
+    fn optarg() -> *mut c_char;
+    fn optind() -> c_int;
+    fn setutxdb(db: c_int, file: *const c_char) -> c_int;
+    fn getutxent() -> *mut utmpx;
+    fn endutxent();
+    fn localtime(tp: *const timeval) -> *mut tm;
+    fn strftime(
+        s: *mut c_char,
+        maxsize: usize,
+        format: *const c_char,
+        tm: *const tm,
+    ) -> usize;
+    fn nl_langinfo(item: c_int) -> *mut c_char;
+    fn gettimeofday(tp: *mut timeval, tz: *mut std::os::raw::c_void) -> c_int;
+    fn free(p: *mut std::os::raw::c_void);
+}
+
+const LC_TIME: c_int = 6;
+const D_MD_ORDER: c_int = 5;
+const UTXDB_LOG: c_int = 0;
+
+#[repr(C)]
+struct timeval {
+    tv_sec: i64,
+    tv_usec: i32,
+}
+
+#[repr(C)]
+struct tm {
+    tm_sec: c_int,
+    tm_min: c_int,
+    tm_hour: c_int,
+    tm_mday: c_int,
+    tm_mon: c_int,
+    tm_year: c_int,
+    tm_wday: c_int,
+    tm_yday: c_int,
+    tm_isdst: c_int,
+    tm_gmtoff: i64,
+    tm_zone: *mut c_char,
+}
+
+#[repr(C)]
+struct utmpx {
+    ut_type: c_short,
+    ut_tv: timeval,
+    ut_id: [c_char; 8],
+    ut_pid: c_int,
+    ut_line: [c_char; 16],
+    ut_user: [c_char; 32],
+    ut_host: [c_char; 128],
+    ut_addr_v6: [i32; 4],
+    __ut_pad2: [c_char; 200],
+}
+
+const OLD_TIME: c_short = 5;
+const NEW_TIME: c_short = 6;
+const BOOT_TIME: c_short = 7;
+const SHUTDOWN_TIME: c_short = 8;
+const USER_PROCESS: c_short = 1;
+const DEAD_PROCESS: c_short = 3;
+
+const AC_W: c_int = 1;
+const AC_D: c_int = 2;
+const AC_P: c_int = 4;
+const AC_U: c_int = 8;
+const AC_T: c_int = 16;
+
+struct TtyEntry {
+    line: String,
+    len: usize,
+    ret: bool,
+}
+
+struct UserEntry {
+    user: String,
+    time: timeval,
+}
+
+struct UtmpxEntry {
+    user: String,
+    id: String,
+    line: String,
+    time: timeval,
+}
+
+static mut FLAGS: c_int = 0;
+static mut TOTAL: timeval = timeval { tv_sec: 0, tv_usec: 0 };
+static mut FIRST_TIME: timeval = timeval { tv_sec: 0, tv_usec: 0 };
+static mut CUR_UTMPX: Vec<UtmpxEntry> = Vec::new();
+static mut USERS: Vec<UserEntry> = Vec::new();
+static mut TTYS: Vec<TtyEntry> = Vec::new();
+static mut CONSOLE: String = String::new();
+
+fn timeradd(a: &timeval, b: &timeval, out: &mut timeval) {
+    out.tv_sec = a.tv_sec + b.tv_sec;
+    out.tv_usec = a.tv_usec + b.tv_usec;
+    if out.tv_usec >= 1_000_000 {
+        out.tv_sec += 1;
+        out.tv_usec -= 1_000_000;
+    }
+}
+
+fn timersub(a: &timeval, b: &timeval, out: &mut timeval) {
+    out.tv_sec = a.tv_sec - b.tv_sec;
+    out.tv_usec = a.tv_usec - b.tv_usec;
+    if out.tv_usec < 0 {
+        out.tv_sec -= 1;
+        out.tv_usec += 1_000_000;
+    }
+}
+
+fn timerisset(tv: &timeval) -> bool {
+    tv.tv_sec != 0 || tv.tv_usec != 0
+}
+
+fn timerclear(tv: &mut timeval) {
+    tv.tv_sec = 0;
+    tv.tv_usec = 0;
+}
+
+fn add_tty(line: &str) {
+    unsafe { FLAGS |= AC_T };
+    let (ret, actual) = if line.starts_with('!') {
+        (false, &line[1..])
+    } else {
+        (true, line)
+    };
+    let mut len = 0;
+    let line_str = if let Some(pos) = actual.find('*') {
+        len = pos;
+        actual[..pos].to_string()
+    } else {
+        actual.to_string()
+    };
+    unsafe {
+        TTYS.push(TtyEntry {
+            line: line_str,
+            len,
+            ret,
+        });
+    }
+}
+
+fn do_tty(line: &str) -> bool {
+    let mut def_ret = false;
+    unsafe {
+        for tp in TTYS.iter() {
+            if !tp.ret {
+                def_ret = true;
+            }
+            if tp.len != 0 {
+                if line.starts_with(&tp.line) {
+                    return tp.ret;
+                }
+            } else {
+                if line == tp.line {
+                    return tp.ret;
+                }
+            }
+        }
+    }
+    def_ret
+}
+
+fn on_console() -> bool {
+    unsafe {
+        for up in CUR_UTMPX.iter() {
+            if up.line == CONSOLE {
+                return true;
+            }
+        }
+    }
+    false
+}
+
+fn update_user(user: &str, secs: timeval) {
+    unsafe {
+        for up in USERS.iter_mut() {
+            if up.user == user {
+                let mut new_time = secs;
+                timeradd(&up.time, &new_time, &mut up.time);
+                let mut new_total = secs;
+                timeradd(&TOTAL, &new_total, &mut TOTAL);
+                return;
+            }
+        }
+        if FLAGS & AC_U != 0 {
+            return;
+        }
+        let mut new_time = secs;
+        timeradd(&TOTAL, &new_time, &mut TOTAL);
+        USERS.push(UserEntry {
+            user: user.to_string(),
+            time: secs,
+        });
+        USERS.sort_by(|a, b| a.user.cmp(&b.user));
+    }
+}
+
+fn show(user: &str, secs: timeval) {
+    println!(
+        "\t{:<32} {:8.2}",
+        user,
+        secs.tv_sec as f64 / 3600.0
+    );
+}
+
+fn show_users() {
+    unsafe {
+        for lp in USERS.iter() {
+            show(&lp.user, lp.time);
+        }
+    }
+}
+
+fn show_today(today: timeval) {
+    let usec = timeval { tv_sec: 0, tv_usec: 1 };
+    let mut yesterday = today;
+    timersub(&today, &usec, &mut yesterday);
+
+    let mut d_first = -1;
+    unsafe {
+        let info = nl_langinfo(D_MD_ORDER);
+        if !info.is_null() {
+            let ch = CStr::from_ptr(info).to_bytes()[0] as char;
+            d_first = if ch == 'd' { 0 } else { 1 };
+        }
+    }
+
+    let mut date = [0u8; 64];
+    let format = if d_first == 0 {
+        CString::new("%e %b  total").unwrap()
+    } else {
+        CString::new("%b %e  total").unwrap()
+    };
+
+    let tm_ptr = unsafe { localtime(&yesterday) };
+    if tm_ptr.is_null() {
+        return;
+    }
+
+    unsafe {
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

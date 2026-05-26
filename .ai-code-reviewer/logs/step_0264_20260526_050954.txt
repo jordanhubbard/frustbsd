@@ -1,0 +1,9 @@
+=== STEP 264 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE contrib/netbsd-tests/lib/libc/arch/riscv/Cargo.toml

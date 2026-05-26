@@ -1,0 +1,20 @@
+=== STEP 90 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.sbin/ac/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "ac"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "ac"
+path = "src/main.rs"
+<<<

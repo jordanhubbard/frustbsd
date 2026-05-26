@@ -1,0 +1,337 @@
+=== STEP 151 ===
+
+--- REQUEST ---
+
+⚠️  INCOMPLETE RESPONSE DETECTED
+
+Problem: Mismatched <<< >>> delimiters (incomplete EDIT_FILE)
+Response length: 12347 chars
+Last 100 chars: ...lse {
+        if unsafe { FLAGS } & AC_P != 0 { show_users(); }
+        show("total", unsafe { TOTAL
+
+Your response appears to have been cut off before completion.
+Please provide a COMPLETE response including:
+1. Your analysis
+2. A SINGLE, COMPLETE ACTION directive
+3. For EDIT_FILE: both complete OLD and NEW blocks
+
+If you're working with a large file causing timeouts:
+- Focus on ONE specific issue at a time
+- Use smaller OLD/NEW blocks
+- Consider SKIP_FILE if the file is too complex
+
+
+--- RESPONSE ---
+
+
+I need to split this into two writes due to response length limits. Let me write the first half (structs and helpers).
+
+ACTION: WRITE_FILE usr.sbin/ac/src/main.rs
+CONTENT:
+<<<
+use std::env;
+use std::ffi::{CStr, CString};
+use std::os::raw::{c_char, c_int, c_short};
+use std::ptr;
+
+extern "C" {
+    fn setlocale(category: c_int, locale: *const c_char) -> *mut c_char;
+    fn getopt(argc: c_int, argv: *const *mut c_char, optstring: *const c_char) -> c_int;
+    fn optarg() -> *mut c_char;
+    fn optind() -> c_int;
+    fn setutxdb(db: c_int, file: *const c_char) -> c_int;
+    fn getutxent() -> *mut utmpx;
+    fn endutxent();
+    fn localtime_r(tp: *const i64, tm: *mut tm) -> *mut tm;
+    fn strftime(s: *mut c_char, maxsize: usize, format: *const c_char, tm: *const tm) -> usize;
+    fn nl_langinfo(item: c_int) -> *mut c_char;
+    fn gettimeofday(tp: *mut timeval, tz: *mut std::os::raw::c_void) -> c_int;
+    fn free(p: *mut std::os::raw::c_void);
+}
+
+const LC_TIME: c_int = 6;
+const D_MD_ORDER: c_int = 5;
+const UTXDB_LOG: c_int = 0;
+
+#[repr(C)]
+struct timeval { tv_sec: i64, tv_usec: i32 }
+
+#[repr(C)]
+struct tm {
+    tm_sec: c_int, tm_min: c_int, tm_hour: c_int, tm_mday: c_int,
+    tm_mon: c_int, tm_year: c_int, tm_wday: c_int, tm_yday: c_int,
+    tm_isdst: c_int, tm_gmtoff: i64, tm_zone: *mut c_char,
+}
+
+#[repr(C)]
+struct utmpx {
+    ut_type: c_short, ut_tv: timeval, ut_id: [c_char; 8], ut_pid: c_int,
+    ut_line: [c_char; 16], ut_user: [c_char; 32], ut_host: [c_char; 128],
+    ut_addr_v6: [i32; 4], __ut_pad2: [c_char; 200],
+}
+
+const OLD_TIME: c_short = 5;
+const NEW_TIME: c_short = 6;
+const BOOT_TIME: c_short = 7;
+const SHUTDOWN_TIME: c_short = 8;
+const USER_PROCESS: c_short = 1;
+const DEAD_PROCESS: c_short = 3;
+const AC_W: c_int = 1;
+const AC_D: c_int = 2;
+const AC_P: c_int = 4;
+const AC_U: c_int = 8;
+const AC_T: c_int = 16;
+
+struct TtyEntry { line: String, len: usize, ret: bool }
+struct UserEntry { user: String, time: timeval }
+struct UtmpxEntry { user: String, id: String, line: String, time: timeval }
+
+static mut FLAGS: c_int = 0;
+static mut TOTAL: timeval = timeval { tv_sec: 0, tv_usec: 0 };
+static mut FIRST_TIME: timeval = timeval { tv_sec: 0, tv_usec: 0 };
+static mut CUR_UTMPX: Vec<UtmpxEntry> = Vec::new();
+static mut USERS: Vec<UserEntry> = Vec::new();
+static mut TTYS: Vec<TtyEntry> = Vec::new();
+static mut CONSOLE: String = String::new();
+
+fn timeradd(a: &timeval, b: &timeval, out: &mut timeval) {
+    out.tv_sec = a.tv_sec + b.tv_sec;
+    out.tv_usec = a.tv_usec + b.tv_usec;
+    if out.tv_usec >= 1_000_000 { out.tv_sec += 1; out.tv_usec -= 1_000_000; }
+}
+fn timersub(a: &timeval, b: &timeval, out: &mut timeval) {
+    out.tv_sec = a.tv_sec - b.tv_sec;
+    out.tv_usec = a.tv_usec - b.tv_usec;
+    if out.tv_usec < 0 { out.tv_sec -= 1; out.tv_usec += 1_000_000; }
+}
+fn timerisset(tv: &timeval) -> bool { tv.tv_sec != 0 || tv.tv_usec != 0 }
+fn timerclear(tv: &mut timeval) { tv.tv_sec = 0; tv.tv_usec = 0; }
+
+fn add_tty(line: &str) {
+    unsafe { FLAGS |= AC_T };
+    let (ret, actual) = if line.starts_with('!') { (false, &line[1..]) } else { (true, line) };
+    let (len, line_str) = if let Some(pos) = actual.find('*') {
+        (pos, actual[..pos].to_string())
+    } else { (0, actual.to_string()) };
+    unsafe { TTYS.push(TtyEntry { line: line_str, len, ret }); }
+}
+
+fn do_tty(line: &str) -> bool {
+    let mut def_ret = false;
+    unsafe {
+        for tp in TTYS.iter() {
+            if !tp.ret { def_ret = true; }
+            if tp.len != 0 { if line.starts_with(&tp.line) { return tp.ret; } }
+            else { if line == tp.line { return tp.ret; } }
+        }
+    }
+    def_ret
+}
+
+fn update_user(user: &str, secs: timeval) {
+    unsafe {
+        for up in USERS.iter_mut() {
+            if up.user == user {
+                let mut nt = secs; timeradd(&up.time, &nt, &mut up.time);
+                let mut nt2 = secs; timeradd(&TOTAL, &nt2, &mut TOTAL);
+                return;
+            }
+        }
+        if FLAGS & AC_U != 0 { return; }
+        let mut nt = secs; timeradd(&TOTAL, &nt, &mut TOTAL);
+        USERS.push(UserEntry { user: user.to_string(), time: secs });
+        USERS.sort_by(|a, b| a.user.cmp(&b.user));
+    }
+}
+
+fn show(user: &str, secs: timeval) {
+    println!("\t{:<32} {:8.2}", user, secs.tv_sec as f64 / 3600.0);
+}
+
+fn show_users() {
+    unsafe { for lp in USERS.iter() { show(&lp.user, lp.time); } }
+}
+
+fn show_today(today: timeval) {
+    let usec = timeval { tv_sec: 0, tv_usec: 1 };
+    let mut yesterday = today;
+    timersub(&today, &usec, &mut yesterday);
+    let mut d_first = -1;
+    unsafe {
+        let info = nl_langinfo(D_MD_ORDER);
+        if !info.is_null() {
+            let ch = CStr::from_ptr(info).to_bytes()[0] as char;
+            d_first = if ch == 'd' { 0 } else { 1 };
+        }
+    }
+    let mut date = [0u8; 64];
+    let fmt = if d_first == 0 { CString::new("%e %b  total").unwrap() }
+    else { CString::new("%b %e  total").unwrap() };
+    let mut tm_buf: tm = unsafe { std::mem::zeroed() };
+    let tm_ptr = unsafe { localtime_r(&yesterday.tv_sec, &mut tm_buf) };
+    if tm_ptr.is_null() { return; }
+    unsafe { strftime(date.as_mut_ptr() as *mut c_char, date.len(), fmt.as_ptr(), tm_ptr); }
+    let date_str = unsafe { CStr::from_ptr(date.as_ptr() as *const c_char).to_string_lossy().into_owned() };
+    let mut total = timeval { tv_sec: 0, tv_usec: 0 };
+    unsafe {
+        for lp in CUR_UTMPX.iter_mut() {
+            let mut diff = timeval { tv_sec: 0, tv_usec: 0 };
+            timersub(&today, &lp.time, &mut diff);
+            update_user(&lp.user, diff);
+            lp.time = today;
+        }
+        for up in USERS.iter() { let mut a = up.time; timeradd(&total, &a, &mut total); }
+        for up in USERS.iter_mut() { timerclear(&mut up.time); }
+    }
+    if timerisset(&total) {
+        println!("{} {:11.2}", date_str, total.tv_sec as f64 / 3600.0);
+    }
+}
+
+fn log_out(ut_type: c_short, ut_id: &str, ut_tv: timeval) {
+    unsafe {
+        let mut i = 0;
+        while i < CUR_UTMPX.len() {
+            let lp = &CUR_UTMPX[i];
+            let match_id = if ut_type == BOOT_TIME || ut_type == SHUTDOWN_TIME { true }
+            else if ut_type == DEAD_PROCESS { lp.id == ut_id } else { false };
+            if match_id {
+                let mut secs = timeval { tv_sec: 0, tv_usec: 0 };
+                timersub(&ut_tv, &lp.time, &mut secs);
+                update_user(&lp.user, secs);
+                CUR_UTMPX.remove(i);
+            } else { i += 1; }
+        }
+    }
+}
+
+fn log_in(usr: &utmpx) {
+    unsafe {
+        if FLAGS & AC_T != 0 {
+            let line = CStr::from_ptr(usr.ut_line.as_ptr() as *const c_char).to_string_lossy();
+            if !do_tty(&line) { return; }
+        }
+        let user = CStr::from_ptr(usr.ut_user.as_ptr() as *const c_char).to_string_lossy().into_owned();
+        let id = CStr::from_ptr(usr.ut_id.as_ptr() as *const c_char).to_string_lossy().into_owned();
+        let line = CStr::from_ptr(usr.ut_line.as_ptr() as *const c_char).to_string_lossy().into_owned();
+        CUR_UTMPX.push(UtmpxEntry { user, id, line, time: usr.ut_tv });
+    }
+}
+
+fn ac_main(file: Option<&str>) {
+    let mut day = -1;
+    let mut prev_secs = timeval { tv_sec: 0, tv_usec: 0 };
+    let mut clock_shift = timeval { tv_sec: 0, tv_usec: 0 };
+    let mut ut_timecopy = timeval { tv_sec: 0, tv_usec: 0 };
+    let c_file = match file { Some(f) => CString::new(f).unwrap(), None => CString::new("").unwrap() };
+    unsafe {
+        if setutxdb(UTXDB_LOG, c_file.as_ptr()) != 0 {
+            eprintln!("ac: {}: No such file or directory", file.unwrap_or("wtmp"));
+            std::process::exit(1);
+        }
+    }
+    let mut last_id = String::new();
+    loop {
+        let usr = unsafe { getutxent() };
+        if usr.is_null() { break; }
+        let usr_ref = unsafe { &*usr };
+        ut_timecopy = usr_ref.ut_tv;
+        last_id = CStr::from_ptr(usr_ref.ut_id.as_ptr() as *const c_char).to_string_lossy().into_owned();
+        if ut_timecopy.tv_sec < prev_secs.tv_sec || (ut_timecopy.tv_sec == prev_secs.tv_sec && ut_timecopy.tv_usec < prev_secs.tv_usec) {
+            ut_timecopy = prev_secs;
+        }
+        prev_secs = ut_timecopy;
+        unsafe { if !timerisset(&FIRST_TIME) { FIRST_TIME = ut_timecopy; } }
+        if unsafe { FLAGS } & AC_D != 0 {
+            let mut tm_buf: tm = unsafe { std::mem::zeroed() };
+            let ltm = unsafe { localtime_r(&ut_timecopy.tv_sec, &mut tm_buf) };
+            if !ltm.is_null() {
+                let yday = unsafe { (*ltm).tm_yday };
+                if day >= 0 && day != yday {
+                    day = yday;
+                    let mut secs = ut_timecopy;
+                    secs.tv_sec -= unsafe { (*ltm).tm_sec } as i64;
+                    secs.tv_sec -= 60 * unsafe { (*ltm).tm_min } as i64;
+                    secs.tv_sec -= 3600 * unsafe { (*ltm).tm_hour } as i64;
+                    secs.tv_usec = 0;
+                    show_today(secs);
+                } else { day = yday; }
+            }
+        }
+        match usr_ref.ut_type {
+            OLD_TIME => { unsafe { clock_shift = ut_timecopy }; }
+            NEW_TIME => {
+                unsafe {
+                    timersub(&clock_shift, &ut_timecopy, &mut clock_shift);
+                    for lp in CUR_UTMPX.iter_mut() { timersub(&lp.time, &clock_shift, &mut lp.time); }
+                }
+            }
+            BOOT_TIME | SHUTDOWN_TIME => {
+                let id = CStr::from_ptr(usr_ref.ut_id.as_ptr() as *const c_char).to_string_lossy().into_owned();
+                log_out(usr_ref.ut_type, &id, usr_ref.ut_tv);
+                unsafe { FIRST_TIME = ut_timecopy };
+            }
+            USER_PROCESS => {
+                let line = CStr::from_ptr(usr_ref.ut_line.as_ptr() as *const c_char).to_string_lossy();
+                let host = CStr::from_ptr(usr_ref.ut_host.as_ptr() as *const c_char).to_string_lossy();
+                if !line.starts_with("pts/") || !host.is_empty() { log_in(usr_ref); }
+            }
+            DEAD_PROCESS => {
+                let id = CStr::from_ptr(usr_ref.ut_id.as_ptr() as *const c_char).to_string_lossy().into_owned();
+                log_out(usr_ref.ut_type, &id, usr_ref.ut_tv);
+            }
+            _ => {}
+        }
+        unsafe { free(usr as *mut std::os::raw::c_void) };
+    }
+    unsafe { endutxent() };
+    let mut now = timeval { tv_sec: 0, tv_usec: 0 };
+    unsafe { gettimeofday(&mut now, ptr::null_mut()) };
+    if unsafe { FLAGS } & AC_D != 0 {
+        let mut tm_buf: tm = unsafe { std::mem::zeroed() };
+        let ltm = unsafe { localtime_r(&ut_timecopy.tv_sec, &mut tm_buf) };
+        if !ltm.is_null() {
+            let yday = unsafe { (*ltm).tm_yday };
+            if day >= 0 && day != yday {
+                let mut secs = ut_timecopy;
+                secs.tv_sec -= unsafe { (*ltm).tm_sec } as i64;
+                secs.tv_sec -= 60 * unsafe { (*ltm).tm_min } as i64;
+                secs.tv_sec -= 3600 * unsafe { (*ltm).tm_hour } as i64;
+                secs.tv_usec = 0;
+                show_today(secs);
+            }
+        }
+    }
+    let shutdown_tv = if unsafe { FLAGS } & AC_W != 0 { ut_timecopy } else { now };
+    log_out(SHUTDOWN_TIME, &last_id, shutdown_tv);
+    if unsafe { FLAGS } & AC_D != 0 { show_today(now); }
+    else {
+        if unsafe { FLAGS } & AC_P != 0 { show_users(); }
+        show("total", unsafe { TOTAL });
+    }
+}
+
+fn usage() {
+    eprintln!("Usage: ac [-c console] [-dp] [-t tty] [-w file] [user ...]");
+    std::process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let mut argv: Vec<*mut c_char> = args.iter().map(|s| CString::new(s.as_bytes()).unwrap()).map(|c| c.into_raw()).collect();
+    let argc = argv.len() as c_int;
+    unsafe {
+        setlocale(LC_TIME, CString::new("").unwrap().as_ptr());
+    }
+    let mut file: Option<String> = None;
+    let mut users: Vec<String> = Vec::new();
+    loop {
+        let c = unsafe { getopt(argc, argv.as_ptr(), CString::new("c:dpwt:").unwrap().as_ptr()) };
+        if c == -1 { break; }
+        match c as u8 {
+            b'c' => {
+                let val = unsafe { CStr::from_ptr(optarg()).to_string_lossy().into_owned() };
+                unsafe { CONSOLE = val; }
+            }
+            b'd' => unsafe { FLAGS |= AC_D },

@@ -1,0 +1,12 @@
+=== STEP 250 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/freebsd-src-on-angry-AI/Makefile.inc1.
+Remaining files in contrib/netbsd-tests/lib/libc/arch/or1k:
+  - contrib/netbsd-tests/lib/libc/arch/or1k/return_one.S
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE contrib/netbsd-tests/lib/libc/arch/or1k/Makefile

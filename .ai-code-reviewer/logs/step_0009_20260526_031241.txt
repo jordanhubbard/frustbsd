@@ -1,0 +1,20 @@
+=== STEP 9 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/false/Makefile:
+PROGRESS:
+📄 File: usr.bin/false/Makefile
+
+```
+PROG=	false
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+A perfect small candidate. `usr.bin/false` is trivially simple — just returns exit code 1. I'll model the Rust rewrite after the already-completed `usr.bin/true` unit.
+
+ACTION: SET_SCOPE usr.bin/false

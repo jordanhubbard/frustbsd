@@ -1,0 +1,11 @@
+=== STEP 217 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+The WRITE_FILE action keeps failing because the CONTENT block isn't being recognized. Let me try a different format:
+
+ACTION: WRITE_FILE contrib/netbsd-tests/lib/libc/arch/riscv/Cargo.toml

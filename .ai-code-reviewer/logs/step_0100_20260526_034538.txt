@@ -1,0 +1,63 @@
+=== STEP 100 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*bsd.rust.mk*'
+
+--- RESPONSE ---
+
+
+No `bsd.rust.mk` exists. I need to add explicit local Makefile rules for the Rust build. Let me update the Makefile.
+
+ACTION: EDIT_FILE usr.sbin/ac/Makefile
+OLD:
+<<<
+PROG=	ac
+PACKAGE=	acct
+MAN=	ac.8
+
+# If "CONSOLE_TTY" is not defined, this program is compatible with the
+# traditional implementation (using SunOS 4.x as the sample traditional
+# implementation).  This is the default.
+#
+# If "CONSOLE_TTY" is defined, it must be defined to the appropriate
+# console name, e.g. "vga".  Additionally, the various commented-out
+# sections of the man page should be uncommented.  This is not the
+# default because of the inability to detect the proper console name
+# easily, especially on m68k systems, which can share binaries.
+#
+#CFLAGS+=-DCONSOLE_TTY=\"vga\"
+
+.include <bsd.prog.mk>
+>>>
+NEW:
+<<<
+PROG=	ac
+PACKAGE=	acct
+MAN=	ac.8
+
+# If "CONSOLE_TTY" is not defined, this program is compatible with the
+# traditional implementation (using SunOS 4.x as the sample traditional
+# implementation).  This is the default.
+#
+# If "CONSOLE_TTY" is defined, it must be defined to the appropriate
+# console name, e.g. "vga".  Additionally, the various commented-out
+# sections of the man page should be uncommented.  This is not the
+# default because of the inability to detect the proper console name
+# easily, especially on m68k systems, which can share binaries.
+#
+#CFLAGS+=-DCONSOLE_TTY=\"vga\"
+
+# Rust build integration
+RUSTPROG=	ac
+RUSTCARGO=	${.CURDIR}/Cargo.toml
+RUSTTARGET=	${.OBJDIR}/cargo-target
+
+.cargo:
+	@${MKDIR} ${RUSTTARGET}
+	@cargo build --manifest-path ${RUSTCARGO} --target-dir ${RUSTTARGET} --release
+	@${CP} ${RUSTTARGET}/release/ac ${.TARGET}
+
+${RUSTPROG}: .cargo
+
+.include <bsd.prog.mk>
+>>>

@@ -1,0 +1,52 @@
+=== STEP 86 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.sbin/ac
+   Files: 0/3
+📄 File: usr.sbin/ac/Makefile
+
+```
+=== CHUNK 12/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.sbin/ac/ac.c === [function: log_out]
+=== Lines 315-345 (31 lines) ===
+
+static void
+log_out(const struct utmpx *up)
+{
+	struct utmpx_entry *lp, *lp2, *tlp;
+	struct timeval secs;
+
+	for (lp = SLIST_FIRST(&CurUtmpx), lp2 = NULL; lp != NULL;)
+		if (up->ut_type == BOOT_TIME || up->ut_type == SHUTDOWN_TIME ||
+		    (up->ut_type == DEAD_PROCESS &&
+		    memcmp(lp->id, up->ut_id, sizeof(up->ut_id)) == 0)) {
+			timersub(&up->ut_tv, &lp->time, &secs);
+			update_user(lp->user, secs);
+			/*
+			 * now lose it
+			 */
+			tlp = lp;
+			lp = SLIST_NEXT(lp, next);
+			if (lp2 == NULL)
+				SLIST_REMOVE_HEAD(&CurUtmpx, next);
+			else
+				SLIST_REMOVE_AFTER(lp2, next);
+			free(tlp);
+		} else {
+			lp2 = lp;
+			lp = SLIST_NEXT(lp, next);
+		}
+}
+
+/*
+ * if do_tty says ok, login a user
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

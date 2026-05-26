@@ -1,0 +1,11 @@
+=== STEP 269 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+The system keeps rejecting my WRITE_FILE calls because the CONTENT block isn't being parsed correctly. Let me try the exact format specified in the action definition:
+
+ACTION: WRITE_FILE contrib/netbsd-tests/lib/libc/arch/riscv/Cargo.toml

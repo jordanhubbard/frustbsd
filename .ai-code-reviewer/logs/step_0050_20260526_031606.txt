@@ -1,0 +1,11 @@
+=== STEP 50 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+Let me break the loop by listing the directory:
+
+ACTION: LIST_DIR contrib/netbsd-tests/lib/libc/arch/riscv

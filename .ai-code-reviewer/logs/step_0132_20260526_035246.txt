@@ -1,0 +1,40 @@
+=== STEP 132 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.sbin/ac
+   Files: 0/3
+📄 File: usr.sbin/ac/ac.c
+   Chunks: 6/15
+✏️  Edits: 3 files modified
+
+```
+=== CHUNK 6/15: /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.sbin/ac/ac.c === [function: on_console]
+=== Lines 153-169 (17 lines) ===
+
+static int
+on_console(void)
+{
+	struct utmpx_entry *up;
+
+	SLIST_FOREACH(up, &CurUtmpx, next)
+		if (strcmp(up->line, Console) == 0)
+			return (1);
+	return (0);
+}
+#endif
+
+/*
+ * Update user's login time.
+ * If no entry for this user is found, a new entry is inserted into the
+ * list alphabetically.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

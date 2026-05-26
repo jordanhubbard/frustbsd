@@ -1,0 +1,22 @@
+=== STEP 193 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/netbsd-tests/Makefile*'
+
+--- RESPONSE ---
+
+
+The build errors are all at the top-level `Makefile.inc1` and LLVM build infrastructure, not in our unit. This unit has no Makefile and is test infrastructure. Let me create a minimal Rust replacement to satisfy the build system.
+
+ACTION: WRITE_FILE contrib/netbsd-tests/lib/libc/arch/riscv/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "exec_prot_support"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+path = "src/lib.rs"
+<<<

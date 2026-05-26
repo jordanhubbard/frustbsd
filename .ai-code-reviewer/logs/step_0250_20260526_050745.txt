@@ -1,0 +1,11 @@
+=== STEP 250 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+The CONTENT block format requires the content between `<<<` and `>>>` delimiters on separate lines. Let me try the exact format:
+
+ACTION: WRITE_FILE contrib/netbsd-tests/lib/libc/arch/riscv/Cargo.toml

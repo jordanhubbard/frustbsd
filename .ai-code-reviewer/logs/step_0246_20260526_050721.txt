@@ -1,0 +1,60 @@
+=== STEP 246 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/contrib/netbsd-tests/lib/libc/arch/riscv/exec_prot_support.c:
+PROGRESS:
+📁 Directory: contrib/netbsd-tests/lib/libc/arch/riscv
+   Files: 0/2
+📄 File: contrib/netbsd-tests/lib/libc/arch/riscv/exec_prot_support.c
+
+```
+/*      $NetBSD: exec_prot_support.c,v 1.1 2014/09/19 17:36:26 matt Exp $ */
+
+/*-
+ * Copyright (c) 2014 The NetBSD Foundation, Inc.
+ * All rights reserved.
+ *
+ * This code is derived from software contributed to The NetBSD Foundation
+ * by Matt Thomas of 3am Software Foundry.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
+ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR CONTRIBUTORS
+ * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include <sys/cdefs.h>
+__RCSID("$NetBSD: exec_prot_support.c,v 1.1 2014/09/19 17:36:26 matt Exp $");
+
+#include "../../common/exec_prot.h"
+
+int
+exec_prot_support(void)
+{
+	return PERPAGE_XP;
+}
+
+```
+
+--- RESPONSE ---
+
+
+This unit is RISC-V test infrastructure with no Makefile. The C file just returns a constant `PERPAGE_XP` and the `.S` file is assembly. This is not a userland command or library. Let me create the Rust replacement files properly.
+
+ACTION: WRITE_FILE contrib/netbsd-tests/lib/libc/arch/riscv/Cargo.toml
