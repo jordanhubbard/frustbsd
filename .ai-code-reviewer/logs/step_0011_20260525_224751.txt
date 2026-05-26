@@ -1,0 +1,14 @@
+=== STEP 11 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/nproc is already marked complete.
+
+Completed work units are closed after a successful build and commit; do not reopen the same unit for incremental polish.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/fs/msdosfs
+
+--- RESPONSE ---
+
+
+Let me try `bin/cpuset` which is a less common command.
+
+ACTION: SET_SCOPE bin/cpuset

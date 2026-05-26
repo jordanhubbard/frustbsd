@@ -212,8 +212,8 @@
     "last_attempt": "2026-05-24T21:37:29.427066"
   },
   "contrib/llvm-project/llvm/lib/Target/X86/TargetInfo": {
-    "attempts": 2,
-    "last_attempt": "2026-05-25T22:28:45.044188"
+    "attempts": 3,
+    "last_attempt": "2026-05-25T22:47:15.194447"
   },
   "contrib/llvm-project/llvm/lib/Target/XCore/TargetInfo": {
     "attempts": 1,

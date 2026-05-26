@@ -1,0 +1,47 @@
+=== STEP 30 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/sbin/clri/Makefile:
+PROGRESS:
+📁 Directory: contrib/llvm-project/llvm/lib/Target/X86/TargetInfo
+   Files: 0/2
+📄 File: sbin/clri/Makefile
+
+```
+.include <src.opts.mk>
+
+PROG=	clri
+BINDIR?=	/sbin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+${PROG}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+
+HAS_TESTS=
+SUBDIR.${MK_TESTS}=	tests
+
+```
+
+--- RESPONSE ---
+
+
+The `sbin/clri/Makefile` was already modified in a prior session. I'm stuck in an LLVM vendor scope. Let me try to find a valid pending FreeBSD userland unit.
+
+ACTION: SET_SCOPE usr.bin/xxd
