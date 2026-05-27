@@ -1,0 +1,18 @@
+=== STEP 102 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/freebsd-src-on-angry-AI/usr.bin/getaddrinfo:
+```
+Makefile
+Makefile.depend
+getaddrinfo.1
+getaddrinfo.c
+tables.awk
+```
+
+--- RESPONSE ---
+
+
+This is a good candidate - a small, self-contained command. Let me create the Rust replacement.
+
+ACTION: WRITE_FILE usr.bin/getaddrinfo/Cargo.toml

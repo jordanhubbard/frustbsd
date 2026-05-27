@@ -184,8 +184,8 @@
     "last_attempt": "2026-05-23T02:28:48.009957"
   },
   "contrib/llvm-project/llvm/lib/CodeGenTypes": {
-    "attempts": 2,
-    "last_attempt": "2026-05-26T16:38:02.616535"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T16:57:25.067462"
   },
   "contrib/llvm-project/llvm/lib/Frontend/Directive": {
     "attempts": 3,
@@ -328,8 +328,8 @@
     "last_attempt": "2026-05-26T05:49:03.781728"
   },
   "contrib/netbsd-tests/lib/libc/arch/powerpc": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T14:42:41.889018"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T17:15:23.185558"
   },
   "contrib/netbsd-tests/lib/libc/arch/powerpc64": {
     "attempts": 3,
@@ -364,8 +364,8 @@
     "last_attempt": "2026-05-26T11:08:51.300134"
   },
   "contrib/netbsd-tests/lib/libc/tls/dso": {
-    "attempts": 2,
-    "last_attempt": "2026-05-26T16:38:54.931122"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T16:58:03.100751"
   },
   "contrib/netbsd-tests/lib/libc/tls_dso": {
     "attempts": 3,
@@ -396,8 +396,8 @@
     "last_attempt": "2026-05-26T12:02:17.839961"
   },
   "contrib/netbsd-tests/rump/rumpkern/h_server": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T14:36:53.411238"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T17:15:01.000062"
   },
   "contrib/ntp/libntp/lib/isc/nothreads": {
     "attempts": 1,
@@ -444,8 +444,8 @@
     "last_attempt": "2026-05-26T11:21:51.924097"
   },
   "lib/libc/csu/powerpc64": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T14:31:51.062793"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T17:02:02.828358"
   },
   "lib/libc/csu/riscv": {
     "attempts": 1,
@@ -468,8 +468,8 @@
     "last_attempt": "2026-05-26T10:23:29.610934"
   },
   "lib/librt": {
-    "attempts": 1,
-    "last_attempt": "2026-05-24T22:23:33.270569"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T17:13:54.395440"
   },
   "lib/libssp_nonshared": {
     "attempts": 3,
@@ -804,8 +804,8 @@
     "last_attempt": "2026-05-25T19:49:56.506413"
   },
   "usr.bin/dtc": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T01:57:02.536758"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T17:01:30.242673"
   },
   "usr.bin/du": {
     "attempts": 3,
@@ -876,8 +876,8 @@
     "last_attempt": "2026-05-26T10:19:19.248262"
   },
   "usr.bin/getaddrinfo": {
-    "attempts": 2,
-    "last_attempt": "2026-05-26T01:59:27.312967"
+    "attempts": 3,
+    "last_attempt": "2026-05-26T17:03:55.171039"
   },
   "usr.bin/getconf": {
     "attempts": 3,
@@ -886,6 +886,10 @@
   "usr.bin/getent": {
     "attempts": 3,
     "last_attempt": "2026-05-26T01:59:41.088062"
+  },
+  "usr.bin/gprof": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T17:08:52.601260"
   },
   "usr.bin/head": {
     "attempts": 3,
@@ -912,12 +916,12 @@
     "last_attempt": "2026-05-26T07:51:26.909578"
   },
   "usr.bin/ipcrm": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T01:26:04.638935"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T17:09:37.511652"
   },
   "usr.bin/ipcs": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T01:26:33.818704"
+    "attempts": 2,
+    "last_attempt": "2026-05-26T17:10:24.737298"
   },
   "usr.bin/join": {
     "attempts": 2,
@@ -930,6 +934,14 @@
   "usr.bin/killall": {
     "attempts": 1,
     "last_attempt": "2026-05-26T01:37:06.638738"
+  },
+  "usr.bin/ktrace": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T17:10:44.613264"
+  },
+  "usr.bin/ktrdump": {
+    "attempts": 1,
+    "last_attempt": "2026-05-26T17:10:48.851701"
   },
   "usr.bin/last": {
     "attempts": 3,

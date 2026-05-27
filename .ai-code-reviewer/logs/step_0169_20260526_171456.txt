@@ -1,0 +1,12 @@
+=== STEP 169 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/m4 is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/rump/rumpkern/h_server
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/mesg

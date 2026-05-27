@@ -1,0 +1,11 @@
+=== STEP 150 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/freebsd-version has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE lib/libc/csu/powerpc64
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/getfacl

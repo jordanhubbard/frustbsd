@@ -1,0 +1,12 @@
+=== STEP 156 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: libexec/atrun is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE lib/libc/csu/powerpc64
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE libexec/rc

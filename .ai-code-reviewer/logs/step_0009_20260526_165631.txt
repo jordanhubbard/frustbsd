@@ -1,0 +1,28 @@
+=== STEP 9 ===
+
+--- REQUEST ---
+GREP_RESULT for 'LowLevelType.h':
+```
+./contrib/llvm-project/llvm/utils/TableGen/Common/GlobalISel/GlobalISelMatchTable.h:26:#include "llvm/CodeGenTypes/LowLevelType.h"
+./contrib/llvm-project/llvm/include/llvm/CodeGenTypes/LowLevelType.h:1://== llvm/CodeGenTypes/LowLevelType.h -------------------------- -*- C++ -*-==//
+./contrib/llvm-project/llvm/include/llvm/CodeGen/MachineMemOperand.h:22:#include "llvm/CodeGenTypes/LowLevelType.h"
+./contrib/llvm-project/llvm/include/llvm/CodeGen/RegisterBankInfo.h:23:#include "llvm/CodeGenTypes/LowLevelType.h"
+./contrib/llvm-project/llvm/include/llvm/CodeGen/GlobalISel/CombinerHelper.h:25:#include "llvm/CodeGenTypes/LowLevelType.h"
+./contrib/llvm-project/llvm/include/llvm/CodeGen/GlobalISel/LegacyLegalizerInfo.h:20:#include "llvm/CodeGenTypes/LowLevelType.h"
+./contrib/llvm-project/llvm/include/llvm/CodeGen/GlobalISel/LegalizerInfo.h:22:#include "llvm/CodeGenTypes/LowLevelType.h"
+./contrib/llvm-project/llvm/include/llvm/CodeGen/GlobalISel/CallLowering.h:22:#include "llvm/CodeGenTypes/LowLevelType.h"
+./contrib/llvm-project/llvm/include/llvm/CodeGen/GlobalISel/GIMatchTableExecutor.h:25:#include "llvm/CodeGenTypes/LowLevelType.h"
+./contrib/llvm-project/llvm/include/llvm/CodeGen/GlobalISel/Utils.h:21:#include "llvm/CodeGenTypes/LowLevelType.h"
+./contrib/llvm-project/llvm/include/llvm/CodeGen/LowLevelTypeUtils.h:20:#include "llvm/CodeGenTypes/LowLevelType.h"
+```
+
+--- RESPONSE ---
+
+
+This unit is part of the LLVM compiler infrastructure, not FreeBSD userland. It's deeply integrated with LLVM's C++ type system (MVT, ElementCount, raw_ostream) and would require massive FFI work to replace with Rust. This is not a suitable candidate for the "small_first" strategy of translating FreeBSD userland commands/libraries to Rust.
+
+Per the constraint: "If the selected unit has no source relevant to the configured objective, choose another scope instead of fabricating a rewrite."
+
+Let me find a more appropriate small FreeBSD userland unit.
+
+ACTION: LIST_DIR usr.bin

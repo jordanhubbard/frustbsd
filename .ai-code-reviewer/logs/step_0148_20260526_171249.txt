@@ -1,0 +1,12 @@
+=== STEP 148 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/ed is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE lib/libc/csu/powerpc64
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE bin/expr

@@ -1,0 +1,12 @@
+=== STEP 71 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/diff3 is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/netbsd-tests/lib/libc/tls/dso
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/dpv

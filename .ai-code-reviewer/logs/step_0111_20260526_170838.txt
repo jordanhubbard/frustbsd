@@ -1,0 +1,12 @@
+=== STEP 111 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/getent is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE lib/libc/csu/powerpc64
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/getopt

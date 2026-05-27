@@ -1,0 +1,12 @@
+=== STEP 119 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory usr.bin/indent skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE lib/libc/csu/powerpc64
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE lib/libutil
