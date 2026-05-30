@@ -1,0 +1,11 @@
+=== STEP 147 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/frustbsd/sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20/Makefile
+Scope: sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

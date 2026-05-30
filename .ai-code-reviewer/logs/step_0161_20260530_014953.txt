@@ -1,0 +1,13 @@
+=== STEP 161 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/frustbsd/tools/regression/nfsmmap/test2/Makefile
+Scope: tools/regression/nfsmmap/test2
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The build is failing at the top-level FreeBSD build system level. Let me try building the Rust crate directly first to verify it compiles.
+
+ACTION: BUILD

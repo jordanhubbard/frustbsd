@@ -1,0 +1,15 @@
+=== STEP 54 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/contrib/llvm-project/llvm/lib/Target/PowerPC/TargetInfo:
+```
+PowerPCTargetInfo.cpp
+PowerPCTargetInfo.h
+```
+
+--- RESPONSE ---
+
+
+Let me check the build context for this unit.
+
+ACTION: FIND_FILE contrib/llvm-project/llvm/lib/Target/PowerPC/TargetInfo/Makefile*

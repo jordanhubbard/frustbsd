@@ -1,0 +1,13 @@
+=== STEP 6 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: contrib/file/python/file_magic has no source files matching the configured rewrite suffix filter (.c, .cc, .cpp, .cxx).
+Do not create placeholder files for this unit; choose a source-backed work unit.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/PowerPC/TargetInfo
+
+--- RESPONSE ---
+
+
+The rewrite index keeps redirecting to LLVM target info, which is not FreeBSD userland. Let me find a suitable small userland command to rewrite instead.
+
+ACTION: LIST_DIR bin

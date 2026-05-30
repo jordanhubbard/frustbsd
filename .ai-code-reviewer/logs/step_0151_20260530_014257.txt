@@ -1,0 +1,10 @@
+=== STEP 151 ===
+
+--- REQUEST ---
+READ_FILE_ERROR: File not found: /usr/home/jkh/Src/frustbsd/sys/contrib/libsodium/Makefile
+TIP: Use FIND_FILE to locate files
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR sys/contrib/libsodium

@@ -1,0 +1,31 @@
+=== STEP 250 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/contrib/netbsd-tests:
+```
+FREEBSD-upgrade
+bin
+crypto
+dev
+fs
+games
+h_macros.h
+include
+ipf
+kernel
+lib
+libexec
+modules
+net
+rump
+sbin
+share
+sys
+usr.bin
+usr.sbin
+```
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE contrib/netbsd-tests/Makefile

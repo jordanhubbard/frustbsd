@@ -1,0 +1,11 @@
+=== STEP 262 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/netbsd-tests*'
+
+--- RESPONSE ---
+
+
+Let me understand how this unit is built in the FreeBSD tree by checking the tests infrastructure.
+
+ACTION: LIST_DIR tests

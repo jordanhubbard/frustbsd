@@ -1,0 +1,60 @@
+=== STEP 76 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/contrib/llvm-project/llvm/lib:
+```
+Analysis
+AsmParser
+BinaryFormat
+Bitcode
+Bitstream
+CGData
+CodeGen
+CodeGenTypes
+DWARFCFIChecker
+DWARFLinker
+DWP
+DebugInfo
+Debuginfod
+Demangle
+ExecutionEngine
+FileCheck
+Frontend
+FuzzMutate
+IR
+IRPrinter
+IRReader
+InterfaceStub
+LTO
+LineEditor
+Linker
+MC
+MCA
+ObjCopy
+Object
+ObjectYAML
+Option
+Passes
+ProfileData
+Remarks
+SandboxIR
+Support
+TableGen
+Target
+TargetParser
+Telemetry
+Testing
+TextAPI
+ToolDrivers
+Transforms
+WindowsDriver
+WindowsManifest
+XRay
+```
+
+--- RESPONSE ---
+
+
+This is LLVM compiler infrastructure built with CMake. Let me check the FreeBSD build integration.
+
+ACTION: LIST_DIR contrib/llvm-project/llvm/lib/Target

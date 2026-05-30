@@ -171,6 +171,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-26T00:41:24.115750"
   },
+  "contrib/llvm-project/libc/src/__support/OSUtil/windows": {
+    "attempts": 1,
+    "last_attempt": "2026-05-30T02:05:59.083308"
+  },
   "contrib/llvm-project/libcxx/src/pstl": {
     "attempts": 3,
     "last_attempt": "2026-05-23T20:13:55.015565"
@@ -246,6 +250,10 @@
   "contrib/llvm-project/llvm/lib/Target/NVPTX/TargetInfo": {
     "attempts": 3,
     "last_attempt": "2026-05-25T19:45:18.053369"
+  },
+  "contrib/llvm-project/llvm/lib/Target/PowerPC/TargetInfo": {
+    "attempts": 1,
+    "last_attempt": "2026-05-30T00:58:43.726320"
   },
   "contrib/llvm-project/llvm/lib/Target/RISCV/TargetInfo": {
     "attempts": 1,
@@ -374,6 +382,10 @@
   "contrib/netbsd-tests/lib/semaphore/pthread": {
     "attempts": 3,
     "last_attempt": "2026-05-22T22:17:17.637990"
+  },
+  "contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1": {
+    "attempts": 1,
+    "last_attempt": "2026-05-30T02:20:40.747221"
   },
   "contrib/netbsd-tests/libexec/ld.elf_so/helper_dso2": {
     "attempts": 1,
@@ -567,6 +579,10 @@
     "attempts": 3,
     "last_attempt": "2026-05-26T16:02:08.426851"
   },
+  "stand/efi/acpica": {
+    "attempts": 1,
+    "last_attempt": "2026-05-30T02:43:46.059874"
+  },
   "stand/ficl": {
     "attempts": 3,
     "last_attempt": "2026-05-25T18:50:28.911741"
@@ -643,6 +659,10 @@
     "attempts": 1,
     "last_attempt": "2026-05-23T13:38:12.689367"
   },
+  "sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20": {
+    "attempts": 1,
+    "last_attempt": "2026-05-30T01:28:19.976621"
+  },
   "sys/contrib/libsodium/src/libsodium/crypto_stream/xsalsa20": {
     "attempts": 3,
     "last_attempt": "2026-05-29T22:12:50.030230"
@@ -667,9 +687,17 @@
     "attempts": 1,
     "last_attempt": "2026-05-30T00:41:58.624122"
   },
+  "sys/dev/syscons/green": {
+    "attempts": 1,
+    "last_attempt": "2026-05-30T01:15:37.578241"
+  },
   "sys/security/mac_none": {
     "attempts": 3,
     "last_attempt": "2026-05-26T08:56:09.661171"
+  },
+  "tools/regression/nfsmmap/test2": {
+    "attempts": 1,
+    "last_attempt": "2026-05-30T01:46:27.282883"
   },
   "tools/regression/sigqueue/sigqtest1": {
     "attempts": 1,
@@ -695,9 +723,17 @@
     "attempts": 2,
     "last_attempt": "2026-05-25T14:46:26.505304"
   },
+  "tools/test/auxinfo": {
+    "attempts": 1,
+    "last_attempt": "2026-05-30T01:19:58.292059"
+  },
   "tools/test/stress2/testcases/sysctl": {
     "attempts": 1,
     "last_attempt": "2026-05-30T00:22:14.540023"
+  },
+  "tools/tools/shlib-compat/test/libtest1": {
+    "attempts": 1,
+    "last_attempt": "2026-05-30T01:59:15.999020"
   },
   "usr.bin/apply": {
     "attempts": 3,

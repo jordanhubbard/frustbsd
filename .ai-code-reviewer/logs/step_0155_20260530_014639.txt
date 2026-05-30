@@ -1,0 +1,15 @@
+=== STEP 155 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/tools/regression/nfsmmap/test2:
+```
+Makefile
+test2.c
+test2.good.uu
+test2.zeros.uu
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE tools/regression/nfsmmap/test2/test2.c

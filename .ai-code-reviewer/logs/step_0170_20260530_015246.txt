@@ -1,0 +1,33 @@
+=== STEP 170 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*Makefile*':
+```
+./tests/include/Makefile
+./tests/oclo/Makefile
+./tests/sys/acl/Makefile
+./tests/sys/acl/Makefile.depend
+./tests/sys/devrandom/Makefile
+./tests/sys/common/Makefile
+./tests/sys/netinet/Makefile
+./tests/sys/netinet/Makefile.depend
+./tests/sys/netinet/libalias/Makefile
+./tests/sys/net/bpf/Makefile
+./tests/sys/net/routing/Makefile
+./tests/sys/net/Makefile
+./tests/sys/net/if_ovpn/ccd/Makefile
+./tests/sys/net/if_ovpn/Makefile
+./tests/sys/netgraph/Makefile
+./tests/sys/vfs/Makefile
+./tests/sys/vfs/Makefile.depend
+./tests/sys/capsicum/Makefile
+./tests/sys/compat32/Makefile.inc
+./tests/sys/compat32/aarch64/Makefile
+```
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level `Makefile.inc1` which is included by the top-level Makefile. The build system is trying to do a full buildworld. Let me check how the build is being invoked.
+
+ACTION: READ_FILE Makefile

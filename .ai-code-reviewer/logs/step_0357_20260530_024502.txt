@@ -1,0 +1,23 @@
+=== STEP 357 ===
+
+--- REQUEST ---
+GREP_RESULT for 'acpi_detect':
+```
+./stand/efi/acpica/acpi_detect.c:32:#include "acpi_detect.h"
+./stand/efi/acpica/acpi_detect.c:40:acpi_detect(void)
+./stand/efi/acpica/include/acpi_detect.h:39:void acpi_detect(void);
+./stand/efi/loader/main.c:79:#include <acpi_detect.h>
+./stand/efi/loader/main.c:1243:	acpi_detect();
+./stand/i386/loader/main.c:151:	biosacpi_detect();
+./stand/i386/libi386/biosacpi.c:50:biosacpi_detect(void)
+./stand/i386/libi386/libi386.h:139:void	biosacpi_detect(void);
+./tools/tools/ncpus/acpi.c:58:int acpi_detect(void);
+./tools/tools/ncpus/acpi.c:288:acpi_detect(void)
+./tools/tools/ncpus/ncpus.c:4:extern int acpi_detect(void);
+./tools/tools/ncpus/ncpus.c:10:	printf("acpi: %d\n", acpi_detect());
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR stand/efi/loader

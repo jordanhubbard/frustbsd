@@ -1,0 +1,15 @@
+=== STEP 34 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/usr.bin/morse:
+```
+Makefile
+Makefile.depend
+morse.6
+morse.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/morse

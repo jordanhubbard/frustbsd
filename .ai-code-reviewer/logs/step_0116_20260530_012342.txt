@@ -1,0 +1,53 @@
+=== STEP 116 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/frustbsd/tools/test/auxinfo/src/main.rs
+Scope: tools/test/auxinfo
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE tools/test/auxinfo/src/main.rs
+OLD:
+<<<
+fn test_pagesizes() {
+    let nelem = unsafe { getpagesizes(std::ptr::null_mut(), -1) };
+    if nelem == -1 {
+        eprintln!("getpagesizes(NULL, 0) failed");
+        process::exit(1);
+    }
+    let mut sizes = vec![0usize; nelem as usize];
+    let nelem = unsafe { getpagesizes(sizes.as_mut_ptr(), nelem) };
+    if nelem == -1 {
+        eprintln!("getpagesizes failed");
+        process::exit(1);
+    }
+    print!("Supported page sizes:");
+    for i in 0..nelem as usize {
+        print!(" {}", sizes[i] as i64);
+    }
+    println!();
+}
+>>>
+NEW:
+<<<
+fn test_pagesizes() {
+    let nelem = unsafe { getpagesizes(std::ptr::null_mut(), 0) };
+    if nelem == -1 {
+        eprintln!("getpagesizes(NULL, 0) failed");
+        process::exit(1);
+    }
+    let mut sizes = vec![0usize; nelem as usize];
+    let nelem = unsafe { getpagesizes(sizes.as_mut_ptr(), nelem) };
+    if nelem == -1 {
+        eprintln!("getpagesizes failed");
+        process::exit(1);
+    }
+    print!("Supported page sizes:");
+    for i in 0..nelem as usize {
+        print!(" {}", sizes[i] as i64);
+    }
+    println!();
+}
+>>>

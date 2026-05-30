@@ -1,0 +1,23 @@
+=== STEP 9 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/bin/nproc:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+nproc.1
+nproc.c
+src
+```
+
+--- RESPONSE ---
+
+
+Those already have Rust. Let me find commands without Rust yet.
+
+ACTION: LIST_DIR bin/echo
+ACTION: LIST_DIR bin/sync
+ACTION: LIST_DIR bin/domainname
+ACTION: LIST_DIR bin/freebsd-version

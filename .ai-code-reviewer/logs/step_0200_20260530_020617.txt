@@ -1,0 +1,16 @@
+=== STEP 200 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Marked current file as skipped.
+Remaining files in contrib/llvm-project/libc/src/__support/OSUtil/windows:
+  - contrib/llvm-project/libc/src/__support/OSUtil/windows/exit.cpp
+  - contrib/llvm-project/libc/src/__support/OSUtil/windows/io.cpp
+  - contrib/llvm-project/libc/src/__support/OSUtil/windows/io.h
+Please READ_FILE another source file or SET_SCOPE to continue progress.
+
+--- RESPONSE ---
+
+
+This unit contains Windows-specific code that is not relevant to FreeBSD userland translation. I'll skip all remaining files.
+
+ACTION: SKIP_FILE

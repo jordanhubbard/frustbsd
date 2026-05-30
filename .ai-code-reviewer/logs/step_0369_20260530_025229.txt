@@ -1,0 +1,10 @@
+=== STEP 369 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/frustbsd/stand/efi/acpica/Makefile
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

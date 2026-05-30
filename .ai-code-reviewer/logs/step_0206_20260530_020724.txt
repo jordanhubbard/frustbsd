@@ -1,0 +1,56 @@
+=== STEP 206 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/contrib/llvm-project/libc/src/__support/OSUtil/windows/io.cpp:
+PROGRESS:
+📁 Directory: contrib/llvm-project/libc/src/__support/OSUtil/windows
+   Files: 0/3
+📄 File: contrib/llvm-project/libc/src/__support/OSUtil/windows/io.cpp
+
+```
+//===------------- Windows implementation of IO utils -----------*- C++ -*-===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#include "io.h"
+#include "src/__support/macros/config.h"
+
+// On Windows we cannot make direct syscalls since Microsoft changes system call
+// IDs periodically. We must rely on functions exported from ntdll.dll or
+// kernel32.dll to invoke system service procedures.
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+
+namespace LIBC_NAMESPACE_DECL {
+
+void write_to_stderr(cpp::string_view msg) {
+  ::HANDLE stream = ::GetStdHandle(STD_ERROR_HANDLE);
+  ::WriteFile(stream, msg.data(), msg.size(), nullptr, nullptr);
+}
+
+} // namespace LIBC_NAMESPACE_DECL
+
+```
+
+--- RESPONSE ---
+
+
+This is Windows-specific code. I'll create a Rust replacement that preserves the C++ ABI. Let me create the Rust crate.
+
+ACTION: WRITE_FILE contrib/llvm-project/libc/src/__support/OSUtil/windows/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "windows_osutil"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+name = "windows_osutil"
+path = "lib.rs"
+>>>

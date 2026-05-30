@@ -1,0 +1,9 @@
+=== STEP 13 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'bin/echo/*.c'
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE bin/sync/*.c

@@ -1,0 +1,16 @@
+=== STEP 29 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/usr.bin/look:
+```
+Makefile
+Makefile.depend
+look.1
+look.c
+pathnames.h
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/look

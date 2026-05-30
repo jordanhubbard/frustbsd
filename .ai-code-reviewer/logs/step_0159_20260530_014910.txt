@@ -1,0 +1,200 @@
+=== STEP 159 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/frustbsd/tools/regression/nfsmmap/test2/src/main.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+I need to avoid the `libc` crate since it's not vendored. Let me rewrite using inline FFI declarations.
+
+ACTION: EDIT_FILE tools/regression/nfsmmap/test2/src/main.rs
+OLD:
+<<<
+use std::fs::{File, OpenOptions};
+use std::io::{self, Read, Seek, SeekFrom, Write};
+use std::os::unix::fs::OpenOptionsExt;
+use std::os::unix::io::AsRawFd;
+
+fn main() {
+    let zeros: [u8; 4096] = [0; 4096];
+    let ones: [u8; 200] = [1; 200];
+
+    let mut fd = match OpenOptions::new()
+        .read(true)
+        .write(true)
+        .open("test2.data")
+    {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("opening file: {}", e);
+            std::process::exit(1);
+        }
+    };
+
+    if fd.seek(SeekFrom::Start(600)).is_err() {
+        eprintln!("seeking: {}", io::Error::last_os_error());
+        std::process::exit(1);
+    }
+
+    if fd.write_all(&ones).is_err() {
+        eprintln!("writing ones: {}", io::Error::last_os_error());
+        std::process::exit(1);
+    }
+
+    // mmap the first 4096 bytes of the file as MAP_PRIVATE
+    let fd_raw = fd.as_raw_fd();
+    let addr = unsafe {
+        libc::mmap(
+            std::ptr::null_mut(),
+            4096,
+            libc::PROT_READ | libc::PROT_WRITE,
+            libc::MAP_PRIVATE,
+            fd_raw,
+            0,
+        )
+    };
+    if addr == libc::MAP_FAILED {
+        eprintln!("mapping: {}", io::Error::last_os_error());
+        std::process::exit(1);
+    }
+
+    // Read the mapped memory
+    let mapped_data: [u8; 4096] = unsafe {
+        let mut buf = [0u8; 4096];
+        std::ptr::copy_nonoverlapping(addr as *const u8, buf.as_mut_ptr(), 4096);
+        buf
+    };
+
+    // Unmap
+    unsafe {
+        libc::munmap(addr, 4096);
+    }
+
+    // Remove scratch file if it exists
+    let _ = std::fs::remove_file("test2.scratch");
+
+    let mut fd2 = match OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create(true)
+        .mode(0o666)
+        .open("test2.scratch")
+    {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("creating scratch: {}", e);
+            std::process::exit(1);
+        }
+    };
+
+    if fd2.write_all(&mapped_data).is_err() {
+        eprintln!("writing scratch: {}", io::Error::last_os_error());
+        std::process::exit(1);
+    }
+}
+>>>
+NEW:
+<<<
+use std::fs::OpenOptions;
+use std::io::{self, Seek, SeekFrom, Write};
+use std::os::unix::fs::OpenOptionsExt;
+use std::os::unix::io::AsRawFd;
+
+extern "C" {
+    fn mmap(
+        addr: *mut std::ffi::c_void,
+        len: usize,
+        prot: i32,
+        flags: i32,
+        fd: i32,
+        offset: off_t,
+    ) -> *mut std::ffi::c_void;
+    fn munmap(addr: *mut std::ffi::c_void, len: usize) -> i32;
+}
+
+type off_t = i64;
+
+const PROT_READ: i32 = 0x1;
+const PROT_WRITE: i32 = 0x2;
+const MAP_PRIVATE: i32 = 0x2;
+const MAP_FAILED: *mut std::ffi::c_void = !0isize as *mut std::ffi::c_void;
+
+fn main() {
+    let ones: [u8; 200] = [1; 200];
+
+    let mut fd = match OpenOptions::new()
+        .read(true)
+        .write(true)
+        .open("test2.data")
+    {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("opening file: {}", e);
+            std::process::exit(1);
+        }
+    };
+
+    if fd.seek(SeekFrom::Start(600)).is_err() {
+        eprintln!("seeking: {}", io::Error::last_os_error());
+        std::process::exit(1);
+    }
+
+    if fd.write_all(&ones).is_err() {
+        eprintln!("writing ones: {}", io::Error::last_os_error());
+        std::process::exit(1);
+    }
+
+    // mmap the first 4096 bytes of the file as MAP_PRIVATE
+    let fd_raw = fd.as_raw_fd();
+    let addr = unsafe {
+        mmap(
+            std::ptr::null_mut(),
+            4096,
+            PROT_READ | PROT_WRITE,
+            MAP_PRIVATE,
+            fd_raw,
+            0,
+        )
+    };
+    if addr == MAP_FAILED {
+        eprintln!("mapping: {}", io::Error::last_os_error());
+        std::process::exit(1);
+    }
+
+    // Read the mapped memory
+    let mapped_data: [u8; 4096] = unsafe {
+        let mut buf = [0u8; 4096];
+        std::ptr::copy_nonoverlapping(addr as *const u8, buf.as_mut_ptr(), 4096);
+        buf
+    };
+
+    // Unmap
+    unsafe {
+        let _ = munmap(addr, 4096);
+    }
+
+    // Remove scratch file if it exists
+    let _ = std::fs::remove_file("test2.scratch");
+
+    let mut fd2 = match OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create(true)
+        .mode(0o666)
+        .open("test2.scratch")
+    {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("creating scratch: {}", e);
+            std::process::exit(1);
+        }
+    };
+
+    if fd2.write_all(&mapped_data).is_err() {
+        eprintln!("writing scratch: {}", io::Error::last_os_error());
+        std::process::exit(1);
+    }
+}
+>>>

@@ -1,0 +1,12 @@
+=== STEP 241 ===
+
+--- REQUEST ---
+READ_FILE_ERROR: File not found: /usr/home/jkh/Src/frustbsd/contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/Makefile
+TIP: Use FIND_FILE to locate files
+
+--- RESPONSE ---
+
+
+I need to set the correct scope as instructed. Let me start fresh with the proper unit.
+
+ACTION: SET_SCOPE contrib/llvm-project/llvm/lib/Target/PowerPC/TargetInfo

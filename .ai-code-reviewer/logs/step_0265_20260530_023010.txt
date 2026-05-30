@@ -1,0 +1,26 @@
+=== STEP 265 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/tests/Makefile.inc0:
+PROGRESS:
+📁 Directory: contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1
+   Files: 0/1
+📄 File: tests/Makefile.inc0
+✏️  Edits: 2 files modified
+
+```
+# tests/... doesn't conform to bsd.lib.mk and bsd.prog.mk, so specify a sane
+# default for MK_CHECK_USE_SANDBOX. src.opts.mk will override the value if the
+# user sets it to no.
+MK_CHECK_USE_SANDBOX=	yes
+
+.include <bsd.opts.mk>
+
+```
+
+--- RESPONSE ---
+
+
+Let me understand how this test helper is built in the FreeBSD tree.
+
+ACTION: FIND_FILE contrib/netbsd-tests

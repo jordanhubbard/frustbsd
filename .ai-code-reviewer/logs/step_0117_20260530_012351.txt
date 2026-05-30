@@ -1,0 +1,11 @@
+=== STEP 117 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/frustbsd/tools/test/auxinfo/src/main.rs
+Scope: tools/test/auxinfo
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

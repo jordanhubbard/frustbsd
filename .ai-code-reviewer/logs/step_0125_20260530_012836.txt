@@ -1,0 +1,20 @@
+=== STEP 125 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Already scoped to sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20. Do not switch work units.
+
+Your active scope is `sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20` and has not been completed.
+Continue working there instead of selecting a new directory:
+  1. Use READ_FILE on files within sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20
+  2. Make any required rewrite edits (EDIT_FILE / WRITE_FILE)
+  3. Run ACTION: BUILD to validate and commit the unit
+
+Files in scope:
+  - sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20/stream_xchacha20.c
+
+--- RESPONSE ---
+
+
+This is a contrib library (libsodium), not FreeBSD userland. The objective specifies userland C/C++ libraries and commands. Let me try building to see if the system handles this correctly.
+
+ACTION: BUILD

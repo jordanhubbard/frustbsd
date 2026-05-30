@@ -1,0 +1,12 @@
+=== STEP 165 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*REWRITE-INDEX*':
+```
+./.ai-code-reviewer/REWRITE-INDEX.md
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE .ai-code-reviewer/REWRITE-INDEX.md

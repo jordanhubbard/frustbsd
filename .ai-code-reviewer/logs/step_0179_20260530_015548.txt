@@ -1,0 +1,19 @@
+=== STEP 179 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/tools/regression/nfsmmap/test2:
+```
+Cargo.toml
+Makefile
+src
+test2.c
+test2.good.uu
+test2.zeros.uu
+```
+
+--- RESPONSE ---
+
+
+Let me understand the build situation better. The build errors come from the top-level FreeBSD build system. Let me check what the original Makefile looked like.
+
+ACTION: READ_FILE tools/regression/nfsmmap/test2/test2.c

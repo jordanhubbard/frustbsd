@@ -1,0 +1,14 @@
+=== STEP 235 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/frustbsd/share/mk/src.opts.mk.
+Remaining files in contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1:
+  (All tracked files rewritten or skipped in this directory)
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+I need to understand how the BUILD action works. Let me check the build configuration.
+
+ACTION: READ_FILE share/mk/bsd.compiler.mk

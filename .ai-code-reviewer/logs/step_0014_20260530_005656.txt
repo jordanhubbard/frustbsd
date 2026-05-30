@@ -1,0 +1,9 @@
+=== STEP 14 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'bin/sync/*.c'
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE bin/domainname/*.c

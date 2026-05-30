@@ -1,0 +1,14 @@
+=== STEP 288 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1:
+```
+h_helper_dso1.c
+```
+
+--- RESPONSE ---
+
+
+The automatic recovery reverted all changes. Let me start fresh with this unit. I'll create the Rust replacement files properly.
+
+ACTION: WRITE_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/Cargo.toml

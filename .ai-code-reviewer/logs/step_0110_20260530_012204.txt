@@ -1,0 +1,11 @@
+=== STEP 110 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*sys/lib/libc*'
+
+--- RESPONSE ---
+
+
+I need to check if the `libc` crate is available in the tree or if I need to use raw syscalls.
+
+ACTION: FIND_FILE sys/lib/libc

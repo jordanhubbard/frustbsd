@@ -1,0 +1,57 @@
+=== STEP 107 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/frustbsd/tools/test/auxinfo/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE tools/test/auxinfo/src/main.rs
+CONTENT:
+<<<
+use std::process;
+
+fn test_pagesizes() {
+    let mut sizes: Vec<usize> = Vec::new();
+    // First call to get the number of page sizes
+    let nelem = unsafe { libc::getpagesizes(std::ptr::null_mut(), 0) };
+    if nelem == -1 {
+        eprintln!("getpagesizes(NULL, 0) failed");
+        process::exit(1);
+    }
+    sizes.resize(nelem as usize, 0);
+    let nelem = unsafe { libc::getpagesizes(sizes.as_mut_ptr(), nelem) };
+    if nelem == -1 {
+        eprintln!("getpagesizes failed");
+        process::exit(1);
+    }
+    print!("Supported page sizes:");
+    for i in 0..nelem as usize {
+        print!(" {}", sizes[i] as i64);
+    }
+    println!();
+}
+
+fn test_pagesize() {
+    let ps = unsafe { libc::getpagesize() };
+    println!("Pagesize: {}", ps);
+}
+
+fn test_osreldate() {
+    let date = unsafe { libc::getosreldate() };
+    println!("OSRELDATE: {}", date);
+}
+
+fn test_ncpus() {
+    let ncpus = unsafe { libc::sysconf(libc::_SC_NPROCESSORS_CONF) };
+    println!("NCPUs: {}", ncpus as i64);
+}
+
+fn main() {
+    test_pagesizes();
+    test_pagesize();
+    test_osreldate();
+    test_ncpus();
+}
+>>>

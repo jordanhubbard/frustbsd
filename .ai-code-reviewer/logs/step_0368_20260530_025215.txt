@@ -1,0 +1,59 @@
+=== STEP 368 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/stand/efi/acpica/Cargo.toml:
+PROGRESS:
+📁 Directory: stand/efi/acpica
+   Files: 0/1
+📄 File: stand/efi/acpica/Cargo.toml
+✏️  Edits: 2 files modified
+
+```
+[package]
+name = "acpi_detect"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+name = "acpi_detect"
+```
+
+--- RESPONSE ---
+
+
+The build errors are about FreeBSD system bootstrapping, not my Rust code. This unit is a subdirectory without its own Makefile - it's pulled in by the loader Makefile. Let me create a Makefile for this unit that can build the Rust replacement:
+
+ACTION: WRITE_FILE stand/efi/acpica/Makefile
+CONTENT:
+<<<
+# Makefile for acpi_detect Rust replacement
+
+.include <bsd.init.mk>
+
+PROG=	acpi_detect
+SRCS=	acpi_detect.c
+
+# Rust build integration
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+.if exists(${.CURDIR}/Cargo.toml)
+# Build Rust replacement
+RUST_LIB=	${CARGO_TARGET_DIR}/release/libacpi_detect.a
+
+${RUST_LIB}: ${.CURDIR}/Cargo.toml ${.CURDIR}/src/lib.rs
+	${CARGO} build --release --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+all: ${RUST_LIB}
+.else
+all:
+.endif
+
+clean:
+	@if exists(${CARGO_TARGET_DIR}); then \
+		${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}; \
+	fi
+
+.include <bsd.end.mk>
+>>>

@@ -1,0 +1,9 @@
+=== STEP 295 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/Cargo.toml

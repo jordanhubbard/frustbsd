@@ -1,0 +1,12 @@
+=== STEP 177 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: contrib/llvm-project/llvm/lib/Target/PowerPC/TargetInfo is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE tools/tools/shlib-compat/test/libtest1
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE tools/tools/shlib-compat/test/libtest1

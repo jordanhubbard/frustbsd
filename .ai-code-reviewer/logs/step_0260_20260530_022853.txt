@@ -1,0 +1,33 @@
+=== STEP 260 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*tests*':
+```
+./tests/sys/opencrypto/runtests.sh
+./packages/tests/tests.ucl
+./release/packages/sets/tests.ucl
+./sys/cddl/compat/opensolaris/sys/feature_tests.h
+./sys/cddl/contrib/opensolaris/uts/common/sys/feature_tests.h
+./sys/dev/xen/netback/netback_unit_tests.c
+./sys/contrib/openzfs/.github/workflows/scripts/qemu-6-tests.sh
+./sys/contrib/openzfs/.github/workflows/scripts/qemu-6-lustre-tests-vm.sh
+./sys/contrib/openzfs/.github/workflows/zfs-tests.yml
+./sys/contrib/openzfs/lib/libspl/include/sys/feature_tests.h
+./sys/contrib/openzfs/scripts/zfs-tests.sh
+./sys/contrib/openzfs/scripts/zfs-tests-color.sh
+./sbin/ipf/ipsend/iptests.c
+./crypto/krb5/src/lib/krb5/krb/walktree-tests
+./crypto/krb5/src/lib/krb5/krb/transit-tests
+./crypto/libecc/.github/workflows/libecc_crossarch_tests.yml
+./crypto/libecc/.github/workflows/libecc_compilation_tests.yml
+./crypto/libecc/.github/workflows/libecc_python_tests.yml
+./crypto/libecc/.github/workflows/libecc_runtime_tests.yml
+./crypto/libecc/src/examples/sig/rsa/rsa_pkcs1_tests.h
+```
+
+--- RESPONSE ---
+
+
+The build is trying to build the entire world. Let me check how this unit is supposed to be built - it seems like it doesn't have its own Makefile.
+
+ACTION: FIND_FILE contrib/netbsd-tests/libexec

@@ -1,0 +1,9 @@
+=== STEP 111 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*sys/lib/libc*'
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE bin/domainname/src/main.rs

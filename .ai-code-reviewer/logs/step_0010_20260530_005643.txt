@@ -1,0 +1,17 @@
+=== STEP 10 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/bin/freebsd-version:
+```
+Makefile
+Makefile.depend
+freebsd-version.1
+freebsd-version.sh.in
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR bin/echo
+ACTION: LIST_DIR bin/sync
+ACTION: LIST_DIR bin/domainname

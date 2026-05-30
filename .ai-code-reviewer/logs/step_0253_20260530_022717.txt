@@ -1,0 +1,9 @@
+=== STEP 253 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*tests/libexec/ld.elf_so*'
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE tests/libexec

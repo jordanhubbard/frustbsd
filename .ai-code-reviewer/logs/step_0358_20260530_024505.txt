@@ -1,0 +1,29 @@
+=== STEP 358 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/stand/efi/loader:
+```
+Makefile
+Makefile.depend
+Makefile.depend.arm
+Makefile.depend.arm64
+Makefile.depend.options
+Makefile.depend.riscv
+arch
+autoload.c
+bootinfo.c
+conf.c
+copy.c
+efi_main.c
+framebuffer.c
+framebuffer.h
+loader_efi.h
+main.c
+version
+version.veriexec
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE stand/efi/loader/Makefile

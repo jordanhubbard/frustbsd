@@ -1,0 +1,118 @@
+=== STEP 145 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20/src/lib.rs:
+PROGRESS:
+📁 Directory: sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20
+   Files: 0/1
+📄 File: sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20/src/lib.rs
+✏️  Edits: 3 files modified
+
+```
+use std::os::raw::{c_ulonglong, c_ulong, c_uchar, c_int};
+
+// Constants from crypto_stream_xchacha20.h
+const CRYPTO_STREAM_XCHACHA20_KEYBYTES: c_ulong = 32;
+const CRYPTO_STREAM_XCHACHA20_NONCEBYTES: c_ulong = 24;
+const CRYPTO_STREAM_XCHACHA20_MESSAGEBYTES_MAX: c_ulonglong = u64::MAX;
+const CRYPTO_CORE_HCHACHA20_INPUTBYTES: usize = 16;
+const CRYPTO_CORE_HCHACHA20_OUTPUTBYTES: usize = 64;
+
+extern "C" {
+    fn crypto_core_hchacha20(
+        out: *mut c_uchar,
+        c: *const c_uchar,
+        k: *const c_uchar,
+        iv: *const c_uchar,
+    );
+    fn crypto_stream_chacha20(
+        c: *mut c_uchar,
+        clen: c_ulonglong,
+        n: *const c_uchar,
+        k: *const c_uchar,
+    ) -> c_int;
+    fn crypto_stream_chacha20_xor_ic(
+        c: *mut c_uchar,
+        m: *const c_uchar,
+        mlen: c_ulonglong,
+        n: *const c_uchar,
+        ic: u64,
+        k: *const c_uchar,
+    ) -> c_int;
+    fn randombytes_buf(buf: *mut c_uchar, n: c_ulong);
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_stream_xchacha20_keybytes() -> c_ulong {
+    CRYPTO_STREAM_XCHACHA20_KEYBYTES
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_stream_xchacha20_noncebytes() -> c_ulong {
+    CRYPTO_STREAM_XCHACHA20_NONCEBYTES
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_stream_xchacha20_messagebytes_max() -> c_ulonglong {
+    CRYPTO_STREAM_XCHACHA20_MESSAGEBYTES_MAX
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_stream_xchacha20(
+    c: *mut c_uchar,
+    clen: c_ulonglong,
+    n: *const c_uchar,
+    k: *const c_uchar,
+) -> c_int {
+    let mut k2: [c_uchar; CRYPTO_CORE_HCHACHA20_OUTPUTBYTES] = [0; CRYPTO_CORE_HCHACHA20_OUTPUTBYTES];
+    unsafe {
+        crypto_core_hchacha20(k2.as_mut_ptr(), n, k, std::ptr::null());
+    }
+    unsafe {
+        crypto_stream_chacha20(c, clen, n.add(CRYPTO_CORE_HCHACHA20_INPUTBYTES), k2.as_ptr())
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_stream_xchacha20_xor_ic(
+    c: *mut c_uchar,
+    m: *const c_uchar,
+    mlen: c_ulonglong,
+    n: *const c_uchar,
+    ic: u64,
+    k: *const c_uchar,
+) -> c_int {
+    let mut k2: [c_uchar; CRYPTO_CORE_HCHACHA20_OUTPUTBYTES] = [0; CRYPTO_CORE_HCHACHA20_OUTPUTBYTES];
+    unsafe {
+        crypto_core_hchacha20(k2.as_mut_ptr(), n, k, std::ptr::null());
+    }
+    unsafe {
+        crypto_stream_chacha20_xor_ic(c, m, mlen, n.add(CRYPTO_CORE_HCHACHA20_INPUTBYTES), ic, k2.as_ptr())
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_stream_xchacha20_xor(
+    c: *mut c_uchar,
+    m: *const c_uchar,
+    mlen: c_ulonglong,
+    n: *const c_uchar,
+    k: *const c_uchar,
+) -> c_int {
+    crypto_stream_xchacha20_xor_ic(c, m, mlen, n, 0u64, k)
+}
+
+#[no_mangle]
+pub extern "C" fn crypto_stream_xchacha20_keygen(k: *mut c_uchar) {
+    unsafe {
+        randombytes_buf(k, CRYPTO_STREAM_XCHACHA20_KEYBYTES);
+    }
+}
+```
+
+--- RESPONSE ---
+
+
+The build errors are from the FreeBSD top-level build system (`Makefile.inc1`). My Makefile includes `<src.opts.mk>` which pulls in the full build infrastructure. Let me fix the Makefile to be standalone.
+
+ACTION: READ_FILE sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20/stream_xchacha20.c

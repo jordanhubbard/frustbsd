@@ -1,0 +1,76 @@
+=== STEP 252 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/src/lib.rs:
+PROGRESS:
+📁 Directory: contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1
+   Files: 0/1
+📄 File: contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/src/lib.rs
+✏️  Edits: 2 files modified
+
+```
+use std::os::raw::{c_int, c_short, c_ulong};
+
+#[repr(C)]
+struct pollfd {
+    fd: c_int,
+    events: c_short,
+    revents: c_short,
+}
+
+type nfds_t = c_ulong;
+
+extern "C" {
+    fn poll(fds: *mut pollfd, nfds: nfds_t, timeout: c_int) -> c_int;
+}
+
+extern "C" {
+    static mut sleep_init: c_int;
+    static mut sleep_fini: c_int;
+    static mut dlopen_cookie: c_int;
+    static mut dlclose_cookie: c_int;
+}
+
+#[used]
+#[link_section = ".init_array"]
+pub static INIT1: unsafe extern "C" fn() = init1;
+
+#[used]
+#[link_section = ".fini_array"]
+pub static FINI1: unsafe extern "C" fn() = fini1;
+
+unsafe extern "C" fn init1() {
+    dlopen_cookie = 1;
+    if sleep_init != 0 {
+        loop {
+            poll(std::ptr::null_mut(), 0, -1);
+        }
+    }
+}
+
+unsafe extern "C" fn fini1() {
+    dlclose_cookie = 1;
+    if sleep_fini != 0 {
+        loop {
+            poll(std::ptr::null_mut(), 0, -1);
+        }
+    }
+}
+
+#[used]
+#[link_section = ".tdata"]
+static mut TLS_CALLBACK_VAR: c_int = 0;
+
+#[no_mangle]
+#[used]
+pub unsafe extern "C" fn tls_callback() {
+    TLS_CALLBACK_VAR = 1;
+}
+```
+
+--- RESPONSE ---
+
+
+Let me check how this test helper is built in the FreeBSD tree.
+
+ACTION: FIND_FILE tests/libexec/ld.elf_so

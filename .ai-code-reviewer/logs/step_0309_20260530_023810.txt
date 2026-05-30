@@ -1,0 +1,14 @@
+=== STEP 309 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1:
+```
+h_helper_dso1.c
+```
+
+--- RESPONSE ---
+
+
+I need to create the Rust replacement files for this unit. Let me write the Cargo.toml file with proper content:
+
+ACTION: WRITE_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/Cargo.toml

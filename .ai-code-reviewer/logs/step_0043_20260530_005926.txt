@@ -1,0 +1,16 @@
+=== STEP 43 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/usr.bin/jot:
+```
+Makefile
+Makefile.depend
+jot.1
+jot.c
+tests
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/jot

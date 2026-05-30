@@ -1,0 +1,18 @@
+=== STEP 36 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/usr.bin/primes:
+```
+Makefile
+Makefile.depend
+pattern.c
+pr_tbl.c
+primes.c
+primes.h
+spsp.c
+```
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE usr.bin/primes

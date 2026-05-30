@@ -1,0 +1,10 @@
+=== STEP 130 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/frustbsd/sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20/src/lib.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

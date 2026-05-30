@@ -1,0 +1,11 @@
+=== STEP 232 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/frustbsd/contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/src/lib.rs
+Scope: contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

@@ -1,0 +1,17 @@
+=== STEP 363 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/stand/efi/acpica:
+```
+Cargo.toml
+acpi_detect.c
+include
+src
+```
+
+--- RESPONSE ---
+
+
+The build errors are about the overall FreeBSD build system bootstrapping, not specifically about my Rust code. Let me try building just the Rust crate directly:
+
+ACTION: BUILD

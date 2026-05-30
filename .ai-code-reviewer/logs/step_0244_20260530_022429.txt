@@ -1,0 +1,14 @@
+=== STEP 244 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1:
+```
+Cargo.toml
+h_helper_dso1.c
+src
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/h_helper_dso1.c

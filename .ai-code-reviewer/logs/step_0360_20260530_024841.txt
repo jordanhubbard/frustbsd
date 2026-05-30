@@ -1,0 +1,176 @@
+=== STEP 360 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/frustbsd/stand/efi/acpica/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now I need to create the Rust source file that implements the acpi_detect functionality. Let me create the src directory and the lib.rs file:
+
+ACTION: WRITE_FILE stand/efi/acpica/src/lib.rs
+CONTENT:
+<<<
+/*-
+ * Copyright (c) 2014 Ed Maste <emaste@freebsd.org>
+ * Copyright (c) 2025 Kayla Powell <kpowkitty@FreeBSD.org>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+#![no_std]
+
+use core::ffi::c_void;
+
+// EFI types
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct EFI_GUID {
+    pub data1: u32,
+    pub data2: u16,
+    pub data3: u16,
+    pub data4: [u8; 8],
+}
+
+// ACPI table GUIDs
+pub const ACPI_TABLE_GUID: EFI_GUID = EFI_GUID {
+    data1: 0xeb9d2d30,
+    data2: 0x2d88,
+    data3: 0x11d3,
+    data4: [0x9a, 0x16, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d],
+};
+
+pub const EFI_ACPI_TABLE_GUID: EFI_GUID = EFI_GUID {
+    data1: 0x8868e871,
+    data2: 0xe4f1,
+    data3: 0x11d3,
+    data4: [0xbc, 0x22, 0x0, 0x80, 0xc7, 0x3c, 0x88, 0x81],
+};
+
+// ACPI RSDP structure
+#[repr(C)]
+pub struct ACPI_TABLE_RSDP {
+    pub Signature: [u8; 8],
+    pub Checksum: u8,
+    pub OemId: [u8; 6],
+    pub Revision: u8,
+    pub RsdtPhysicalAddress: u32,
+    // ACPI 2.0+ fields
+    pub Length: u32,
+    pub XsdtPhysicalAddress: u64,
+    pub ExtendedChecksum: u8,
+    pub Reserved: [u8; 3],
+}
+
+// Feature flags
+pub const FEATURE_EARLY_ACPI: u32 = 0x0001;
+
+// External EFI functions (declared as extern "C" for FFI)
+extern "C" {
+    fn efi_get_table(guid: *const EFI_GUID) -> *mut c_void;
+    fn setenv(name: *const i8, value: *const i8, overwrite: i32) -> i32;
+    fn feature_enable(feature: u32);
+}
+
+// Global state
+pub static mut acpi: EFI_GUID = ACPI_TABLE_GUID;
+pub static mut acpi20: EFI_GUID = EFI_ACPI_TABLE_GUID;
+pub static mut rsdp: *mut ACPI_TABLE_RSDP = core::ptr::null_mut();
+
+#[no_mangle]
+pub unsafe extern "C" fn acpi_detect() {
+    let mut buf = [0u8; 24];
+    let mut revision: u8;
+
+    feature_enable(FEATURE_EARLY_ACPI);
+
+    // Try ACPI 2.0 first, then ACPI 1.0
+    rsdp = efi_get_table(&acpi20 as *const EFI_GUID) as *mut ACPI_TABLE_RSDP;
+    if rsdp.is_null() {
+        rsdp = efi_get_table(&acpi as *const EFI_GUID) as *mut ACPI_TABLE_RSDP;
+        if rsdp.is_null() {
+            return;
+        }
+    }
+
+    // Set acpi.rsdp environment variable
+    let len = core::fmt::write(
+        &mut buf[..],
+        format_args!("0x{:016x}", rsdp as *const _ as usize),
+    );
+    if len.is_ok() {
+        let _ = setenv(b"acpi.rsdp\0".as_ptr() as *const i8, buf.as_ptr() as *const i8, 1);
+    }
+
+    revision = (*rsdp).Revision;
+    if revision == 0 {
+        revision = 1;
+    }
+
+    // Set acpi.revision
+    let len = core::fmt::write(
+        &mut buf[..],
+        format_args!("{}", revision),
+    );
+    if len.is_ok() {
+        let _ = setenv(b"acpi.revision\0".as_ptr() as *const i8, buf.as_ptr() as *const i8, 1);
+    }
+
+    // Set acpi.oem
+    let oem_id = &(*rsdp).OemId;
+    let oem_len = oem_id.len().min(buf.len());
+    buf[..oem_len].copy_from_slice(&oem_id[..oem_len]);
+    buf[oem_len] = 0;
+    let _ = setenv(b"acpi.oem\0".as_ptr() as *const i8, buf.as_ptr() as *const i8, 1);
+
+    // Set acpi.rsdt
+    let len = core::fmt::write(
+        &mut buf[..],
+        format_args!("0x{:016x}", (*rsdp).RsdtPhysicalAddress),
+    );
+    if len.is_ok() {
+        let _ = setenv(b"acpi.rsdt\0".as_ptr() as *const i8, buf.as_ptr() as *const i8, 1);
+    }
+
+    if revision >= 2 {
+        // Set acpi.xsdt
+        let len = core::fmt::write(
+            &mut buf[..],
+            format_args!("0x{:016x}", (*rsdp).XsdtPhysicalAddress),
+        );
+        if len.is_ok() {
+            let _ = setenv(b"acpi.xsdt\0".as_ptr() as *const i8, buf.as_ptr() as *const i8, 1);
+        }
+
+        // Set acpi.xsdt_length
+        let len = core::fmt::write(
+            &mut buf[..],
+            format_args!("{}", (*rsdp).Length),
+        );
+        if len.is_ok() {
+            let _ = setenv(b"acpi.xsdt_length\0".as_ptr() as *const i8, buf.as_ptr() as *const i8, 1);
+        }
+    }
+}
+>>>

@@ -1,0 +1,14 @@
+=== STEP 83 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/frustbsd/Makefile.inc1.
+Remaining files in contrib/llvm-project/llvm/lib/Target/PowerPC/TargetInfo:
+  - contrib/llvm-project/llvm/lib/Target/PowerPC/TargetInfo/PowerPCTargetInfo.h
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+This unit is LLVM compiler infrastructure, not FreeBSD userland. The build errors are system-level bootstrap issues. Let me try building the Rust crate directly.
+
+ACTION: BUILD

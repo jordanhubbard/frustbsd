@@ -1,0 +1,17 @@
+=== STEP 20 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/usr.bin/false:
+```
+Makefile
+Makefile.depend
+false.1
+false.c
+```
+
+--- RESPONSE ---
+
+
+`usr.bin/false` is a perfect candidate - a tiny command with just `false.c` and no Rust yet. Let me read the source.
+
+ACTION: SET_SCOPE usr.bin/false

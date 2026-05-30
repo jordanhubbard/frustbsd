@@ -1,0 +1,11 @@
+=== STEP 266 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/netbsd-tests*'
+
+--- RESPONSE ---
+
+
+The build is trying to build the entire world. Let me try building just the Rust crate directly to validate it compiles.
+
+ACTION: BUILD

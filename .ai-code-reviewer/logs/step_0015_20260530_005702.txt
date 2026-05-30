@@ -1,0 +1,11 @@
+=== STEP 15 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'bin/domainname/*.c'
+
+--- RESPONSE ---
+
+
+Let me find a suitable unit with C source files that hasn't been rewritten yet.
+
+ACTION: FIND_FILE bin/ls/*.c

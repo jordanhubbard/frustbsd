@@ -1,0 +1,10 @@
+=== STEP 240 ===
+
+--- REQUEST ---
+READ_FILE_ERROR: File not found: /usr/home/jkh/Src/frustbsd/share/mk/bsd.rust.mk
+TIP: Use FIND_FILE to locate files
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/Makefile

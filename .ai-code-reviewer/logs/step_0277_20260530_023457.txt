@@ -1,0 +1,11 @@
+=== STEP 277 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/netbsd-tests*'
+
+--- RESPONSE ---
+
+
+I need to create a Makefile for this unit to make it buildable. Let me create one that builds the Rust crate.
+
+ACTION: WRITE_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/Makefile

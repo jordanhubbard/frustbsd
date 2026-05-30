@@ -1,0 +1,28 @@
+=== STEP 276 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/tests:
+```
+Kyuafile
+Makefile
+Makefile.depend
+Makefile.inc0
+README
+__init__.py
+atf_python
+ci
+conftest.py
+etc
+examples
+freebsd_test_suite
+include
+oclo
+sys
+```
+
+--- RESPONSE ---
+
+
+Let me check how the parent test infrastructure builds these helpers.
+
+ACTION: FIND_FILE contrib/netbsd-tests

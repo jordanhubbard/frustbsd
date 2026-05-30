@@ -1,0 +1,30 @@
+=== STEP 115 ===
+
+--- REQUEST ---
+GREP_RESULT for '_SC_NPROCESSORS_CONF':
+```
+./include/unistd.h:292:#define	_SC_NPROCESSORS_CONF	57
+./tools/test/auxinfo/auxinfo.c:52:	printf("NCPUs: %ld\n", sysconf(_SC_NPROCESSORS_CONF));
+./contrib/jemalloc/src/jemalloc.c:762: * - _SC_NPROCESSORS_CONF
+./contrib/jemalloc/src/jemalloc.c:772:	long cpu_conf = sysconf(_SC_NPROCESSORS_CONF);
+./lib/libc/tests/sys/cpuset_test.c:735:		ninfo.nproc_global = sysconf(_SC_NPROCESSORS_CONF);
+./lib/libc/tests/sys/cpuset_test.c:770:	 * jail, and that its _SC_NPROCESSORS_CONF did not.
+./lib/libc/gen/sysconf.c:599:	case _SC_NPROCESSORS_CONF:
+./lib/libthr/thread/thr_init.c:514:		_thr_is_smp = sysconf(_SC_NPROCESSORS_CONF);
+./lib/libthr/thread/thr_init.c:516:			PANIC("Cannot get _SC_NPROCESSORS_CONF");
+./cddl/contrib/opensolaris/lib/libdtrace/common/dt_aggregate.c:1102:	agp->dtat_ncpu = dt_sysconf(dtp, _SC_NPROCESSORS_CONF);
+./bin/nproc/nproc.c:113:		cpus = sysconf(_SC_NPROCESSORS_CONF);
+```
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE tools/test/auxinfo/src/main.rs
+OLD:
+<<<
+const _SC_NPROCESSORS_CONF: c_int = 84;
+>>>
+NEW:
+<<<
+const _SC_NPROCESSORS_CONF: c_int = 57;
+>>>

@@ -1,0 +1,30 @@
+=== STEP 187 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/tools/tools/shlib-compat/test/libtest1/Symbol.map:
+PROGRESS:
+📁 Directory: tools/tools/shlib-compat/test/libtest1
+   Files: 0/2
+📄 File: tools/tools/shlib-compat/test/libtest1/Symbol.map
+
+```
+/*
+ */
+
+TEST_1.0 {
+	func1;
+	func2;
+	func3;
+	func4;
+	func5;
+	func6;
+};
+
+```
+
+--- RESPONSE ---
+
+
+This is a shared library test unit. I need to create a Rust `cdylib` that exports the same C ABI symbols. Let me check how a completed library unit was handled.
+
+ACTION: READ_FILE usr.bin/asa/Makefile

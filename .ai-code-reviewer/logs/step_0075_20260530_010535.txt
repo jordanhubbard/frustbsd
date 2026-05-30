@@ -1,0 +1,16 @@
+=== STEP 75 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/contrib/llvm-project/llvm:
+```
+LICENSE.TXT
+include
+lib
+tools
+utils
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR contrib/llvm-project/llvm/lib

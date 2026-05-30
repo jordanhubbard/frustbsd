@@ -1,0 +1,184 @@
+=== STEP 89 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/.ai-code-reviewer/REWRITE-INDEX.md:
+
+📋 CHUNKED FILE REWRITE MODE
+   File: /usr/home/jkh/Src/frustbsd/.ai-code-reviewer/REWRITE-INDEX.md
+   Total chunks: 66
+   Strategy: Function-by-function rewrite
+   Use ACTION: NEXT_CHUNK to continue
+   Use ACTION: SKIP_FILE to move to next file
+
+PROGRESS:
+📁 Directory: contrib/llvm-project/llvm/lib/Target/PowerPC/TargetInfo
+   Files: 0/2
+📄 File: .ai-code-reviewer/REWRITE-INDEX.md
+   Chunks: 1/66
+✏️  Edits: 2 files modified
+
+```
+=== CHUNK 1/66: /usr/home/jkh/Src/frustbsd/.ai-code-reviewer/REWRITE-INDEX.md === [line_chunk: chunk_1]
+=== Lines 1-250 (250 lines) ===
+
+# Source Rewrite Index
+
+This file tracks rewrite progress across the source tree.
+**DO NOT EDIT MANUALLY** - Updated automatically by the review tool.
+
+Generated: 2026-05-30 00:58
+
+## Status Legend
+- `[ ]` Pending - needs rewrite
+- `[>]` Current - being rewriting now
+- `[x]` Done - rewritten and committed
+- `[-]` Skipped - no changes needed or deferred
+
+## Progress
+- Total work units: 8132
+- Completed: 49 (0%)
+- Skipped: 283
+- Remaining: 7800
+
+## Current Position
+CURRENT POSITION: `contrib/llvm-project/llvm/lib/Target/PowerPC/TargetInfo`
+
+## Stage: unknown (49/8132 done)
+
+- [-] `bin/cat` (1 .c, 0 .h, 761 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/cat/Makefile", "bin/cat/cat.1", "bin/cat/cat.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/cat/tests` (0 .c, 0 .h, 19 lines)
+  <!-- unit: {"files": ["bin/cat/tests/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [-] `bin/chflags` (1 .c, 0 .h, 488 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/chflags/Makefile", "bin/chflags/chflags.1", "bin/chflags/chflags.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/chflags/tests` (0 .c, 0 .h, 65 lines)
+  <!-- unit: {"files": ["bin/chflags/tests/Makefile", "bin/chflags/tests/chflags_test.sh"], "kind": "tests", "stage": "unknown"} -->
+- [-] `bin/chio` (1 .c, 2 .h, 1647 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/chio/Makefile", "bin/chio/chio.1", "bin/chio/chio.c", "bin/chio/defs.h", "bin/chio/pathnames.h"], "kind": "directory", "stage": "unknown"} -->
+- [-] `bin/chmod` (1 .c, 0 .h, 618 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/chmod/Makefile", "bin/chmod/chmod.1", "bin/chmod/chmod.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/chmod/tests` (0 .c, 0 .h, 179 lines)
+  <!-- unit: {"files": ["bin/chmod/tests/Makefile", "bin/chmod/tests/chmod_test.sh"], "kind": "tests", "stage": "unknown"} -->
+- [-] `bin/cp` (2 .c, 1 .h, 1614 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/cp/Makefile", "bin/cp/cp.1", "bin/cp/cp.c", "bin/cp/extern.h", "bin/cp/utils.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/cp/tests` (0 .c, 0 .h, 921 lines)
+  <!-- unit: {"files": ["bin/cp/tests/Makefile", "bin/cp/tests/cp_test.sh"], "kind": "tests", "stage": "unknown"} -->
+- [-] `bin/cpuset` (1 .c, 0 .h, 560 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/cpuset/Makefile", "bin/cpuset/cpuset.1", "bin/cpuset/cpuset.c"], "kind": "directory", "stage": "unknown"} -->
+- [-] `bin/csh` (1 .c, 3 .h, 678 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/csh/Makefile", "bin/csh/config.h", "bin/csh/config_p.h", "bin/csh/iconv_stub.c", "bin/csh/iconv_stub.h"], "kind": "directory", "stage": "unknown"} -->
+- [-] `bin/date` (2 .c, 1 .h, 1732 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/date/Makefile", "bin/date/date.1", "bin/date/date.c", "bin/date/vary.c", "bin/date/vary.h"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/date/tests` (0 .c, 0 .h, 166 lines)
+  <!-- unit: {"files": ["bin/date/tests/Makefile", "bin/date/tests/format_string_test.sh"], "kind": "tests", "stage": "unknown"} -->
+- [-] `bin/dd` (7 .c, 2 .h, 2929 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/dd/Makefile", "bin/dd/args.c", "bin/dd/conv.c", "bin/dd/conv_tab.c", "bin/dd/dd.1", "bin/dd/dd.c", "bin/dd/dd.h", "bin/dd/extern.h", "bin/dd/gen.c", "bin/dd/misc.c", "bin/dd/position.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/dd/tests` (0 .c, 0 .h, 103 lines)
+  <!-- unit: {"files": ["bin/dd/tests/Makefile", "bin/dd/tests/dd2_test.sh"], "kind": "tests", "stage": "unknown"} -->
+- [-] `bin/df` (1 .c, 0 .h, 1013 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/df/Makefile", "bin/df/df.1", "bin/df/df.c"], "kind": "directory", "stage": "unknown"} -->
+- [x] `bin/domainname` (1 .c, 0 .h, 144 lines) - 2026-05-21 - Rewritten by session 20260521_104508
+  <!-- unit: {"files": ["bin/domainname/Makefile", "bin/domainname/domainname.1", "bin/domainname/domainname.c"], "kind": "directory", "stage": "unknown"} -->
+- [x] `bin/echo` (1 .c, 0 .h, 256 lines) - 2026-05-21 - Rewritten by session 20260521_122130
+  <!-- unit: {"files": ["bin/echo/Makefile", "bin/echo/echo.1", "bin/echo/echo.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/echo/tests` (0 .c, 0 .h, 61 lines)
+  <!-- unit: {"files": ["bin/echo/tests/Makefile", "bin/echo/tests/echo_test.sh"], "kind": "tests", "stage": "unknown"} -->
+- [-] `bin/ed` (7 .c, 1 .h, 4117 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/ed/Makefile", "bin/ed/README", "bin/ed/buf.c", "bin/ed/ed.1", "bin/ed/ed.h", "bin/ed/glbl.c", "bin/ed/io.c", "bin/ed/main.c", "bin/ed/re.c", "bin/ed/sub.c", "bin/ed/undo.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/ed/test` (0 .c, 0 .h, 166 lines)
+  <!-- unit: {"files": ["bin/ed/test/Makefile", "bin/ed/test/README", "bin/ed/test/ckscripts.sh", "bin/ed/test/mkscripts.sh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/ed/tests` (0 .c, 0 .h, 2118 lines)
+  <!-- unit: {"files": ["bin/ed/tests/Makefile", "bin/ed/tests/ed_test.sh"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `bin/expr` (0 .c, 0 .h, 904 lines)
+  <!-- unit: {"files": ["bin/expr/Makefile", "bin/expr/expr.1", "bin/expr/expr.y"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/expr/tests` (0 .c, 0 .h, 8 lines)
+  <!-- unit: {"files": ["bin/expr/tests/Makefile"], "kind": "tests", "stage": "unknown"} -->
+- [ ] `bin/freebsd-version` (0 .c, 0 .h, 149 lines)
+  <!-- unit: {"files": ["bin/freebsd-version/Makefile", "bin/freebsd-version/freebsd-version.1"], "kind": "directory", "stage": "unknown"} -->
+- [-] `bin/getfacl` (1 .c, 0 .h, 433 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/getfacl/Makefile", "bin/getfacl/getfacl.1", "bin/getfacl/getfacl.c"], "kind": "directory", "stage": "unknown"} -->
+- [x] `bin/hostname` (1 .c, 0 .h, 203 lines) - 2026-05-21 - Rewritten by session 20260521_104508
+  <!-- unit: {"files": ["bin/hostname/Makefile", "bin/hostname/hostname.1", "bin/hostname/hostname.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/hostname/tests` (0 .c, 0 .h, 94 lines)
+  <!-- unit: {"files": ["bin/hostname/tests/Makefile", "bin/hostname/tests/hostname_test.sh"], "kind": "tests", "stage": "unknown"} -->
+- [-] `bin/kenv` (1 .c, 0 .h, 397 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/kenv/Makefile", "bin/kenv/kenv.1", "bin/kenv/kenv.c"], "kind": "directory", "stage": "unknown"} -->
+- [-] `bin/kill` (1 .c, 0 .h, 343 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/kill/Makefile", "bin/kill/kill.1", "bin/kill/kill.c"], "kind": "directory", "stage": "unknown"} -->
+- [-] `bin/ln` (1 .c, 0 .h, 1208 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/ln/Makefile", "bin/ln/ln.1", "bin/ln/ln.c", "bin/ln/symlink.7"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/ln/tests` (0 .c, 0 .h, 298 lines)
+  <!-- unit: {"files": ["bin/ln/tests/Makefile", "bin/ln/tests/ln_test.sh"], "kind": "tests", "stage": "unknown"} -->
+- [-] `bin/ls` (4 .c, 2 .h, 3490 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/ls/Makefile", "bin/ls/cmp.c", "bin/ls/extern.h", "bin/ls/ls.1", "bin/ls/ls.c", "bin/ls/ls.h", "bin/ls/print.c", "bin/ls/util.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/ls/tests` (0 .c, 0 .h, 1034 lines)
+  <!-- unit: {"files": ["bin/ls/tests/Makefile", "bin/ls/tests/ls_tests.sh"], "kind": "tests", "stage": "unknown"} -->
+- [x] `bin/mkdir` (1 .c, 0 .h, 335 lines) - 2026-05-21 - Rewritten by session 20260521_122130
+  <!-- unit: {"files": ["bin/mkdir/Makefile", "bin/mkdir/mkdir.1", "bin/mkdir/mkdir.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/mkdir/tests` (0 .c, 0 .h, 63 lines)
+  <!-- unit: {"files": ["bin/mkdir/tests/Makefile", "bin/mkdir/tests/mkdir_test.sh"], "kind": "tests", "stage": "unknown"} -->
+- [-] `bin/mv` (1 .c, 0 .h, 690 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/mv/Makefile", "bin/mv/mv.1", "bin/mv/mv.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/mv/tests` (0 .c, 0 .h, 513 lines)
+  <!-- unit: {"files": ["bin/mv/tests/Makefile", "bin/mv/tests/mv_test.sh"], "kind": "tests", "stage": "unknown"} -->
+- [x] `bin/nproc` (1 .c, 0 .h, 196 lines) - 2026-05-21 - Rewritten by session 20260521_104508
+  <!-- unit: {"files": ["bin/nproc/Makefile", "bin/nproc/nproc.1", "bin/nproc/nproc.c"], "kind": "directory", "stage": "unknown"} -->
+- [-] `bin/pax` (16 .c, 10 .h, 15647 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/pax/Makefile", "bin/pax/ar_io.c", "bin/pax/ar_subs.c", "bin/pax/buf_subs.c", "bin/pax/cache.c", "bin/pax/cache.h", "bin/pax/cpio.c", "bin/pax/cpio.h", "bin/pax/extern.h", "bin/pax/file_subs.c", "bin/pax/ftree.c", "bin/pax/ftree.h", "bin/pax/gen_subs.c", "bin/pax/getoldopt.c", "bin/pax/options.c", "bin/pax/options.h", "bin/pax/pat_rep.c", "bin/pax/pat_rep.h", "bin/pax/pax.1", "bin/pax/pax.c", "bin/pax/pax.h", "bin/pax/sel_subs.c", "bin/pax/sel_subs.h", "bin/pax/tables.c", "bin/pax/tables.h", "bin/pax/tar.c", "bin/pax/tar.h", "bin/pax/tty_subs.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/pax/tests` (0 .c, 0 .h, 93 lines)
+  <!-- unit: {"files": ["bin/pax/tests/Makefile", "bin/pax/tests/legacy_test.pl"], "kind": "tests", "stage": "unknown"} -->
+- [-] `bin/pkill` (1 .c, 0 .h, 1325 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/pkill/Makefile", "bin/pkill/pkill.1", "bin/pkill/pkill.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `bin/pkill/tests` (1 .c, 0 .h, 1297 lines)
+  <!-- unit: {"files": ["bin/pkill/tests/Makefile", "bin/pkill/tests/pgrep-_f_test.sh", "bin/pkill/tests/pgrep-_g_test.sh", "bin/pkill/tests/pgrep-_lf_test.sh", "bin/pkill/tests/pgrep-_p_test.sh", "bin/pkill/tests/pgrep-_s_test.sh", "bin/pkill/tests/pgrep-_u_test.sh", "bin/pkill/tests/pgrep-f_test.sh", "bin/pkill/tests/pgrep-g_test.sh", "bin/pkill/tests/pgrep-i_test.sh", "bin/pkill/tests/pgrep-j_test.sh", "bin/pkill/tests/pgrep-l_test.sh", "bin/pkill/tests/pgrep-n_test.sh", "bin/pkill/tests/pgrep-o_test.sh", "bin/pkill/tests/pgrep-q_test.sh", "bin/pkill/tests/pgrep-s_test.sh", "bin/pkill/tests/pgrep-t_test.sh", "bin/pkill/tests/pgrep-v_test.sh", "bin/pkill/tests/pgrep-x_test.sh", "bin/pkill/tests/pkill-_f_test.sh", "bin/pkill/tests/pkill-_g_test.sh", "bin/pkill/tests/pkill-_lf_test.sh", "bin/pkill/tests/pkill-_p_test.sh", "bin/pkill/tests/pkill-_u_test.sh", "bin/pkill/tests/pkill-g_test.sh", "bin/pkill/tests/pkill-i_test.sh", "bin/pkill/tests/pkill-j_test.sh", "bin/pkill/tests/pkill-s_test.sh", "bin/pkill/tests/pkill-t_test.sh", "bin/pkill/tests/pkill-x_test.sh", "bin/pkill/tests/spin_helper.c"], "kind": "tests", "stage": "unknown"} -->
+- [-] `bin/ps` (5 .c, 2 .h, 4315 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/ps/Makefile", "bin/ps/extern.h", "bin/ps/fmt.c", "bin/ps/keyword.c", "bin/ps/nlist.c", "bin/ps/print.c", "bin/ps/ps.1", "bin/ps/ps.c", "bin/ps/ps.h"], "kind": "directory", "stage": "unknown"} -->
+- [-] `bin/pwait` (1 .c, 0 .h, 426 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["bin/pwait/Makefile", "bin/pwait/pwait.1", "bin/pwait/pwait.c"], "kind
+
+... [history compacted: omitted 22649 chars] ...
+
+trace/test/tst/common/ip/tst.ipv4remoteudp.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/ip/tst.ipv4remoteudplite.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/ip/tst.ipv6localicmp.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/ip/tst.ipv6remoteicmp.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/ip/tst.localsctpstate.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/ip/tst.localtcpstate.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/ip/tst.remotesctpstate.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/ip/tst.remotetcpstate.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api` (2 .c, 0 .h, 660 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.Abort.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.Bean.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.Close.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.Drop.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.Enable.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.FunctionLookup.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.FunctionLookup.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.GetAggregate.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.MaxConsumers.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.MultiAggPrinta.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.ProbeData.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.ProbeData.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.ProbeDescription.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.StateMachine.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/java_api/tst.StopLock.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [-] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/json` (1 .c, 0 .h, 66 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/json/tst.usdt.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/kinst` (0 .c, 0 .h, 48 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/kinst/tst.basic.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/lexer` (0 .c, 0 .h, 54 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/lexer/tst.D_MACRO_OFLOW.ParIntOvflow.d.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/mdb` (0 .c, 0 .h, 85 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/mdb/tst.dtracedcmd.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/mib` (0 .c, 0 .h, 308 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/mib/tst.icmp.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/mib/tst.tcp.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/mib/tst.udp.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/misc` (0 .c, 0 .h, 436 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/misc/tst.dofmax.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/misc/tst.enablerace.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/misc/tst.include.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/misc/tst.macroglob.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/misc/tst.schrock.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/nfs` (2 .c, 0 .h, 562 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/nfs/tst.call.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/nfs/tst.call3.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat` (0 .c, 0 .h, 1653 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.agg.avg.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.agg.count.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.agg.llquantize.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.agg.lquantize.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.agg.max.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.agg.min.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.agg.quantize.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.agg.stddev.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.agg.sum.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.aggmod.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.aggstack.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.aggsym.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.aggustack.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.aggusym.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.drop.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.mod.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.print.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.printf.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.printm.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.stack.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.sym.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.trace.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.tracemem.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.umod.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.ustack.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/oformat/tst.usym.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid` (9 .c, 0 .h, 1373 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.addprobes.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.args1.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.float.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.fork.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.gcc.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.killonerror.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.main.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.manypids.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.newprobes.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.probemod.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.provregex1.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.provregex2.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.provregex3.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.provregex4.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.ret1.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.ret2.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.vfork.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.weak1.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pid/tst.weak2.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pragma` (0 .c, 0 .h, 623 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pragma/err.circlibdep.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pragma/err.invalidlibdep.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pragma/tst.libchain.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pragma/tst.libdep.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pragma/tst.libdepfullyconnected.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pragma/tst.libdepsepdir.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pragma/tst.temporal.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/pragma/tst.temporal2.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/predicates` (0 .c, 0 .h, 197 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/predicates/tst.predcache.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/printa` (0 .c, 0 .h, 145 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/printa/tst.largeusersym.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/printa/tst.walltimestamp.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/printf` (0 .c, 0 .h, 112 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/printf/tst.printT.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/printf/tst.printY.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/privs` (0 .c, 0 .h, 801 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/privs/tst.fds.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/privs/tst.func_access.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/privs/tst.getf.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/privs/tst.kpriv.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/privs/tst.op_access.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/privs/tst.procpriv.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/privs/tst.providers.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/privs/tst.unpriv_funcs.ksh"], "kind": "directory", "stage": "unknown"} -->
+- [-] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes` (1 .c, 0 .h, 47 lines) - Auto-skipped after 3 retries
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/probes/tst.probestar.c"], "kind": "directory", "stage": "unknown"} -->
+- [ ] `cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/proc` (2 .c, 0 .h, 899 lines)
+  <!-- unit: {"files": ["cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/proc/tst.create.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/proc/tst.discard.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/proc/tst.exec.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/proc/tst.execfail.ENOENT.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/proc/tst.execfail.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/proc/tst.exitcore.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/proc/tst.exitcore.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/proc/tst.exitexit.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/proc/tst.exitkilled.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/proc/tst.signal.ksh", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/proc/tst.sigwait.c", "cddl/contrib/opensolaris/cmd/dtrace/test/tst/common/proc/tst.startexit.ksh"], "kind": "directory", "stage": "unknown"} -->
+
+```
+
+--- RESPONSE ---
+
+
+The build errors are system-level bootstrap issues about libclang cross-compilation. This is LLVM compiler infrastructure, not FreeBSD userland. Let me try building the Rust crate directly.
+
+ACTION: BUILD

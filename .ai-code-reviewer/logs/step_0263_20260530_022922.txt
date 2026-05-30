@@ -1,0 +1,26 @@
+=== STEP 263 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/tests:
+```
+Kyuafile
+Makefile
+Makefile.depend
+Makefile.inc0
+README
+__init__.py
+atf_python
+ci
+conftest.py
+etc
+examples
+freebsd_test_suite
+include
+oclo
+sys
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE tests/Makefile

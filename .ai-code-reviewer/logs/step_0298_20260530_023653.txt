@@ -1,0 +1,11 @@
+=== STEP 298 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+The WRITE_FILE action seems to require a specific format. Let me try including the content properly.
+
+ACTION: WRITE_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/Cargo.toml

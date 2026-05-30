@@ -1,0 +1,23 @@
+=== STEP 8 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/bin/hostname:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+hostname.1
+hostname.c
+src
+tests
+```
+
+--- RESPONSE ---
+
+
+`bin/hostname` already has Rust files. Let me check other small commands.
+
+ACTION: LIST_DIR bin/echo
+ACTION: LIST_DIR bin/sync
+ACTION: LIST_DIR bin/nproc

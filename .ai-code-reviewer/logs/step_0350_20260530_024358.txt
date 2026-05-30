@@ -1,0 +1,13 @@
+=== STEP 350 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/stand/efi/acpica:
+```
+acpi_detect.c
+include
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE stand/efi/acpica/acpi_detect.c

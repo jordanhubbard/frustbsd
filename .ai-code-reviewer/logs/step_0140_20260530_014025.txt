@@ -1,0 +1,16 @@
+=== STEP 140 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/frustbsd/Makefile.inc1.
+Remaining files in sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20:
+  (All tracked files rewritten or skipped in this directory)
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+The build errors are system-level bootstrap issues from `Makefile.inc1` - the build system is trying to do a full buildworld. The current scope `sys/contrib/libsodium/src/libsodium/crypto_stream/xchacha20` is a kernel contrib library, not userland. I should move to a proper userland unit.
+
+Let me find a small pending userland command to work on.
+
+ACTION: SET_SCOPE usr.bin/true

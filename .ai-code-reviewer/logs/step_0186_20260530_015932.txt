@@ -1,0 +1,30 @@
+=== STEP 186 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/tools/tools/shlib-compat/test/Makefile.inc:
+PROGRESS:
+📁 Directory: tools/tools/shlib-compat/test/libtest1
+   Files: 0/2
+📄 File: tools/tools/shlib-compat/test/Makefile.inc
+
+```
+LIB=		test${TESTNUM}
+SHLIB_MAJOR=	0
+
+SRCS+=		test.c
+
+WARNS?=		3
+
+DEBUG_FLAGS?=	-g
+
+VERSION_DEF=	${.CURDIR}/../Versions.def
+SYMBOL_MAPS=	${.CURDIR}/Symbol.map
+
+MK_DEBUG_FILES=	yes
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE tools/tools/shlib-compat/test/libtest1/Symbol.map

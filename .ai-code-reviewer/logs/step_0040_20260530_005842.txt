@@ -1,0 +1,14 @@
+=== STEP 40 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/whereis is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/PowerPC/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me try the LLVM unit that the system keeps suggesting.
+
+ACTION: SET_SCOPE contrib/llvm-project/llvm/lib/Target/PowerPC/TargetInfo

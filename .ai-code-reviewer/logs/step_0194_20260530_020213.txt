@@ -1,0 +1,13 @@
+=== STEP 194 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/frustbsd/tools/tools/shlib-compat/test/libtest1/Makefile
+Scope: tools/tools/shlib-compat/test/libtest1
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level FreeBSD build system, not from my unit. Let me try building again with the standalone Makefile.
+
+ACTION: BUILD

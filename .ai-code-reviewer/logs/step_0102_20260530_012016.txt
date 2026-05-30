@@ -1,0 +1,23 @@
+=== STEP 102 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/tools/test/auxinfo/Makefile:
+PROGRESS:
+📁 Directory: tools/test/auxinfo
+   Files: 0/2
+📄 File: tools/test/auxinfo/Makefile
+
+```
+PROG=	auxinfo
+MAN=
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+This is a simple userland test tool. Let me check for Rust build infrastructure in the tree.
+
+ACTION: FIND_FILE share/mk/bsd.rust.mk

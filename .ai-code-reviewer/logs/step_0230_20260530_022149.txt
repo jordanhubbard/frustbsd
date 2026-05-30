@@ -1,0 +1,35 @@
+=== STEP 230 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/frustbsd/contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/src/lib.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/src/lib.rs
+OLD:
+<<<
+use std::os::raw::c_int;
+
+extern "C" {
+    fn poll(fds: *mut libc::pollfd, nfds: libc::nfds_t, timeout: c_int) -> c_int;
+}
+>>>
+NEW:
+<<<
+use std::os::raw::{c_int, c_ulong};
+
+#[repr(C)]
+struct pollfd {
+    fd: c_int,
+    events: c_short,
+    revents: c_short,
+}
+
+type nfds_t = c_ulong;
+
+extern "C" {
+    fn poll(fds: *mut pollfd, nfds: nfds_t, timeout: c_int) -> c_int;
+}
+>>>

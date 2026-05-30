@@ -1,0 +1,11 @@
+=== STEP 109 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*contrib/rust*'
+
+--- RESPONSE ---
+
+
+I need to check if libc is available or if I should use raw syscalls instead.
+
+ACTION: FIND_FILE sys/lib/libc

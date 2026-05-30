@@ -1,0 +1,21 @@
+=== STEP 185 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/tools/tools/shlib-compat/test/libtest1/Makefile:
+PROGRESS:
+📁 Directory: tools/tools/shlib-compat/test/libtest1
+   Files: 0/2
+📄 File: tools/tools/shlib-compat/test/libtest1/Makefile
+
+```
+TESTNUM=	1
+
+.include <../Makefile.inc>
+.include <bsd.lib.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE tools/tools/shlib-compat/test/Makefile.inc

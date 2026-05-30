@@ -1,0 +1,61 @@
+=== STEP 229 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/frustbsd/contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/src/lib.rs
+CONTENT:
+<<<
+use std::os::raw::c_int;
+
+extern "C" {
+    fn poll(fds: *mut libc::pollfd, nfds: libc::nfds_t, timeout: c_int) -> c_int;
+}
+
+extern "C" {
+    static mut sleep_init: c_int;
+    static mut sleep_fini: c_int;
+    static mut dlopen_cookie: c_int;
+    static mut dlclose_cookie: c_int;
+}
+
+#[used]
+#[link_section = ".init_array"]
+pub static INIT1: unsafe extern "C" fn() = init1;
+
+#[used]
+#[link_section = ".fini_array"]
+pub static FINI1: unsafe extern "C" fn() = fini1;
+
+unsafe extern "C" fn init1() {
+    dlopen_cookie = 1;
+    if sleep_init != 0 {
+        loop {
+            poll(std::ptr::null_mut(), 0, -1);
+        }
+    }
+}
+
+unsafe extern "C" fn fini1() {
+    dlclose_cookie = 1;
+    if sleep_fini != 0 {
+        loop {
+            poll(std::ptr::null_mut(), 0, -1);
+        }
+    }
+}
+
+#[used]
+#[link_section = ".tdata"]
+static mut TLS_CALLBACK_VAR: c_int = 0;
+
+#[no_mangle]
+#[used]
+pub unsafe extern "C" fn tls_callback() {
+    TLS_CALLBACK_VAR = 1;
+}
+>>>

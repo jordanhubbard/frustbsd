@@ -1,0 +1,12 @@
+=== STEP 268 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*bsd.test*':
+```
+./share/mk/bsd.test.mk
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE share/mk/bsd.test.mk

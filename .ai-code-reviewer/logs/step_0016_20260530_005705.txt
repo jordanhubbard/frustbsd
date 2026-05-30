@@ -1,0 +1,9 @@
+=== STEP 16 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching 'bin/ls/*.c'
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE bin/test/*.c

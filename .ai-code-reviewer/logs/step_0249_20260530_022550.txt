@@ -1,0 +1,12 @@
+=== STEP 249 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/contrib/netbsd-tests/libexec:
+```
+ld.elf_so
+```
+
+--- RESPONSE ---
+
+
+ACTION: LIST_DIR contrib/netbsd-tests

@@ -1,0 +1,22 @@
+=== STEP 38 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/usr.bin/what:
+```
+Cargo.lock
+Cargo.toml
+Makefile
+Makefile.depend
+cargo-target
+src
+what
+what.1
+what.c
+```
+
+--- RESPONSE ---
+
+
+Let me try to find a unit that is actually pending.
+
+ACTION: LIST_DIR usr.bin/whereis

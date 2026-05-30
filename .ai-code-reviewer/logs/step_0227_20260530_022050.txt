@@ -1,0 +1,40 @@
+=== STEP 227 ===
+
+--- REQUEST ---
+SET_SCOPE_OK: Now rewriting contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1
+
+HIERARCHY:
+  Level 1: Source tree (8132 work units)
+  Level 2: contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1 ← YOU ARE HERE
+  Level 3: 1 candidate files
+  Level 4: Functions (auto-chunked for large files)
+
+WORK UNIT:
+  Kind: directory
+  Stage: unknown
+  Depends on: (none)
+  Related files:
+    - contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/h_helper_dso1.c
+
+⚠ No Makefile - may be subdirectory
+
+FILES TO REWRITE:
+  - contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/h_helper_dso1.c
+
+📁 Directory: contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1
+   Files: 0/1
+
+WORKFLOW:
+1. Rewrite each relevant file (READ_FILE, NEXT_CHUNK for large files)
+2. Make changes as needed (EDIT_FILE or WRITE_FILE)
+3. When ALL relevant files are rewritten: ACTION: BUILD
+4. If build succeeds: Changes committed for entire directory
+5. Move to next directory (SET_SCOPE)
+
+Attempts recorded for contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1: 1/3.
+2 attempt(s) remain before auto-skip.
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE contrib/netbsd-tests/libexec/ld.elf_so/helper_dso1/h_helper_dso1.c

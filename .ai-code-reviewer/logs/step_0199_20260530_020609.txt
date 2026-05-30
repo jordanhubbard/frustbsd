@@ -1,0 +1,20 @@
+=== STEP 199 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Already scoped to contrib/llvm-project/libc/src/__support/OSUtil/windows. Do not switch work units.
+
+Your active scope is `contrib/llvm-project/libc/src/__support/OSUtil/windows` and has not been completed.
+Continue working there instead of selecting a new directory:
+  1. Use READ_FILE on files within contrib/llvm-project/libc/src/__support/OSUtil/windows
+  2. Make any required rewrite edits (EDIT_FILE / WRITE_FILE)
+  3. Run ACTION: BUILD to validate and commit the unit
+
+Files in scope:
+  - contrib/llvm-project/libc/src/__support/OSUtil/windows/exit.cpp
+  - contrib/llvm-project/libc/src/__support/OSUtil/windows/io.cpp
+  - contrib/llvm-project/libc/src/__support/OSUtil/windows/io.h
+
+--- RESPONSE ---
+
+
+ACTION: SKIP_FILE
