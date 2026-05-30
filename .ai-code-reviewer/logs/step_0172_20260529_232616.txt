@@ -1,0 +1,47 @@
+=== STEP 172 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/mdo
+   Files: 1/3
+📄 File: usr.bin/mdo/mdo.c
+   Chunks: 5/17
+
+```
+=== CHUNK 5/17: /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c === [function: alloc_wrap]
+=== Lines 160-184 (25 lines) ===
+
+static int
+alloc_wrap(struct alloc_wrap_data *const data, struct alloc *alloc)
+{
+	int error;
+
+	/* Avoid a systematic ERANGE on first iteration. */
+	if (alloc_is_empty(alloc))
+		alloc_realloc(alloc);
+
+	for (;;) {
+		error = data->func(data, alloc);
+		if (error != ERANGE)
+			break;
+		alloc_realloc(alloc);
+	}
+
+	return (error);
+}
+
+struct getpwnam_wrapper_data {
+	struct alloc_wrap_data	  wrapped;
+	const char		 *name;
+	struct passwd		**pwdp;
+};
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

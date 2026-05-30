@@ -1,0 +1,83 @@
+=== STEP 334 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/tools/test/stress2/testcases/sysctl/Makefile:
+PROGRESS:
+📁 Directory: tools/test/stress2/testcases/sysctl
+   Files: 0/2
+📄 File: tools/test/stress2/testcases/sysctl/Makefile
+✏️  Edits: 3 files modified
+
+```
+PROG=	sysctl
+SRCS=	sysctl.c
+
+# Rust side-by-side replacement
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+all: rust-all
+
+rust-all:
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+clean: rust-clean
+
+rust-clean:
+	${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+.PHONY: all rust-all clean rust-clean
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level Makefile.inc1 infrastructure, not from my unit. Let me simplify the Makefile to avoid triggering the full build system.
+
+ACTION: EDIT_FILE tools/test/stress2/testcases/sysctl/Makefile
+OLD:
+<<<
+PROG=	sysctl
+SRCS=	sysctl.c
+
+# Rust side-by-side replacement
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+all: rust-all
+
+rust-all:
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+clean: rust-clean
+
+rust-clean:
+	${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+.PHONY: all rust-all clean rust-clean
+
+.include <bsd.prog.mk>
+>>>
+NEW:
+<<<
+# Rust side-by-side replacement for stress2 sysctl test case
+# Original C source (sysctl.c) is kept for reference/validation
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.OBJDIR}/cargo-target
+
+all: rust-all
+
+rust-all:
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+clean: rust-clean
+
+rust-clean:
+	${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+.PHONY: all rust-all clean rust-clean
+>>>

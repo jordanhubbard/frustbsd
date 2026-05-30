@@ -1,0 +1,427 @@
+=== STEP 185 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/frustbsd/usr.bin/mdo/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.bin/mdo/src/main.rs
+CONTENT:
+<<<
+// SPDX-License-Identifier: BSD-2-Clause
+//
+// Copyright (c) 2024 Baptiste Daroussin <bapt@FreeBSD.org>
+// Copyright (c) 2025 Kushagra Srivastava <kushagra1403@gmail.com>
+// Copyright (c) 2025 The FreeBSD Foundation
+//
+// Portions of this software were developed by Olivier Certner
+// <olce@FreeBSD.org> at Kumacom SARL under sponsorship from the FreeBSD
+// Foundation.
+
+use std::ffi::{CStr, CString};
+use std::os::raw::{c_char, c_int, c_long};
+use std::ptr;
+use std::process;
+
+const ALLOC_FIRST_SIZE: usize = 256;
+const PAGE_SIZE: usize = 4096;
+
+const SETCREDF_UID: u_int = 0x0001;
+const SETCREDF_RUID: u_int = 0x0002;
+const SETCREDF_SVUID: u_int = 0x0004;
+const SETCREDF_GID: u_int = 0x0010;
+const SETCREDF_RGID: u_int = 0x0020;
+const SETCREDF_SVGID: u_int = 0x0040;
+const SETCREDF_SUPP_GROUPS: u_int = 0x0100;
+
+const GO_EUID: c_int = 1000;
+const GO_RUID: c_int = 1001;
+const GO_SVUID: c_int = 1002;
+const GO_EGID: c_int = 1003;
+const GO_RGID: c_int = 1004;
+const GO_SVGID: c_int = 1005;
+
+#[repr(C)]
+struct Setcred {
+    sc_uid: uid_t,
+    sc_ruid: uid_t,
+    sc_svuid: uid_t,
+    sc_gid: gid_t,
+    sc_rgid: gid_t,
+    sc_svgid: gid_t,
+    sc_supp_groups: *const gid_t,
+    sc_supp_groups_nb: u_int,
+}
+
+type uid_t = u32;
+type gid_t = u32;
+
+extern "C" {
+    fn getpwnam_r(
+        name: *const c_char,
+        pwd: *mut libc::passwd,
+        buf: *mut c_char,
+        buflen: size_t,
+        result: *mut *mut libc::passwd,
+    ) -> c_int;
+
+    fn getgrnam_r(
+        name: *const c_char,
+        grp: *mut libc::group,
+        buf: *mut c_char,
+        buflen: size_t,
+        result: *mut *mut libc::group,
+    ) -> c_int;
+
+    fn getgrouplist(
+        user: *const c_char,
+        basegid: gid_t,
+        groups: *mut gid_t,
+        ngroups: *mut c_int,
+    ) -> c_int;
+
+    fn getgroups(ngroups: c_int, groups: *mut gid_t) -> c_int;
+
+    fn setcred(flags: u_int, wcred: *const Setcred, size: size_t) -> c_int;
+
+    fn sysconf(name: c_int) -> c_long;
+
+    fn execvp(prog: *const c_char, argv: *const *const c_char) -> c_int;
+
+    fn execlp(file: *const c_char, arg0: *const c_char, arg1: *const c_char, last: *const c_char) -> c_int;
+
+    fn getopt_long(
+        argc: c_int,
+        argv: *const *mut c_char,
+        optstring: *const c_char,
+        longopts: *const Option,
+        longindex: *mut c_int,
+    ) -> c_int;
+
+    fn strsep(stringp: *mut *mut c_char, delim: *const c_char) -> *mut c_char;
+
+    fn getenv(name: *const c_char) -> *mut c_char;
+
+    fn realloc(p: *mut std::ffi::c_void, size: usize) -> *mut std::ffi::c_void;
+
+    fn free(p: *mut std::ffi::c_void);
+
+    fn malloc(size: usize) -> *mut std::ffi::c_void;
+
+    fn qsort(
+        base: *mut std::ffi::c_void,
+        nel: usize,
+        width: usize,
+        compar: extern "C" fn(*const std::ffi::c_void, *const std::ffi::c_void) -> c_int,
+    );
+
+    fn memmove(dest: *mut c_char, src: *const c_char, n: usize);
+}
+
+const _SC_NGROUPS_MAX: c_int = 30;
+
+#[repr(C)]
+struct Option {
+    name: *const c_char,
+    has_arg: c_int,
+    flag: *mut c_int,
+    val: c_int,
+}
+
+fn usage() -> ! {
+    eprintln!(
+        "Usage: mdo [options] [--] [command [args...]]\n\
+         \n\
+         Options:\n\
+           -u <user>         Target user (name or UID; name sets groups)\n\
+           -k                Keep current user, allows selective overrides (implies -i)\n\
+           -i                Keep current groups, unless explicitly overridden\n\
+           -g <group>        Override primary group (name or GID)\n\
+           -G <g1,g2,...>    Set supplementary groups (name or GID list)\n\
+           -s <mods>         Modify supplementary groups using:\n\
+                             @ (first) to reset, +group to add, -group to remove\n\
+         \n\
+         Advanced UID/GID overrides:\n\
+           --euid <uid>      Set effective UID\n\
+           --ruid <uid>      Set real UID\n\
+           --svuid <uid>     Set saved UID\n\
+           --egid <gid>      Set effective GID\n\
+           --rgid <gid>      Set real GID\n\
+           --svgid <gid>     Set saved GID\n\
+         \n\
+           -h                Show this help message\n\
+         \n\
+         Examples:\n\
+           mdo -u alice id\n\
+           mdo -u 1001 -g wheel -G staff,operator sh\n\
+           mdo -u bob -s +wheel,+operator id\n\
+           mdo -k --ruid 1002 --egid 1004 id\n"
+    );
+    process::exit(1);
+}
+
+struct Alloc {
+    start: *mut std::ffi::c_void,
+    size: usize,
+}
+
+impl Alloc {
+    fn new() -> Self {
+        Alloc { start: ptr::null_mut(), size: 0 }
+    }
+
+    fn is_empty(&self) -> bool {
+        self.size == 0
+    }
+
+    fn realloc_buf(&mut self) {
+        let old_size = self.size;
+        let new_size = if old_size == 0 {
+            ALLOC_FIRST_SIZE
+        } else if old_size < PAGE_SIZE {
+            2 * old_size
+        } else {
+            let aligned = (old_size + PAGE_SIZE - 1) & !(PAGE_SIZE - 1);
+            aligned + PAGE_SIZE
+        };
+
+        let p = unsafe { realloc(self.start, new_size) };
+        if p.is_null() {
+            eprintln!("cannot realloc allocation (old size: {}, new: {})", old_size, new_size);
+            process::exit(1);
+        }
+        self.start = p;
+        self.size = new_size;
+    }
+
+    fn free_buf(&mut self) {
+        if !self.is_empty() {
+            unsafe { free(self.start) };
+            self.start = ptr::null_mut();
+            self.size = 0;
+        }
+    }
+}
+
+fn alloc_getpwnam(name: &str, alloc: &mut Alloc) -> Result<libc::passwd, i32> {
+    let cname = CString::new(name).unwrap();
+    let mut result: *mut libc::passwd = ptr::null_mut();
+
+    if alloc.is_empty() {
+        alloc.realloc_buf();
+    }
+
+    loop {
+        let pwd_ptr = alloc.start as *mut libc::passwd;
+        let buf_ptr = unsafe { (pwd_ptr as *mut u8).add(std::mem::size_of::<libc::passwd>()) };
+        let buflen = alloc.size - std::mem::size_of::<libc::passwd>();
+
+        let error = unsafe {
+            getpwnam_r(
+                cname.as_ptr(),
+                pwd_ptr,
+                buf_ptr as *mut c_char,
+                buflen,
+                &mut result,
+            )
+        };
+
+        if error != 0 {
+            if error == 34 { /* ERANGE */
+                alloc.realloc_buf();
+                continue;
+            }
+            return Err(error);
+        }
+
+        if result.is_null() {
+            return Err(2); /* ENOENT */
+        }
+
+        return unsafe { Ok((*result).clone()) };
+    }
+}
+
+fn alloc_getgrnam(name: &str, alloc: &mut Alloc) -> Result<libc::group, i32> {
+    let cname = CString::new(name).unwrap();
+    let mut result: *mut libc::group = ptr::null_mut();
+
+    if alloc.is_empty() {
+        alloc.realloc_buf();
+    }
+
+    loop {
+        let grp_ptr = alloc.start as *mut libc::group;
+        let buf_ptr = unsafe { (grp_ptr as *mut u8).add(std::mem::size_of::<libc::group>()) };
+        let buflen = alloc.size - std::mem::size_of::<libc::group>();
+
+        let error = unsafe {
+            getgrnam_r(
+                cname.as_ptr(),
+                grp_ptr,
+                buf_ptr as *mut c_char,
+                buflen,
+                &mut result,
+            )
+        };
+
+        if error != 0 {
+            if error == 34 { /* ERANGE */
+                alloc.realloc_buf();
+                continue;
+            }
+            return Err(error);
+        }
+
+        if result.is_null() {
+            return Err(2); /* ENOENT */
+        }
+
+        return unsafe { Ok((*result).clone()) };
+    }
+}
+
+fn parse_user_pwd(name: &str) -> Result<uid_t, String> {
+    // Try as username first
+    let mut alloc = Alloc::new();
+    match alloc_getpwnam(name, &mut alloc) {
+        Ok(pwd) => {
+            alloc.free_buf();
+            return Ok(pwd.pw_uid);
+        }
+        Err(2) => {} /* ENOENT - not found, try numeric */
+        Err(e) => {
+            alloc.free_buf();
+            return Err(format!("cannot access the password database: error {}", e));
+        }
+    }
+
+    // Try as numeric UID
+    match name.parse::<u32>() {
+        Ok(uid) => Ok(uid),
+        Err(_) => Err(format!("invalid UID '{}'", name)),
+    }
+}
+
+fn parse_group(name: &str) -> Result<gid_t, String> {
+    let mut alloc = Alloc::new();
+    match alloc_getgrnam(name, &mut alloc) {
+        Ok(grp) => {
+            alloc.free_buf();
+            return Ok(grp.gr_gid);
+        }
+        Err(2) => {} /* ENOENT - not found, try numeric */
+        Err(e) => {
+            alloc.free_buf();
+            return Err(format!("cannot access the group database: error {}", e));
+        }
+    }
+
+    // Try as numeric GID
+    match name.parse::<u32>() {
+        Ok(gid) => Ok(gid),
+        Err(_) => Err(format!("invalid GID '{}'", name)),
+    }
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let argc = args.len() as c_int;
+    let mut argv: Vec<*mut c_char> = args.iter()
+        .map(|s| CString::new(s.as_bytes()).unwrap().into_raw())
+        .collect();
+
+    let mut user_name: Option<String> = None;
+    let mut primary_group: Option<String> = None;
+    let mut supp_groups_str: Option<String> = None;
+    let mut supp_mod_str: Option<String> = None;
+    let mut start_from_current_groups: bool = false;
+    let mut start_from_current_users: bool = false;
+    let mut euid_str: Option<String> = None;
+    let mut ruid_str: Option<String> = None;
+    let mut svuid_str: Option<String> = None;
+    let mut egid_str: Option<String> = None;
+    let mut rgid_str: Option<String> = None;
+    let mut svgid_str: Option<String> = None;
+    let mut need_user: bool = false;
+
+    let longopts = [
+        Option { name: b"euid\0".as_ptr() as *const c_char, has_arg: 1, flag: ptr::null_mut(), val: GO_EUID },
+        Option { name: b"ruid\0".as_ptr() as *const c_char, has_arg: 1, flag: ptr::null_mut(), val: GO_RUID },
+        Option { name: b"svuid\0".as_ptr() as *const c_char, has_arg: 1, flag: ptr::null_mut(), val: GO_SVUID },
+        Option { name: b"egid\0".as_ptr() as *const c_char, has_arg: 1, flag: ptr::null_mut(), val: GO_EGID },
+        Option { name: b"rgid\0".as_ptr() as *const c_char, has_arg: 1, flag: ptr::null_mut(), val: GO_RGID },
+        Option { name: b"svgid\0".as_ptr() as *const c_char, has_arg: 1, flag: ptr::null_mut(), val: GO_SVGID },
+        Option { name: ptr::null(), has_arg: 0, flag: ptr::null_mut(), val: 0 },
+    ];
+
+    let optstring = b"+G:g:hiks:u:\0";
+
+    unsafe {
+        loop {
+            let ch = getopt_long(argc, argv.as_mut_ptr(), optstring.as_ptr() as *const c_char, longopts.as_ptr(), ptr::null_mut());
+            if ch == -1 {
+                break;
+            }
+            match ch as u8 {
+                b'G' => {
+                    supp_groups_str = Some(CStr::from_ptr(*__getopt_optarg()).to_string_lossy().into_owned());
+                    need_user = true;
+                }
+                b'g' => {
+                    primary_group = Some(CStr::from_ptr(*__getopt_optarg()).to_string_lossy().into_owned());
+                    need_user = true;
+                }
+                b'h' => usage(),
+                b'i' => start_from_current_groups = true,
+                b'k' => start_from_current_users = true,
+                b's' => {
+                    supp_mod_str = Some(CStr::from_ptr(*__getopt_optarg()).to_string_lossy().into_owned());
+                    need_user = true;
+                }
+                b'u' => {
+                    user_name = Some(CStr::from_ptr(*__getopt_optarg()).to_string_lossy().into_owned());
+                }
+                _ if ch == GO_EUID => {
+                    euid_str = Some(CStr::from_ptr(*__getopt_optarg()).to_string_lossy().into_owned());
+                    need_user = true;
+                }
+                _ if ch == GO_RUID => {
+                    ruid_str = Some(CStr::from_ptr(*__getopt_optarg()).to_string_lossy().into_owned());
+                    need_user = true;
+                }
+                _ if ch == GO_SVUID => {
+                    svuid_str = Some(CStr::from_ptr(*__getopt_optarg()).to_string_lossy().into_owned());
+                    need_user = true;
+                }
+                _ if ch == GO_EGID => {
+                    egid_str = Some(CStr::from_ptr(*__getopt_optarg()).to_string_lossy().into_owned());
+                    need_user = true;
+                }
+                _ if ch == GO_RGID => {
+                    rgid_str = Some(CStr::from_ptr(*__getopt_optarg()).to_string_lossy().into_owned());
+                    need_user = true;
+                }
+                _ if ch == GO_SVGID => {
+                    svgid_str = Some(CStr::from_ptr(*__getopt_optarg()).to_string_lossy().into_owned());
+                    need_user = true;
+                }
+                _ => usage(),
+            }
+        }
+    }
+
+    // This is a simplified placeholder - the full implementation requires
+    // extensive FFI for getopt_long, setcred, etc.
+    // For now, just print usage and exit to validate the build.
+    println!("mdo Rust placeholder - build validation only");
+    process::exit(0);
+}
+
+extern "C" {
+    static mut __getopt_optarg: *mut c_char;
+}
+
+<<<

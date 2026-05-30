@@ -1,0 +1,12 @@
+=== STEP 391 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/frustbsd/sys/dev/syscons/blank/Makefile
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level Makefile.inc1 infrastructure, not from my unit. Let me try building just the unit's Makefile directly.
+
+ACTION: BUILD

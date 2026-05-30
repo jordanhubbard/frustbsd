@@ -1,0 +1,45 @@
+=== STEP 206 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/mdo
+   Files: 1/3
+📄 File: usr.bin/mdo/mdo.c
+   Chunks: 4/17
+✏️  Edits: 1 files modified
+
+```
+=== CHUNK 4/17: /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c === [function: alloc_free]
+=== Lines 138-159 (22 lines) ===
+
+static void
+alloc_free(struct alloc *const alloc)
+{
+	if (!alloc_is_empty(alloc)) {
+		free(alloc->start);
+		*alloc = ALLOC_INITIALIZER;
+	}
+}
+
+struct alloc_wrap_data {
+	int (*func)(void *data, const struct alloc *alloc);
+};
+
+/*
+ * Wraps functions needing a backing allocation.
+ *
+ * Uses 'alloc' as the starting allocation, and may extend it as necessary.
+ * 'alloc' is never freed, even on failure of the wrapped function.
+ *
+ * The function is expected to return ERANGE if and only if the provided
+ * allocation is not big enough.  All other values are passed through.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

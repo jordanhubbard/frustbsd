@@ -1,0 +1,14 @@
+=== STEP 4 ===
+
+--- REQUEST ---
+AUTO_SKIP: Directory sys/contrib/libsodium/src/libsodium/crypto_stream/xsalsa20 skipped automatically after 3 failed attempts.
+
+To retry it later, remove or edit freebsd-rust-rewriter-retry-tracker.json.
+Please choose a different directory, e.g., ACTION: SET_SCOPE contrib/llvm-project/llvm/lib/Target/AMDGPU/TargetInfo
+
+--- RESPONSE ---
+
+
+Let me find a suitable small work unit that hasn't been auto-skipped.
+
+ACTION: LIST_DIR usr.bin

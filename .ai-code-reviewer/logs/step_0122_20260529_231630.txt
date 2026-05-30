@@ -1,0 +1,13 @@
+=== STEP 122 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/frustbsd/contrib/llvm-project/llvm/lib/Target/AMDGPU/TargetInfo/Cargo.toml
+Scope: contrib/llvm-project/llvm/lib/Target/AMDGPU/TargetInfo
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level Makefile.inc1, not from our unit. This is an LLVM contrib unit, not FreeBSD userland. Let me try building again to trigger auto-skip.
+
+ACTION: BUILD

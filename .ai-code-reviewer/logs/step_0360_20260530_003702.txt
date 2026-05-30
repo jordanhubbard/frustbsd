@@ -1,0 +1,11 @@
+=== STEP 360 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/frustbsd/sys/dev/qat/qat_api/src/lib.rs
+Scope: sys/dev/qat/qat_api
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

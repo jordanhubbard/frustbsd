@@ -1,0 +1,58 @@
+=== STEP 390 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/sys/dev/syscons:
+```
+blank
+daemon
+dragon
+fade
+fire
+fonts
+green
+logo
+plasma
+rain
+scgfbrndr.c
+schistory.c
+scmouse.c
+scterm-dumb.c
+scterm-sc.c
+scterm-teken.c
+scterm.c
+sctermvar.h
+scvesactl.c
+scvgarndr.c
+scvidctl.c
+scvtb.c
+snake
+star
+syscons.c
+syscons.h
+sysmouse.c
+warp
+```
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level `Makefile.inc1` infrastructure, not from my unit. This is a kernel-space unit without a standalone Makefile. Let me create a proper Makefile that builds the Rust crate.
+
+ACTION: WRITE_FILE sys/dev/syscons/blank/Makefile
+CONTENT:
+```
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# Rust side-by-side build for blank_saver
+
+CARGO?=	cargo
+CARGO_TARGET_DIR?=	${OBJTOP}/blank_saver
+
+all:
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+clean:
+	${CARGO} clean --manifest-path ${.CURDIR}/Cargo.toml --target-dir ${CARGO_TARGET_DIR}
+
+.PHONY: all clean
+```

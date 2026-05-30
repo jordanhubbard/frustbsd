@@ -1,0 +1,44 @@
+=== STEP 157 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/mdo
+   Files: 0/3
+📄 File: usr.bin/mdo/mdo.c
+   Chunks: 9/17
+
+```
+=== CHUNK 9/17: /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c === [function: alloc_getgrnam]
+=== Lines 265-286 (22 lines) ===
+
+static int
+alloc_getgrnam(const char *const name, struct group **const grpp,
+    struct alloc *const alloc)
+{
+	struct getgrnam_wrapper_data data;
+
+	data.wrapped.func = wrapped_getgrnam_r;
+	data.name = name;
+	data.grpp = grpp;
+	return (alloc_wrap((struct alloc_wrap_data *)&data, alloc));
+}
+
+/*
+ * Retrieve the UID from a user string.
+ *
+ * Tries first to interpret the string as a user name, then as a numeric ID
+ * (this order is prescribed by POSIX for a number of utilities).
+ *
+ * 'pwdp' and 'allocp' must be NULL or non-NULL together.  If non-NULL, then
+ * 'allocp' can be any allocation (possibly empty) and will be extended to
+ * contain the result if necessary.  It will not be freed (even on failure).
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

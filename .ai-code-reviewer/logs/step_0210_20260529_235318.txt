@@ -1,0 +1,54 @@
+=== STEP 210 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/mdo
+   Files: 1/3
+📄 File: usr.bin/mdo/mdo.c
+   Chunks: 8/17
+✏️  Edits: 1 files modified
+
+```
+=== CHUNK 8/17: /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c === [function: wrapped_getgrnam_r]
+=== Lines 234-264 (31 lines) ===
+
+static int
+wrapped_getgrnam_r(void *data, const struct alloc *alloc)
+{
+	struct group *grp = alloc->start;
+	struct group *result;
+	struct getgrnam_wrapper_data *d = data;
+	int error;
+
+	assert(alloc->size >= sizeof(*grp));
+
+	error = getgrnam_r(d->name, grp, (char *)(grp + 1),
+	    alloc->size - sizeof(*grp), &result);
+
+	if (error == 0) {
+		if (result == NULL)
+			error = ENOENT;
+	} else
+		assert(result == NULL);
+	*d->grpp = result;
+	return (error);
+}
+
+/*
+ * Wraps getgrnam_r(), automatically dealing with memory allocation.
+ *
+ * 'alloc' may be any allocation (even empty), and will be extended as
+ * necessary.  It is not freed on error.
+ *
+ * On success, '*grpp' is filled with a pointer to the returned 'struct group',
+ * and on failure, is set to NULL.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

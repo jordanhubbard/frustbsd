@@ -1,0 +1,33 @@
+=== STEP 95 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*.mk':
+```
+./tests/sys/pjdfstest/tests/pjdfstest.test.mk
+./stand/loader.mk
+./stand/kshim/kshim.mk
+./stand/veriexec.mk
+./stand/fdt.mk
+./stand/lua.mk
+./stand/usb/usbcore.mk
+./stand/ficl.mk
+./stand/defs.mk
+./secure/ssh.mk
+./sys/sys/syscall.mk
+./sys/contrib/zstd/lib/libzstd.mk
+./sys/conf/kern.pre.mk
+./sys/conf/config.mk
+./sys/conf/dtb.build.mk
+./sys/conf/kern.opts.mk
+./sys/conf/kmod.mk
+./sys/conf/kmod.opts.mk
+./sys/conf/kern.post.mk
+./sys/conf/sysent.mk
+```
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level Makefile.inc1, not from our unit. Let me check what build command is being used and look at the relevant lines in Makefile.inc1.
+
+ACTION: NEXT_CHUNK

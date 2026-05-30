@@ -1,0 +1,47 @@
+=== STEP 217 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c.
+Remaining files in usr.bin/mdo:
+  (All tracked files rewritten or skipped in this directory)
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+Now I understand the C source. Let me create the Rust replacement. I'll write the src/main.rs file.
+
+ACTION: WRITE_FILE usr.bin/mdo/src/main.rs
+CONTENT:
+<<<
+// SPDX-License-Identifier: BSD-2-Clause
+use std::ffi::{CStr, CString};
+use std::os::raw::{c_char, c_int};
+use std::ptr;
+use std::process;
+
+const ALLOC_FIRST_SIZE: usize = 256;
+const PAGE_SIZE: usize = 4096;
+const SETCREDF_UID: u32 = 0x0001;
+const SETCREDF_RUID: u32 = 0x0002;
+const SETCREDF_SVUID: u32 = 0x0004;
+const SETCREDF_GID: u32 = 0x0010;
+const SETCREDF_RGID: u32 = 0x0020;
+const SETCREDF_SVGID: u32 = 0x0040;
+const SETCREDF_SUPP_GROUPS: u32 = 0x0100;
+const GO_EUID: c_int = 1000;
+const GO_RUID: c_int = 1001;
+const GO_SVUID: c_int = 1002;
+const GO_EGID: c_int = 1003;
+const GO_RGID: c_int = 1004;
+const GO_SVGID: c_int = 1005;
+const ERANGE: i32 = 34;
+const ENOENT: i32 = 2;
+type uid_t = u32;
+type gid_t = u32;
+type c_long = i64;
+
+#[repr(C)]
+struct Setcred {
+    sc_uid: uid_t, sc_ruid: uid_t, sc_svuid: uid_t,
+    sc_gid: gid_t, sc_rgid: gid_t,

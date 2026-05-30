@@ -1,0 +1,19 @@
+=== STEP 267 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Already scoped to contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo. Do not switch work units.
+
+Your active scope is `contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo` and has not been completed.
+Continue working there instead of selecting a new directory:
+  1. Use READ_FILE on files within contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo
+  2. Make any required rewrite edits (EDIT_FILE / WRITE_FILE)
+  3. Run ACTION: BUILD to validate and commit the unit
+
+Files in scope:
+  - contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo/ARMTargetInfo.cpp
+  - contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo/ARMTargetInfo.h
+
+--- RESPONSE ---
+
+
+ACTION: HALT

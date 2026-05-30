@@ -1,0 +1,11 @@
+=== STEP 82 ===
+
+--- REQUEST ---
+GREP_RESULT: No matches for 'usr.sbin/lastlogin'
+
+--- RESPONSE ---
+
+
+Let me check the current scope directory for `usr.sbin/lastlogin`:
+
+ACTION: LIST_DIR usr.sbin/lastlogin

@@ -1,0 +1,44 @@
+=== STEP 223 ===
+
+--- REQUEST ---
+SET_SCOPE_OK: Now rewriting contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo
+
+HIERARCHY:
+  Level 1: Source tree (8132 work units)
+  Level 2: contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo ← YOU ARE HERE
+  Level 3: 2 candidate files
+  Level 4: Functions (auto-chunked for large files)
+
+WORK UNIT:
+  Kind: directory
+  Stage: unknown
+  Depends on: (none)
+  Related files:
+    - contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo/ARMTargetInfo.cpp
+    - contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo/ARMTargetInfo.h
+
+⚠ No Makefile - may be subdirectory
+
+FILES TO REWRITE:
+  - contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo/ARMTargetInfo.cpp
+  - contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo/ARMTargetInfo.h
+
+📁 Directory: contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo
+   Files: 0/2
+
+WORKFLOW:
+1. Rewrite each relevant file (READ_FILE, NEXT_CHUNK for large files)
+2. Make changes as needed (EDIT_FILE or WRITE_FILE)
+3. When ALL relevant files are rewritten: ACTION: BUILD
+4. If build succeeds: Changes committed for entire directory
+5. Move to next directory (SET_SCOPE)
+
+Attempts recorded for contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo: 2/3.
+1 attempt(s) remain before auto-skip.
+
+--- RESPONSE ---
+
+
+This unit is LLVM compiler infrastructure, not FreeBSD userland. It's not relevant to the rewrite objective. Let me try to find a more suitable unit.
+
+ACTION: SET_SCOPE bin/cat

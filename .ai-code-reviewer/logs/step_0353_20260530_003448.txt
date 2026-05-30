@@ -1,0 +1,20 @@
+=== STEP 353 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: Already scoped to sys/dev/qat/qat_api. Do not switch work units.
+
+Your active scope is `sys/dev/qat/qat_api` and has not been completed.
+Continue working there instead of selecting a new directory:
+  1. Use READ_FILE on files within sys/dev/qat/qat_api
+  2. Make any required rewrite edits (EDIT_FILE / WRITE_FILE)
+  3. Run ACTION: BUILD to validate and commit the unit
+
+Files in scope:
+  - sys/dev/qat/qat_api/freebsd_module.c
+
+--- RESPONSE ---
+
+
+This is kernel-space code (FreeBSD kernel module), not userland. The objective is userland C/C++ to Rust. I need to complete this scope to move on.
+
+ACTION: BUILD

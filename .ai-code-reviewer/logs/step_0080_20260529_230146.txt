@@ -1,0 +1,14 @@
+=== STEP 80 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/logger is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/AMDGPU/TargetInfo
+
+--- RESPONSE ---
+
+
+The current unit is skipped. Let me check the rewrite index for the next pending unit.
+
+ACTION: READ_FILE .ai-code-reviewer/REWRITE-INDEX.md

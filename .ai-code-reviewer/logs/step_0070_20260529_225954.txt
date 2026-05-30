@@ -1,0 +1,65 @@
+=== STEP 70 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd:
+```
+.ai-code-reviewer
+.arcconfig
+.arclint
+.cirrus-ci
+.cirrus.yml
+.clang-format
+.clean_build_epoch
+.editorconfig
+.git
+.git-blame-ignore-revs
+.gitattributes
+.github
+.gitignore
+.mailmap
+.reviewer-log
+CONTRIBUTING.md
+COPYRIGHT
+LOCKS
+MAINTAINERS
+Makefile
+Makefile.inc1
+Makefile.libcompat
+Makefile.sys.inc
+ObsoleteFiles.inc
+README.md
+RELNOTES
+UPDATING
+bin
+cddl
+contrib
+crypto
+etc
+gnu
+include
+kerberos5
+krb5
+lib
+libexec
+packages
+path
+release
+rescue
+sbin
+secure
+share
+stand
+sys
+targets
+tests
+tools
+usr.bin
+usr.sbin
+```
+
+--- RESPONSE ---
+
+
+Let me check how the build system is configured for this project.
+
+ACTION: READ_FILE Makefile

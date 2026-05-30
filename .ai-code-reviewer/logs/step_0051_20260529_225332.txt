@@ -1,0 +1,10 @@
+=== STEP 51 ===
+
+--- REQUEST ---
+READ_FILE_ERROR: File not found: /usr/home/jkh/Src/frustbsd/usr.sbin/asa/Makefile
+TIP: Use FIND_FILE to locate files
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/asa/Makefile

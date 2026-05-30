@@ -1,0 +1,24 @@
+=== STEP 355 ===
+
+--- REQUEST ---
+BUILD_REJECTED: No pending source or build-file changes for the active scope.
+
+Do not run BUILD just to satisfy the loop. Choose a pending work unit with SET_SCOPE or make a real source/build-file change first.
+
+Only reviewer metadata is dirty: .ai-code-reviewer/REWRITE-INDEX.md, .ai-code-reviewer/freebsd-rust-rewriter-retry-tracker.json, .reviewer-log/ops.jsonl, .ai-code-reviewer/logs/step_0001_20260529_225002.txt, .ai-code-reviewer/logs/step_0002_20260529_225017.txt, .ai-code-reviewer/logs/step_0003_20260529_225021.txt, .ai-code-reviewer/logs/step_0004_20260529_225029.txt, .ai-code-reviewer/logs/step_0005_20260529_225034.txt ...
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE sys/dev/qat/qat_api/Cargo.toml
+CONTENT:
+```toml
+[package]
+name = "qat_api"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+path = "src/lib.rs"
+crate-type = ["staticlib"]
+```

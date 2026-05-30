@@ -1,0 +1,68 @@
+=== STEP 183 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/mdo
+   Files: 1/3
+📄 File: usr.bin/mdo/mdo.c
+   Chunks: 16/17
+
+```
+=== CHUNK 16/17: /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c === [function: remove_groups]
+=== Lines 419-464 (46 lines) ===
+
+static void
+remove_groups(struct group_array *const set,
+    const struct group_array *const remove)
+{
+	u_int from = 0, to = 0, rem = 0;
+	gid_t cand, to_rem;
+
+	if (set->nb == 0 || remove->nb == 0)
+		/* Nothing to remove. */
+		return;
+
+	cand = set->groups[0];
+	to_rem = remove->groups[0];
+
+	for (;;) {
+		if (cand < to_rem) {
+			/* Keep. */
+			if (to != from)
+				set->groups[to] = cand;
+			++to;
+			cand = set->groups[++from];
+			if (from == set->nb)
+				break;
+		} else if (cand == to_rem) {
+			cand = set->groups[++from];
+			if (from == set->nb)
+				break;
+			to_rem = remove->groups[++rem]; /* No duplicates. */
+			if (rem == remove->nb)
+				break;
+		} else {
+			to_rem = remove->groups[++rem];
+			if (rem == remove->nb)
+				break;
+		}
+	}
+
+	/* All remaining groups in 'set' must be kept. */
+	if (from == to)
+		/* Nothing was removed.  'set' will stay the same. */
+		return;
+	memmove(set->groups + to, set->groups + from,
+	    (set->nb - from) * sizeof(gid_t));
+	set->nb = to + (set->nb - from);
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

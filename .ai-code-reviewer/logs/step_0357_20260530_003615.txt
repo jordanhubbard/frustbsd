@@ -1,0 +1,26 @@
+=== STEP 357 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/frustbsd/sys/dev/qat/qat_api/src/lib.rs
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: EDIT_FILE sys/dev/qat/qat_api/src/lib.rs
+OLD:
+<<<
+/// Module event handler (stub)
+#[no_mangle]
+pub extern "C" fn adf_modevent(_mod: *mut std::ffi::c_void, _type: i32, _arg: *mut std::ffi::c_void) -> i32 {
+    0
+}
+>>>
+NEW:
+<<<
+/// Module event handler (stub)
+#[no_mangle]
+pub extern "C" fn adf_modevent(_mod: *mut core::ffi::c_void, _type: i32, _arg: *mut core::ffi::c_void) -> i32 {
+    0
+}
+</think>

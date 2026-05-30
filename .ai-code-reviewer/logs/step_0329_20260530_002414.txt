@@ -1,0 +1,58 @@
+=== STEP 329 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/tools/test/stress2/testcases/Makefile:
+PROGRESS:
+📁 Directory: tools/test/stress2/testcases/sysctl
+   Files: 0/2
+📄 File: tools/test/stress2/testcases/Makefile
+
+```
+SUBDIR= \
+badcode \
+creat \
+dirrename \
+dirnprename \
+fts \
+link \
+lockf \
+lockf2 \
+mkdir \
+mkfifo \
+mmap \
+openat \
+pty \
+rename \
+run \
+rw \
+shm \
+socket \
+swap \
+symlink \
+sysctl \
+tcp \
+thr1 \
+thr2 \
+udp
+
+.include <bsd.subdir.mk>
+
+```
+
+--- RESPONSE ---
+
+
+This is a simple stress test case that runs `sysctl -a` and `fstat` in a loop. I'll create a Rust replacement that preserves the same behavior.
+
+ACTION: WRITE_FILE tools/test/stress2/testcases/sysctl/Cargo.toml
+CONTENT:
+```toml
+[package]
+name = "sysctl-stress"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "sysctl"
+path = "src/main.rs"
+```

@@ -1,0 +1,287 @@
+=== STEP 60 ===
+
+--- REQUEST ---
+WRITE_FILE_OK: Successfully wrote /usr/home/jkh/Src/frustbsd/usr.sbin/lastlogin/Cargo.toml
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+Now I need to create the Rust source. Let me create the src directory and main.rs.
+
+ACTION: WRITE_FILE usr.sbin/lastlogin/src/main.rs
+CONTENT:
+/*-
+ * SPDX-License-Identifier: BSD-4-Clause
+ *
+ * Copyright (c) 1996 John M. Vinopal
+ * Copyright (c) 2018 Philip Paeps
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *	This product includes software developed for the NetBSD Project
+ *	by John M. Vinopal.
+ * 4. The name of the author may not be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED IN THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+use std::ffi::{CStr, CString};
+use std::io::{self, Write};
+use std::os::raw::{c_char, c_int};
+use std::process;
+
+extern "C" {
+    fn setutxdb(db: c_int, file: *const c_char) -> c_int;
+    fn getutxent() -> *mut utmpx;
+    fn getutxuser(name: *const c_char) -> *mut utmpx;
+    fn endutxent();
+    fn ctime(timep: *const time_t) -> *mut c_char;
+}
+
+const UTXDB_LASTLOGIN: c_int = 2;
+const USER_PROCESS: c_short = 7;
+
+#[repr(C)]
+struct timeval {
+    tv_sec: time_t,
+    tv_usec: c_long,
+}
+
+type time_t = i64;
+type c_short = i16;
+type c_long = i64;
+
+#[repr(C)]
+struct utmpx {
+    ut_type: c_short,
+    ut_tv: timeval,
+    ut_id: [c_char; 4],
+    ut_user: [c_char; 16],
+    ut_line: [c_char; 80],
+    ut_host: [c_char; 128],
+}
+
+#[derive(Clone, Copy)]
+struct LastLoginEntry {
+    user: [u8; 16],
+    line: [u8; 80],
+    host: [u8; 128],
+    tv_sec: time_t,
+}
+
+fn cstr_to_bytes(s: *const c_char, len: usize) -> [u8; 16] {
+    let mut buf = [0u8; 16];
+    if !s.is_null() {
+        let cstr = unsafe { CStr::from_ptr(s) };
+        let bytes = cstr.to_bytes();
+        let copy_len = bytes.len().min(len);
+        buf[..copy_len].copy_from_slice(&bytes[..copy_len]);
+    }
+    buf
+}
+
+fn cstr_to_bytes80(s: *const c_char) -> [u8; 80] {
+    let mut buf = [0u8; 80];
+    if !s.is_null() {
+        let cstr = unsafe { CStr::from_ptr(s) };
+        let bytes = cstr.to_bytes();
+        let copy_len = bytes.len().min(80);
+        buf[..copy_len].copy_from_slice(&bytes[..copy_len]);
+    }
+    buf
+}
+
+fn cstr_to_bytes128(s: *const c_char) -> [u8; 128] {
+    let mut buf = [0u8; 128];
+    if !s.is_null() {
+        let cstr = unsafe { CStr::from_ptr(s) };
+        let bytes = cstr.to_bytes();
+        let copy_len = bytes.len().min(128);
+        buf[..copy_len].copy_from_slice(&bytes[..copy_len]);
+    }
+    buf
+}
+
+fn entry_from_utmpx(ut: *const utmpx) -> LastLoginEntry {
+    unsafe {
+        LastLoginEntry {
+            user: cstr_to_bytes((*ut).ut_user.as_ptr(), 16),
+            line: cstr_to_bytes80((*ut).ut_line.as_ptr()),
+            host: cstr_to_bytes128((*ut).ut_host.as_ptr()),
+            tv_sec: (*ut).ut_tv.tv_sec,
+        }
+    }
+}
+
+fn bytes_to_str(buf: &[u8]) -> &str {
+    let end = buf.iter().position(|&b| b == 0).unwrap_or(buf.len());
+    std::str::from_utf8(&buf[..end]).unwrap_or("")
+}
+
+fn output(entry: &LastLoginEntry) {
+    let stdout = io::stdout();
+    let mut out = stdout.lock();
+    let user = bytes_to_str(&entry.user);
+    let line = bytes_to_str(&entry.line);
+    let host = bytes_to_str(&entry.host);
+    let t = entry.tv_sec;
+
+    let ctime_str = unsafe {
+        let ptr = ctime(&t as *const time_t);
+        if ptr.is_null() {
+            String::from("(unknown)")
+        } else {
+            let cstr = CStr::from_ptr(ptr);
+            cstr.to_string_lossy().into_owned()
+        }
+    };
+
+    let _ = writeln!(
+        out,
+        "{:<10} {:<8} {:<22.22} {}",
+        user, line, host, ctime_str
+    );
+    if out.flush().is_err() {
+        eprintln!("lastlogin: stdout: {}", io::Error::last_os_error());
+        process::exit(1);
+    }
+}
+
+fn usage() -> ! {
+    eprintln!("usage: lastlogin [-f file] [-rt] [user ...]");
+    process::exit(1);
+}
+
+fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let mut order: i32 = 1;
+    let mut file: Option<CString> = None;
+    let mut sort_by_time = false;
+    let mut users: Vec<String> = Vec::new();
+
+    let mut i = 1;
+    while i < args.len() {
+        if args[i] == "-f" {
+            i += 1;
+            if i >= args.len() {
+                usage();
+            }
+            file = Some(CString::new(args[i].as_str()).unwrap_or_else(|_| {
+                eprintln!("lastlogin: invalid file argument");
+                process::exit(1);
+            }));
+        } else if args[i] == "-r" {
+            order = -1;
+        } else if args[i] == "-t" {
+            sort_by_time = true;
+        } else if args[i].starts_with('-') {
+            usage();
+        } else {
+            users.push(args[i].clone());
+        }
+        i += 1;
+    }
+
+    let file_ptr = match &file {
+        Some(f) => f.as_ptr(),
+        None => std::ptr::null(),
+    };
+
+    if !users.is_empty() {
+        for user in &users {
+            let cuser = CString::new(user.as_str()).unwrap_or_else(|_| {
+                eprintln!("lastlogin: invalid user argument");
+                process::exit(1);
+            });
+            unsafe {
+                if setutxdb(UTXDB_LASTLOGIN, file_ptr) != 0 {
+                    eprintln!("lastlogin: failed to open lastlog database");
+                    process::exit(1);
+                }
+                let ut = getutxuser(cuser.as_ptr());
+                if ut.is_null() {
+                    eprintln!("lastlogin: user '{}' not found", user);
+                    endutxent();
+                    continue;
+                }
+                let entry = entry_from_utmpx(ut);
+                output(&entry);
+                endutxent();
+            }
+        }
+    } else {
+        unsafe {
+            if setutxdb(UTXDB_LASTLOGIN, file_ptr) != 0 {
+                eprintln!("lastlogin: failed to open lastlog database");
+                process::exit(1);
+            }
+        }
+
+        let mut entries: Vec<LastLoginEntry> = Vec::new();
+        unsafe {
+            loop {
+                let ut = getutxent();
+                if ut.is_null() {
+                    break;
+                }
+                if (*ut).ut_type != USER_PROCESS {
+                    continue;
+                }
+                entries.push(entry_from_utmpx(ut));
+            }
+            endutxent();
+        }
+
+        if sort_by_time {
+            entries.sort_by(|a, b| {
+                let ord = if order > 0 { 1 } else { -1 };
+                a.tv_sec.cmp(&b.tv_sec).then_with(|| {
+                    if ord < 0 {
+                        std::cmp::Reverse(a.user.cmp(&b.user))
+                    } else {
+                        a.user.cmp(&b.user)
+                    }
+                })
+            });
+            if order < 0 {
+                entries.reverse();
+            }
+        } else {
+            entries.sort_by(|a, b| {
+                let cmp = a.user.cmp(&b.user);
+                if order > 0 {
+                    cmp
+                } else {
+                    cmp.reverse()
+                }
+            });
+        }
+
+        for entry in &entries {
+            output(entry);
+        }
+    }
+
+    process::exit(0);
+}

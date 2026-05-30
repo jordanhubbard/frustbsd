@@ -1,0 +1,50 @@
+=== STEP 79 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/usr.bin/pathchk/Makefile:
+PROGRESS:
+📁 Directory: usr.sbin/lastlogin
+   Files: 0/3
+📄 File: usr.bin/pathchk/Makefile
+✏️  Edits: 3 files modified
+
+```
+PROG=	pathchk
+BINDIR?=	/usr/bin
+BINOWN?=	root
+BINGRP?=	wheel
+BINMODE?=	555
+
+CARGO?=		cargo
+CARGO_TARGET_DIR?=	${.CURDIR}/cargo-target
+
+SRCS=	${.CURDIR}/Cargo.toml ${.CURDIR}/src/main.rs
+
+${PROG}: ${SRCS}
+	${CARGO} build --manifest-path ${.CURDIR}/Cargo.toml --offline --target-dir ${CARGO_TARGET_DIR}
+	${CP} ${CARGO_TARGET_DIR}/debug/${PROG} ${.TARGET}
+
+all: ${PROG}
+
+install: ${PROG}
+	${INSTALL} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} ${PROG} ${DESTDIR}${BINDIR}/${PROG}
+
+clean:
+	${RM} ${PROG}
+	${RM} -rf ${CARGO_TARGET_DIR}
+
+CLEANFILES+=	${PROG} ${CARGO_TARGET_DIR}
+
+.PHONY: all install clean
+
+${PROG}: .FORCE
+.FORCE:
+
+```
+
+--- RESPONSE ---
+
+
+Now I understand the build pattern. Let me check the current state of `usr.bin/logger`:
+
+ACTION: SET_SCOPE usr.bin/logger

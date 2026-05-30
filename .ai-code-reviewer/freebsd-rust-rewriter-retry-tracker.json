@@ -196,16 +196,16 @@
     "last_attempt": "2026-05-22T21:07:43.325248"
   },
   "contrib/llvm-project/llvm/lib/Target/AMDGPU/TargetInfo": {
-    "attempts": 2,
-    "last_attempt": "2026-05-29T22:35:51.640554"
+    "attempts": 3,
+    "last_attempt": "2026-05-29T23:13:13.558371"
   },
   "contrib/llvm-project/llvm/lib/Target/ARC/TargetInfo": {
     "attempts": 3,
     "last_attempt": "2026-05-24T08:08:33.309056"
   },
   "contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo": {
-    "attempts": 1,
-    "last_attempt": "2026-05-26T15:50:02.373235"
+    "attempts": 2,
+    "last_attempt": "2026-05-29T23:54:48.879464"
   },
   "contrib/llvm-project/llvm/lib/Target/AVR/TargetInfo": {
     "attempts": 3,
@@ -659,6 +659,14 @@
     "attempts": 3,
     "last_attempt": "2026-05-26T21:21:53.363968"
   },
+  "sys/dev/qat/qat_api": {
+    "attempts": 1,
+    "last_attempt": "2026-05-30T00:33:47.908145"
+  },
+  "sys/dev/syscons/blank": {
+    "attempts": 1,
+    "last_attempt": "2026-05-30T00:41:58.624122"
+  },
   "sys/security/mac_none": {
     "attempts": 3,
     "last_attempt": "2026-05-26T08:56:09.661171"
@@ -686,6 +694,10 @@
   "tools/regression/tls/ttls4": {
     "attempts": 2,
     "last_attempt": "2026-05-25T14:46:26.505304"
+  },
+  "tools/test/stress2/testcases/sysctl": {
+    "attempts": 1,
+    "last_attempt": "2026-05-30T00:22:14.540023"
   },
   "usr.bin/apply": {
     "attempts": 3,
@@ -999,6 +1011,10 @@
     "attempts": 1,
     "last_attempt": "2026-05-24T21:45:13.733184"
   },
+  "usr.bin/mdo": {
+    "attempts": 1,
+    "last_attempt": "2026-05-29T23:23:58.801583"
+  },
   "usr.bin/mesg": {
     "attempts": 1,
     "last_attempt": "2026-05-22T02:55:02.145593"
@@ -1260,8 +1276,8 @@
     "last_attempt": "2026-05-26T03:22:02.812023"
   },
   "usr.sbin/lastlogin": {
-    "attempts": 2,
-    "last_attempt": "2026-05-25T07:55:22.483504"
+    "attempts": 3,
+    "last_attempt": "2026-05-29T22:52:33.832000"
   },
   "usr.sbin/route6d/misc": {
     "attempts": 2,

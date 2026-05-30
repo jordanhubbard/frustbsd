@@ -1,0 +1,19 @@
+=== STEP 83 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/usr.sbin/lastlogin:
+```
+Cargo.toml
+Makefile
+Makefile.depend
+lastlogin.8
+lastlogin.c
+src
+```
+
+--- RESPONSE ---
+
+
+The `usr.sbin/lastlogin` unit already has partial Rust work. Let me examine the current state.
+
+ACTION: READ_FILE usr.sbin/lastlogin/Makefile

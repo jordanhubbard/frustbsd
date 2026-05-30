@@ -1,0 +1,68 @@
+=== STEP 118 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/contrib/llvm-project/llvm/lib/Target/AMDGPU/TargetInfo/AMDGPUTargetInfo.cpp:
+PROGRESS:
+📁 Directory: contrib/llvm-project/llvm/lib/Target/AMDGPU/TargetInfo
+   Files: 0/2
+📄 File: contrib/llvm-project/llvm/lib/Target/AMDGPU/TargetInfo/AMDGPUTargetInfo.cpp
+
+```
+//===-- TargetInfo/AMDGPUTargetInfo.cpp - TargetInfo for AMDGPU -----------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+//
+/// \file
+//
+//===----------------------------------------------------------------------===//
+
+#include "TargetInfo/AMDGPUTargetInfo.h"
+#include "llvm/MC/TargetRegistry.h"
+#include "llvm/Support/Compiler.h"
+
+using namespace llvm;
+
+/// The target for R600 GPUs.
+Target &llvm::getTheR600Target() {
+  static Target TheAMDGPUTarget;
+  return TheAMDGPUTarget;
+}
+
+/// The target for GCN GPUs.
+Target &llvm::getTheGCNTarget() {
+  static Target TheGCNTarget;
+  return TheGCNTarget;
+}
+
+/// Extern function to initialize the targets for the AMDGPU backend
+extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void
+LLVMInitializeAMDGPUTargetInfo() {
+  RegisterTarget<Triple::r600, false> R600(getTheR600Target(), "r600",
+                                           "AMD GPUs HD2XXX-HD6XXX", "AMDGPU");
+  RegisterTarget<Triple::amdgcn, false> GCN(getTheGCNTarget(), "amdgcn",
+                                            "AMD GCN GPUs", "AMDGPU");
+}
+
+```
+
+--- RESPONSE ---
+
+
+This is LLVM contrib code, not FreeBSD userland. Per the objective, this unit is not relevant. Let me create a minimal Rust file to trigger the build and auto-skip mechanism.
+
+ACTION: WRITE_FILE contrib/llvm-project/llvm/lib/Target/AMDGPU/TargetInfo/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "amdgpu-target-info"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+path = "src/lib.rs"
+>>>

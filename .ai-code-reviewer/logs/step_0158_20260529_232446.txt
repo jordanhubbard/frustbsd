@@ -1,0 +1,58 @@
+=== STEP 158 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/mdo
+   Files: 0/3
+📄 File: usr.bin/mdo/mdo.c
+   Chunks: 10/17
+
+```
+=== CHUNK 10/17: /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c === [function: parse_user_pwd]
+=== Lines 287-322 (36 lines) ===
+
+static uid_t
+parse_user_pwd(const char *s, struct passwd **pwdp, struct alloc *allocp)
+{
+	struct passwd *pwd;
+	struct alloc alloc = ALLOC_INITIALIZER;
+	const char *errp;
+	uid_t uid;
+	int error;
+
+	assert((pwdp == NULL && allocp == NULL) ||
+	    (pwdp != NULL && allocp != NULL));
+
+	if (pwdp == NULL) {
+		pwdp = &pwd;
+		allocp = &alloc;
+	}
+
+	error = alloc_getpwnam(s, pwdp, allocp);
+	if (error == 0) {
+		uid = (*pwdp)->pw_uid;
+		goto finish;
+	} else if (error != ENOENT)
+		errc(EXIT_FAILURE, error,
+		    "cannot access the password database");
+
+	uid = strtonum(s, 0, UID_MAX, &errp);
+	if (errp != NULL)
+		errx(EXIT_FAILURE, "invalid UID '%s': %s", s, errp);
+
+finish:
+	if (allocp == &alloc)
+		alloc_free(allocp);
+	return (uid);
+}
+
+/* See parse_user_pwd() for the doc. */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

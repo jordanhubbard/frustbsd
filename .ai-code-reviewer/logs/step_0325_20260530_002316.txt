@@ -1,0 +1,9 @@
+=== STEP 325 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*tools/test/stress2/stress.h*'
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE stress.h

@@ -1,0 +1,39 @@
+=== STEP 328 ===
+
+--- REQUEST ---
+LIST_DIR_RESULT for /usr/home/jkh/Src/frustbsd/tools/test/stress2/testcases:
+```
+Makefile
+Makefile.inc
+README
+badcode
+creat
+dirnprename
+dirrename
+fts
+link
+lockf
+lockf2
+mkdir
+mkfifo
+mmap
+openat
+pty
+rename
+run
+rw
+shm
+socket
+swap
+symlink
+sysctl
+tcp
+thr1
+thr2
+udp
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE tools/test/stress2/testcases/Makefile

@@ -1,0 +1,14 @@
+=== STEP 127 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: usr.bin/logger is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE contrib/llvm-project/llvm/lib/Target/ARM/TargetInfo
+
+--- RESPONSE ---
+
+
+The current scope was abandoned. Let me find a suitable FreeBSD userland unit.
+
+ACTION: SET_SCOPE usr.bin/hostname

@@ -1,0 +1,12 @@
+=== STEP 326 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*stress.h*':
+```
+./tools/test/stress2/include/stress.h
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE tools/test/stress2/include/stress.h

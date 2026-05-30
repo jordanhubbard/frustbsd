@@ -1,0 +1,49 @@
+=== STEP 205 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/mdo
+   Files: 1/3
+📄 File: usr.bin/mdo/mdo.c
+   Chunks: 3/17
+✏️  Edits: 1 files modified
+
+```
+=== CHUNK 3/17: /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c === [function: alloc_realloc]
+=== Lines 112-137 (26 lines) ===
+
+static void
+alloc_realloc(struct alloc *const alloc)
+{
+	const size_t old_size = alloc->size;
+	size_t new_size;
+
+	if (old_size == 0) {
+		assert(alloc->start == NULL);
+		new_size = ALLOC_FIRST_SIZE;
+	} else if (old_size < PAGE_SIZE)
+		new_size = 2 * old_size;
+	else
+		/*
+		 * We never allocate more than a page at a time when reaching
+		 * a page (except perhaps for the first increment, up to two).
+		 * Use roundup2() to be immune to previous cases' changes. */
+		new_size = roundup2(old_size, PAGE_SIZE) + PAGE_SIZE;
+
+	alloc->start = realloc(alloc->start, new_size);
+	if (alloc->start == NULL)
+		errx(EXIT_FAILURE,
+		    "cannot realloc allocation (old size: %zu, new: %zu)",
+		    old_size, new_size);
+	alloc->size = new_size;
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

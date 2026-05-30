@@ -1,0 +1,9 @@
+=== STEP 324 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT: No files matching '*tools/test/stress2/testcases/stress.h*'
+
+--- RESPONSE ---
+
+
+ACTION: FIND_FILE tools/test/stress2/stress.h

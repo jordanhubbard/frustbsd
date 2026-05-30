@@ -1,0 +1,15 @@
+=== STEP 161 ===
+
+--- REQUEST ---
+SKIP_FILE_OK: Skipped remaining chunks of /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c.
+Remaining files in usr.bin/mdo:
+  - usr.bin/mdo/Makefile
+  - usr.bin/mdo/mdo.1
+Pick another file with ACTION: READ_FILE <path> or move to a different directory with ACTION: SET_SCOPE <dir>.
+
+--- RESPONSE ---
+
+
+This is a fairly large and complex file. Let me look for a smaller unit instead.
+
+ACTION: SET_SCOPE usr.bin/leave

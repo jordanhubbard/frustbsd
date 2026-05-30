@@ -1,0 +1,20 @@
+=== STEP 57 ===
+
+--- REQUEST ---
+WRITE_FILE_ERROR: Missing CONTENT block
+
+--- RESPONSE ---
+
+
+ACTION: WRITE_FILE usr.sbin/lastlogin/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "lastlogin"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "lastlogin"
+path = "src/main.rs"
+<<<

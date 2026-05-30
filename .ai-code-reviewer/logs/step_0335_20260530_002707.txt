@@ -1,0 +1,11 @@
+=== STEP 335 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/frustbsd/tools/test/stress2/testcases/sysctl/Makefile
+Scope: tools/test/stress2/testcases/sysctl
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

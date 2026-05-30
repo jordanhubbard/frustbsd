@@ -1,0 +1,456 @@
+=== STEP 184 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/mdo
+   Files: 1/3
+📄 File: usr.bin/mdo/mdo.c
+   Chunks: 17/17
+
+```
+=== CHUNK 17/17: /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c === [function: main]
+=== Lines 465-885 (421 lines) ===
+
+int
+main(int argc, char **argv)
+{
+	const char *const default_user = "root";
+
+	const char *user_name = NULL;
+	const char *primary_group = NULL;
+	char *supp_groups_str = NULL;
+	char *supp_mod_str = NULL;
+	bool start_from_current_groups = false;
+	bool start_from_current_users = false;
+	const char *euid_str = NULL;
+	const char *ruid_str = NULL;
+	const char *svuid_str = NULL;
+	const char *egid_str = NULL;
+	const char *rgid_str = NULL;
+	const char *svgid_str = NULL;
+	bool need_user = false; /* '-u' or '-k' needed. */
+
+	const int go_euid = 1000;
+	const int go_ruid = 1001;
+	const int go_svuid = 1002;
+	const int go_egid = 1003;
+	const int go_rgid = 1004;
+	const int go_svgid = 1005;
+	const struct option longopts[] = {
+		{"euid", required_argument, NULL, go_euid},
+		{"ruid", required_argument, NULL, go_ruid},
+		{"svuid", required_argument, NULL, go_svuid},
+		{"egid", required_argument, NULL, go_egid},
+		{"rgid", required_argument, NULL, go_rgid},
+		{"svgid", required_argument, NULL, go_svgid},
+		{NULL, 0, NULL, 0}
+	};
+	int ch;
+
+	struct setcred wcred = SETCRED_INITIALIZER;
+	u_int setcred_flags = 0;
+
+	struct passwd *pw = NULL;
+	struct alloc pw_alloc = ALLOC_INITIALIZER;
+	struct group_array supp_groups = GROUP_ARRAY_INITIALIZER;
+	struct group_array supp_rem = GROUP_ARRAY_INITIALIZER;
+
+
+	/*
+	 * Process options.
+	 */
+	while (ch = getopt_long(argc, argv, "+G:g:hiks:u:", longopts, NULL),
+	    ch != -1) {
+		switch (ch) {
+		case 'G':
+			supp_groups_str = optarg;
+			need_user = true;
+			break;
+		case 'g':
+			primary_group = optarg;
+			need_user = true;
+			break;
+		case 'h':
+			usage();
+		case 'i':
+			start_from_current_groups = true;
+			break;
+		case 'k':
+			start_from_current_users = true;
+			break;
+		case 's':
+			supp_mod_str = optarg;
+			need_user = true;
+			break;
+		case 'u':
+			user_name = optarg;
+			break;
+		case go_euid:
+			euid_str = optarg;
+			need_user = true;
+			break;
+		case go_ruid:
+			ruid_str = optarg;
+			need_user = true;
+			break;
+		case go_svuid:
+			svuid_str = optarg;
+			need_user = true;
+			break;
+		case go_egid:
+			egid_str = optarg;
+			need_user = true;
+			break;
+		case go_rgid:
+			rgid_str = optarg;
+			need_user = true;
+			break;
+		case go_svgid:
+			svgid_str = optarg;
+			need_user = true;
+			break;
+		default:
+			usage();
+		}
+	}
+
+	argc -= optind;
+	argv += optind;
+
+	/*
+	 * Determine users.
+	 *
+	 * We do that first as in some cases we need to retrieve the
+	 * corresponding password database entry to be able to set the primary
+	 * groups.
+	 */
+
+	if (start_from_current_users) {
+		if (user_name != NULL)
+			errx(EXIT_FAILURE, "-k incompatible with -u");
+
+		/*
+		 * If starting from the current user(s) as a base, finding one
+		 * of them in the password database and using its groups would
+		 * be quite surprising, so we instead let '-k' imply '-i'.
+		 */
+		start_from_current_groups = true;
+	} else {
+		uid_t uid;
+
+		/*
+		 * In the case of any overrides, we impose an explicit base user
+		 * via '-u' or '-k' instead of implicitly taking 'root' as the
+		 * base.
+		 */
+		if (user_name == NULL) {
+			if (need_user)
+				errx(EXIT_FAILURE,
+				    "Some overrides specified, "
+				    "'-u' or '-k' needed.");
+			user_name = default_user;
+		}
+
+		/*
+		 * Even if all user overrides are present as well as primary and
+		 * supplementary groups ones, in which case the final result
+		 * doesn't depend on '-u', we still call parse_user_pwd() to
+		 * check that the passed username is correct.
+		 */
+		uid = parse_user_pwd(user_name, &pw, &pw_alloc);
+		wcred.sc_uid = wcred.sc_ruid = wcred.sc_svuid = uid;
+		setcred_flags |= SETCREDF_UID | SETCREDF_RUID |
+		    SETCREDF_SVUID;
+	}
+
+	if (euid_str != NULL) {
+		wcred.sc_uid = parse_user(euid_str);
+		setcred_flags |= SETCREDF_UID;
+	}
+
+	if (ruid_str != NULL) {
+		wcred.sc_ruid = parse_user(ruid_str);
+		setcred_flags |= SETCREDF_RUID;
+	}
+
+	if (svuid_str != NULL) {
+		wcred.sc_svuid = parse_user(svuid_str);
+		setcred_flags |= SETCREDF_SVUID;
+	}
+
+	/*
+	 * Determine primary groups.
+	 */
+
+	/*
+	 * When not starting from the current groups, we need to set all
+	 * primary groups.  If '-g' was not passed, we use the primary
+	 * group from the password database as the "base" to which
+	 * overrides '--egid', '--rgid' and '--svgid' apply.  But if all
+	 * overrides were specified, we in fact just don't need the
+	 * password database at all.
+	 *
+	 * '-g' is treated outside of this 'if' as it can also be used
+	 * as an override.
+	 */
+	if (!start_from_current_groups && primary_group == NULL &&
+	    (egid_str == NULL || rgid_str == NULL || svgid_str == NULL)) {
+		if (pw == NULL)
+			errx(EXIT_FAILURE,
+			    "must specify primary groups or a user name "
+			    "with an entry in the password database");
+
+		wcred.sc_gid = wcred.sc_rgid = wcred.sc_svgid =
+		    pw->pw_gid;
+		setcred_flags |= SETCREDF_GID | SETCREDF_RGID |
+		    SETCREDF_SVGID;
+	}
+
+	if (primary_group != NULL) {
+		/*
+		 * We always call parse_group() even in case all overrides are
+		 * present to check that the passed group is valid.
+		 */
+		wcred.sc_gid = wcred.sc_rgid = wcred.sc_svgid =
+		    parse_group(primary_group);
+		setcred_flags |= SETCREDF_GID | SETCREDF_RGID | SETCREDF_SVGID;
+	}
+
+	if (egid_str != NULL) {
+		wcred.sc_gid = parse_group(egid_str);
+		setcred_flags |= SETCREDF_GID;
+	}
+
+	if (rgid_str != NULL) {
+		wcred.sc_rgid = parse_group(rgid_str);
+		setcred_flags |= SETCREDF_RGID;
+	}
+
+	if (svgid_str != NULL) {
+		wcred.sc_svgid = parse_group(svgid_str);
+		setcred_flags |= SETCREDF_SVGID;
+	}
+
+	/*
+	 * Determine supplementary groups.
+	 */
+
+	/*
+	 * This makes sense to catch user's mistakes.  It is not a strong
+	 * limitation of the code below (allowing this case is just a matter of,
+	 * in the block treating '-s' with '@' below, replacing an assert() by
+	 * a reset of 'supp_groups').
+	 */
+	if (supp_groups_str != NULL && supp_mod_str != NULL &&
+	    supp_mod_str[0] == '@')
+		errx(EXIT_FAILURE, "'-G' and '-s' with '@' are incompatible");
+
+	/*
+	 * Determine the supplementary groups to start with, but only if we
+	 * really need to operate on them later (and set them back).
+	 */
+	if (!start_from_current_groups) {
+		assert(!start_from_current_users);
+
+		if (supp_groups_str == NULL && (supp_mod_str == NULL ||
+		    supp_mod_str[0] != '@')) {
+			/*
+			 * If we are to replace supplementary groups (i.e.,
+			 * neither '-i' nor '-k' was specified) and they are not
+			 * completely specified (with '-g' or '-s' with '@'), we
+			 * start from those in the groups database if we were
+			 * passed a user name that is in the password database
+			 * (this is a protection against erroneous ID/name
+			 * conflation in the groups database), else we simply
+			 * error.
+			 */
+
+			if (pw == NULL)
+				errx(EXIT_FAILURE,
+				    "must specify the full supplementary "
+				    "groups set or a user name with an entry "
+				    "in the password database");
+
+			const long ngroups_alloc = sysconf(_SC_NGROUPS_MAX) + 1;
+			gid_t *groups;
+			int ngroups;
+
+			groups = malloc(sizeof(*groups) * ngroups_alloc);
+			if (groups == NULL)
+				errx(EXIT_FAILURE,
+				    "cannot allocate memory to retrieve "
+				    "user groups from the groups database");
+
+			ngroups = ngroups_alloc;
+			getgrouplist(user_name, pw->pw_gid, groups, &ngroups);
+
+			if (ngroups > ngroups_alloc)
+				err(EXIT_FAILURE,
+				    "too many groups for user '%s'",
+				    user_name);
+
+			realloc_groups(&supp_groups, ngroups);
+			memcpy(supp_groups.groups + supp_groups.nb - ngroups,
+			    groups, ngroups * sizeof(*groups));
+			free(groups);
+
+			/*
+			 * Have to set SETCREDF_SUPP_GROUPS here since we may be
+			 * in the case where neither '-G' nor '-s' was passed,
+			 * but we still have to set the supplementary groups to
+			 * those of the groups database.
+			 */
+			setcred_flags |= SETCREDF_SUPP_GROUPS;
+		}
+	} else if (supp_groups_str == NULL && supp_mod_str != NULL &&
+	    supp_mod_str[0] != '@') {
+		/*
+		 * We do not need to determine the current groups if, as for the
+		 * '!start_from_current_groups' case, we are going to replace
+		 * them entirely, but here also if we do not amend them at all
+		 * (because they are by definition already in place).
+		 */
+		const int ngroups = getgroups(0, NULL);
+
+		if (ngroups > 0) {
+			realloc_groups(&supp_groups, ngroups);
+
+			if (getgroups(ngroups, supp_groups.groups +
+			    supp_groups.nb - ngroups) < 0)
+				err(EXIT_FAILURE, "getgroups() failed");
+		}
+
+		/*
+		 * Setting SETCREDF_SUPP_GROUPS here is not necessary, we will
+		 * do it below since 'supp_mod_str' != NULL.
+		 */
+	}
+
+	if (supp_groups_str != NULL) {
+		char *p = supp_groups_str;
+		char *tok;
+
+		/*
+		 * We will set the supplementary groups to exactly the set
+		 * passed with '-G', and we took care above not to retrieve
+		 * "base" groups (current ones or those from the groups
+		 * database) in this case.
+		 */
+		assert(group_array_is_empty(&supp_groups));
+
+		/* WARNING: 'supp_groups_str' going to be modified. */
+		while ((tok = strsep(&p, ",")) != NULL) {
+			gid_t g;
+
+			if (*tok == '\0')
+				continue;
+
+			g = parse_group(tok);
+			realloc_groups(&supp_groups, 1);
+			supp_groups.groups[supp_groups.nb - 1] = g;
+		}
+
+		setcred_flags |= SETCREDF_SUPP_GROUPS;
+	}
+
+	if (supp_mod_str != NULL) {
+		char *p = supp_mod_str;
+		char *tok;
+		gid_t gid;
+
+		/* WARNING: 'supp_mod_str' going to be modified. */
+		while ((tok = strsep(&p, ",")) != NULL) {
+			switch (tok[0]) {
+			case '\0':
+			        break;
+
+			case '@':
+				if (tok != supp_mod_str)
+					errx(EXIT_FAILURE, "'@' must be "
+					    "the first token in '-s' option");
+				/* See same assert() above. */
+				assert(group_array_is_empty(&supp_groups));
+				break;
+
+			case '+':
+			case '-':
+				gid = parse_group(tok + 1);
+				if (tok[0] == '+') {
+					realloc_groups(&supp_groups, 1);
+					supp_groups.groups[supp_groups.nb - 1] = gid;
+				} else {
+					realloc_groups(&supp_rem, 1);
+					supp_rem.groups[supp_rem.nb - 1] = gid;
+				}
+				break;
+
+			default:
+				errx(EXIT_FAILURE,
+				    "invalid '-s' token '%s' at index %zu",
+				    tok, tok - supp_mod_str);
+			}
+		}
+
+		setcred_flags |= SETCREDF_SUPP_GROUPS;
+	}
+
+	/*
+	 * We don't need to pass the kernel a normalized representation of the
+	 * new supplementary groups set (array sorted and without duplicates),
+	 * so we don't do it here unless we need to remove some groups, where it
+	 * enables more efficient algorithms (if the number of groups for some
+	 * reason grows out of control).
+	 */
+	if (!group_array_is_empty(&supp_groups) &&
+	    !group_array_is_empty(&supp_rem)) {
+		sort_uniq_groups(&supp_groups);
+		sort_uniq_groups(&supp_rem);
+		remove_groups(&supp_groups, &supp_rem);
+	}
+
+	if ((setcred_flags & SETCREDF_SUPP_GROUPS) != 0) {
+		wcred.sc_supp_groups = supp_groups.groups;
+		wcred.sc_supp_groups_nb = supp_groups.nb;
+	}
+
+	if (setcred(setcred_flags, &wcred, sizeof(wcred)) != 0)
+		err(EXIT_FAILURE, "setcred()");
+
+	/*
+	 * We don't bother freeing memory still allocated at this point as we
+	 * are about to exec() or exit.
+	 */
+
+	if (*argv == NULL) {
+		const char *sh = getenv("SHELL");
+
+		if (sh == NULL)
+			sh = _PATH_BSHELL;
+		execlp(sh, sh, "-i", NULL);
+	} else {
+		execvp(argv[0], argv);
+	}
+	err(EXIT_FAILURE, "exec failed");
+}
+
+```
+
+--- RESPONSE ---
+
+
+Now I have the full picture. This is a complex credential-modifying command. Let me create the Rust replacement.
+
+ACTION: WRITE_FILE usr.bin/mdo/Cargo.toml
+CONTENT:
+<<<
+[package]
+name = "mdo"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "mdo"
+path = "src/main.rs"
+>>>

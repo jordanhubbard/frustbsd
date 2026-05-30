@@ -1,0 +1,11 @@
+=== STEP 67 ===
+
+--- REQUEST ---
+EDIT_FILE_OK: Successfully edited /usr/home/jkh/Src/frustbsd/usr.sbin/lastlogin/Makefile
+Scope: usr.sbin/lastlogin
+Diffs will be shown for all changed files after BUILD succeeds.
+
+--- RESPONSE ---
+
+
+ACTION: BUILD

@@ -1,0 +1,77 @@
+=== STEP 204 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/mdo
+   Files: 1/3
+📄 File: usr.bin/mdo/mdo.c
+   Chunks: 2/17
+✏️  Edits: 1 files modified
+
+```
+=== CHUNK 2/17: /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c === [function: usage]
+=== Lines 31-84 (54 lines) ===
+
+static void
+usage(void)
+{
+	fprintf(stderr,
+	    "Usage: mdo [options] [--] [command [args...]]\n"
+	    "\n"
+	    "Options:\n"
+	    "  -u <user>         Target user (name or UID; name sets groups)\n"
+	    "  -k                Keep current user, allows selective overrides "
+	    "(implies -i)\n"
+	    "  -i                Keep current groups, unless explicitly overridden\n"
+	    "  -g <group>        Override primary group (name or GID)\n"
+	    "  -G <g1,g2,...>    Set supplementary groups (name or GID list)\n"
+	    "  -s <mods>         Modify supplementary groups using:\n"
+	    "                      @ (first) to reset, +group to add, -group to remove\n"
+	    "\n"
+	    "Advanced UID/GID overrides:\n"
+	    "  --euid <uid>      Set effective UID\n"
+	    "  --ruid <uid>      Set real UID\n"
+	    "  --svuid <uid>     Set saved UID\n"
+	    "  --egid <gid>      Set effective GID\n"
+	    "  --rgid <gid>      Set real GID\n"
+	    "  --svgid <gid>     Set saved GID\n"
+	    "\n"
+	    "  -h                Show this help message\n"
+	    "\n"
+	    "Examples:\n"
+	    "  mdo -u alice id\n"
+	    "  mdo -u 1001 -g wheel -G staff,operator sh\n"
+	    "  mdo -u bob -s +wheel,+operator id\n"
+	    "  mdo -k --ruid 1002 --egid 1004 id\n"
+	);
+	exit(1);
+}
+
+struct alloc {
+	void	*start;
+	size_t	 size;
+};
+
+static const struct alloc ALLOC_INITIALIZER = {
+	.start = NULL,
+	.size = 0,
+};
+
+/*
+ * The default value should cover almost all cases.
+ *
+ * For getpwnam_r(), we assume:
+ * - 88 bytes for 'struct passwd'
+ * - Less than 16 bytes for the user name
+ * - A typical shadow hash of 106 bytes
+ * - Less than 16 bytes for the login class name
+ * - Less than 64 bytes for GECOS info
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

@@ -1,0 +1,31 @@
+=== STEP 181 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/mdo
+   Files: 1/3
+📄 File: usr.bin/mdo/mdo.c
+   Chunks: 14/17
+
+```
+=== CHUNK 14/17: /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c === [function: gidp_cmp]
+=== Lines 389-397 (9 lines) ===
+
+static int
+gidp_cmp(const void *p1, const void *p2)
+{
+	const gid_t g1 = *(const gid_t *)p1;
+	const gid_t g2 = *(const gid_t *)p2;
+
+	return ((g1 > g2) - (g1 < g2));
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

@@ -1,0 +1,21 @@
+=== STEP 166 ===
+
+--- REQUEST ---
+READ_FILE_RESULT for /usr/home/jkh/Src/frustbsd/usr.bin/mdo/Makefile:
+PROGRESS:
+📁 Directory: usr.bin/mdo
+   Files: 0/3
+📄 File: usr.bin/mdo/Makefile
+
+```
+PROG=	mdo
+SRCS=	mdo.c
+
+.include <bsd.prog.mk>
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: READ_FILE usr.bin/mdo/mdo.1

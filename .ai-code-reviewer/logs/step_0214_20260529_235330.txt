@@ -1,0 +1,64 @@
+=== STEP 214 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/mdo
+   Files: 1/3
+📄 File: usr.bin/mdo/mdo.c
+   Chunks: 12/17
+✏️  Edits: 1 files modified
+
+```
+=== CHUNK 12/17: /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c === [function: parse_group]
+=== Lines 335-375 (41 lines) ===
+
+static gid_t
+parse_group(const char *s)
+{
+	struct group *grp;
+	struct alloc alloc = ALLOC_INITIALIZER;
+	const char *errp;
+	gid_t gid;
+	int error;
+
+	error = alloc_getgrnam(s, &grp, &alloc);
+	if (error == 0) {
+		gid = grp->gr_gid;
+		goto finish;
+	} else if (error != ENOENT)
+		errc(EXIT_FAILURE, error, "cannot access the group database");
+
+	gid = strtonum(s, 0, GID_MAX, &errp);
+	if (errp != NULL)
+		errx(EXIT_FAILURE, "invalid GID '%s': %s", s, errp);
+
+finish:
+	alloc_free(&alloc);
+	return (gid);
+}
+
+struct group_array {
+	u_int	 nb;
+	gid_t	*groups;
+};
+
+static const struct group_array GROUP_ARRAY_INITIALIZER = {
+	.nb = 0,
+	.groups = NULL,
+};
+
+static bool
+group_array_is_empty(const struct group_array *const ga)
+{
+	return (ga->nb == 0);
+}
+
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

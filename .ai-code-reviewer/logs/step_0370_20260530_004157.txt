@@ -1,0 +1,12 @@
+=== STEP 370 ===
+
+--- REQUEST ---
+SET_SCOPE_ERROR: bin/cat is marked skipped.
+
+Choose a pending work unit instead.
+NEXT: Use SET_SCOPE sys/dev/syscons/blank
+
+--- RESPONSE ---
+
+
+ACTION: SET_SCOPE sys/dev/syscons/blank

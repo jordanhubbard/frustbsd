@@ -1,0 +1,54 @@
+=== STEP 208 ===
+
+--- REQUEST ---
+NEXT_CHUNK_RESULT:
+
+PROGRESS:
+📁 Directory: usr.bin/mdo
+   Files: 1/3
+📄 File: usr.bin/mdo/mdo.c
+   Chunks: 6/17
+✏️  Edits: 1 files modified
+
+```
+=== CHUNK 6/17: /usr/home/jkh/Src/frustbsd/usr.bin/mdo/mdo.c === [function: wrapped_getpwnam_r]
+=== Lines 185-215 (31 lines) ===
+
+static int
+wrapped_getpwnam_r(void *data, const struct alloc *alloc)
+{
+	struct passwd *const pwd = alloc->start;
+	struct passwd *result;
+	struct getpwnam_wrapper_data *d = data;
+	int error;
+
+	assert(alloc->size >= sizeof(*pwd));
+
+	error = getpwnam_r(d->name, pwd, (char *)(pwd + 1),
+	    alloc->size - sizeof(*pwd), &result);
+
+	if (error == 0) {
+		if (result == NULL)
+			error = ENOENT;
+	} else
+		assert(result == NULL);
+	*d->pwdp = result;
+	return (error);
+}
+
+/*
+ * Wraps getpwnam_r(), automatically dealing with memory allocation.
+ *
+ * 'alloc' may be any allocation (even empty), and will be extended as
+ * necessary.  It is not freed on error.
+ *
+ * On success, '*pwdp' is filled with a pointer to the returned 'struct passwd',
+ * and on failure, is set to NULL.
+ */
+
+```
+
+--- RESPONSE ---
+
+
+ACTION: NEXT_CHUNK

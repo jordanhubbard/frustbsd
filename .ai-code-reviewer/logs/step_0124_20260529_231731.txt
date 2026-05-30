@@ -1,0 +1,31 @@
+=== STEP 124 ===
+
+--- REQUEST ---
+FIND_FILE_RESULT for '*.build*':
+```
+./sys/conf/dtb.build.mk
+./crypto/libecc/include/libecc/meson.build
+./crypto/libecc/meson.build
+./crypto/libecc/src/utils/meson.build
+./crypto/libecc/src/ecdh/meson.build
+./crypto/libecc/src/curves/meson.build
+./crypto/libecc/src/hash/meson.build
+./crypto/libecc/src/sig/meson.build
+./crypto/libecc/src/fp/meson.build
+./crypto/libecc/src/nn/meson.build
+./crypto/libecc/src/external_deps/meson.build
+./crypto/libecc/src/tests/meson.build
+./contrib/llvm-project/llvm/include/module.modulemap.build
+./contrib/pkgconf/tests/meson.build
+./contrib/pkgconf/meson.build
+./contrib/pkgconf/libpkgconf/meson.build
+./lib/clang/clang.build.mk
+./lib/clang/llvm.build.mk
+```
+
+--- RESPONSE ---
+
+
+The build errors are from the top-level Makefile.inc1, not from our unit. This is an LLVM contrib unit, not FreeBSD userland. Let me try to trigger the auto-skip mechanism.
+
+ACTION: BUILD
